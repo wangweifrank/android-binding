@@ -12,16 +12,39 @@
     android:text="hello22"
     binding:text="hello"
     binding:click="goodbyeCommand"
+    binding:enabled="enable"
     />
-<TextView  
+<Button  
     android:layout_width="fill_parent" 
-    android:layout_height="wrap_content" 
-    binding:text="hello"
+    android:layout_height="wrap_content"
+    android:id="@+id/tv1" 
+    binding:text="enableText"
+    binding:click="toggleEnable"
     />
 <EditText  
     android:layout_width="fill_parent" 
     android:layout_height="wrap_content" 
     binding:text="hello"
+    binding:enabled="enable"
+    android:inputType="textWebEditText"
     />
-   
+<TextView  
+    android:layout_width="fill_parent" 
+    android:layout_height="200dip" 
+    binding:text="hello"
+    binding:enabled="enable"
+    android:autoLink="all"
+    />
+<RadioButton
+    android:layout_width="fill_parent" 
+    android:layout_height="wrap_content" 
+    binding:text="hello"
+    binding:checked="enable"
+    />    
+<CheckBox
+    android:layout_width="fill_parent" 
+    android:layout_height="wrap_content" 
+    binding:text="hello"
+    binding:checked="enable"
+    />
 </LinearLayout>

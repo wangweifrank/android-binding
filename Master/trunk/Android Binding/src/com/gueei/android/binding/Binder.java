@@ -5,6 +5,7 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Hashtable;
+import java.util.WeakHashMap;
 
 import com.gueei.android.binding.exception.BindingException;
 import com.gueei.android.binding.listeners.MulticastListener;
@@ -17,7 +18,16 @@ public class Binder {
 	public static final int STOP_PROPAGATION_TAG = R.id.addToDictionary;
 	
 	private ArrayList<AttributeBind<?>> bindtable = new ArrayList<AttributeBind<?>>();
+	private WeakHashMap<String, BindedView> nameViewMap = new WeakHashMap<String, BindedView>();
 
+	public WeakHashMap<String, BindedView> getNameViewMap(){
+		return nameViewMap;
+	}
+	
+	public BindedView findViewByName(String name){
+		return nameViewMap.get(name);
+	}
+	
 	public enum ViewListeners {
 		OnClickListener, OnCreateContextMenuListener, OnFocusChangeListener, OnKeyListener, OnLongClickListener, OnTouchListener
 	}

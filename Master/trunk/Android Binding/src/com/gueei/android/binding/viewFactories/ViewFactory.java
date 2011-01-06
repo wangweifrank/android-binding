@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.WeakHashMap;
 
+import com.gueei.android.binding.BindedView;
 import com.gueei.android.binding.Binder;
+import com.gueei.android.binding.exception.BindingException;
 
 import android.content.Context;
 import android.util.AttributeSet;
@@ -18,9 +20,11 @@ public class ViewFactory implements Factory {
 	public ViewFactory(Binder binder){
 		mBinder = binder;
 		factories.add(new Views());
-		factories.add(new TextViews());
+		factories.add(new TextViews2());
+		/*
 		factories.add(new CompoundButtons());
 		factories.add(new AdapterViews());
+		*/
 		InitFactories();
 	}
 	
@@ -43,24 +47,35 @@ public class ViewFactory implements Factory {
 		
 		AttributeMap map = new AttributeMap();
 		int count = attrs.getAttributeCount();
+		BindedView bindedView = new BindedView();
+		bindedView.setView(view);
 
 		for(int i=0; i<count; i++){
 			String aName = attrs.getAttributeName(i);
 			String aValue = attrs.getAttributeValue(BindingViewFactory.defaultNS, aName);
 			if (aValue!=null){
-				map.put(aName, aValue);
+				if ("name".equals(aName)){
+					if (!mBinder.getNameViewMap().containsKey(aValue)){
+						mBinder.getNameViewMap().put(aValue, bindedView);
+					}
+					else
+						Log.e("Binder", "Name must be unique");
+				}
+				else
+					map.put(aName, aValue);
 			}
 		}
 		
-		viewAttributes.put(view, map);
+		viewAttributes.put(bindedView, map);
 		
 		return view;
 	}
 
-	private WeakHashMap<View, AttributeMap> viewAttributes = new WeakHashMap<View, AttributeMap>();
+	private WeakHashMap<BindedView, AttributeMap> viewAttributes = 
+		new WeakHashMap<BindedView, AttributeMap>();
 	
 	public void BindView(Object model){
-		for(View view:viewAttributes.keySet()){
+		for(BindedView view:viewAttributes.keySet()){
 			AttributeMap attrs = viewAttributes.get(view);
 			for(BindingViewFactory factory : factories){
 				if (factory.BindView(view, mBinder, attrs, model))

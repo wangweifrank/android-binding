@@ -18,9 +18,9 @@ public class TrialLaunch extends Activity {
 		mBinder = new Binder();
 		ViewFactory factory = new ViewFactory(mBinder);
 		inflater.setFactory(factory);
-        setContentView(R.layout.demo);
+        setContentView(R.layout.main);
         
-        factory.BindView(new OtherModel(this));
+        factory.BindView(new AnotherModel());
     }
     private Binder mBinder;
 }

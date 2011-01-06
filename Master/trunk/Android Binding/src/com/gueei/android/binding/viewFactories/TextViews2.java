@@ -16,13 +16,17 @@ import com.gueei.android.binding.BindedView;
 import com.gueei.android.binding.Binder;
 import com.gueei.android.binding.Command;
 import com.gueei.android.binding.Observable;
+import com.gueei.android.binding.Observer;
+import com.gueei.android.binding.ViewAttribute;
+import com.gueei.android.binding.converters.AttributePropertyBridge;
+import com.gueei.android.binding.listeners.KeyListenerMulticast;
 import com.gueei.android.binding.listeners.MulticastListener;
 import com.gueei.android.binding.listeners.OnCheckedChangeListenerMulticast;
 import com.gueei.android.binding.listeners.OnClickListenerMulticast;
 import com.gueei.android.binding.listeners.OnEditorActionListenerMulticast;
 import com.gueei.android.binding.listeners.TextWatcherMulticast;
 
-public class TextViews implements BindingViewFactory {
+public class TextViews2 implements BindingViewFactory {
 
 	public View CreateView(String name, Binder binder, Context context,
 			AttributeSet attrs) {
@@ -41,26 +45,36 @@ public class TextViews implements BindingViewFactory {
 			Object model) {
 		try {
 			if (!TextView.class.isInstance(view.getView())) return false;
-			if (attrs.containsKey("text")){
+			this.CreateViewAttributes(view, binder);
+			if (attrs.containsKey("text"))
+			{
 				Field f = model.getClass().getField(attrs.get("text"));
-				Observable<?> prop = (Observable<?>) f.get(model);
-				if (EditText.class.isInstance(view.getView())){
-					binder.bind(view.getView(), "Text",
-							TextView.class.getMethod("getText"),
-							TextView.class.getMethod("setText", CharSequence.class), 
-							prop, TextWatcherMulticast.class);
-				}
-				else{
-					binder.bind(view.getView(), "Text",
-							TextView.class.getMethod("getText"),
-							TextView.class.getMethod("setText", CharSequence.class), 
-							prop);
-				}
+				Observable<CharSequence> prop = (Observable<CharSequence>) f.get(model);
+				AttributePropertyBridge bridge = 
+					new AttributePropertyBridge(view.getAttribute("text"), prop);
+				prop.notifyChanged(prop.get());
+				// CREATE OBSERVER TO BIND PROP WITH ATTRIBUTE!
+				// GOOD TIME TO BUILD CONVERTER IN THIS
 			}
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 			
 		}
 		return false;
+	}
+	
+	public void CreateViewAttributes(BindedView view, Binder binder){
+		if (!TextView.class.isInstance(view.getView())) return;
+		try{
+			ViewAttribute<CharSequence> attr = view.addAttribute("text", 
+					TextView.class.getMethod("getText"),
+					TextView.class.getMethod("setText", CharSequence.class),
+					CharSequence.class);
+			if (view.getView() instanceof EditText){
+				binder.bindCommand(view.getView(), KeyListenerMulticast.class, attr);
+			}
+		}
+		catch(Exception e){}
 	}
 }

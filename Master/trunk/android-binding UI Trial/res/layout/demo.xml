@@ -44,6 +44,8 @@
     >
     	<TextView android:layout_width="fill_parent" 
     		android:layout_height="wrap_content"
-    		android:text="You Have Chosen"/>
+    		android:text="You Have Chosen"
+    		binding:context="spinner"
+    		binding:text="selectedItem"/>
     </LinearLayout>
 </LinearLayout>

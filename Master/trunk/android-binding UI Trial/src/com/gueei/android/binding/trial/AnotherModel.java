@@ -1,12 +1,13 @@
 package com.gueei.android.binding.trial;
 
+import android.util.Log;
 import android.view.View;
 
 import com.gueei.android.binding.Command;
 import com.gueei.android.binding.Observable;
 
 public class AnotherModel {
-	public Observable<String> hello = new Observable<String>("BINDING");
+	public Observable<CharSequence> hello = new Observable<CharSequence>("BINDING");
 	private int goodbyecount = 0;
 	public Command goodbyeCommand = new Command() {
 		public void Invoke(View v, Object... args) {

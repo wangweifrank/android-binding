@@ -1,5 +1,6 @@
 package com.gueei.android.binding;
 
+import java.util.AbstractCollection;
 import java.util.ArrayList;
 
 public class Observable<T> {
@@ -10,27 +11,35 @@ public class Observable<T> {
 		mValue = initValue;
 	}
 	
-	public void subscribe(Observer o){
+	public final void subscribe(Observer o){
 		observers.add(o);
 	}
 	
-	public void notifyChanged(T newValue, Object initiator){
-		for(Observer o: observers){
-			o.onPropertyChanged(this, newValue, initiator);
-		}		
+	public final void notifyChanged(T newValue, Object initiator){
+		ArrayList<Object> initiators = new ArrayList<Object>();
+		initiators.add(initiator);
+		this.notifyChanged(newValue, initiators);
 	}
 	
-	public void notifyChanged(T newValue){
-		notifyChanged(newValue, null);
+	public final void notifyChanged(T newValue, AbstractCollection<Object> initiators){
+		initiators.add(this);
+		for(Observer o: observers){
+			if (initiators.contains(o)) continue;
+			o.onPropertyChanged(this, newValue, initiators);
+		}
+	}
+	
+	public final void notifyChanged(T newValue){
+		notifyChanged(newValue, new ArrayList<Object>());
 	}
 
-	public void set(T newValue, Object initiator){
+	public void set(T newValue, AbstractCollection<Object> initiators){
+		if (initiators.contains(this)) return;
 		mValue = newValue;
-		notifyChanged(mValue, initiator);	
+		notifyChanged(mValue, initiators);
 	}
 	
 	public void set(T newValue){
-//		if (mValue == newValue) return;
 		mValue = newValue;
 		notifyChanged(mValue);
 	}

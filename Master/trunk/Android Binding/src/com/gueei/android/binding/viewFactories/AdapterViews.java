@@ -14,6 +14,7 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.gueei.android.binding.BindedView;
 import com.gueei.android.binding.Binder;
 import com.gueei.android.binding.Command;
 import com.gueei.android.binding.Observable;
@@ -34,14 +35,14 @@ public class AdapterViews implements BindingViewFactory {
 	}
 
 	@SuppressWarnings("unchecked")
-	public boolean BindView(View view, Binder binder, ViewFactory.AttributeMap attrs,
+	public boolean BindView(BindedView view, Binder binder, ViewFactory.AttributeMap attrs,
 			Object model) {
 		try {
 			if (!AdapterView.class.isInstance(view)) return false;
 			if (attrs.containsKey("adapter")){
 				Field f = model.getClass().getField(attrs.get("adapter"));
 				Observable<Adapter> prop = (Observable<Adapter>) f.get(model);
-				binder.bind(view, "Adapter",
+				binder.bind(view.getView(), "Adapter",
 						AdapterView.class.getMethod("getAdapter"),
 						AdapterView.class.getMethod("setAdapter", Adapter.class), 
 						prop);

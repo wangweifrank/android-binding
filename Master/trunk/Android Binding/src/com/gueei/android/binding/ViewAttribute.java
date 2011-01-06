@@ -10,36 +10,31 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 
-/* internal */ class AttributeBind<T> implements Observer, Command{
+public class ViewAttribute<T> extends Observable<T> implements Observer, Command{
+	
 	public WeakReference<? extends View> view;
 	public String attributeName;
 	public Method getter;
 	public Method setter;
-	public Observable<T> observable;
-	private boolean stopPropagation = false;
 	
-	// Prevent loop back for the value
-	private T originalValue;
-	
-	public <V extends View> AttributeBind(V view, String attributeName, Method getter, Method setter, Observable<T> observable){
+	@SuppressWarnings("unchecked")
+	public <V extends View> ViewAttribute(V view, String attributeName, Method getter, Method setter) 
+		throws Exception{
+		super((T)getter.invoke(view));
 		this.view = new WeakReference<V>(view);
 		this.attributeName = attributeName;
 		this.getter = getter;
 		this.setter = setter;
-		this.observable = observable;
-		observable.subscribe(this);
-		this.onPropertyChanged(observable, observable.get(), null);
-		this.stopPropagation = false;
 	}
 	
 	public void viewEventRaised(){
 		
 	}
 	
-	public <T> void onPropertyChanged(Observable<T> prop, T newValue, AbstractCollection<Object> initiators) {
-		/*
+	public <T> void onPropertyChanged(Observable<T> prop, T newValue,
+			AbstractCollection<Object> initiators){
 		try {
-			if (!this.equals(initiator)){
+			if (!initiators.contains(this)){
 				setter.invoke(view.get(), newValue);
 			}
 		} catch (IllegalArgumentException e) {
@@ -48,11 +43,38 @@ import android.widget.EditText;
 			e.printStackTrace();
 		} catch (InvocationTargetException e) {
 			e.printStackTrace();
-		}*/
+		}
+	}
+
+	@Override
+	public void set(T newValue, AbstractCollection<Object> initiators) {
+		try{
+			if (initiators.contains(view.get())) return;
+			setter.invoke(view.get(), newValue);
+//			initiators.add(this);
+//			this.notifyChanged(newValue, initiators);
+		}catch(Exception e){
+			
+		}
+	}
+
+	@Override
+	public void set(T newValue) {
+		//this.set(newValue, this);
+	}
+
+	@Override
+	public T get() {
+		try{
+			T value = (T)getter.invoke(view.get());
+			return value;
+		}catch (Exception e){
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 	public void Invoke(View view, Object... args) {
-		//if (this.view.get().equals(view)) return;
 		onAttributeChanged();
 	}
 
@@ -60,10 +82,9 @@ import android.widget.EditText;
 	public void onAttributeChanged() {
 		try{
 			T value = (T)getter.invoke(view.get());
-			this.observable.set(value, null);
+			this.notifyChanged(value, view.get());
 		}catch (Exception e){
 			e.printStackTrace();
 		}
 	}
-
 }

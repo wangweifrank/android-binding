@@ -1,5 +1,6 @@
 package com.gueei.android.binding.viewFactories;
 
+import com.gueei.android.binding.BindedView;
 import com.gueei.android.binding.Binder;
 
 import android.content.Context;
@@ -15,7 +16,7 @@ public interface BindingViewFactory {
 	// Chain of responsibility. If the factory cannot handle, simply returns null
 	public View CreateView(String name, Binder binder, Context context, AttributeSet attrs);
 	
-	public boolean BindView(View view, Binder binder, ViewFactory.AttributeMap attrs, Object model);
+	public boolean BindView(BindedView view, Binder binder, ViewFactory.AttributeMap attrs, Object model);
 	
 	//public void MapAttributes(View view, AttributeSet attrs, ViewFactory.AttributeMap map);
 }

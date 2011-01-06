@@ -5,6 +5,20 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     >
+<EditText  
+    android:layout_width="fill_parent" 
+    android:layout_height="wrap_content" 
+    binding:text="hello"
+    binding:enabled="enable"
+    android:inputType="textWebEditText"
+    />
+<EditText  
+    android:layout_width="fill_parent" 
+    android:layout_height="wrap_content" 
+    binding:text="hello"
+    binding:enabled="enable"
+    android:inputType="text"
+    />
 <Button  
     android:layout_width="fill_parent" 
     android:layout_height="wrap_content"
@@ -20,13 +34,6 @@
     android:id="@+id/tv1" 
     binding:text="enableText"
     binding:click="toggleEnable"
-    />
-<EditText  
-    android:layout_width="fill_parent" 
-    android:layout_height="wrap_content" 
-    binding:text="hello"
-    binding:enabled="enable"
-    android:inputType="textWebEditText"
     />
 <TextView  
     android:layout_width="fill_parent" 

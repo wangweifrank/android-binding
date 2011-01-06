@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.TextView;
 
+import com.gueei.android.binding.BindedView;
 import com.gueei.android.binding.Binder;
 import com.gueei.android.binding.Command;
 import com.gueei.android.binding.Observable;
@@ -29,14 +30,14 @@ public class CompoundButtons implements BindingViewFactory {
 	}
 
 	@SuppressWarnings("unchecked")
-	public boolean BindView(View view, Binder binder, ViewFactory.AttributeMap attrs,
+	public boolean BindView(BindedView view, Binder binder, ViewFactory.AttributeMap attrs,
 			Object model) {
 		try {
-			if(!CompoundButton.class.isInstance(view)) return false;
+			if(!CompoundButton.class.isInstance(view.getView())) return false;
 			if (attrs.containsKey("checked")){
 				Field f = model.getClass().getField(attrs.get("checked"));
 				Observable<Boolean> prop = (Observable<Boolean>) f.get(model);
-				binder.bind(view, "Checked",
+				binder.bind(view.getView(), "Checked",
 						CompoundButton.class.getMethod("isChecked"),
 						CompoundButton.class.getMethod("setChecked", boolean.class),
 						prop, OnCheckedChangeListenerMulticast.class);

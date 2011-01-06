@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
 
+import com.gueei.android.binding.BindedView;
 import com.gueei.android.binding.Binder;
 import com.gueei.android.binding.Command;
 import com.gueei.android.binding.Observable;
@@ -43,14 +44,14 @@ public class Views implements BindingViewFactory {
 	}
 
 	@SuppressWarnings("unchecked")
-	public boolean BindView(View view, Binder binder, ViewFactory.AttributeMap attrs,
+	public boolean BindView(BindedView view, Binder binder, ViewFactory.AttributeMap attrs,
 			Object model) {
 		try {
 				// Bind enabled
 				if (attrs.containsKey("enabled")){
 					Field f = model.getClass().getField(attrs.get("enabled"));
 					Observable<Boolean> prop = (Observable<Boolean>) f.get(model);
-					binder.bind(view, "Enabled",
+					binder.bind(view.getView(), "Enabled",
 							View.class.getMethod("isEnabled"),
 							View.class.getMethod("setEnabled", boolean.class), prop);
 				}
@@ -58,7 +59,7 @@ public class Views implements BindingViewFactory {
 					// Bind onClick
 					Field command = model.getClass().getDeclaredField(attrs.get("click"));
 					Command c = (Command) command.get(model);
-					binder.bindCommand(view, OnClickListenerMulticast.class, c);
+					binder.bindCommand(view.getView(), OnClickListenerMulticast.class, c);
 				}
 		} catch (Exception e) {
 			e.printStackTrace();

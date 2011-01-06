@@ -1,5 +1,7 @@
 package com.gueei.android.binding;
 
+import java.util.AbstractCollection;
+
 public interface Observer {
-	public void onPropertyChanged(Observable<?> prop, Object newValue, Object initiator);
+	public <T> void onPropertyChanged(Observable<T> prop, T newValue, AbstractCollection<Object> initiators);
 }

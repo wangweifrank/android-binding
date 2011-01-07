@@ -33,6 +33,7 @@ public class ViewAttribute<T> extends Observable<T> implements Observer, Command
 	
 	public <T> void onPropertyChanged(Observable<T> prop, T newValue,
 			AbstractCollection<Object> initiators){
+		if (setter==null) return;
 		try {
 			if (!initiators.contains(this)){
 				setter.invoke(view.get(), newValue);

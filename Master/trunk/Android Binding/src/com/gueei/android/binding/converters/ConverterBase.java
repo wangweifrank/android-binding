@@ -7,8 +7,8 @@ import com.gueei.android.binding.Observer;
 import com.gueei.android.binding.ViewAttribute;
 
 public abstract class ConverterBase<Tv, To> implements Observer{
-	private ViewAttribute<Tv> attribute;
-	private Observable<To> property;
+	protected ViewAttribute<Tv> attribute;
+	protected Observable<To> property;
 	
 	public ConverterBase(ViewAttribute<Tv> attribute, Observable<To> property){
 		this.attribute = attribute;

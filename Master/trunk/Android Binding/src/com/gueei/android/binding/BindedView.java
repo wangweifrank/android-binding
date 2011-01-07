@@ -3,6 +3,8 @@ package com.gueei.android.binding;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 
+import com.gueei.android.binding.converters.ConverterBase;
+
 import android.view.View;
 
 public class BindedView {
@@ -10,6 +12,7 @@ public class BindedView {
 	private View view;
 	// private HashMap<String, Class<?>> AttributesDefinition = new HashMap<String, Class<?>>(); 
 	private HashMap<String, ViewAttribute<?>> Attributes= new HashMap<String, ViewAttribute<?>>();
+	private HashMap<String, ConverterBase<?,?>> Converters= new HashMap<String, ConverterBase<?,?>>();
 	
 	public String getName() {
 		return name;
@@ -38,6 +41,10 @@ public class BindedView {
 			e.printStackTrace();
 			return null;
 		}
+	}
+	
+	public void PutConverter(String attributeName, ConverterBase<?,?> converter){
+		Converters.put(attributeName, converter);
 	}
 	
 	public ViewAttribute<?> getAttribute(String name){

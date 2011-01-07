@@ -32,6 +32,10 @@ public class Observable<T> {
 	public final void notifyChanged(T newValue){
 		notifyChanged(newValue, new ArrayList<Object>());
 	}
+	
+	public final void notifyChanged(){
+		notifyChanged(this.get());
+	}
 
 	public void set(T newValue, AbstractCollection<Object> initiators){
 		if (initiators.contains(this)) return;
@@ -46,5 +50,14 @@ public class Observable<T> {
 	
 	public T get(){
 		return mValue;
+	}
+	
+	private boolean compareCharSequence(CharSequence a, CharSequence b){
+		if(a==null||b==null) return false;
+		if(a.length()!=b.length()) return false;
+		for(int i=0; i<a.length(); i++){
+			if (a.charAt(i)!= b.charAt(i)) return false;
+		}
+		return true;
 	}
 }

@@ -6,22 +6,22 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.gueei.android.binding.BindedView;
 import com.gueei.android.binding.Binder;
 import com.gueei.android.binding.Command;
 import com.gueei.android.binding.Observable;
+import com.gueei.android.binding.ViewAttribute;
+import com.gueei.android.binding.converters.AttributePropertyBridge;
+import com.gueei.android.binding.converters.CharSequenceBridge;
 import com.gueei.android.binding.listeners.MulticastListener;
 import com.gueei.android.binding.listeners.OnCheckedChangeListenerMulticast;
 import com.gueei.android.binding.listeners.OnClickListenerMulticast;
+import com.gueei.android.binding.listeners.TextWatcherMulticast;
 
-public class CompoundButtons implements BindingViewFactory {
-
-	public View CreateView(String name, Binder binder, Context context,
-			AttributeSet attrs) {
-		return null;
-	}
+public class CompoundButtons extends BindingViewFactory {
 
 	public void Init() {
 		MulticastListener.Factory.RegisterConstructor
@@ -37,10 +37,10 @@ public class CompoundButtons implements BindingViewFactory {
 			if (attrs.containsKey("checked")){
 				Field f = model.getClass().getField(attrs.get("checked"));
 				Observable<Boolean> prop = (Observable<Boolean>) f.get(model);
-				binder.bind(view.getView(), "Checked",
-						CompoundButton.class.getMethod("isChecked"),
-						CompoundButton.class.getMethod("setChecked", boolean.class),
-						prop, OnCheckedChangeListenerMulticast.class);
+				view.PutConverter("checked", 
+						new AttributePropertyBridge((ViewAttribute<Boolean>)view.getAttribute("checked"), prop)
+					);
+					prop.notifyChanged(prop.get());
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -48,4 +48,19 @@ public class CompoundButtons implements BindingViewFactory {
 		return false;
 	}
 
+	public View CreateView(String name, Context context, AttributeSet attrs) {
+		return null;
+	}
+
+	public void CreateViewAttributes(BindedView view, Binder binder) {
+		if (!CompoundButton.class.isInstance(view.getView())) return;
+		try{
+			ViewAttribute<Boolean> attr = view.addAttribute("checked", 
+					CompoundButton.class.getMethod("isChecked"),
+					CompoundButton.class.getMethod("setChecked", boolean.class),
+					boolean.class);
+			binder.bindCommand(view.getView(), OnCheckedChangeListenerMulticast.class, attr);
+		}
+		catch(Exception e){}
+	}
 }

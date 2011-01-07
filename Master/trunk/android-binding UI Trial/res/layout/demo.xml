@@ -11,12 +11,20 @@
     android:id="@+id/tv1" 
     android:text="Choose a ticket class"
     />
+<Button
+	android:layout_width="fill_parent" 
+    android:layout_height="wrap_content"
+    android:text="dump selection to log"
+    binding:click="DumpSelection"
+/>
     <Spinner
     	android:layout_width="fill_parent" 
 	    android:layout_height="wrap_content"
 	    binding:adapter="ClassSelection"
 	    binding:name="spinner"
+	    binding:selectedItem="Selection"
     />
+<!-- 
 	<RadioGroup
 		android:layout_width="fill_parent" 
 	    android:layout_height="wrap_content"
@@ -44,8 +52,7 @@
     >
     	<TextView android:layout_width="fill_parent" 
     		android:layout_height="wrap_content"
-    		android:text="You Have Chosen"
-    		binding:context="spinner"
-    		binding:text="selectedItem"/>
+    		android:text="You Have Chosen"/>
     </LinearLayout>
+-->
 </LinearLayout>

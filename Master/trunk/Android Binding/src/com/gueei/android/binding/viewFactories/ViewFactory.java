@@ -20,11 +20,9 @@ public class ViewFactory implements Factory {
 	public ViewFactory(Binder binder){
 		mBinder = binder;
 		factories.add(new Views());
-		factories.add(new TextViews2());
-		/*
+		factories.add(new TextViews());
 		factories.add(new CompoundButtons());
 		factories.add(new AdapterViews());
-		*/
 		InitFactories();
 	}
 	
@@ -40,7 +38,7 @@ public class ViewFactory implements Factory {
 	public View onCreateView(String name, Context context, AttributeSet attrs) {
 		View view = null;
 		for(BindingViewFactory factory : factories){
-			view = factory.CreateView(name, mBinder, context, attrs);
+			view = factory.CreateView(name, context, attrs);
 			if (view!=null) break;
 		}
 		if (view==null) return null;
@@ -68,6 +66,10 @@ public class ViewFactory implements Factory {
 		
 		viewAttributes.put(bindedView, map);
 		
+		for(BindingViewFactory factory : factories){
+			factory.CreateViewAttributes(bindedView, mBinder);
+		}
+		
 		return view;
 	}
 
@@ -75,6 +77,7 @@ public class ViewFactory implements Factory {
 		new WeakHashMap<BindedView, AttributeMap>();
 	
 	public void BindView(Object model){
+
 		for(BindedView view:viewAttributes.keySet()){
 			AttributeMap attrs = viewAttributes.get(view);
 			for(BindingViewFactory factory : factories){

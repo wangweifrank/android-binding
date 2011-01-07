@@ -8,20 +8,25 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.gueei.android.binding.BindedView;
 import com.gueei.android.binding.Binder;
 import com.gueei.android.binding.Command;
 import com.gueei.android.binding.Observable;
+import com.gueei.android.binding.ViewAttribute;
+import com.gueei.android.binding.converters.AttributePropertyBridge;
+import com.gueei.android.binding.converters.CharSequenceBridge;
 import com.gueei.android.binding.listeners.MulticastListener;
 import com.gueei.android.binding.listeners.OnClickListenerMulticast;
 import com.gueei.android.binding.listeners.OnKeyListenerMulticast;
+import com.gueei.android.binding.listeners.TextWatcherMulticast;
 import com.gueei.android.binding.viewFactories.ViewFactory.AttributeMap;
 
-public class Views implements BindingViewFactory {
+public class Views extends BindingViewFactory {
 
-	public View CreateView(String name, Binder binder, Context context,
+	public View CreateView(String name, Context context,
 			AttributeSet attrs) {
 		try {
 			String prefix = "android.widget.";
@@ -51,9 +56,10 @@ public class Views implements BindingViewFactory {
 				if (attrs.containsKey("enabled")){
 					Field f = model.getClass().getField(attrs.get("enabled"));
 					Observable<Boolean> prop = (Observable<Boolean>) f.get(model);
-					binder.bind(view.getView(), "Enabled",
-							View.class.getMethod("isEnabled"),
-							View.class.getMethod("setEnabled", boolean.class), prop);
+					view.PutConverter("enabled", 
+						new AttributePropertyBridge
+							((ViewAttribute<Boolean>)view.getAttribute("enabled"), prop));
+					prop.notifyChanged();
 				}
 				if (attrs.containsKey("click")){
 					// Bind onClick
@@ -65,5 +71,16 @@ public class Views implements BindingViewFactory {
 			e.printStackTrace();
 		}
 		return false;
+	}
+
+	public void CreateViewAttributes(BindedView view, Binder binder) {
+		if (!(view.getView() instanceof View)) return;
+		try{
+			ViewAttribute<Boolean> attr = view.addAttribute("enabled", 
+					View.class.getMethod("isEnabled"),
+					View.class.getMethod("setEnabled", boolean.class),
+					boolean.class);
+		}
+		catch(Exception e){}
 	}
 }

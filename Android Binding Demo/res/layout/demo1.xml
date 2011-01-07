@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:binding="http://code.google.com/p/android-binding"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    >
+<TextView  
+    android:layout_width="fill_parent" 
+    android:layout_height="wrap_content" 
+    android:text="Full name"
+    />
+<TextView
+    android:layout_width="fill_parent" 
+    android:layout_height="wrap_content" 
+    binding:text="FullName"
+    binding:click="ShowResult"
+    />
+<TextView  
+    android:layout_width="fill_parent" 
+    android:layout_height="wrap_content" 
+    android:text="Title"
+    />
+<Spinner  
+    android:layout_width="fill_parent" 
+    android:layout_height="wrap_content" 
+    binding:adapter="TitleList"
+    binding:selectedItem="Title"
+    />
+<TextView  
+    android:layout_width="fill_parent" 
+    android:layout_height="wrap_content" 
+    android:text="First Name"
+    />
+<EditText  
+    android:layout_width="fill_parent" 
+    android:layout_height="wrap_content" 
+    binding:text="FirstName"
+    />
+<TextView  
+    android:layout_width="fill_parent" 
+    android:layout_height="wrap_content" 
+    android:text="Last Name"
+    />
+<EditText  
+    android:layout_width="fill_parent" 
+    android:layout_height="wrap_content" 
+    binding:text="LastName"
+    />
+</LinearLayout>

@@ -16,6 +16,7 @@ public class DemoModel1 {
 	public Observable<String> FirstName = new Observable<String>("");
 	public Observable<String> LastName = new Observable<String>("");
 	public Observable<String> Title = new Observable<String>("");
+	public Observable<String> Email = new Observable<String>("");
 	public Observable<Adapter> TitleList;
 	public DependentObservable<String> FullName = new DependentObservable<String>(FirstName, LastName, Title){
 		@Override
@@ -25,7 +26,8 @@ public class DemoModel1 {
 	};
 	public Command ShowResult = new Command(){
 		public void Invoke(View arg0, Object... arg1) {
-			Toast.makeText(mContext, FullName.get(), 1000);
+			Toast toast = Toast.makeText(mContext, "You entered: " + FullName.get(), Toast.LENGTH_LONG);
+			toast.show();
 		}};
 	
 	private Context mContext;

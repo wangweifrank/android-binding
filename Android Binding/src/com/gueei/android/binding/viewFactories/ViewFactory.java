@@ -73,16 +73,15 @@ public class ViewFactory implements Factory {
 		return view;
 	}
 
-	private WeakHashMap<BindedView, AttributeMap> viewAttributes = 
-		new WeakHashMap<BindedView, AttributeMap>();
+	private HashMap<BindedView, AttributeMap> viewAttributes = 
+		new HashMap<BindedView, AttributeMap>();
 	
 	public void BindView(Object model){
 
 		for(BindedView view:viewAttributes.keySet()){
 			AttributeMap attrs = viewAttributes.get(view);
 			for(BindingViewFactory factory : factories){
-				if (factory.BindView(view, mBinder, attrs, model))
-					break;
+				factory.BindView(view, mBinder, attrs, model);
 			}
 		}
 	}

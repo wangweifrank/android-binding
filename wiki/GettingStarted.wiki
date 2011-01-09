@@ -1,0 +1,10 @@
+#summary Getting started to Android Binding
+#labels Featured
+
+= Introduction =
+
+Getting started to Android Binding. This is the introduction guide to how to use the Android Binding Library. 
+
+= Details =
+
+MVVM Pattern

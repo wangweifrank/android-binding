@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:binding="http://schemas.android.com/apk/res/com.example.binding.demo"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical"
+>
+<Spinner  
+    android:layout_width="fill_parent" 
+    android:layout_height="60dip" 
+    binding:adapter="ImageList"
+    binding:selectedItem="Selection"
+    />
+
+<HorizontalScrollView
+	android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    >
+<ScrollView
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    >
+    <ImageView 
+        android:layout_width="900px"
+    	android:layout_height="wrap_content"
+    	binding:srcDrawable="ImageToShow"
+    	android:scaleType="fitStart"
+    />
+</ScrollView>
+</HorizontalScrollView>
+</LinearLayout>

@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:binding="http://schemas.android.com/apk/res/com.example.binding.demo"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+<LinearLayout 
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    >
+<TextView  
+    android:layout_width="fill_parent" 
+    android:layout_height="wrap_content" 
+    android:text="Title"
+    />
+<Spinner  
+    android:layout_width="fill_parent" 
+    android:layout_height="wrap_content" 
+    binding:adapter="TitleList"
+    binding:selectedItem="Title"
+    />
+<TextView  
+    android:layout_width="fill_parent" 
+    android:layout_height="wrap_content" 
+    android:text="First Name"
+    />
+<EditText  
+    android:layout_width="fill_parent" 
+    android:layout_height="wrap_content" 
+    android:inputType="textPersonName" 
+    binding:text="FirstName"
+    binding:click="ShowNameHelp"
+    />
+<TextView  
+    android:layout_width="fill_parent" 
+    android:layout_height="wrap_content" 
+    android:text="Last Name"
+    />
+<EditText  
+    android:layout_width="fill_parent" 
+    android:layout_height="wrap_content"
+    android:inputType="textPersonName" 
+    binding:text="LastName"
+    />
+<TextView 
+	android:layout_column="1"
+    android:layout_width="fill_parent" 
+    android:layout_height="wrap_content"
+    android:text="Full name"
+    />
+<TextView
+    android:layout_width="fill_parent" 
+    android:layout_height="wrap_content" 
+    binding:text="FullName"
+    android:textSize="20dip"
+/>
+<TextView  
+    android:layout_width="fill_parent" 
+    android:layout_height="wrap_content" 
+    android:text="Email"
+    />
+<EditText  
+    android:layout_width="fill_parent" 
+    android:layout_height="wrap_content"
+    android:inputType="textEmailAddress" 
+    binding:text="Email"
+    binding:click="ShowEmailHelp"
+    />
+<TextView  
+    android:layout_width="fill_parent" 
+    android:layout_height="wrap_content"
+    android:text="Email formatted"
+/>
+<TextView
+    android:layout_width="fill_parent" 
+    android:layout_height="wrap_content"
+    android:autoLink="email" 
+    binding:text="Email"
+    android:textSize="20dip"
+/>
+<Button
+    android:layout_width="wrap_content" 
+    android:layout_height="wrap_content" 
+	binding:click="RunExplainActivity"
+	android:text="Tell me what happens"
+/>
+<Button
+    android:layout_width="wrap_content" 
+    android:layout_height="wrap_content" 
+	binding:click="RunCodeActivity"
+	android:text="Show me the codes!"
+/>
+</LinearLayout>
+</ScrollView>

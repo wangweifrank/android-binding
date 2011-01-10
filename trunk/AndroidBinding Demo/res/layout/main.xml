@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:binding="http://schemas.android.com/apk/res/com.example.binding.demo"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+>
+<LinearLayout
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    >
+<Button  
+    android:layout_width="fill_parent" 
+    android:layout_height="wrap_content" 
+    binding:enabled="EnableView"
+    android:text="ButtonName"
+    />
+<Button  
+    android:layout_width="fill_parent" 
+    android:layout_height="wrap_content" 
+    binding:click="ToastResult"
+    binding:text="ButtonName"
+    />
+<EditText  
+    android:layout_width="fill_parent" 
+    android:layout_height="wrap_content" 
+    binding:text="ButtonName"
+    />
+<Button
+    android:layout_width="fill_parent" 
+    android:layout_height="wrap_content" 
+    android:text="Toggle other button"
+    binding:click="Toggle"
+    />
+</LinearLayout>
+</ScrollView>

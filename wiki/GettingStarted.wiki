@@ -7,7 +7,7 @@
 
 = Introduction =
 
-Getting started to Android Binding. This is the introduction guide to how to use the Android Binding Library. 
+Getting started to Android Binding. This is the introduction guide on how to use the Android Binding Library. 
 
 = Demo Project =
 

@@ -5,9 +5,9 @@ import java.util.ArrayList;
 
 public abstract class DependentObservable<T> extends Observable<T> implements Observer{
 
-	private Observable<?>[] dependents;
+	protected Observable[] dependents;
 	
-	public DependentObservable(Observable<?>... dependents) {
+	public DependentObservable(Observable... dependents) {
 		super();
 		for(Observable<?> o : dependents){
 			o.subscribe(this);

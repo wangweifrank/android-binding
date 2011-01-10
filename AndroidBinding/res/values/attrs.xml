@@ -8,4 +8,8 @@
 	<declare-styleable name="BindableTextViews">
 		<attr name="text" format="string"/>
 	</declare-styleable>
+	<declare-styleable name="BindableAdapterViews">
+		<attr name="adapter" format="string"/>
+		<attr name="selectedItem" format="string"/>
+	</declare-styleable>
 </resources>

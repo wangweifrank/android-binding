@@ -2,7 +2,6 @@ package com.gueei.android.binding;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
-
 import com.gueei.android.binding.bindingProviders.TextViewProvider;
 import com.gueei.android.binding.bindingProviders.ViewProvider;
 import com.gueei.android.binding.converters.ConverterBase;

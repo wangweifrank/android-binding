@@ -4,88 +4,94 @@ import java.lang.ref.WeakReference;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.AbstractCollection;
+import java.util.ArrayList;
 
 import android.R;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 
-public class ViewAttribute<T> extends Observable<T> implements Observer, Command{
+public abstract class ViewAttribute<Tv extends View, T> extends Observable<T> implements Observer, Command{
 	
-	public WeakReference<? extends View> view;
-	public String attributeName;
-	public Method getter;
-	public Method setter;
+	protected WeakReference<Tv> view;
+	protected String attributeName;
+	private boolean readonly = false;
+	
+	public ViewAttribute(Tv view, String attributeName) {
+		super();
+		this.view = new WeakReference<Tv>(view);
+		this.attributeName = attributeName;
+	}
 	
 	@SuppressWarnings("unchecked")
-	public <V extends View> ViewAttribute(V view, String attributeName, Method getter, Method setter) 
-		throws Exception{
-		super((T)getter.invoke(view));
-		this.view = new WeakReference<V>(view);
-		this.attributeName = attributeName;
-		this.getter = getter;
-		this.setter = setter;
-	}
-	
-	public void viewEventRaised(){
-		
-	}
-	
-	public <T> void onPropertyChanged(Observable<T> prop, T newValue,
+	public <To> void onPropertyChanged(Observable<To> prop, To newValue,
 			AbstractCollection<Object> initiators){
-		if (setter==null) return;
-		try {
-			if (!initiators.contains(this)){
-				setter.invoke(view.get(), newValue);
-			}
-		} catch (IllegalArgumentException e) {
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
-			e.printStackTrace();
-		} catch (InvocationTargetException e) {
-			e.printStackTrace();
-		}
+		set((T)newValue, initiators);
 	}
 
 	@Override
 	public void set(T newValue, AbstractCollection<Object> initiators) {
-		try{
-			if (initiators.contains(view.get())) return;
-			setter.invoke(view.get(), newValue);
-//			initiators.add(this);
-//			this.notifyChanged(newValue, initiators);
-		}catch(Exception e){
-			
-		}
+		if (readonly) return;
+		if (initiators.contains(view.get())) return;
+		this.doSet(newValue);
+		initiators.add(view.get());
+		this.notifyChanged(newValue, initiators);
+	}
+
+	protected abstract void doSet(T newValue);
+	
+	@Override
+	public void set(T newValue){
+		if (readonly) return;
+		ArrayList<Object> initiators = new ArrayList<Object>();
+		set(newValue, initiators);
+	}
+
+	public boolean isReadonly() {
+		return readonly;
+	}
+
+	public void setReadonly(boolean readonly) {
+		this.readonly = readonly;
 	}
 
 	@Override
-	public void set(T newValue) {
-		//this.set(newValue, this);
-	}
-
-	@Override
-	public T get() {
-		try{
-			T value = (T)getter.invoke(view.get());
-			return value;
-		}catch (Exception e){
-			e.printStackTrace();
-		}
-		return null;
-	}
+	public abstract T get();
 
 	public void Invoke(View view, Object... args) {
 		onAttributeChanged();
 	}
 
-	@SuppressWarnings("unchecked")
 	public void onAttributeChanged() {
 		try{
-			T value = (T)getter.invoke(view.get());
+			T value = this.get();
 			this.notifyChanged(value, view.get());
 		}catch (Exception e){
 			e.printStackTrace();
+		}
+	}
+	
+	private Bridge<?> mBridge;
+	public void BindTo(Observable prop){
+		prop.subscribe(this);
+		mBridge = new Bridge(this, prop);
+		this.subscribe(mBridge);
+		prop.notifyChanged();
+	}
+	
+	private static class Bridge<T> implements Observer{
+		ViewAttribute<?, T> mAttribute;
+		Observable<T> mBindedObservable;
+		public Bridge(ViewAttribute<?, T> attribute, Observable<T> observable){
+			mAttribute = attribute;
+			mBindedObservable = observable;
+		}
+		
+		@SuppressWarnings("unchecked")
+		public <Ta> void onPropertyChanged(Observable<Ta> prop, Ta newValue,
+				AbstractCollection<Object> initiators) {
+			if (prop!=mAttribute)return;
+			mBindedObservable.set((T)newValue, initiators);
 		}
 	}
 }

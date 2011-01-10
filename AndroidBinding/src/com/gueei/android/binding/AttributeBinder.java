@@ -25,9 +25,9 @@ public class AttributeBinder {
 		return _attributeFactory;
 	}
 	
-	public ViewAttribute<?> createAttributeForView(View view, int attributeId){
+	public ViewAttribute<?, ?> createAttributeForView(View view, int attributeId){
 		for(BindingProvider p: providers){
-			ViewAttribute<?> a = p.createAttributeForView(view, attributeId);
+			ViewAttribute<?, ?> a = p.createAttributeForView(view, attributeId);
 			if (a!=null) return a;
 		}
 		return null;
@@ -51,8 +51,9 @@ public class AttributeBinder {
 				Field f = model.getClass().getField(map.attributes.get(attrId));
 				Object value = f.get(model);
 				if (value instanceof Observable<?>){
-					ViewAttribute<?> attr = Binder.getAttributeForView(view, attrId);
-					((Observable<?>)value).subscribe(attr);
+					ViewAttribute<?, ?> attr = Binder.getAttributeForView(view, attrId);
+//					((Observable<?>)value).subscribe(attr);
+					attr.BindTo((Observable<?>)value);
 					((Observable<?>)value).notifyChanged();
 				}
 			} catch (Exception e) {

@@ -16,7 +16,7 @@ import com.gueei.android.binding.ViewAttribute;
  *
  */
 public abstract class BindingProvider {
-	public abstract ViewAttribute<?> createAttributeForView(View view, int attributeId);
+	public abstract <Tv extends View> ViewAttribute<Tv, ?> createAttributeForView(View view, int attributeId);
 	public abstract boolean bindCommand(View view, int attrId, Command command);
 	public abstract void mapBindings(View view, Context context, AttributeSet attrs, BindingMap map);
 }

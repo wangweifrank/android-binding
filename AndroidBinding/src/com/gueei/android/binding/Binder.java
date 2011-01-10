@@ -1,17 +1,16 @@
 package com.gueei.android.binding;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
-import com.gueei.android.binding.bindingProviders.TextViewProvider;
-import com.gueei.android.binding.bindingProviders.ViewProvider;
-import com.gueei.android.binding.converters.ConverterBase;
-import com.gueei.android.binding.exception.AttributeNotDefinedException;
-import com.gueei.android.binding.listeners.MulticastListener;
 
 import android.app.Activity;
-import android.content.Context;
-import android.view.LayoutInflater;
 import android.view.View;
+
+import com.gueei.android.binding.bindingProviders.AdapterViewProvider;
+import com.gueei.android.binding.bindingProviders.ImageViewProvider;
+import com.gueei.android.binding.bindingProviders.TextViewProvider;
+import com.gueei.android.binding.bindingProviders.ViewProvider;
+import com.gueei.android.binding.exception.AttributeNotDefinedException;
+import com.gueei.android.binding.listeners.MulticastListener;
 
 public class Binder {
 	private ViewFactory viewFactory;
@@ -24,7 +23,7 @@ public class Binder {
 	 * @return
 	 * @throws AttributeNotDefinedException
 	 */
-	public static ViewAttribute<?> getAttributeForView(View view, int attributeId)
+	public static ViewAttribute<?, ?> getAttributeForView(View view, int attributeId)
 		throws AttributeNotDefinedException	{
 		Object attributes = view.getTag(R.id.tag_attributes);
 		AttributeCollection collection;
@@ -38,7 +37,7 @@ public class Binder {
 			view.setTag(R.id.tag_attributes, collection);
 		}
 		
-		ViewAttribute<?> viewAttribute = 
+		ViewAttribute<?, ?> viewAttribute = 
 			AttributeBinder.getInstance().createAttributeForView(view, attributeId);
 		if (viewAttribute == null) 
 			throw new AttributeNotDefinedException
@@ -46,20 +45,6 @@ public class Binder {
 		
 		collection.putAttribute(attributeId, viewAttribute);
 		return viewAttribute;
-	}
-
-	public static void putConverterForViewAttribute(View view, int attributeId, ConverterBase<?,?> converter) 
-		throws AttributeNotDefinedException{
-		
-		Object attributes = view.getTag(R.id.tag_attributes);
-		AttributeCollection collection;
-		if ((attributes!=null) && (attributes instanceof AttributeCollection)){
-			collection = (AttributeCollection)attributes;
-			if (collection.containsAttribute(attributeId))
-				collection.putConverter(attributeId, converter);
-			else throw new AttributeNotDefinedException();
-		}
-		throw new AttributeNotDefinedException();
 	}
 		
  	static void putBindingMapToView(View view, BindingMap map){
@@ -80,6 +65,8 @@ public class Binder {
 	public static void init(){
 		AttributeBinder.getInstance().registerProvider(new ViewProvider());
 		AttributeBinder.getInstance().registerProvider(new TextViewProvider());
+		AttributeBinder.getInstance().registerProvider(new AdapterViewProvider());
+		AttributeBinder.getInstance().registerProvider(new ImageViewProvider());
 	}
 
 	public static <T extends MulticastListener<?>> T getMulticastListenerForView(View view, Class<T> listenerType){

@@ -6,4 +6,7 @@
 	<item type="id" name="command_click"/>
 	<item type="id" name="attribute_enabled"/>
 	<item type="id" name="attribute_text"/>
+	<item type="id" name="attribute_adapter"/>
+	<item type="id" name="attribute_selectedItem"/>
+	<item type="id" name="attribute_srcDrawable"/>
 </resources>

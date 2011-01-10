@@ -43,6 +43,7 @@ public class Observable<T> {
 	public void set(T newValue, AbstractCollection<Object> initiators){
 		if (initiators.contains(this)) return;
 		mValue = newValue;
+		initiators.add(this);
 		notifyChanged(mValue, initiators);
 	}
 	

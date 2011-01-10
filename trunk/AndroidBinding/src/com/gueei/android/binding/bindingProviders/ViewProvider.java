@@ -8,22 +8,20 @@ import android.view.View;
 import com.gueei.android.binding.Binder;
 import com.gueei.android.binding.BindingMap;
 import com.gueei.android.binding.Command;
-import com.gueei.android.binding.Observable;
 import com.gueei.android.binding.R;
 import com.gueei.android.binding.ViewAttribute;
-import com.gueei.android.binding.converters.AttributePropertyBridge;
-import com.gueei.android.binding.exception.AttributeNotDefinedException;
 import com.gueei.android.binding.listeners.OnClickListenerMulticast;
+import com.gueei.android.binding.viewAttributes.GenericViewAttribute;
 
 public class ViewProvider extends BindingProvider {
 
 	@Override
-	public ViewAttribute<?> createAttributeForView(View view, int attributeId) {
+	public ViewAttribute<View, ?> createAttributeForView(View view, int attributeId) {
 		if (!(view instanceof View)) return null;
 		try{
 			if (attributeId == R.id.attribute_enabled){
 				// TODO: Can change to very specific class to avoid the reflection methods
-				ViewAttribute<Boolean> attr = new ViewAttribute<Boolean>(
+				ViewAttribute<View, Boolean> attr = new GenericViewAttribute<View, Boolean>(
 						view,
 						"enabled", 
 						View.class.getMethod("isEnabled"),

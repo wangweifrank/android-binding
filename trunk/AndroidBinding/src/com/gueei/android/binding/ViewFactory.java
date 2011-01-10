@@ -37,7 +37,6 @@ public class ViewFactory implements Factory {
 			return view;
 		} catch (Exception e) {
 			e.printStackTrace();
-			Log.e("Binder", e.getMessage());
 			return null;
 		}
 	}

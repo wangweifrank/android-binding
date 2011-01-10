@@ -12,4 +12,7 @@
 		<attr name="adapter" format="string"/>
 		<attr name="selectedItem" format="string"/>
 	</declare-styleable>
+	<declare-styleable name="BindableImageViews">
+		<attr name="srcDrawable" format="string"/>
+	</declare-styleable>
 </resources>

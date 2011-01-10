@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<declare-styleable name="BindableViews">
+		<attr name="click" format="string"/>
+		<attr name="visibility" format="string"/>
+		<attr name="enabled" format="string"/>
+	</declare-styleable>
+	<declare-styleable name="BindableTextViews">
+		<attr name="text" format="string"/>
+	</declare-styleable>
+</resources>

@@ -55,3 +55,11 @@ Sometimes a property value is dependent to one or more other variables, in such 
 {{{
 // Example needed
 }}}
+
+== Converter ==
+
+Converter is a sub class of DependentObservable. It also act as converting the value back to the dependent observable objects. 
+
+{{{
+// Example needed
+}}}

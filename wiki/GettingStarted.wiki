@@ -44,11 +44,13 @@ For example, a CheckBox widget will have a _checked_ attribute (which is boolean
 
 == Command == 
 
+Command is the common interface that the View will triggers on certain events, like clicking on a button will fire a Command. 
+
 == Multicast Listener ==
 
 By default, most Android views accepts one listener to one type of event. This is normally enough, but in case that you need extra listeners to subscribe to one event, that may be problematic. 
 
-== DependentObservable ==
+== Dependent Observable ==
 
 Sometimes a property value is dependent to one or more other variables, in such case, a DependentObservable is used. 
 

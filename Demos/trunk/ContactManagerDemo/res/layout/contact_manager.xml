@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:binding="http://schemas.android.com/apk/res/com.gueei.demo.contactmanager"
+              android:orientation="vertical"
+              android:layout_width="fill_parent"
+              android:layout_height="fill_parent">
+    <ListView android:layout_width="fill_parent"
+              android:layout_height="wrap_content"
+              binding:adapter="ContactList"
+              binding:clickedItem="SelectedContact"
+              binding:clickedId="SelectedContactId"
+              binding:itemClicked="ViewContact"
+              android:layout_weight="1"/>
+    <CheckBox android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              binding:checked="ShowInvisible"
+              binding:checkedChange="PopulateList"
+              android:text="@string/showInvisible"/>
+    <Button android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            binding:click="AddContact"
+            android:text="@string/addContactButtonLabel"/>
+</LinearLayout>

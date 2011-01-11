@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:binding="http://schemas.android.com/apk/res/com.gueei.demo.contactmanager"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent">
+    <TableLayout android:layout_width="fill_parent"
+                 android:layout_height="fill_parent">
+        <TableRow>
+            <TextView android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:text="@string/targetAccountLabel"/>
+        </TableRow>
+        <TableRow>
+            <Spinner android:layout_height="wrap_content"
+                     android:layout_width="fill_parent"
+                     android:layout_weight="1"
+                     binding:selectedItem="SelectedAccount"
+                     binding:adapter="AccountList"/>
+        </TableRow>
+        <TableRow>
+            <TextView android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:text="@string/contactNameLabel"/>
+        </TableRow>
+        <TableRow>
+            <EditText android:layout_height="wrap_content"
+                      android:layout_width="wrap_content"
+                      android:layout_weight="1"
+                      binding:text="Name"/>
+        </TableRow>
+        <TableRow>
+            <TextView android:text="@string/contactPhoneLabel"
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"/>
+        </TableRow>
+        <TableRow>
+            <EditText android:layout_height="wrap_content"
+                      android:layout_width="wrap_content"
+                      android:layout_weight="1"
+                      binding:text="Phone"/>
+            <Spinner android:layout_width="wrap_content"
+                     android:layout_height="wrap_content"
+                     binding:selectedItem="SelectedPhoneType"
+                     binding:adapter="PhoneTypeList"/>
+        </TableRow>
+        <TableRow>
+            <TextView android:text="@string/contactEmailLabel"
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"/>
+        </TableRow>
+        <TableRow>
+            <EditText android:layout_height="wrap_content"
+                      android:layout_width="wrap_content"
+                      android:layout_weight="1"
+                      binding:text="Email"/>
+            <Spinner android:layout_width="wrap_content"
+                     android:layout_height="wrap_content"
+                     binding:selectedItem="SelectedEmailType"
+                     binding:adapter="EmailTypeList"/>
+        </TableRow>
+        <TableRow>
+            <Button android:layout_height="wrap_content"
+                    android:text="Show Result"
+                    android:layout_width="fill_parent"
+                    android:layout_weight="1"
+                    binding:click="SaveContact"/>
+        </TableRow>
+    </TableLayout>
+</ScrollView>

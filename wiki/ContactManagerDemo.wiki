@@ -1,6 +1,8 @@
 #summary Showcasing the Android Binding, compare with the original Contact manager Sample
 #labels Featured
 
+<wiki:toc max_depth="2" />
+
 = Introduction =
 
 [http://developer.android.com/resources/samples/ContactManager/index.html Contact Manager] is one of the sample code in android's developers' page. This demo is a re-write on the sample code, using the separated presentation and business logic supported by Android Binding. 
@@ -27,7 +29,7 @@
             android:text="@string/addContactButtonLabel"/>
 }}}
 
-== Layout(portion) in AndroidBinding-way ==
+== Layout(portion) in Android-Binding-way ==
 {{{
     <ListView android:layout_width="fill_parent"
               android:layout_height="wrap_content"

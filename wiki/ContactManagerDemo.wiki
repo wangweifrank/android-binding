@@ -145,9 +145,9 @@ Activity is very clean, it need to instruct which model the binder to bind with 
 
 A Model need to have basically two types of _public_ Fields:
 
-# Observable
+ # Observable
 
-# Command
+ # Command
 
 Observable<?> is a Generic type that denotes something within it is _Observable_, which changes to it will fire a notification to all its subscribers. 
 

@@ -6,6 +6,7 @@ import android.app.Activity;
 import android.view.View;
 
 import com.gueei.android.binding.bindingProviders.AdapterViewProvider;
+import com.gueei.android.binding.bindingProviders.CompoundButtonProvider;
 import com.gueei.android.binding.bindingProviders.ImageViewProvider;
 import com.gueei.android.binding.bindingProviders.TextViewProvider;
 import com.gueei.android.binding.bindingProviders.ViewProvider;
@@ -67,6 +68,7 @@ public class Binder {
 		AttributeBinder.getInstance().registerProvider(new TextViewProvider());
 		AttributeBinder.getInstance().registerProvider(new AdapterViewProvider());
 		AttributeBinder.getInstance().registerProvider(new ImageViewProvider());
+		AttributeBinder.getInstance().registerProvider(new CompoundButtonProvider());
 	}
 
 	public static <T extends MulticastListener<?>> T getMulticastListenerForView(View view, Class<T> listenerType){

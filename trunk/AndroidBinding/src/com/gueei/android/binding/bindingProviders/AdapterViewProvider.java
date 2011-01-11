@@ -12,10 +12,11 @@ import com.gueei.android.binding.BindingMap;
 import com.gueei.android.binding.Command;
 import com.gueei.android.binding.R;
 import com.gueei.android.binding.ViewAttribute;
+import com.gueei.android.binding.listeners.OnItemClickedListenerMulticast;
 import com.gueei.android.binding.listeners.OnItemSelectedListenerMulticast;
-import com.gueei.android.binding.listeners.TextWatcherMulticast;
+import com.gueei.android.binding.viewAttributes.ClickedIdViewAttribute;
+import com.gueei.android.binding.viewAttributes.ClickedItemViewAttribute;
 import com.gueei.android.binding.viewAttributes.GenericViewAttribute;
-import com.gueei.android.binding.viewAttributes.TextViewAttribute;
 
 public class AdapterViewProvider extends BindingProvider {
 
@@ -42,6 +43,14 @@ public class AdapterViewProvider extends BindingProvider {
 				Binder.getMulticastListenerForView
 					(view, OnItemSelectedListenerMulticast.class).register(attr);
 				return (ViewAttribute<Tv, ?>) attr;
+			} else if (attributeId == R.id.attribute_clickedItem){
+				ViewAttribute<AdapterView, Object> attr = 
+					new ClickedItemViewAttribute((AdapterView)view, "clickedItem");
+				return (ViewAttribute<Tv, ?>) attr;
+			} else if (attributeId == R.id.attribute_clickedId){
+				ViewAttribute<AdapterView, Long> attr = 
+					new ClickedIdViewAttribute((AdapterView)view, "clickedId");
+				return (ViewAttribute<Tv, ?>) attr;
 			}
 		} catch (Exception e) {
 			// Actually it should never reach this statement
@@ -51,6 +60,17 @@ public class AdapterViewProvider extends BindingProvider {
 
 	@Override
 	public boolean bindCommand(View view, int attrId, Command command) {
+		if (!(view instanceof AdapterView)) return false;
+		if (attrId==R.id.command_itemSelected){
+			Binder.getMulticastListenerForView(view, OnItemSelectedListenerMulticast.class)
+				.register(command);
+			return true;
+		}
+		else if (attrId==R.id.command_itemClicked){
+			Binder.getMulticastListenerForView(view, OnItemClickedListenerMulticast.class)
+				.register(command);
+			return true;
+		}
 		return false;
 	}
 
@@ -68,5 +88,22 @@ public class AdapterViewProvider extends BindingProvider {
 				.getString(R.styleable.BindableAdapterViews_selectedItem);
 		if (selectedItem != null)
 			map.attributes.put(R.id.attribute_selectedItem, selectedItem);
+		String itemSelected = a
+			.getString(R.styleable.BindableAdapterViews_itemSelected);
+		if (itemSelected!=null){
+			map.commands.put(R.id.command_itemSelected, itemSelected);
+		}
+		String clickedItem = a.getString(R.styleable.BindableAdapterViews_clickedItem);
+		if (clickedItem!=null){
+			map.attributes.put(R.id.attribute_clickedItem, clickedItem);
+		}
+		String itemClicked = a.getString(R.styleable.BindableAdapterViews_itemClicked);
+		if (itemClicked!=null){
+			map.commands.put(R.id.command_itemClicked, itemClicked);
+		}
+		String clickedId = a.getString(R.styleable.BindableAdapterViews_clickedId);
+		if (clickedId!=null){
+			map.attributes.put(R.id.attribute_clickedId, clickedId);
+		}
 	}
 }

@@ -7,7 +7,7 @@ public class Observable<T> {
 	private ArrayList<Observer> observers = new ArrayList<Observer>(1);
 	private T mValue;
 	
-	protected Observable(){
+	public Observable(){
 	}
 	
 	public Observable(T initValue){

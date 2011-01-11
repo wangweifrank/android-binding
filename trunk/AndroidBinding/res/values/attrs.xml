@@ -11,8 +11,16 @@
 	<declare-styleable name="BindableAdapterViews">
 		<attr name="adapter" format="string"/>
 		<attr name="selectedItem" format="string"/>
+		<attr name="itemSelected" format="string"/>
+		<attr name="itemClicked" format="string"/>
+		<attr name="clickedId" format="string"/>
+		<attr name="clickedItem" format="string"/>
 	</declare-styleable>
 	<declare-styleable name="BindableImageViews">
 		<attr name="srcDrawable" format="string"/>
+	</declare-styleable>
+	<declare-styleable name="BindableCompoundButtons">
+		<attr name="checkedChange" format="string"/>
+		<attr name="checked" format="string"/>
 	</declare-styleable>
 </resources>

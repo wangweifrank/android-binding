@@ -6,7 +6,6 @@ import java.lang.reflect.Method;
 import java.util.AbstractCollection;
 import java.util.ArrayList;
 
-import android.R;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;

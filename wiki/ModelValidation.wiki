@@ -1,0 +1,44 @@
+#summary (View) Model Validation Support in Android Binding
+
+= Introduction =
+
+Android Binding also supports for Model Validation through @Annotation syntax. You may also add custom validation rules in a few easy steps. 
+
+= Initial View Model = 
+
+Let's start with a simple Registration view model:
+
+{{{
+public class RegistrationViewModel{
+    public final Observable<CharSequence> Login;
+    public final Observable<CharSequence> Password;
+    public final Observable<CharSequence> ConfirmPassword;
+}
+}}}
+
+Remember, in Android Binding, it is expected the Observables are _public_ fields, it might be a good practice to decorate it as _final_ so no latter remapping will occur. 
+
+= Add validation rules = 
+
+OK, the login and password are obviously mandatory. It is called *required* in Android Binding. All the validation classes in sitting in the package: com.gueei.android.binding.validation.validators; Remember, if you found the validators are not enough, you can always make a custom one, which will cover later in the post.
+
+So, here's how we instruct the Android Binding that those fields are required:
+
+{{{
+public class RegistrationViewModel{
+    @required
+    public final Observable<CharSequence> Login;
+    @required
+    public final Observable<CharSequence> Password;
+    @required
+    public final Observable<CharSequence> ConfirmPassword;
+}
+}}}
+
+That's it! We just need to put an *@required* annotation attribute to the required field. 
+= Details =
+
+Add your content here.  Format your content with:
+  * Text in *bold* or _italic_
+  * Headings, paragraphs, and lists
+  * Automatic links to other wiki pages

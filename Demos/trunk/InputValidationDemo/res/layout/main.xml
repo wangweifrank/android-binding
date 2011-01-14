@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:binding="http://schemas.android.com/apk/res/com.gueei.demo.inputvalidation"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    >
+<LinearLayout
+	android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+    <TextView  
+	    android:layout_width="fill_parent" 
+	    android:layout_height="wrap_content" 
+	    android:text="A demo to validation support for Android Binding."
+	    android:textSize="25dip"
+	    />
+	<Button
+	    android:layout_width="fill_parent" 
+	    android:layout_height="wrap_content"
+	    binding:text="TextToggle"
+	    binding:click="ToggleCode"/>
+    <LinearLayout
+	    android:layout_width="fill_parent" 
+	    android:layout_height="wrap_content"
+	    android:orientation="vertical"
+	    binding:visibility="CodeVisible">
+	    <TextView  
+	    android:layout_width="fill_parent" 
+	    android:layout_height="wrap_content" 
+	    android:text="@string/help_text"
+	    android:autoLink="web"
+	    />
+		<ImageView
+			android:layout_width="fill_parent" 
+		    android:layout_height="wrap_content"
+		    android:src="@drawable/code"
+		    />
+		<Button
+			android:layout_width="fill_parent" 
+	    	android:layout_height="wrap_content"
+	    	android:text="Project homepage"
+	    	binding:click="ProjectHomepage"
+	    	/>
+    </LinearLayout>
+	<TextView  
+	    android:layout_width="fill_parent" 
+	    android:layout_height="wrap_content" 
+	    android:text="Login Name"
+	    />
+	<EditText  
+	    android:layout_width="fill_parent" 
+	    android:layout_height="wrap_content" 
+	    binding:text="Login"
+	    />
+	<TextView  
+	    android:layout_width="fill_parent" 
+	    android:layout_height="wrap_content" 
+	    android:text="Password"
+	    />
+	<EditText  
+	    android:layout_width="fill_parent" 
+	    android:layout_height="wrap_content" 
+	    binding:text="Password"
+	    />
+	<TextView  
+	    android:layout_width="fill_parent" 
+	    android:layout_height="wrap_content" 
+	    android:text="Confirm Password"
+	    />
+	<EditText  
+	    android:layout_width="fill_parent" 
+	    android:layout_height="wrap_content" 
+	    binding:text="ConfirmPassword"
+	    />
+	<Button  
+	    android:layout_width="fill_parent" 
+	    android:layout_height="wrap_content" 
+	    android:text="Validate"
+	    binding:click="Validate"
+	    />	    
+</LinearLayout>
+</ScrollView>

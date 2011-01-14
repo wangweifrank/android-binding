@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="hello">Hello World, RegisterAccount!</string>
+    <string name="app_name">Input Validation - Android Binding Demo</string>
+    <string name="help_text">
+    Following is a dummy registration form. Android Binding Supports @Annotation Model Validation. \n\n 
+    If you click on the "validate" button, it will show you the validation result of the model. \n\n
+    For more information, you may got to the project homepage: http://code.google.com/p/android-binding/
+    </string>
+</resources>

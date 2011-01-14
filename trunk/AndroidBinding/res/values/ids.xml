@@ -8,6 +8,7 @@
 	<item type="id" name="command_itemClicked"/>
 	<item type="id" name="command_itemSelected"/>
 	<item type="id" name="attribute_enabled"/>
+	<item type="id" name="attribute_visibility"/>
 	<item type="id" name="attribute_text"/>
 	<item type="id" name="attribute_adapter"/>
 	<item type="id" name="attribute_clickedId"/>

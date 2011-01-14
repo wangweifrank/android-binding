@@ -28,6 +28,13 @@ public class ViewProvider extends BindingProvider {
 						View.class.getMethod("setEnabled", boolean.class));
 				return attr;
 			}
+			else if (attributeId == R.id.attribute_visibility){
+				ViewAttribute<View, Integer> attr = new GenericViewAttribute<View, Integer>(
+						view, "visibility",
+						View.class.getMethod("getVisibility"),
+						View.class.getMethod("setVisibility", int.class));
+				return attr;
+			}
 		}
 		catch(Exception e){
 			// Actually it should never reach this statement
@@ -51,6 +58,9 @@ public class ViewProvider extends BindingProvider {
 		String enabled = a.getString(R.styleable.BindableViews_enabled);
 		if (enabled != null)
 			map.attributes.put(R.id.attribute_enabled, enabled);
+		String visibility = a.getString(R.styleable.BindableViews_visibility);
+		if (visibility != null)
+			map.attributes.put(R.id.attribute_visibility, visibility);
 		String click = a.getString(R.styleable.BindableViews_click);
 		if (click!=null)
 			map.commands.put(R.id.command_click, click);

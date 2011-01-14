@@ -8,6 +8,10 @@ Following article is based on the Sample application on the market.
 
 market://search?q=pname:com.gueei.demo.inputvalidation
 
+or search
+
+Android Binding
+
 Please download the sample app and get a feel of how it works. Source code also available. Check the source code page -> Demos folder for it. 
 
 = Initial View Model = 

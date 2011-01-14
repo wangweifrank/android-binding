@@ -1,8 +1,14 @@
 #summary (View) Model Validation Support in Android Binding
+#labels Featured
 
 = Introduction =
 
 Android Binding also supports for Model Validation through @Annotation syntax. You may also add custom validation rules in a few easy steps. 
+Following article is based on the Sample application on the market. 
+
+market://search?q=pname:com.gueei.demo.inputvalidation
+
+Please download the sample app and get a feel of how it works. Source code also available. Check the source code page -> Demos folder for it. 
 
 = Initial View Model = 
 
@@ -13,6 +19,7 @@ public class RegistrationViewModel{
     public final Observable<CharSequence> Login;
     public final Observable<CharSequence> Password;
     public final Observable<CharSequence> ConfirmPassword;
+    public final Comamnd Submit;
 }
 }}}
 
@@ -20,25 +27,121 @@ Remember, in Android Binding, it is expected the Observables are _public_ fields
 
 = Add validation rules = 
 
-OK, the login and password are obviously mandatory. It is called *required* in Android Binding. All the validation classes in sitting in the package: com.gueei.android.binding.validation.validators; Remember, if you found the validators are not enough, you can always make a custom one, which will cover later in the post.
+OK, the login and password are obviously mandatory. It is called *Required* in Android Binding. All the validation classes in sitting in the package: com.gueei.android.binding.validation.validators; Remember, if you found the validators are not enough, you can always make a custom one, which will cover later in the post.
 
-So, here's how we instruct the Android Binding that those fields are required:
+So, here's how we instruct the Android Binding that those fields are Required:
 
 {{{
 public class RegistrationViewModel{
-    @required
+    @Required
     public final Observable<CharSequence> Login;
-    @required
+    @Required
     public final Observable<CharSequence> Password;
-    @required
+    @Required
     public final Observable<CharSequence> ConfirmPassword;
 }
 }}}
 
-That's it! We just need to put an *@required* annotation attribute to the required field. 
-= Details =
+That's it! We just need to put an *@Required* annotation attribute to the required field. 
 
-Add your content here.  Format your content with:
-  * Text in *bold* or _italic_
-  * Headings, paragraphs, and lists
-  * Automatic links to other wiki pages
+= Validate =
+
+Validation is done by calling the static method:
+
+{{{
+ModelValidator.validate(model);
+}}}
+
+You might want to validate in whenever the user 'submits' the form. The above line of code will return an object of class: *ValidationResult* which contains whether the validation is success, if not, the error messages associated with it. If you don't like (yes, you shouldn't) the predefined messages, you may put in your own:
+
+{{{
+...
+@Required(ErrorMessage="You must put the login name!")
+public final Observable<CharSequence> Login;
+...
+}}}
+
+= More (Currently) Built-in validation rules =
+
+The Confirm Password is something you wanna make sure your user didn't mistype a password. It must be the same as the Password field. Here's how we do:
+
+{{{
+    @Required
+    @EqualsTo(Observable="Password")
+    public final Observable<CharSequence> ConfirmPassword;
+}}}
+
+Simple! We tell the Framework that confirm password must be equals to another observable, that is, the Password field. One more thing, the attributes are 'stackable', that means, one Observable property can have multiple validation rules applied on it. Just like the above example, that means:
+
+  The _ConfirmPassword_ is required and it must equals to _Password_
+
+Ok, we are done with password, how about the user name? We only want to accept alphabets, numbers and, underscore; and it must be at least 3 characters to most 8 characters. Simplest way to check everything like this, is using Regular Expression.
+
+{{{
+    @Required(ErrorMessage="You must put the login name!")
+    @RegexMatch(Pattern="^[A-Za-z0-9_]{3,8}$")
+    public final Observable<CharSequence> Login;
+}}}
+
+= Currently supported validation = 
+
+It's not much, anyway, it's pre-alpha :P
+
+  * Required
+  * RegexMatch
+  * EqualsTo
+
+More to come, leave message for requirements
+
+= Custom Validation = 
+
+Since Java does not support Inheritance on @interface, working with custom validation is a little bit tricky. To simplify the explanation, I'd start with the implementation of @Required annotation: 
+
+{{{
+@Retention(RetentionPolicy.RUNTIME)
+public @interface Required{
+	public Class<?> Validator() default RequiredValidator.class;
+
+	public String ErrorMessage() default "%fieldname% is a required field";
+	
+	public class RequiredValidator extends ValidatorBase<Required> {
+
+		@Override
+		public Class getAcceptedAnnotation() {
+			return Required.class;
+		}
+
+		@Override
+		protected String doFormatErrorMessage(Required parameters,
+				String fieldName) {
+			return parameters.ErrorMessage().replace("%fieldname%", fieldName);
+		}
+
+		@Override
+		protected boolean doValidate(Object value, Required parameters,
+				Object model) {
+			if (value==null) return false;
+			if (Boolean.FALSE.equals(value)) return false;
+			if (value instanceof CharSequence){
+				if (((CharSequence) value).length() == 0) return false;
+			}
+			return true;
+		}
+
+	}
+}
+}}}
+
+We _MUST_ declare the interface's retention as `@Retention(RetentionPolicy.RUNTIME)` or else the attribute will not be available in Runtime. 
+
+The field `public Class<?> Validator()` is a must, the ModelValidator only works with annotation with this field. It need to return a class, by default, and should not change, that will be the Validator class. 
+
+Everything else in the interface is optional, they will then passed to the validator as "parameters" (or options). 
+
+`public class RequiredValidator extends ValidatorBase<Required>`
+declares the validator, which must be a subclass of ValidatorBase<?>, where the <?> you should put the @interface you are accepting. 
+
+Three methods needed to be implemented. 
+  * getAcceptedAnnotation() returns the type of @interface this Validator is accepting. 
+  * doFormatErrorMessage() returns the formatted error message, alternative error message is suggested to define in respective @interface, although it is not a must. 
+  * doValidate() actually validates the input value. Here, notice the first parameter *Object value* is the value, but not the observable object. the Whole model is also passed in as parameter. 

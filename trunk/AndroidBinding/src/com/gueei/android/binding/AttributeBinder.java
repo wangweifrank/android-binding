@@ -3,6 +3,7 @@ package com.gueei.android.binding;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 
+import com.gueei.android.binding.adapters.ObservableCollection;
 import com.gueei.android.binding.bindingProviders.BindingProvider;
 
 import android.content.Context;
@@ -25,7 +26,7 @@ public class AttributeBinder {
 		return _attributeFactory;
 	}
 	
-	public ViewAttribute<?, ?> createAttributeForView(View view, int attributeId){
+	public ViewAttribute<?, ?> createAttributeForView(View view, String attributeId){
 		for(BindingProvider p: providers){
 			ViewAttribute<?, ?> a = p.createAttributeForView(view, attributeId);
 			if (a!=null) return a;
@@ -38,43 +39,12 @@ public class AttributeBinder {
 		providers.add(provider);
 	}
 	
-	public void mapBindings(View view, Context context, AttributeSet attrs, BindingMap map){
-		for (BindingProvider p: providers){
-			p.mapBindings(view, context, attrs, map);
-		}
-	}
-	
 	public void bindView(View view, Object model){
 		BindingMap map = Binder.getBindingMapForView(view);
-		for(int attrId : map.attributes.keySet()){
-			try {
-				Field f = model.getClass().getField(map.attributes.get(attrId));
-				Object value = f.get(model);
-				if (value instanceof Observable<?>){
-					ViewAttribute<?, ?> attr = Binder.getAttributeForView(view, attrId);
-//					((Observable<?>)value).subscribe(attr);
-					attr.BindTo((Observable<?>)value);
-					((Observable<?>)value).notifyChanged();
-				}
-			} catch (Exception e) {
-				e.printStackTrace();
-				// Bad argument, ignore this
-				// TODO: create a bind logger class to log such stuff
-				continue;
-			}
-		}
-		for(int cmdId: map.commands.keySet()){
-			try{
-				Field f = model.getClass().getField(map.commands.get(cmdId));
-				Object value = f.get(model);
-				if (value instanceof Command){
-					for(BindingProvider p: providers){
-						if (p.bindCommand(view, cmdId, (Command)value))
-							break;
-					}
-				}
-			}catch(Exception e){
-				continue;
+		for(String attrName : map.keySet()){
+			for(BindingProvider p: providers){
+				if (p.bind(view, attrName, map.get(attrName), model))
+					break;
 			}
 		}
 	}

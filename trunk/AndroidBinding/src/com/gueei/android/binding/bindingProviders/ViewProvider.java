@@ -1,14 +1,10 @@
 package com.gueei.android.binding.bindingProviders;
 
-import android.content.Context;
-import android.content.res.TypedArray;
-import android.util.AttributeSet;
 import android.view.View;
 
 import com.gueei.android.binding.Binder;
-import com.gueei.android.binding.BindingMap;
 import com.gueei.android.binding.Command;
-import com.gueei.android.binding.R;
+import com.gueei.android.binding.Utility;
 import com.gueei.android.binding.ViewAttribute;
 import com.gueei.android.binding.listeners.OnClickListenerMulticast;
 import com.gueei.android.binding.viewAttributes.GenericViewAttribute;
@@ -16,10 +12,10 @@ import com.gueei.android.binding.viewAttributes.GenericViewAttribute;
 public class ViewProvider extends BindingProvider {
 
 	@Override
-	public ViewAttribute<View, ?> createAttributeForView(View view, int attributeId) {
+	public ViewAttribute<View, ?> createAttributeForView(View view, String attributeId) {
 		if (!(view instanceof View)) return null;
 		try{
-			if (attributeId == R.id.attribute_enabled){
+			if (attributeId.equals("enabled")){
 				// TODO: Can change to very specific class to avoid the reflection methods
 				ViewAttribute<View, Boolean> attr = new GenericViewAttribute<View, Boolean>(
 						view,
@@ -28,7 +24,7 @@ public class ViewProvider extends BindingProvider {
 						View.class.getMethod("setEnabled", boolean.class));
 				return attr;
 			}
-			else if (attributeId == R.id.attribute_visibility){
+			else if (attributeId.equals("visibility")){
 				ViewAttribute<View, Integer> attr = new GenericViewAttribute<View, Integer>(
 						view, "visibility",
 						View.class.getMethod("getVisibility"),
@@ -42,27 +38,24 @@ public class ViewProvider extends BindingProvider {
 		return null;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
-	public boolean bindCommand(View view, int attrId, Command command) {
-		if (attrId == R.id.command_click){
-			Binder.getMulticastListenerForView(view, OnClickListenerMulticast.class).register(command);
+	public boolean bind(View view, String attrName, String attrValue,
+			Object model) {
+		if (attrName.equals("enabled")){
+			bindAttributeWithObservable(view, attrName, attrValue, model);
 			return true;
+		}else if (attrName.equals("visibility")){
+			bindAttributeWithObservable(view, attrName, attrValue, model);
+			return true;		
+		}else if (attrName.equals("click")){
+			Command command = Utility.getCommandForModel(attrValue, model);
+			if (command!=null){
+				Binder
+					.getMulticastListenerForView(view, OnClickListenerMulticast.class)
+					.register(command);
+			}
 		}
 		return false;
-	}
-
-	@Override
-	public void mapBindings(View view, Context context, AttributeSet attrs,
-			BindingMap map) {
-		TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.BindableViews);
-		String enabled = a.getString(R.styleable.BindableViews_enabled);
-		if (enabled != null)
-			map.attributes.put(R.id.attribute_enabled, enabled);
-		String visibility = a.getString(R.styleable.BindableViews_visibility);
-		if (visibility != null)
-			map.attributes.put(R.id.attribute_visibility, visibility);
-		String click = a.getString(R.styleable.BindableViews_click);
-		if (click!=null)
-			map.commands.put(R.id.command_click, click);
 	}
 }

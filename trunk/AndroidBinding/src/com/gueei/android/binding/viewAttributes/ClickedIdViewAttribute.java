@@ -32,12 +32,14 @@ public class ClickedIdViewAttribute extends ViewAttribute<AdapterView, Long> {
 	}
 
 	@Override
-	public void Invoke(View view, Object... args) {
+	public void onAttributeChanged(View view, Object... args) {
 		if (!this.view.get().equals(view)) return;
 		try{
 			this.value = (Long)args[2];
-			super.Invoke(view, args);
+			super.onAttributeChanged(view, args);
 		}catch(Exception e){
 		}
 	}
+	
+	
 }

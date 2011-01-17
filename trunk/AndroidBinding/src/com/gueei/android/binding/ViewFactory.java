@@ -1,5 +1,9 @@
 package com.gueei.android.binding;
 
+import java.util.ArrayList;
+
+import com.gueei.android.binding.bindingProviders.BindingProvider;
+
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
@@ -12,17 +16,14 @@ public class ViewFactory implements Factory {
 	
 	public static final String BINDING_NAMESPACE = "http://schemas.android.com/apk/res/com.gueei.android.binding";
 	
-	private Object model;
+	private LayoutInflater mInflater;
 	
-	public ViewFactory(Object model){
-		this.model = model;
+	private ArrayList<View> processedViews = new ArrayList<View>();
+	
+	public ViewFactory(LayoutInflater inflater){
+		this.mInflater = inflater;
 	}
-	
-	private Binder mBinder;
-	public ViewFactory(Binder binder){
-		mBinder = binder;
-	}
-	
+		
 	protected View CreateViewByInflater(String name, Context context,
 			AttributeSet attrs) {
 		try {
@@ -32,7 +33,7 @@ public class ViewFactory implements Factory {
 			if (name.contains("."))
 				prefix = null;
 			
-			View view = LayoutInflater.from(context).createView(name, prefix,
+			View view = mInflater.createView(name, prefix,
 					attrs);
 			return view;
 		} catch (Exception e) {
@@ -47,12 +48,21 @@ public class ViewFactory implements Factory {
 		
 		BindingMap map = new BindingMap();
 		int count = attrs.getAttributeCount();
+		for(int i=0; i<count; i++){
+			String attrName = attrs.getAttributeName(i);
+			String attrValue = attrs.getAttributeValue(BindingProvider.BindingNamespace, attrName);
+			if (attrValue!=null){
+				map.put(attrName, attrValue);
+			}
+		}
 		
 		Binder.putBindingMapToView(view, map);
-		
-		AttributeBinder.getInstance().mapBindings(view, context, attrs, map);
-		AttributeBinder.getInstance().bindView(view, model);
-		
+		// AttributeBinder.getInstance().mapBindings(view, context, attrs, map);
+		processedViews.add(view);
 		return view;
-	}	
+	}
+	
+	public ArrayList<View> getProcessedViews(){
+		return processedViews;
+	}
 }

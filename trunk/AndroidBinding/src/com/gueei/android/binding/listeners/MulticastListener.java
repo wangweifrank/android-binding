@@ -7,18 +7,26 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import com.gueei.android.binding.Command;
+import com.gueei.android.binding.ViewAttribute;
 
 import android.view.View;
 
 public abstract class MulticastListener<T> {
 	public abstract void registerToView(View v);
 	
-	protected ArrayList<Command> commands = new ArrayList<Command>(2);
+	protected ArrayList<Command> commands = new ArrayList<Command>(1);
+	protected ArrayList<ViewAttribute<?,?>> attributes = new ArrayList<ViewAttribute<?,?>>(1);
 	public void register(Command command){
 		commands.add(command);
 	}
+	public void register(ViewAttribute<?,?> viewAttribute){
+		attributes.add(viewAttribute);
+	}
 	
 	public void invoke(View view, Object... args){
+		for(ViewAttribute<?,?> attribute: attributes){
+			attribute.onAttributeChanged(view, args);
+		}
 		for(Command command : commands){
 			command.Invoke(view, args);
 		}

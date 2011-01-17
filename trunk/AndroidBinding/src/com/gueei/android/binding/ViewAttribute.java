@@ -10,7 +10,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 
-public abstract class ViewAttribute<Tv extends View, T> extends Observable<T> implements Observer, Command{
+public abstract class ViewAttribute<Tv extends View, T> extends Observable<T> implements Observer{
 	
 	protected WeakReference<Tv> view;
 	protected String attributeName;
@@ -57,14 +57,10 @@ public abstract class ViewAttribute<Tv extends View, T> extends Observable<T> im
 	@Override
 	public abstract T get();
 
-	public void Invoke(View view, Object... args) {
-		onAttributeChanged();
-	}
-
-	public void onAttributeChanged() {
+	public void onAttributeChanged(View view, Object... args) {
 		try{
 			T value = this.get();
-			this.notifyChanged(value, view.get());
+			this.notifyChanged(value, this.view.get());
 		}catch (Exception e){
 			e.printStackTrace();
 		}

@@ -19,10 +19,10 @@ public class TextViewProvider extends BindingProvider {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public <Tv extends View>ViewAttribute<Tv, ?> createAttributeForView(View view, int attributeId) {
+	public <Tv extends View>ViewAttribute<Tv, ?> createAttributeForView(View view, String attributeId) {
 		if (!(view instanceof TextView)) return null;
 		try{
-			if (attributeId == R.id.attribute_text){
+			if (attributeId.equals("text")){
 				// TODO: Can change to very specific class to avoid the reflection methods
 				TextViewAttribute attr = new TextViewAttribute((TextView)view, "text");
 				if (view instanceof EditText){
@@ -39,17 +39,12 @@ public class TextViewProvider extends BindingProvider {
 	}
 
 	@Override
-	public boolean bindCommand(View view, int attrId, Command command) {
+	public boolean bind(View view, String attrName, String attrValue,
+			Object model) {
+		if (attrName.equals("text")){
+			bindAttributeWithObservable(view, attrName, attrValue, model);
+			return true;
+		}
 		return false;
-	}
-
-	@Override
-	public void mapBindings(View view, Context context, AttributeSet attrs,
-			BindingMap map) {
-		if (!(view instanceof TextView)) return;
-		TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.BindableTextViews);
-		String text = a.getString(R.styleable.BindableTextViews_text);
-		if (text != null)
-			map.attributes.put(R.id.attribute_text, text);
 	}
 }

@@ -13,6 +13,10 @@ public class TextViewAttribute extends ViewAttribute<TextView, CharSequence> {
 	@Override
 	protected void doSet(CharSequence newValue) {
 		if (compareCharSequence(newValue, get())) return;
+		if (newValue == null){
+			view.get().setText("");
+			return;
+		}
 		view.get().setText(cloneCharSequence(newValue));
 	}
 

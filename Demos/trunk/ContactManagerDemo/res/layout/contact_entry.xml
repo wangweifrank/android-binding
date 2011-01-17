@@ -15,10 +15,13 @@
 -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+			  xmlns:binding="http://www.gueei.com/android-binding/"
               android:layout_width="wrap_content"
               android:layout_height="wrap_content">
-    <TextView android:text="@+id/contactEntryText"
+    <TextView android:text="empty"
               android:id="@+id/contactEntryText"
               android:layout_width="fill_parent"
-              android:layout_height="wrap_content"/>
+              android:layout_height="wrap_content"
+              binding:text="whatever"
+              />
 </LinearLayout>

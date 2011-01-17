@@ -35,20 +35,11 @@ import android.widget.SimpleCursorAdapter;
 
 public final class ContactManager extends Activity
 {
-
-    public static final String TAG = "ContactManager";
-
-    /**
-     * Called when the activity is first created. Responsible for initializing the UI.
-     */
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
-        Log.v(TAG, "Activity State: onCreate()");
         super.onCreate(savedInstanceState);
-        Binder.init();
         ContactManagerModel model = new ContactManagerModel(this);
         Binder.setAndBindContentView(this, R.layout.contact_manager, model);
     }
-
 }

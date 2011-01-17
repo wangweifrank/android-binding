@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import com.gueei.android.binding.Command;
 import com.gueei.android.binding.Observable;
+import com.gueei.android.binding.adapters.ObservableCollection;
 
 public class ContactManagerModel {
 	private Activity mContext;
@@ -42,7 +43,8 @@ public class ContactManagerModel {
 	
 	public ContactManagerModel(Activity context){
 		mContext = context;
-		populateContactList();
+		// populateContactList();
+		ContactList.set(new ObservableCollection(mContext, R.layout.contact_entry));
 	}
 	
 	private void toastContact(String id){

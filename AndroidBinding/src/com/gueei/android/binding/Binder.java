@@ -1,9 +1,13 @@
 package com.gueei.android.binding;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import android.app.Activity;
+import android.content.Context;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 
 import com.gueei.android.binding.bindingProviders.AdapterViewProvider;
 import com.gueei.android.binding.bindingProviders.CompoundButtonProvider;
@@ -24,7 +28,7 @@ public class Binder {
 	 * @return
 	 * @throws AttributeNotDefinedException
 	 */
-	public static ViewAttribute<?, ?> getAttributeForView(View view, int attributeId)
+	public static ViewAttribute<?, ?> getAttributeForView(View view, String attributeId)
 		throws AttributeNotDefinedException	{
 		Object attributes = view.getTag(R.id.tag_attributes);
 		AttributeCollection collection;
@@ -59,8 +63,21 @@ public class Binder {
 	}
 	
 	public static void setAndBindContentView(Activity context, int layoutId, Object model){
-		context.getLayoutInflater().setFactory(new ViewFactory(model));
-		context.setContentView(layoutId);
+		InflateResult result = inflateView(context, layoutId, null, false);
+		for(View v: result.processedViews){
+			AttributeBinder.getInstance().bindView(v, model);
+		}
+		context.setContentView(result.rootView);
+	}
+	
+	public static InflateResult inflateView(Context context, int layoutId, ViewGroup parent, boolean attachToRoot){
+		LayoutInflater inflater = LayoutInflater.from(context).cloneInContext(context);
+		ViewFactory factory = new ViewFactory(inflater);
+		inflater.setFactory(factory);
+		InflateResult result = new InflateResult();
+		result.rootView = inflater.inflate(layoutId, parent, attachToRoot);
+		result.processedViews = factory.getProcessedViews();
+		return result;
 	}
 	
 	public static void init(){
@@ -93,5 +110,10 @@ public class Binder {
 			// TODO: put in log
 			return null;
 		}		
+	}
+	
+	public static class InflateResult{
+		public ArrayList<View> processedViews = new ArrayList<View>();
+		public View rootView;
 	}
 }

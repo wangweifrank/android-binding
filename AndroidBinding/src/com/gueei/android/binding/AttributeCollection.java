@@ -4,21 +4,21 @@ import java.util.HashMap;
 
 public class AttributeCollection {
 	
-	private HashMap<Integer, ViewAttribute<?,?>> collection;
+	private HashMap<String, ViewAttribute<?,?>> collection;
 	
 	public AttributeCollection(){
-		collection = new HashMap<Integer, ViewAttribute<?,?>>(5);
+		collection = new HashMap<String, ViewAttribute<?,?>>(5);
 	}
 	
-	public boolean containsAttribute(int attrId){
+	public boolean containsAttribute(String attrId){
 		return collection.containsKey(attrId);
 	}
 	
-	public void putAttribute(int attrId, ViewAttribute<?, ?> attribute){
+	public void putAttribute(String attrId, ViewAttribute<?, ?> attribute){
 		collection.put(attrId, attribute);
 	}
 	
-	public ViewAttribute<?, ?> getAttribute(int attrId){
+	public ViewAttribute<?, ?> getAttribute(String attrId){
 		if (collection.containsKey(attrId)){
 			return collection.get(attrId);
 		}

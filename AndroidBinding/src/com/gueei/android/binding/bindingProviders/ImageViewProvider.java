@@ -17,10 +17,10 @@ public class ImageViewProvider extends BindingProvider {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public <Tv extends View>ViewAttribute<Tv, ?> createAttributeForView(View view, int attributeId) {
+	public <Tv extends View>ViewAttribute<Tv, ?> createAttributeForView(View view, String attributeId) {
 		if (!(view instanceof ImageView)) return null;
 		try{
-			if (attributeId == R.id.attribute_srcDrawable){
+			if (attributeId.equals("srcDrawable")){
 				// TODO: Can change to very specific class to avoid the reflection methods
 				ViewAttribute<ImageView, Drawable> attr = new 
 					GenericViewAttribute<ImageView, Drawable>((ImageView)view, "srcDrawable",
@@ -36,17 +36,11 @@ public class ImageViewProvider extends BindingProvider {
 	}
 
 	@Override
-	public boolean bindCommand(View view, int attrId, Command command) {
-		return false;
-	}
-
-	@Override
-	public void mapBindings(View view, Context context, AttributeSet attrs,
-			BindingMap map) {
-		if (!(view instanceof ImageView)) return;
-		TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.BindableImageViews);
-		String srcDrawable = a.getString(R.styleable.BindableImageViews_srcDrawable);
-		if (srcDrawable != null)
-			map.attributes.put(R.id.attribute_srcDrawable, srcDrawable);
-	}
+	public boolean bind(View view, String attrName, String attrValue,
+			Object model) {
+		if (attrName.equals("srcDrawable")){
+			bindAttributeWithObservable(view, attrName, attrValue, model);
+			return true;
+		}
+		return false;	}
 }

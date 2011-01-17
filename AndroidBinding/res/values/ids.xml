@@ -3,17 +3,7 @@
 	<item type="id" name="tag_bindingmap"/>
 	<item type="id" name="tag_attributes"/>
 	<item type="id" name="tag_multicastListeners"/>
-	<item type="id" name="command_click"/>
-	<item type="id" name="command_checkedChange"/>
-	<item type="id" name="command_itemClicked"/>
-	<item type="id" name="command_itemSelected"/>
-	<item type="id" name="attribute_enabled"/>
-	<item type="id" name="attribute_visibility"/>
-	<item type="id" name="attribute_text"/>
-	<item type="id" name="attribute_adapter"/>
-	<item type="id" name="attribute_clickedId"/>
-	<item type="id" name="attribute_selectedItem"/>
-	<item type="id" name="attribute_clickedItem"/>
-	<item type="id" name="attribute_srcDrawable"/>
-	<item type="id" name="attribute_checked"/>
+	<item type="id" name="tag_observableCollection_position"/>
+	<item type="id" name="tag_observableCollection_attachedObservable"/>
+	<item type="id" name="tag_observableCollection_processedViews"/>
 </resources>

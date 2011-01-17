@@ -32,11 +32,11 @@ public class ClickedItemViewAttribute extends ViewAttribute<AdapterView, Object>
 	}
 
 	@Override
-	public void Invoke(View view, Object... args) {
+	public void onAttributeChanged(View view, Object... args) {
 		if (!this.view.get().equals(view)) return;
 		try{
 			this.value = this.view.get().getItemAtPosition((Integer) args[1]);
-			super.Invoke(view, args);
+			super.onAttributeChanged(view, args);
 		}catch(Exception e){
 		}
 	}

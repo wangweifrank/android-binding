@@ -11,7 +11,9 @@ import com.gueei.android.binding.Binder;
 import com.gueei.android.binding.BindingMap;
 import com.gueei.android.binding.Command;
 import com.gueei.android.binding.R;
+import com.gueei.android.binding.Utility;
 import com.gueei.android.binding.ViewAttribute;
+import com.gueei.android.binding.listeners.OnCheckedChangeListenerMulticast;
 import com.gueei.android.binding.listeners.OnItemClickedListenerMulticast;
 import com.gueei.android.binding.listeners.OnItemSelectedListenerMulticast;
 import com.gueei.android.binding.viewAttributes.ClickedIdViewAttribute;
@@ -23,11 +25,11 @@ public class AdapterViewProvider extends BindingProvider {
 	@SuppressWarnings("unchecked")
 	@Override
 	public <Tv extends View> ViewAttribute<Tv, ?> createAttributeForView(
-			View view, int attributeId) {
+			View view, String attributeId) {
 		if (!(view instanceof AdapterView))
 			return null;
 		try {
-			if (attributeId == R.id.attribute_adapter) {
+			if (attributeId.equals("adapter")) {
 				// TODO: Can change to very specific class to avoid the
 				// reflection methods
 				ViewAttribute<AdapterView, Adapter> attr = new GenericViewAttribute(
@@ -35,7 +37,7 @@ public class AdapterViewProvider extends BindingProvider {
 						AdapterView.class.getMethod("getAdapter"), 
 						AdapterView.class.getMethod("setAdapter", Adapter.class));
 				return (ViewAttribute<Tv, ?>) attr;
-			} else if (attributeId == R.id.attribute_selectedItem) {
+			} else if (attributeId.equals("selectedItem")) {
 				ViewAttribute<AdapterView, Object> attr = new GenericViewAttribute(
 						(AdapterView) view, "selectedItem", AdapterView.class
 								.getMethod("getSelectedItem"), null);
@@ -43,11 +45,11 @@ public class AdapterViewProvider extends BindingProvider {
 				Binder.getMulticastListenerForView
 					(view, OnItemSelectedListenerMulticast.class).register(attr);
 				return (ViewAttribute<Tv, ?>) attr;
-			} else if (attributeId == R.id.attribute_clickedItem){
+			} else if (attributeId.equals("clickedItem")){
 				ViewAttribute<AdapterView, Object> attr = 
 					new ClickedItemViewAttribute((AdapterView)view, "clickedItem");
 				return (ViewAttribute<Tv, ?>) attr;
-			} else if (attributeId == R.id.attribute_clickedId){
+			} else if (attributeId.equals("clickedId")){
 				ViewAttribute<AdapterView, Long> attr = 
 					new ClickedIdViewAttribute((AdapterView)view, "clickedId");
 				return (ViewAttribute<Tv, ?>) attr;
@@ -59,51 +61,37 @@ public class AdapterViewProvider extends BindingProvider {
 	}
 
 	@Override
-	public boolean bindCommand(View view, int attrId, Command command) {
-		if (!(view instanceof AdapterView)) return false;
-		if (attrId==R.id.command_itemSelected){
-			Binder.getMulticastListenerForView(view, OnItemSelectedListenerMulticast.class)
-				.register(command);
+	public boolean bind(View view, String attrName, String attrValue,
+			Object model) {
+		if (attrName.equals("selectedItem")){
+			bindAttributeWithObservable(view, attrName, attrValue, model);
 			return true;
-		}
-		else if (attrId==R.id.command_itemClicked){
-			Binder.getMulticastListenerForView(view, OnItemClickedListenerMulticast.class)
-				.register(command);
+		}else if (attrName.equals("adapter")){
+			bindAttributeWithObservable(view, attrName, attrValue, model);
+			return true;
+		}else if (attrName.equals("clickedItem")){
+			bindAttributeWithObservable(view, attrName, attrValue, model);
+			return true;
+		}else if (attrName.equals("clickedId")){
+			bindAttributeWithObservable(view, attrName, attrValue, model);
+			return true;
+		}else if (attrName.equals("itemSelected")){
+			Command command = Utility.getCommandForModel(attrValue, model);
+			if (command!=null){
+				Binder
+					.getMulticastListenerForView(view, OnItemSelectedListenerMulticast.class)
+					.register(command);
+			}
+			return true;
+		}else if (attrName.equals("itemClicked")){
+			Command command = Utility.getCommandForModel(attrValue, model);
+			if (command!=null){
+				Binder
+					.getMulticastListenerForView(view, OnItemClickedListenerMulticast.class)
+					.register(command);
+			}
 			return true;
 		}
 		return false;
-	}
-
-	@Override
-	public void mapBindings(View view, Context context, AttributeSet attrs,
-			BindingMap map) {
-		if (!(view instanceof AdapterView<?>))
-			return;
-		TypedArray a = context.obtainStyledAttributes(attrs,
-				R.styleable.BindableAdapterViews);
-		String adapter = a.getString(R.styleable.BindableAdapterViews_adapter);
-		if (adapter != null)
-			map.attributes.put(R.id.attribute_adapter, adapter);
-		String selectedItem = a
-				.getString(R.styleable.BindableAdapterViews_selectedItem);
-		if (selectedItem != null)
-			map.attributes.put(R.id.attribute_selectedItem, selectedItem);
-		String itemSelected = a
-			.getString(R.styleable.BindableAdapterViews_itemSelected);
-		if (itemSelected!=null){
-			map.commands.put(R.id.command_itemSelected, itemSelected);
-		}
-		String clickedItem = a.getString(R.styleable.BindableAdapterViews_clickedItem);
-		if (clickedItem!=null){
-			map.attributes.put(R.id.attribute_clickedItem, clickedItem);
-		}
-		String itemClicked = a.getString(R.styleable.BindableAdapterViews_itemClicked);
-		if (itemClicked!=null){
-			map.commands.put(R.id.command_itemClicked, itemClicked);
-		}
-		String clickedId = a.getString(R.styleable.BindableAdapterViews_clickedId);
-		if (clickedId!=null){
-			map.attributes.put(R.id.attribute_clickedId, clickedId);
-		}
 	}
 }

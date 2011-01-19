@@ -55,10 +55,13 @@ public class ViewFactory implements Factory {
 				map.put(attrName, attrValue);
 			}
 		}
+
+		// Only save those with binding attributes
+		if (!map.isEmpty()){
+			Binder.putBindingMapToView(view, map);
+			processedViews.add(view);
+		}
 		
-		Binder.putBindingMapToView(view, map);
-		// AttributeBinder.getInstance().mapBindings(view, context, attrs, map);
-		processedViews.add(view);
 		return view;
 	}
 	

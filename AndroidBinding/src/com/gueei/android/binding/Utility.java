@@ -2,8 +2,7 @@ package com.gueei.android.binding;
 
 import java.lang.reflect.Field;
 
-import com.gueei.android.binding.adapters.ObservableCollection;
-
+import android.content.Context;
 import android.view.View;
 
 public class Utility {
@@ -17,9 +16,6 @@ public class Utility {
 	}
 	
 	public static Observable<?> getObservableForModel(View view, String fieldName, Object model){
-		if (model instanceof ObservableCollection){
-			return ((ObservableCollection)model).getObservableForName(view, fieldName);
-		}
 		Object rawField = getFieldForModel(fieldName, model);
 		if (rawField instanceof Observable<?>)
 			return (Observable<?>)rawField;
@@ -31,5 +27,11 @@ public class Utility {
 		if (rawField instanceof Command)
 			return (Command)rawField;
 		return null;
+	}
+	
+	public static int resolveResource(String attrValue, Context context){
+		if (!attrValue.startsWith("@")) return -1;
+		String name = attrValue.substring(1); // remove the @ sign
+		return context.getResources().getIdentifier(name, "layout", context.getPackageName());
 	}
 }

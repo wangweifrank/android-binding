@@ -23,27 +23,17 @@ public abstract class ViewAttribute<Tv extends View, T> extends Observable<T> im
 	}
 	
 	@SuppressWarnings("unchecked")
-	public <To> void onPropertyChanged(Observable<To> prop, To newValue,
+	public final <To> void onPropertyChanged(Observable<To> prop, 
 			AbstractCollection<Object> initiators){
-		set((T)newValue, initiators);
+		set((T)prop.get(), initiators);
 	}
 
-	@Override
-	public void set(T newValue, AbstractCollection<Object> initiators) {
-		if (readonly) return;
-		if (initiators.contains(view.get())) return;
-		this.doSet(newValue);
-		initiators.add(view.get());
-		this.notifyChanged(newValue, initiators);
-	}
+	protected abstract void doSetAttributeValue(Object newValue);	
 
-	protected abstract void doSet(T newValue);
-	
 	@Override
-	public void set(T newValue){
+	protected void doSetValue(Object newValue, AbstractCollection<Object> initiators) {
 		if (readonly) return;
-		ArrayList<Object> initiators = new ArrayList<Object>();
-		set(newValue, initiators);
+		this.doSetAttributeValue(newValue);
 	}
 
 	public boolean isReadonly() {
@@ -60,7 +50,7 @@ public abstract class ViewAttribute<Tv extends View, T> extends Observable<T> im
 	public void onAttributeChanged(View view, Object... args) {
 		try{
 			T value = this.get();
-			this.notifyChanged(value, this.view.get());
+			this.notifyChanged(this.view.get());
 		}catch (Exception e){
 			e.printStackTrace();
 		}
@@ -68,6 +58,7 @@ public abstract class ViewAttribute<Tv extends View, T> extends Observable<T> im
 	
 	private Bridge<?> mBridge;
 	public void BindTo(Observable prop){
+		if (prop == null) return;
 		prop.subscribe(this);
 		mBridge = new Bridge(this, prop);
 		this.subscribe(mBridge);
@@ -83,10 +74,10 @@ public abstract class ViewAttribute<Tv extends View, T> extends Observable<T> im
 		}
 		
 		@SuppressWarnings("unchecked")
-		public <Ta> void onPropertyChanged(Observable<Ta> prop, Ta newValue,
+		public <Ta> void onPropertyChanged(Observable<Ta> prop,
 				AbstractCollection<Object> initiators) {
 			if (prop!=mAttribute)return;
-			mBindedObservable.set((T)newValue, initiators);
+			mBindedObservable.set((T)prop.get(), initiators);
 		}
 	}
 }

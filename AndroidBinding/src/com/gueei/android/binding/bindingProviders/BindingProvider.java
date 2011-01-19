@@ -23,7 +23,7 @@ import com.gueei.android.binding.exception.AttributeNotDefinedException;
 public abstract class BindingProvider {
 	public static final String BindingNamespace = "http://www.gueei.com/android-binding/";
 	public abstract <Tv extends View> ViewAttribute<Tv, ?> createAttributeForView(View view, String attributeId);
-	public abstract boolean bind(View view, String attrName, String attrValue, Object model);
+	public abstract void bind(View view, BindingMap map, Object model);
 	
 	protected static boolean bindAttributeWithObservable
 		(View view, String viewAttributeName, String fieldName, Object model){
@@ -36,4 +36,11 @@ public abstract class BindingProvider {
 			return false;
 		}
 	}
+	
+	protected static void bindViewAttribute(View view, BindingMap map, Object model, String attrName) {
+		if (map.containsKey(attrName)){
+			bindAttributeWithObservable(view, attrName, map.get(attrName), model);
+		}
+	}
+
 }

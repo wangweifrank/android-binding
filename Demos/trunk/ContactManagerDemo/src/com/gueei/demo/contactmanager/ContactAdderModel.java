@@ -39,8 +39,8 @@ public class ContactAdderModel implements OnAccountsUpdateListener {
 			String message = "Here save is not going to perform, what you have entered: \n" +
 					"Name: " + Name.get() + "\n" +
 					"Phone: " + Phone.get() + "(" +  SelectedPhoneType.get().toString() + ")\n" +
-					"Email: " + Email.get() + "(" +  SelectedEmailType.get().toString() + ")\n" +
-					"In account: " + SelectedAccount.get().getName();
+					"Email: " + Email.get() + "(" +  SelectedEmailType.get().toString() + ")\n";
+					//"In account: " + SelectedAccount.get().getName();
 			(Toast.makeText(mContext, message, Toast.LENGTH_LONG)).show();
 		}
 	};

@@ -8,6 +8,6 @@ public class ContactManagerApplication extends Application {
 	@Override
 	public void onCreate() {
 		super.onCreate();
-		Binder.init();
+		Binder.init(this);
 	}
 }

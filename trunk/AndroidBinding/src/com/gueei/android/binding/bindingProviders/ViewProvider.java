@@ -3,11 +3,13 @@ package com.gueei.android.binding.bindingProviders;
 import android.view.View;
 
 import com.gueei.android.binding.Binder;
+import com.gueei.android.binding.BindingMap;
 import com.gueei.android.binding.Command;
 import com.gueei.android.binding.Utility;
 import com.gueei.android.binding.ViewAttribute;
 import com.gueei.android.binding.listeners.OnClickListenerMulticast;
 import com.gueei.android.binding.viewAttributes.GenericViewAttribute;
+import com.gueei.android.binding.viewAttributes.VisibilityViewAttribute;
 
 public class ViewProvider extends BindingProvider {
 
@@ -25,10 +27,8 @@ public class ViewProvider extends BindingProvider {
 				return attr;
 			}
 			else if (attributeId.equals("visibility")){
-				ViewAttribute<View, Integer> attr = new GenericViewAttribute<View, Integer>(
-						view, "visibility",
-						View.class.getMethod("getVisibility"),
-						View.class.getMethod("setVisibility", int.class));
+				ViewAttribute<View, Integer> attr = 
+					new VisibilityViewAttribute(view, "visibility");
 				return attr;
 			}
 		}
@@ -38,24 +38,18 @@ public class ViewProvider extends BindingProvider {
 		return null;
 	}
 
-	@SuppressWarnings("unchecked")
+
 	@Override
-	public boolean bind(View view, String attrName, String attrValue,
-			Object model) {
-		if (attrName.equals("enabled")){
-			bindAttributeWithObservable(view, attrName, attrValue, model);
-			return true;
-		}else if (attrName.equals("visibility")){
-			bindAttributeWithObservable(view, attrName, attrValue, model);
-			return true;		
-		}else if (attrName.equals("click")){
-			Command command = Utility.getCommandForModel(attrValue, model);
+	public void bind(View view, BindingMap map, Object model) {
+		bindViewAttribute(view, map, model, "enabled");
+		bindViewAttribute(view, map, model, "visibility");
+		if (map.containsKey("click")){
+			Command command = Utility.getCommandForModel(map.get("click"), model);
 			if (command!=null){
 				Binder
 					.getMulticastListenerForView(view, OnClickListenerMulticast.class)
 					.register(command);
 			}
 		}
-		return false;
 	}
 }

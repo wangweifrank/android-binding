@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import android.app.Activity;
+import android.app.Application;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,6 +19,7 @@ import com.gueei.android.binding.exception.AttributeNotDefinedException;
 import com.gueei.android.binding.listeners.MulticastListener;
 
 public class Binder {
+	private static Application mApplication;
 	private ViewFactory viewFactory;
 	
 	/**
@@ -56,7 +58,7 @@ public class Binder {
 		view.setTag(R.id.tag_bindingmap, map);
 	}
 	
-	static BindingMap getBindingMapForView(View view){
+	public static BindingMap getBindingMapForView(View view){
 		Object map = view.getTag(R.id.tag_bindingmap);
 		if(map instanceof BindingMap) return (BindingMap)map;
 		return null;
@@ -80,14 +82,19 @@ public class Binder {
 		return result;
 	}
 	
-	public static void init(){
+	public static void init(Application application){
 		AttributeBinder.getInstance().registerProvider(new ViewProvider());
 		AttributeBinder.getInstance().registerProvider(new TextViewProvider());
 		AttributeBinder.getInstance().registerProvider(new AdapterViewProvider());
 		AttributeBinder.getInstance().registerProvider(new ImageViewProvider());
 		AttributeBinder.getInstance().registerProvider(new CompoundButtonProvider());
+		mApplication = application;
 	}
 
+	public static Application getApplication(){
+		return mApplication;
+	}
+	
 	public static <T extends MulticastListener<?>> T getMulticastListenerForView(View view, Class<T> listenerType){
 		Object tag = view.getTag(R.id.tag_multicastListeners);
 		HashMap<Class<T>, T> collection;

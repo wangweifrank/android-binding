@@ -37,7 +37,7 @@ public class GenericViewAttribute<Tv extends View, T> extends ViewAttribute<Tv, 
 	}
 
 	@Override
-	protected void doSet(T newValue) {
+	protected void doSetAttributeValue(Object newValue) {
 		try{
 			this.setter.invoke(view.get(), newValue);
 		}catch(Exception e){

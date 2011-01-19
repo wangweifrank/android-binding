@@ -1,23 +1,16 @@
 package com.gueei.android.binding.viewAttributes;
 
+import java.util.AbstractCollection;
+
 import android.widget.TextView;
 
+import com.gueei.android.binding.Observable;
 import com.gueei.android.binding.ViewAttribute;
 
 public class TextViewAttribute extends ViewAttribute<TextView, CharSequence> {
 
 	public TextViewAttribute(TextView view, String attributeName) {
 		super(view, attributeName);
-	}
-
-	@Override
-	protected void doSet(CharSequence newValue) {
-		if (compareCharSequence(newValue, get())) return;
-		if (newValue == null){
-			view.get().setText("");
-			return;
-		}
-		view.get().setText(cloneCharSequence(newValue));
 	}
 
 	@Override
@@ -36,5 +29,20 @@ public class TextViewAttribute extends ViewAttribute<TextView, CharSequence> {
 			if (a.charAt(i)!= b.charAt(i)) return false;
 		}
 		return true;
+	}
+
+	@Override
+	protected void doSetAttributeValue(Object newValue) {
+		if (newValue == null){
+			if (view.get().getText().length()==0) return;
+			view.get().setText("");
+			return;
+		}
+		if (!(newValue instanceof CharSequence)){
+			view.get().setText(newValue.toString());
+			return;
+		}
+		if (compareCharSequence((CharSequence)newValue, get())) return;
+		view.get().setText(cloneCharSequence((CharSequence)newValue));
 	}
 }

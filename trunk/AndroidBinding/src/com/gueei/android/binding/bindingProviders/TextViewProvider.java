@@ -39,12 +39,8 @@ public class TextViewProvider extends BindingProvider {
 	}
 
 	@Override
-	public boolean bind(View view, String attrName, String attrValue,
-			Object model) {
-		if (attrName.equals("text")){
-			bindAttributeWithObservable(view, attrName, attrValue, model);
-			return true;
-		}
-		return false;
+	public void bind(View view, BindingMap map, Object model) {
+		if (!(view instanceof TextView)) return;
+		bindViewAttribute(view, map, model, "text");
 	}
 }

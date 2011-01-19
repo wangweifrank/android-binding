@@ -1,8 +1,5 @@
 package com.gueei.android.binding.bindingProviders;
 
-import android.content.Context;
-import android.content.res.TypedArray;
-import android.util.AttributeSet;
 import android.view.View;
 import android.widget.Adapter;
 import android.widget.AdapterView;
@@ -10,15 +7,15 @@ import android.widget.AdapterView;
 import com.gueei.android.binding.Binder;
 import com.gueei.android.binding.BindingMap;
 import com.gueei.android.binding.Command;
-import com.gueei.android.binding.R;
 import com.gueei.android.binding.Utility;
 import com.gueei.android.binding.ViewAttribute;
-import com.gueei.android.binding.listeners.OnCheckedChangeListenerMulticast;
+import com.gueei.android.binding.cursor.CursorAdapter;
 import com.gueei.android.binding.listeners.OnItemClickedListenerMulticast;
 import com.gueei.android.binding.listeners.OnItemSelectedListenerMulticast;
 import com.gueei.android.binding.viewAttributes.ClickedIdViewAttribute;
 import com.gueei.android.binding.viewAttributes.ClickedItemViewAttribute;
 import com.gueei.android.binding.viewAttributes.GenericViewAttribute;
+import com.gueei.android.binding.viewAttributes.ItemSourceViewAttribute;
 
 public class AdapterViewProvider extends BindingProvider {
 
@@ -53,6 +50,10 @@ public class AdapterViewProvider extends BindingProvider {
 				ViewAttribute<AdapterView, Long> attr = 
 					new ClickedIdViewAttribute((AdapterView)view, "clickedId");
 				return (ViewAttribute<Tv, ?>) attr;
+			} else if (attributeId.equals("itemSource")){
+				ViewAttribute<AdapterView, ?> attr = 
+					new ItemSourceViewAttribute((AdapterView)view, "itemSource");
+				return (ViewAttribute<Tv, ?>) attr;
 			}
 		} catch (Exception e) {
 			// Actually it should never reach this statement
@@ -61,37 +62,28 @@ public class AdapterViewProvider extends BindingProvider {
 	}
 
 	@Override
-	public boolean bind(View view, String attrName, String attrValue,
-			Object model) {
-		if (attrName.equals("selectedItem")){
-			bindAttributeWithObservable(view, attrName, attrValue, model);
-			return true;
-		}else if (attrName.equals("adapter")){
-			bindAttributeWithObservable(view, attrName, attrValue, model);
-			return true;
-		}else if (attrName.equals("clickedItem")){
-			bindAttributeWithObservable(view, attrName, attrValue, model);
-			return true;
-		}else if (attrName.equals("clickedId")){
-			bindAttributeWithObservable(view, attrName, attrValue, model);
-			return true;
-		}else if (attrName.equals("itemSelected")){
-			Command command = Utility.getCommandForModel(attrValue, model);
+	public void bind(View view, BindingMap map, Object model) {
+		if (!(view instanceof AdapterView<?>)) return;
+		bindViewAttribute(view, map, model, "selectedItem");
+		bindViewAttribute(view, map, model, "clickedItem");
+		bindViewAttribute(view, map, model, "clickedId");
+		bindViewAttribute(view, map, model, "itemSource");
+		
+		if (map.containsKey("itemSelected")){
+			Command command = Utility.getCommandForModel(map.get("itemSelected"), model);
 			if (command!=null){
 				Binder
 					.getMulticastListenerForView(view, OnItemSelectedListenerMulticast.class)
 					.register(command);
 			}
-			return true;
-		}else if (attrName.equals("itemClicked")){
-			Command command = Utility.getCommandForModel(attrValue, model);
+		}
+		if (map.containsKey("itemClicked")){
+			Command command = Utility.getCommandForModel(map.get("itemClicked"), model);
 			if (command!=null){
 				Binder
 					.getMulticastListenerForView(view, OnItemClickedListenerMulticast.class)
 					.register(command);
 			}
-			return true;
 		}
-		return false;
 	}
 }

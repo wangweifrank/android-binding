@@ -22,11 +22,6 @@ public class ClickedIdViewAttribute extends ViewAttribute<AdapterView, Long> {
 	}
 
 	@Override
-	protected void doSet(Long newValue) {
-		// do nothing. this is a readonly attribute
-	}
-
-	@Override
 	public Long get() {
 		return value;
 	}
@@ -40,6 +35,9 @@ public class ClickedIdViewAttribute extends ViewAttribute<AdapterView, Long> {
 		}catch(Exception e){
 		}
 	}
-	
-	
+
+	@Override
+	protected void doSetAttributeValue(Object newValue) {
+		// Readonly, do nothing
+	}
 }

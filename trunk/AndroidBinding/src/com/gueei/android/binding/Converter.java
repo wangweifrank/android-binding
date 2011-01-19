@@ -8,23 +8,15 @@ public abstract class Converter<T> extends DependentObservable<T> {
 		super(dependents);
 	}
 	
-	@Override
-	public void set(T newValue) {
-		super.set(newValue);
-	}
+	public abstract void ConvertBack(Object value, Object[] outResult);
 
 	@Override
-	public void set(T newValue, AbstractCollection<Object> initiators) {
-		super.set(newValue, initiators);
-		if (initiators.contains(this))return;
-		initiators.add(this);
+	protected void doSetValue(Object newValue, AbstractCollection<Object> initiators) {
 		int count = dependents.length;
-		Object[] outResult = new Object[count]; 
+		Object[] outResult = new Object[count];
 		ConvertBack(newValue, outResult);
 		for(int i=0; i<count; i++){
 			dependents[i].set(outResult[i], initiators);
 		}
 	}
-
-	public abstract void ConvertBack(T value, Object[] outResult);
 }

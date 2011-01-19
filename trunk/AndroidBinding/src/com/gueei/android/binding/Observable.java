@@ -18,50 +18,54 @@ public class Observable<T> {
 		observers.add(o);
 	}
 	
-	public final void notifyChanged(T newValue, Object initiator){
-		ArrayList<Object> initiators = new ArrayList<Object>();
-		initiators.add(initiator);
-		this.notifyChanged(newValue, initiators);
+	public final void unsubscribe(Observer o){
+		observers.remove(o);
 	}
 	
-	public final void notifyChanged(T newValue, AbstractCollection<Object> initiators){
+	public final void notifyChanged(Object initiator){
+		ArrayList<Object> initiators = new ArrayList<Object>();
+		initiators.add(initiator);
+		this.notifyChanged(initiators);
+	}
+	
+	public final void notifyChanged(AbstractCollection<Object> initiators){
 		initiators.add(this);
 		for(Observer o: observers){
 			if (initiators.contains(o)) continue;
-			o.onPropertyChanged(this, newValue, initiators);
+			o.onPropertyChanged(this, initiators);
 		}
 	}
 	
-	public final void notifyChanged(T newValue){
-		notifyChanged(newValue, new ArrayList<Object>());
-	}
-	
 	public final void notifyChanged(){
-		notifyChanged(this.get());
+		ArrayList<Object> initiators = new ArrayList<Object>();
+		initiators.add(this);
+		notifyChanged(initiators);
 	}
 
-	public void set(T newValue, AbstractCollection<Object> initiators){
+	public final void set(Object newValue, AbstractCollection<Object> initiators){
 		if (initiators.contains(this)) return;
-		mValue = newValue;
+		doSetValue(newValue, initiators);
 		initiators.add(this);
-		notifyChanged(mValue, initiators);
+		notifyChanged(initiators);
 	}
 	
-	public void set(T newValue){
-		mValue = newValue;
+	public final void set(Object newValue){
+		doSetValue(newValue, new ArrayList<Object>());
 		notifyChanged(mValue);
+	}
+	
+	protected void doSetValue(Object newValue, AbstractCollection<Object> initiators){
+		try{
+			mValue = (T) newValue;
+		}
+		catch(Exception e){}
+	}
+	
+	protected final void setWithoutNotify(T newValue){
+		mValue = newValue;
 	}
 	
 	public T get(){
 		return mValue;
-	}
-	
-	private boolean compareCharSequence(CharSequence a, CharSequence b){
-		if(a==null||b==null) return false;
-		if(a.length()!=b.length()) return false;
-		for(int i=0; i<a.length(); i++){
-			if (a.charAt(i)!= b.charAt(i)) return false;
-		}
-		return true;
 	}
 }

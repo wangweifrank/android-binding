@@ -22,7 +22,7 @@ public class ClickedItemViewAttribute extends ViewAttribute<AdapterView, Object>
 	}
 
 	@Override
-	protected void doSet(Object newValue) {
+	protected void doSetAttributeValue(Object newValue) {
 		// do nothing. this is a readonly attribute
 	}
 

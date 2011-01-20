@@ -60,6 +60,15 @@ No special attributes, inherited from view
 || onItemSelected || Command || yes ||
 || selectedItem || Object (readonly) || yes ||
 || selectedId || long (readonly) || yes ||
+|| itemSource || Array, Cursor* || experimental ||
+|| itemTemplate || Layout Resource Id || yes ||
+|| adapter || Adapter (obsolete the itemSource/Template) || yes ||
+
+* Remark
+For array type of Item Source, two way binding is supported. Current restriction: Array must consists of exactly same type of objects, the object can consists of Observable / Command fields, like what you define in models. 
+
+For Cursor type, only one way is supported; You need to supply a defined CursorRowModel to pass to the Binder. (TODO: Document needed) 
+In such case, selectedItem / itemSource will return a copy of the CursorRowModel filled with the data from cursor. If the data is modified, a manual calling to refresh the cursor is required. 
 
 == ListView ==
 || Attribute || Accepted Data type || Currently Supported ||

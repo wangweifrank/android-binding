@@ -1,0 +1,73 @@
+#summary Attributes that is (going) to be supported in Android Binding
+#labels Featured
+
+= Introudction = 
+
+This is a book-keeping post that keep the list of supporting attributes. 
+
+= Class Hirerarchy =
+ * View
+   * View Groups
+     * AdapterView
+   * ImageView
+   * ProgressBar
+   * TextView
+     * CompoundButton
+
+= View =
+|| Attribute || Accepted Data type || Currently Supported ||
+|| background || drawable, Resource Integer || no ||
+|| backgroundColor || Color Integer || no||
+|| onClick || Command || yes||
+|| onLongClick || Command || no||
+|| visibility || int, boolean || yes||
+
+= View Groups =
+View groups include all layout objects (relative, linear etc). 
+
+No special attributes, inherited from view
+
+= ImageView =
+|| Attribute || Accepted Data type || Currently Supported ||
+|| source || drawable, Resource Integer || partial ||
+|| tint || color integer || no ||
+
+= ProgressBar =
+|| Attribute || Accepted Data type || Currently Supported ||
+|| progress || float* || no ||
+|| secondaryProgress || float* || no||
+
+* remark: this is different from original, it is float and should be ranging from 0..1
+
+== Seek Bar == 
+|| Attribute || Accepted Data type || Currently Supported ||
+|| onSeekBarChanged || Command || no ||
+
+== Rating Bar ==
+|| Attribute || Accepted Data type || Currently Supported ||
+|| rating || float || yes ||
+|| onRatingChanged || Command || no ||
+
+= TextView =
+|| Attribute || Accepted Data type || Currently Supported ||
+|| lines || int || no||
+|| text || CharSequence || yes ||
+|| onTextChanged || Command || no ||
+
+= AdapterView =
+|| Attribute || Accepted Data type || Currently Supported ||
+|| onItemLongClicked || Command || no ||
+|| onItemSelected || Command || yes ||
+|| selectedItem || Object (readonly) || yes ||
+|| selectedId || long (readonly) || yes ||
+
+== ListView ==
+|| Attribute || Accepted Data type || Currently Supported ||
+|| onItemClicked || Command || yes ||
+|| clickedItem || Object (readonly) || yes ||
+|| clickedId || long (readonly) || yes ||
+
+== CompoundButton == 
+|| Attribute || Accepted Data type || Currently Supported ||
+|| onCheckedChange || Command || yes ||
+|| checked || boolean || yes ||

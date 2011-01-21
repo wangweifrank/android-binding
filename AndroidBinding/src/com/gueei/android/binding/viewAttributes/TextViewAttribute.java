@@ -15,7 +15,7 @@ public class TextViewAttribute extends ViewAttribute<TextView, CharSequence> {
 
 	@Override
 	public CharSequence get() {
-		return cloneCharSequence(view.get().getText());
+		return view.get().getText().toString();
 	}
 	
 	private CharSequence cloneCharSequence(CharSequence o){

@@ -15,6 +15,6 @@ public class OnCheckedChangeListenerMulticast
 	}
 
 	public void onCheckedChanged(CompoundButton arg0, boolean arg1) {
-		this.invoke(arg0, arg1);
+		this.notifyViewAttributes(arg0, arg1);
 	}
 }

@@ -24,12 +24,11 @@ public class ArrayAdapter<T> extends BaseAdapter {
 	private String[] observableNames = new String[0];
 	private String[] commandNames = new String[0];
 		
-	public ArrayAdapter(Context context, T[] array, int layoutId) throws Exception{
+	public ArrayAdapter(Context context, Class<T> arrayType, T[] array, int layoutId) throws Exception{
 		mContext = context;
 		mLayoutId = layoutId;
 		mArray = array;
-		if (array.length==0) throw new IllegalArgumentException();
-		mReflector = new CachedModelReflector<T>(array[0]);
+		mReflector = new CachedModelReflector<T>(arrayType);
 		observableNames = mReflector.observables.keySet().toArray(observableNames);
 		commandNames = mReflector.commands.keySet().toArray(commandNames);
 	}

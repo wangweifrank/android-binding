@@ -13,7 +13,7 @@ import com.gueei.android.binding.Observable;
 import com.gueei.android.binding.Observer;
 import com.gueei.android.binding.utility.CachedModelReflector;
 
-public class ObservableMapper implements IPropertyContainer {
+class ObservableMapper implements IPropertyContainer {
 	public HashMap<String, MockObservable> observableMapping = new HashMap<String, MockObservable>();
 	public HashMap<String, MockCommand> commandMapping = new HashMap<String, MockCommand>();
 	public int mappedPosition;

@@ -8,6 +8,7 @@ import com.gueei.android.binding.DependentObservable;
 import com.gueei.android.binding.IObservable;
 import com.gueei.android.binding.Observable;
 import com.gueei.android.binding.collections.ArrayAdapter;
+import com.gueei.android.binding.cursor.CursorSource;
 
 import android.app.Activity;
 import android.database.Cursor;
@@ -25,18 +26,8 @@ public class MusicList extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mDb = new MusicDb(this);
-        MusicRowModel2[] rows = new MusicRowModel2[300];
-        for(int i=0; i<300; i++){
-        	rows[i] = new MusicRowModel2();
-        	rows[i].Title.set("Title  " + i);
-        }
-        try {
-			ArrayAdapter<MusicRowModel2> adapter = new ArrayAdapter<MusicRowModel2>(this, rows, R.layout.music_row);
-			MusicList2.set(adapter);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+        MusicList = new CursorSource(MusicRowModel.class, mDb);
+        MusicPlayer.createMusicPlayer(this);
         Binder.setAndBindContentView(this, R.layout.main, this);
     }
     
@@ -44,6 +35,7 @@ public class MusicList extends Activity {
 	protected void onPause() {
 		super.onPause();
 		mDb.close();
+		MusicPlayer.getInstance().stop();
 	}
 
 	@Override
@@ -55,10 +47,9 @@ public class MusicList extends Activity {
 
     
     private void populateMusicList() {
-    	MusicList.set(mDb.fetchAllEntries());
+    	MusicList.setCursor(mDb.fetchAllEntries());
 	}
 
-    public IObservable<Adapter> MusicList2 = new Observable<Adapter>();
 	public IObservable<Boolean> NotScanning = new Observable<Boolean>(true);
     public DependentObservable<String> ScanStatus = new DependentObservable<String>(NotScanning){
 		@Override
@@ -68,7 +59,7 @@ public class MusicList extends Activity {
 			return "Scanning....";
 		}
     };
-    public IObservable<Cursor> MusicList = new Observable<Cursor>();
+    public CursorSource MusicList;
     public Command ScanMusic = new Command(){
 		public void Invoke(View view, Object... args) {
 			doScanMusic();
@@ -103,7 +94,7 @@ public class MusicList extends Activity {
         		long id = musicCursor.getLong(0);
         		if (db.entryExists(id)) continue;
         		count++;
-        		db.saveEntry(id, musicCursor.getString(1), 3, musicCursor.getString(2));
+        		db.createEntry(id, musicCursor.getString(1), 3, musicCursor.getString(2));
         	}
         	musicCursor.close();
         	return count;

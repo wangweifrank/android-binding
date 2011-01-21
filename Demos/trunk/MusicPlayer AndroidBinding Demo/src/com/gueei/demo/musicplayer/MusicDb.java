@@ -32,7 +32,15 @@ public class MusicDb {
     	return mDb.query("music", null, "_id="+id, null, null, null, null).getCount()>0;
     }
     
-	public long saveEntry(long id, String title, float rating, String artist){
+    public boolean updateEntry(long id, String title, float rating, String artist){
+		ContentValues value = new ContentValues();
+		value.put("title", title);
+		value.put("rating", rating);
+		value.put("artist", artist);
+		return mDb.update("music", value, "_id=" + id, null)>0;
+    }
+    
+	public long createEntry(long id, String title, float rating, String artist){
 		ContentValues value = new ContentValues();
 		value.put("_id", id);
 		value.put("title", title);

@@ -9,10 +9,8 @@
 	    android:layout_width="fill_parent"
 	    android:layout_height="fill_parent"
 	    android:layout_weight="1"
-	    binding:adapter="MusicList2"
 	    binding:itemSource="MusicList"
 	    binding:itemTemplate="@layout/music_row"
-	    binding:itemDataType="com.gueei.demo.musicplayer.MusicRowModel"
     />
     <Button
 	    android:layout_width="fill_parent"

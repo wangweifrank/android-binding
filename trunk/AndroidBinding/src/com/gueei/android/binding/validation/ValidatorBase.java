@@ -1,12 +1,12 @@
 package com.gueei.android.binding.validation;
 
-import com.gueei.android.binding.Observable;
+import com.gueei.android.binding.IObservable;
 
 public abstract class ValidatorBase<Ta> {
-	private Observable<?> mValue;
+	private IObservable<?> mValue;
 	public abstract Class<?> getAcceptedAnnotation();
 	
-	public final void setObservable(Observable<?> value){
+	public final void setObservable(IObservable<?> value){
 		mValue = value;
 	}
 	

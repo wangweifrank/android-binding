@@ -9,12 +9,12 @@ public class IntegerField extends CursorField<Integer> {
 	}
 
 	@Override
-	public void fillValue(Cursor cursor) {
-		this.set(cursor.getInt(mColumnIndex));
+	public void saveValue(Cursor cursor) {
 	}
 
 	@Override
-	public void saveValue(Cursor cursor) {
+	public Integer returnValue(Cursor cursor) {
+		return cursor.getInt(mColumnIndex);
 	}
 
 }

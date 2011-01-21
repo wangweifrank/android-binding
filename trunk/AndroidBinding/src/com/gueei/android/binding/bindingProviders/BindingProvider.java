@@ -9,7 +9,7 @@ import android.view.View;
 import com.gueei.android.binding.Binder;
 import com.gueei.android.binding.BindingMap;
 import com.gueei.android.binding.Command;
-import com.gueei.android.binding.Observable;
+import com.gueei.android.binding.IObservable;
 import com.gueei.android.binding.Utility;
 import com.gueei.android.binding.ViewAttribute;
 import com.gueei.android.binding.exception.AttributeNotDefinedException;
@@ -27,7 +27,7 @@ public abstract class BindingProvider {
 	
 	protected static boolean bindAttributeWithObservable
 		(View view, String viewAttributeName, String fieldName, Object model){
-		Observable<?> enabled = Utility.getObservableForModel(view, fieldName, model);
+		IObservable<?> enabled = Utility.getObservableForModel(view, fieldName, model);
 		try {
 			Binder.getAttributeForView(view, viewAttributeName).BindTo(enabled);
 			return true;

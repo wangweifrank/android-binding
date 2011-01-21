@@ -43,15 +43,15 @@ public class AdapterViewProvider extends BindingProvider {
 					(view, OnItemSelectedListenerMulticast.class).register(attr);
 				return (ViewAttribute<Tv, ?>) attr;
 			} else if (attributeId.equals("clickedItem")){
-				ViewAttribute<AdapterView, Object> attr = 
+				ViewAttribute<AdapterView<?>, Object> attr = 
 					new ClickedItemViewAttribute((AdapterView)view, "clickedItem");
 				return (ViewAttribute<Tv, ?>) attr;
 			} else if (attributeId.equals("clickedId")){
-				ViewAttribute<AdapterView, Long> attr = 
+				ViewAttribute<AdapterView<?>, Long> attr = 
 					new ClickedIdViewAttribute((AdapterView)view, "clickedId");
 				return (ViewAttribute<Tv, ?>) attr;
 			} else if (attributeId.equals("itemSource")){
-				ViewAttribute<AdapterView, ?> attr = 
+				ItemSourceViewAttribute attr = 
 					new ItemSourceViewAttribute((AdapterView)view, "itemSource");
 				return (ViewAttribute<Tv, ?>) attr;
 			}
@@ -67,7 +67,8 @@ public class AdapterViewProvider extends BindingProvider {
 		bindViewAttribute(view, map, model, "selectedItem");
 		bindViewAttribute(view, map, model, "clickedItem");
 		bindViewAttribute(view, map, model, "clickedId");
-		bindViewAttribute(view, map, model, "itemSource");
+		bindViewAttribute(view, map, model, "adapter");
+		//bindViewAttribute(view, map, model, "itemSource");
 		
 		if (map.containsKey("itemSelected")){
 			Command command = Utility.getCommandForModel(map.get("itemSelected"), model);

@@ -12,8 +12,8 @@ public class OnItemSelectedListenerMulticast
 
 	@Override
 	public void registerToView(View v) {
-		if (!(v instanceof AdapterView)) return;
-		((AdapterView)v).setOnItemSelectedListener(this);
+		if (!(v instanceof AdapterView<?>)) return;
+		((AdapterView<?>)v).setOnItemSelectedListener(this);
 	}
 
 	public void onItemSelected(AdapterView<?> arg0, View arg1, int arg2,
@@ -22,6 +22,6 @@ public class OnItemSelectedListenerMulticast
 	}
 
 	public void onNothingSelected(AdapterView<?> arg0) {
-		this.invoke(arg0, null);
+		this.invoke(arg0);
 	}
 }

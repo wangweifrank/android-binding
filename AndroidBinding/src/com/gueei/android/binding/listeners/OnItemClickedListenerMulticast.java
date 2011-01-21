@@ -13,8 +13,8 @@ public class OnItemClickedListenerMulticast extends MulticastListener<OnItemClic
 
 	@Override
 	public void registerToView(View v) {
-		if (!(v instanceof AdapterView)) return;
-		((AdapterView)v).setOnItemClickListener(this);
+		if (!(v instanceof AdapterView<?>)) return;
+		((AdapterView<?>)v).setOnItemClickListener(this);
 	}
 
 }

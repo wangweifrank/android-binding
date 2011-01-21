@@ -4,6 +4,7 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
+import com.gueei.android.binding.IObservable;
 import com.gueei.android.binding.Observable;
 
 public class ModelValidator {
@@ -13,7 +14,7 @@ public class ModelValidator {
 		for (Field field : model.getClass().getFields()){
 			try{
 				if (!(field.get(model) instanceof Observable)) continue;
-				Observable observable = (Observable)field.get(model);
+				IObservable observable = (IObservable)field.get(model);
 				for (Annotation annotation : field.getAnnotations()){
 					Method m = annotation.getClass().getMethod("Validator");
 					Class<?> validation = (Class<?>)m.invoke(annotation);

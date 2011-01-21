@@ -10,7 +10,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 
-public abstract class ViewAttribute<Tv extends View, T> extends Observable<T> implements Observer{
+public abstract class ViewAttribute<Tv extends View, T> extends Observable<T> {
 	
 	protected WeakReference<Tv> view;
 	protected String attributeName;
@@ -23,7 +23,7 @@ public abstract class ViewAttribute<Tv extends View, T> extends Observable<T> im
 	}
 	
 	@SuppressWarnings("unchecked")
-	public final <To> void onPropertyChanged(Observable<To> prop, 
+	public final <To> void onPropertyChanged(IObservable<To> prop, 
 			AbstractCollection<Object> initiators){
 		set((T)prop.get(), initiators);
 	}
@@ -31,7 +31,7 @@ public abstract class ViewAttribute<Tv extends View, T> extends Observable<T> im
 	protected abstract void doSetAttributeValue(Object newValue);	
 
 	@Override
-	protected void doSetValue(Object newValue, AbstractCollection<Object> initiators) {
+	protected void doSetValue(T newValue, AbstractCollection<Object> initiators) {
 		if (readonly) return;
 		this.doSetAttributeValue(newValue);
 	}
@@ -44,6 +44,10 @@ public abstract class ViewAttribute<Tv extends View, T> extends Observable<T> im
 		this.readonly = readonly;
 	}
 
+	private void setObject(Object newValue, AbstractCollection<Object> initiators){
+		this.doSetAttributeValue(newValue);
+	}
+	
 	@Override
 	public abstract T get();
 
@@ -56,28 +60,32 @@ public abstract class ViewAttribute<Tv extends View, T> extends Observable<T> im
 		}
 	}
 	
-	private Bridge<?> mBridge;
-	public void BindTo(Observable prop){
+	private Bridge mBridge;
+	public void BindTo(IObservable prop){
 		if (prop == null) return;
-		prop.subscribe(this);
 		mBridge = new Bridge(this, prop);
+		prop.subscribe(mBridge);
 		this.subscribe(mBridge);
 		prop.notifyChanged();
 	}
 	
-	private static class Bridge<T> implements Observer{
-		ViewAttribute<?, T> mAttribute;
-		Observable<T> mBindedObservable;
-		public Bridge(ViewAttribute<?, T> attribute, Observable<T> observable){
+	private class Bridge implements Observer{
+		ViewAttribute<Tv, T> mAttribute;
+		IObservable<Object> mBindedObservable;
+		public Bridge(ViewAttribute<Tv, T> attribute, IObservable<Object> observable){
 			mAttribute = attribute;
 			mBindedObservable = observable;
 		}
 		
 		@SuppressWarnings("unchecked")
-		public <Ta> void onPropertyChanged(Observable<Ta> prop,
+		public void onPropertyChanged(IObservable<?> prop,
 				AbstractCollection<Object> initiators) {
-			if (prop!=mAttribute)return;
-			mBindedObservable.set((T)prop.get(), initiators);
+			if (prop==mAttribute){
+				mBindedObservable.set(prop.get(), initiators);
+			}
+			else if (prop==mBindedObservable){
+				mAttribute.setObject(prop.get(), initiators);
+			}
 		}
 	}
 }

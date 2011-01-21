@@ -3,6 +3,7 @@ package com.gueei.android.binding.viewAttributes;
 import java.util.AbstractCollection;
 
 import android.database.Cursor;
+import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 

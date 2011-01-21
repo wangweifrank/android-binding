@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import com.gueei.android.binding.bindingProviders.AdapterViewProvider;
 import com.gueei.android.binding.bindingProviders.CompoundButtonProvider;
 import com.gueei.android.binding.bindingProviders.ImageViewProvider;
+import com.gueei.android.binding.bindingProviders.RatingBarProvider;
 import com.gueei.android.binding.bindingProviders.TextViewProvider;
 import com.gueei.android.binding.bindingProviders.ViewProvider;
 import com.gueei.android.binding.exception.AttributeNotDefinedException;
@@ -88,6 +89,7 @@ public class Binder {
 		AttributeBinder.getInstance().registerProvider(new AdapterViewProvider());
 		AttributeBinder.getInstance().registerProvider(new ImageViewProvider());
 		AttributeBinder.getInstance().registerProvider(new CompoundButtonProvider());
+		AttributeBinder.getInstance().registerProvider(new RatingBarProvider());
 		mApplication = application;
 	}
 

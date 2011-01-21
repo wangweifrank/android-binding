@@ -9,12 +9,12 @@ public class LongField extends CursorField<Long> {
 	}
 
 	@Override
-	public void fillValue(Cursor cursor) {
-		this.set(cursor.getLong(mColumnIndex));
+	public void saveValue(Cursor cursor) {
 	}
 
 	@Override
-	public void saveValue(Cursor cursor) {
+	public Long returnValue(Cursor cursor) {
+		return cursor.getLong(mColumnIndex);
 	}
 
 }

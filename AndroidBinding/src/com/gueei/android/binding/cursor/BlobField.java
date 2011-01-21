@@ -8,11 +8,11 @@ public class BlobField extends CursorField<byte[]> {
 	}
 
 	@Override
-	public void fillValue(Cursor cursor) {
-		cursor.getBlob(mColumnIndex);
+	public void saveValue(Cursor cursor) {
 	}
 
 	@Override
-	public void saveValue(Cursor cursor) {
+	public byte[] returnValue(Cursor cursor) {
+		return cursor.getBlob(mColumnIndex);
 	}
 }

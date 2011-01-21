@@ -9,12 +9,12 @@ public class StringField extends CursorField<String> {
 	}
 
 	@Override
-	public void fillValue(Cursor cursor) {
-		this.set(cursor.getString(mColumnIndex));
+	public void saveValue(Cursor cursor) {
 	}
 
 	@Override
-	public void saveValue(Cursor cursor) {
+	public String returnValue(Cursor cursor) {
+		return cursor.getString(mColumnIndex);
 	}
 
 }

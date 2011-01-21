@@ -4,14 +4,14 @@ import java.util.AbstractCollection;
 
 public abstract class Converter<T> extends DependentObservable<T> {
 
-	public Converter(Observable... dependents){
+	public Converter(IObservable... dependents){
 		super(dependents);
 	}
 	
 	public abstract void ConvertBack(Object value, Object[] outResult);
 
 	@Override
-	protected void doSetValue(Object newValue, AbstractCollection<Object> initiators) {
+	protected void doSetValue(T newValue, AbstractCollection<Object> initiators) {
 		int count = dependents.length;
 		Object[] outResult = new Object[count];
 		ConvertBack(newValue, outResult);

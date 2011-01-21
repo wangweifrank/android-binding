@@ -20,6 +20,7 @@ public class CursorAdapter<T extends CursorRowModel> extends BaseAdapter {
 
 	private final Cursor mCursor;
 	private final Class<T> mRowType;
+	private T row;
 	private Context mContext;
 	private int mLayoutId;
 	
@@ -36,7 +37,7 @@ public class CursorAdapter<T extends CursorRowModel> extends BaseAdapter {
 	
 	private void init() throws Exception{
 		// Create one!
-		T row = mRowType.newInstance();
+		row = mRowType.newInstance();
 		for (Field f : mRowType.getFields()){
 			Object field = f.get(row);
 			if (!(field instanceof CursorField<?>)) continue;
@@ -57,11 +58,16 @@ public class CursorAdapter<T extends CursorRowModel> extends BaseAdapter {
 		return mCursor;
 	}
 
-	public long getItemId(int arg0) {
+	public long getItemId(int position) {
 		if (idField!=null){
-			
+			mCursor.moveToPosition(position);
+			try {
+				return ((IdField)idField.get(row)).returnValue(mCursor);
+			} catch (Exception e) {
+				return -1;
+			}
 		}
-		return 0;
+		return -1;
 	}
 
 	public View getView(int position, View convertView, ViewGroup parent) {

@@ -10,11 +10,11 @@ import com.gueei.android.binding.Observable;
 import com.gueei.android.binding.ViewAttribute;
 import com.gueei.android.binding.listeners.OnItemClickedListenerMulticast;
 
-public class ClickedItemViewAttribute extends ViewAttribute<AdapterView, Object> {
+public class ClickedItemViewAttribute extends ViewAttribute<AdapterView<?>, Object> {
 
 	private Object value;
 	
-	public ClickedItemViewAttribute(AdapterView view, String attributeName) {
+	public ClickedItemViewAttribute(AdapterView<?> view, String attributeName) {
 		super(view, attributeName);
 		this.setReadonly(true);
 		Binder.getMulticastListenerForView(view, OnItemClickedListenerMulticast.class)

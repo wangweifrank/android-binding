@@ -5,11 +5,11 @@ import java.util.ArrayList;
 
 public abstract class DependentObservable<T> extends Observable<T> implements Observer{
 
-	protected Observable[] dependents;
+	protected IObservable[] dependents;
 	
-	public DependentObservable(Observable... dependents) {
+	public DependentObservable(IObservable... dependents) {
 		super();
-		for(Observable<?> o : dependents){
+		for(IObservable<?> o : dependents){
 			o.subscribe(this);
 		}
 		this.dependents = dependents;
@@ -18,7 +18,7 @@ public abstract class DependentObservable<T> extends Observable<T> implements Ob
 
 	public abstract T calculateValue(Object... args);
 	
-	public final <To> void onPropertyChanged(Observable<To> prop,
+	public final void onPropertyChanged(IObservable<?> prop,
 			AbstractCollection<Object> initiators) {
 		dirty = true;
 		initiators.add(this);

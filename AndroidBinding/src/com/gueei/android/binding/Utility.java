@@ -15,14 +15,28 @@ public class Utility {
 		}
 	}
 	
-	public static Observable<?> getObservableForModel(View view, String fieldName, Object model){
+	public static IObservable<?> getObservableForModel(View view, String fieldName, Object model){
+		if (model instanceof IPropertyContainer){
+			try{
+				return ((IPropertyContainer)model).getObservableByName(fieldName);
+			}catch(Exception e){
+				return null;
+			}
+		}
 		Object rawField = getFieldForModel(fieldName, model);
 		if (rawField instanceof Observable<?>)
-			return (Observable<?>)rawField;
+			return (IObservable<?>)rawField;
 		return null;
 	}
 
 	public static Command getCommandForModel(String fieldName, Object model){
+		if (model instanceof IPropertyContainer){
+			try{
+				return ((IPropertyContainer)model).getCommandByName(fieldName);
+			}catch(Exception e){
+				return null;
+			}
+		}
 		Object rawField = getFieldForModel(fieldName, model);
 		if (rawField instanceof Command)
 			return (Command)rawField;

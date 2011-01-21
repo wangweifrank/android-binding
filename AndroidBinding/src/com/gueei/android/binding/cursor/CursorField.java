@@ -13,9 +13,12 @@ public abstract class CursorField<T> extends Observable<T> {
 	public CursorField(int columnIndex){
 		mColumnIndex = columnIndex;
 	}
-		
-	// Must call set() to set the value of itself
-	public abstract void fillValue(Cursor cursor);
+	
+	public abstract T returnValue(Cursor cursor);
+	
+	public void fillValue(Cursor cursor){
+		this.set(returnValue(cursor));
+	}
 	
 	// Save the data back to the database (if applicable)
 	public abstract void saveValue(Cursor cursor);

@@ -12,14 +12,17 @@ public class CachedModelReflector<T> implements IPropertyContainer {
 	public HashMap<String, Field> commands= new HashMap<String, Field>();
 	public HashMap<String, Field> values= new HashMap<String, Field>();
 	
-	public CachedModelReflector(T reference) throws IllegalArgumentException, IllegalAccessException{
-		for (Field f: reference.getClass().getFields()){
-			if (f.get(reference) instanceof IObservable<?>)
+	public CachedModelReflector(Class<T> type) throws IllegalArgumentException, IllegalAccessException{
+		for (Field f: type.getFields()){
+			if (IObservable.class.isAssignableFrom(f.getType())){
 				observables.put(f.getName(), f);
-			else if (f.get(reference) instanceof Command)
+			}
+			else if (Command.class.isAssignableFrom(f.getType())){
 				commands.put(f.getName(), f);
-			else
+			}
+			else{
 				values.put(f.getName(), f);
+			}
 		}
 	}
 	

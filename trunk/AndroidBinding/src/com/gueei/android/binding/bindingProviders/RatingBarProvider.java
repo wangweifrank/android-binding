@@ -41,15 +41,13 @@ public class RatingBarProvider extends BindingProvider {
 	public void bind(View view, BindingMap map, Object model) {
 		if (!(view instanceof RatingBar)) return;
 		bindViewAttribute(view, map, model, "rating");
-		/*
-		if (map.containsKey("click")){
-			Command command = Utility.getCommandForModel(map.get("click"), model);
+		if (map.containsKey("onRatingChanged")){
+			Command command = Utility.getCommandForModel(map.get("onRatingChanged"), model);
 			if (command!=null){
 				Binder
-					.getMulticastListenerForView(view, OnClickListenerMulticast.class)
+					.getMulticastListenerForView(view, OnRatingBarChangeListenerMulticast.class)
 					.register(command);
 			}
 		}
-		*/
 	}
 }

@@ -12,7 +12,7 @@ public class OnKeyListenerMulticast extends MulticastListener<View.OnKeyListener
 	}
 
 	public boolean onKey(View v, int keyCode, KeyEvent event) {
-		this.invoke(v, keyCode, event);
+		this.notifyViewAttributes(v, keyCode, event);
 		return false;
 	}
 }

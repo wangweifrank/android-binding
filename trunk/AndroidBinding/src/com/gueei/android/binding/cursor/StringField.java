@@ -1,5 +1,7 @@
 package com.gueei.android.binding.cursor;
 
+import java.util.AbstractCollection;
+
 import android.database.Cursor;
 
 public class StringField extends CursorField<String> {

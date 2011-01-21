@@ -17,7 +17,7 @@ public class OnEditorActionListenerMulticast
 	}
 
 	public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-		this.invoke(v, actionId, event);
+		this.notifyViewAttributes(v, actionId, event);
 		return false;
 	}
 }

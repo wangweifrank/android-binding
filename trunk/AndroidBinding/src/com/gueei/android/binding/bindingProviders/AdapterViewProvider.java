@@ -68,7 +68,7 @@ public class AdapterViewProvider extends BindingProvider {
 		bindViewAttribute(view, map, model, "clickedItem");
 		bindViewAttribute(view, map, model, "clickedId");
 		bindViewAttribute(view, map, model, "adapter");
-		//bindViewAttribute(view, map, model, "itemSource");
+		bindViewAttribute(view, map, model, "itemSource");
 		
 		if (map.containsKey("itemSelected")){
 			Command command = Utility.getCommandForModel(map.get("itemSelected"), model);

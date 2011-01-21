@@ -14,6 +14,7 @@ import android.view.View;
 public abstract class MulticastListener<T> {
 	public abstract void registerToView(View v);
 	
+	protected ArrayList<T> listeners = new ArrayList<T>(0);
 	protected ArrayList<Command> commands = new ArrayList<Command>(1);
 	protected ArrayList<ViewAttribute<?,?>> attributes = new ArrayList<ViewAttribute<?,?>>(1);
 	public void register(Command command){
@@ -22,11 +23,17 @@ public abstract class MulticastListener<T> {
 	public void register(ViewAttribute<?,?> viewAttribute){
 		attributes.add(viewAttribute);
 	}
+	public void register(T listener){
+		listeners.add(listener);
+	}
 	
-	public void invoke(View view, Object... args){
-		for(ViewAttribute<?,?> attribute: attributes){
+	public void notifyViewAttributes(View view, Object... args){
+		for(ViewAttribute attribute: attributes){
 			attribute.onAttributeChanged(view, args);
 		}
+	}
+	
+	public void invokeCommands(View view, Object... args){
 		for(Command command : commands){
 			command.Invoke(view, args);
 		}

@@ -12,38 +12,67 @@ import com.gueei.android.binding.BindingMap;
 import com.gueei.android.binding.Observable;
 import com.gueei.android.binding.Utility;
 import com.gueei.android.binding.ViewAttribute;
+import com.gueei.android.binding.collections.ArrayAdapter;
 import com.gueei.android.binding.cursor.CursorAdapter;
 import com.gueei.android.binding.cursor.CursorRowModel;
+import com.gueei.android.binding.cursor.CursorRowTypeMap;
 
-public class ItemSourceViewAttribute extends ViewAttribute<AdapterView, Cursor> {
+public class ItemSourceViewAttribute extends ViewAttribute<AdapterView, Object> {
 
-	private Cursor mCursor;
-	
 	public ItemSourceViewAttribute(AdapterView view, String attributeName) {
 		super(view, attributeName);
 	}
 
 	@Override
 	protected void doSetAttributeValue(Object newValue) {
-		if (newValue==null) return;
-		if (!(newValue instanceof Cursor)) return;
-		
-		mCursor = (Cursor)newValue;
-		if (mCursor.isClosed()) return;
-		
+		if (newValue == null)
+			return;
+		if ((newValue instanceof CursorRowTypeMap)) {
+			setCursorAdapter((CursorRowTypeMap) newValue);
+			return;
+		}
+		if (newValue.getClass().isArray())
+			setArrayAdapter(newValue);
+	}
+
+	@SuppressWarnings("unchecked")
+	private void setArrayAdapter(Object newValue) {
+		try {
+			BindingMap map = Binder.getBindingMapForView(this.view.get());
+			if (!map.containsKey("itemTemplate"))
+				return;
+			int itemTemplate = Utility.resolveResource(map.get("itemTemplate"),
+					Binder.getApplication());
+			ArrayAdapter adapter = new ArrayAdapter(Binder.getApplication(),
+					newValue.getClass().getComponentType(),
+					(Object[]) newValue, itemTemplate);
+			view.get().setAdapter(adapter);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	private void setCursorAdapter(CursorRowTypeMap rowTypeMap) {
+		Cursor cursor = rowTypeMap.getCursor();
+		if (cursor == null)
+			return;
+		if (cursor.isClosed())
+			return;
+
 		BindingMap map = Binder.getBindingMapForView(this.view.get());
-		if (!map.containsKey("itemTemplate")) return;
-		if (!map.containsKey("itemDataType")) return;
-		
-		int itemTemplate = Utility.resolveResource(map.get("itemTemplate"), Binder.getApplication());
-		if (itemTemplate<0) return;
+		if (!map.containsKey("itemTemplate"))
+			return;
+
+		int itemTemplate = Utility.resolveResource(map.get("itemTemplate"),
+				Binder.getApplication());
+		if (itemTemplate < 0)
+			return;
 
 		try {
 			// Resolve item data type
-			Class<CursorRowModel> itemType = 
-				(Class<CursorRowModel>)Class.forName(map.get("itemDataType"), true, Binder.getApplication().getClassLoader());
-			CursorAdapter<CursorRowModel> adapter = new CursorAdapter<CursorRowModel>(
-					Binder.getApplication(), itemType, mCursor, itemTemplate);
+			Class<? extends CursorRowModel> itemType = rowTypeMap.getRowType();
+			CursorAdapter<?> adapter = new CursorAdapter(Binder
+					.getApplication(), rowTypeMap, itemTemplate);
 			view.get().setAdapter(adapter);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -52,7 +81,8 @@ public class ItemSourceViewAttribute extends ViewAttribute<AdapterView, Cursor> 
 	}
 
 	@Override
-	public Cursor get() {
-		return mCursor;
+	public Object get() {
+		// Set only attribute
+		return null;
 	}
 }

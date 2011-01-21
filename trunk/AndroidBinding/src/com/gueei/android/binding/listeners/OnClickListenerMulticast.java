@@ -6,7 +6,8 @@ import android.view.View;
 
 public class OnClickListenerMulticast extends MulticastListener<View.OnClickListener> implements View.OnClickListener {
 	public void onClick(View arg0) {
-		this.invoke(arg0);
+		this.notifyViewAttributes(arg0);
+		this.invokeCommands(arg0);
 	}
 
 	@Override

@@ -28,8 +28,8 @@ public abstract class ViewAttribute<Tv extends View, T> extends Observable<T> {
 		set((T)prop.get(), initiators);
 	}
 
-	protected abstract void doSetAttributeValue(Object newValue);	
-
+	protected abstract void doSetAttributeValue(Object newValue);
+	
 	@Override
 	protected void doSetValue(T newValue, AbstractCollection<Object> initiators) {
 		if (readonly) return;

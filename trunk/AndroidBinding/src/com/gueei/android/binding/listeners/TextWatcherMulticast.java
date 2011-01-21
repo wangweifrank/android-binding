@@ -31,7 +31,8 @@ public class TextWatcherMulticast
 
 	public void onTextChanged(CharSequence s, int start, int before, int count) {
 		if (!compareCharSequence(original, s)){
-			this.invoke(mView, s, start, before, count);
+			this.notifyViewAttributes(mView, s, start, before, count);
+			this.invokeCommands(mView, s, start, before, count);
 		}
 	}
 	

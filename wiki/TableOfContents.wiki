@@ -1,2 +1,5 @@
 #summary TOC for android-binding
 #labels Featured
+
+ * Getting Started
+  * Why Android-Binding

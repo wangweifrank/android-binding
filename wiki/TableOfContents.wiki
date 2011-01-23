@@ -2,6 +2,6 @@
 #labels Featured
 
  * Getting Started
-  * Why Android-Binding
-
+  * [Motivation Why Android-Binding]
+ * [BindingListOfObjects Binding To List of Objects]
  * [BindableAttributes Supported Views and Attributes]

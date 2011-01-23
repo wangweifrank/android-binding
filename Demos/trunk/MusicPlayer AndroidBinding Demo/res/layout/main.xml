@@ -12,11 +12,22 @@
 	    binding:itemSource="MusicList"
 	    binding:itemTemplate="@layout/music_row"
     />
-    <Button
-	    android:layout_width="fill_parent"
+    <LinearLayout
+		android:layout_width="fill_parent"
 	    android:layout_height="wrap_content"
-	    binding:text="ScanStatus"
-	    binding:enabled="NotScanning"
-	    binding:click="ScanMusic"
-    />
+    	android:orientation="horizontal">
+	    <Button
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    binding:text="ScanStatus"
+		    binding:enabled="NotScanning"
+		    binding:click="ScanMusic"
+	    />
+	    <Button
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:text="About.."
+		    binding:click="AboutProject"
+	    />
+    </LinearLayout>
 </LinearLayout>

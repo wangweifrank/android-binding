@@ -2,4 +2,12 @@
 <resources>
     <string name="hello">Hello World, MusicList!</string>
     <string name="app_name">MusicPlayer</string>
+<string name="explain">
+This is a simple Music Player program that demonstrate the Ability of Android Binding to bind a list of object. \n\n
+Press "Scan for files" and it will pull the names of all your music from the SD card, and store in the app local DB.
+Each Assigned a default "rating" of 3. \n\n
+Each Entry in the list is binded to the Cursor, coming directly from the SQLiteDatabase. In the example here, 
+whenever the user change the Rating, a "Save" Command is issued and save the current record back to the database. \n\n
+For more information, visit: http://code.google.com/p/android-binding/wiki/BindingListOfObjects
+</string>
 </resources>

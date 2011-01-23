@@ -4,34 +4,14 @@
     android:orientation="vertical"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
+    binding:click="Play"
     >
     <TextView
         android:layout_width="fill_parent"
     	android:layout_height="wrap_content"
     	android:textSize="30dip"
     	binding:text="Title"
-    	binding:click="Play"
-    	binding:visibility="NotEditMode"
      />
-     <LinearLayout
-     	android:orientation="horizontal"
-     	android:layout_width="fill_parent"
-    	android:layout_height="wrap_content"
-    	binding:visibility="EditMode"
-    	>
-        <EditText
-	        android:layout_width="fill_parent"
-	    	android:layout_height="wrap_content"
-	    	android:layout_weight="1"
-	    	binding:text="Title"
-     	/>
-     	<Button
-	        android:layout_width="wrap_content"
-	    	android:layout_height="wrap_content"
-	    	android:text="Save"
-	    	binding:click="Save"
-	    />
-    </LinearLayout>
      <TextView
         android:layout_width="wrap_content"
     	android:layout_height="wrap_content"

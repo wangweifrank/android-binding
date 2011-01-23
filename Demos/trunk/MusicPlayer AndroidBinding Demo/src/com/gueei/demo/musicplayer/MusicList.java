@@ -1,23 +1,21 @@
 package com.gueei.demo.musicplayer;
 
-import java.util.AbstractCollection;
+import android.app.Activity;
+import android.content.Intent;
+import android.database.Cursor;
+import android.net.Uri;
+import android.os.AsyncTask;
+import android.os.Bundle;
+import android.provider.MediaStore;
+import android.util.Log;
+import android.view.View;
+import android.widget.Toast;
 
 import com.gueei.android.binding.Binder;
 import com.gueei.android.binding.Command;
 import com.gueei.android.binding.DependentObservable;
-import com.gueei.android.binding.IObservable;
 import com.gueei.android.binding.Observable;
-import com.gueei.android.binding.collections.ArrayAdapter;
 import com.gueei.android.binding.cursor.CursorSource;
-
-import android.app.Activity;
-import android.database.Cursor;
-import android.os.AsyncTask;
-import android.os.Bundle;
-import android.provider.MediaStore;
-import android.view.View;
-import android.widget.Adapter;
-import android.widget.Toast;
 
 public class MusicList extends Activity {
 	private MusicDb mDb;
@@ -25,6 +23,7 @@ public class MusicList extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.d("Binder", "OnCreate");
         mDb = new MusicDb(this);
         MusicList = new CursorSource(MusicRowModel.class, mDb);
         MusicPlayer.createMusicPlayer(this);
@@ -50,8 +49,8 @@ public class MusicList extends Activity {
     	MusicList.setCursor(mDb.fetchAllEntries());
 	}
 
-	public IObservable<Boolean> NotScanning = new Observable<Boolean>(true);
-    public DependentObservable<String> ScanStatus = new DependentObservable<String>(NotScanning){
+	public Observable<Boolean> NotScanning = new Observable<Boolean>(Boolean.class, true);
+    public DependentObservable<String> ScanStatus = new DependentObservable<String>(String.class, NotScanning){
 		@Override
 		public String calculateValue(Object... args) {
 			if ((Boolean)args[0])
@@ -64,6 +63,13 @@ public class MusicList extends Activity {
 		public void Invoke(View view, Object... args) {
 			doScanMusic();
 		}
+    };
+    public Command AboutProject = new Command(){
+		public void Invoke(View view, Object... args) {
+			Intent intent = new Intent(getApplicationContext(), Explain.class);
+			intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+			startActivity(intent);
+		}    	
     };
 
     private void doScanMusic() {
@@ -86,8 +92,13 @@ public class MusicList extends Activity {
         		MediaStore.Audio.Media.TITLE,
         		MediaStore.Audio.Media.ARTIST
         	};
-        	Cursor musicCursor = managedQuery
+        	Cursor musicCursor;
+        	try{
+        		musicCursor = managedQuery
         		(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, projection, null, null, null);
+        	}catch(Exception e){
+        		return 0;
+        	}
         	if (musicCursor==null) return 0;
         	musicCursor.moveToFirst();
         	while(musicCursor.moveToNext()){

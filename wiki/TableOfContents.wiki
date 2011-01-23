@@ -1,0 +1,10 @@
+#summary TOC for android-binding
+#labels Featured
+
+= Introduction =
+
+Documentation for Android-binding, a MVVM-friendly framework for Android based application. 
+
+ * [UserGuide]
+  * [WhyAndroidBinding]
+  * [ModelValidation]

@@ -1,6 +1,5 @@
 package com.gueei.android.binding.validation.validators;
 
-import java.lang.annotation.Annotation;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
@@ -15,7 +14,7 @@ public @interface Required{
 	public class RequiredValidator extends ValidatorBase<Required> {
 
 		@Override
-		public Class getAcceptedAnnotation() {
+		public Class<?> getAcceptedAnnotation() {
 			return Required.class;
 		}
 

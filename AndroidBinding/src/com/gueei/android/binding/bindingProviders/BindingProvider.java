@@ -1,18 +1,17 @@
 package com.gueei.android.binding.bindingProviders;
 
-import java.lang.reflect.Field;
-
-import android.content.Context;
-import android.util.AttributeSet;
 import android.view.View;
 
 import com.gueei.android.binding.Binder;
+import com.gueei.android.binding.BindingLog;
 import com.gueei.android.binding.BindingMap;
+import com.gueei.android.binding.BindingType;
 import com.gueei.android.binding.Command;
 import com.gueei.android.binding.IObservable;
 import com.gueei.android.binding.Utility;
 import com.gueei.android.binding.ViewAttribute;
 import com.gueei.android.binding.exception.AttributeNotDefinedException;
+import com.gueei.android.binding.listeners.MulticastListener;
 
 /** 
  * Base class for binding providers. Any special types of views should also inherit this 
@@ -27,9 +26,14 @@ public abstract class BindingProvider {
 	
 	protected static boolean bindAttributeWithObservable
 		(View view, String viewAttributeName, String fieldName, Object model){
-		IObservable<?> enabled = Utility.getObservableForModel(view, fieldName, model);
+		IObservable<?> property = Utility.getObservableForModel(fieldName, model);
+		if (property==null) return false;
 		try {
-			Binder.getAttributeForView(view, viewAttributeName).BindTo(enabled);
+			ViewAttribute<?,?> attr = Binder.getAttributeForView(view, viewAttributeName);
+			BindingType result = attr.BindTo(property);
+			if (result.equals(BindingType.NoBinding)){
+				BindingLog.warning("Binding Provider", fieldName + " cannot setup bind with attribute");
+			}
 			return true;
 		} catch (AttributeNotDefinedException e) {
 			e.printStackTrace();
@@ -40,6 +44,18 @@ public abstract class BindingProvider {
 	protected static void bindViewAttribute(View view, BindingMap map, Object model, String attrName) {
 		if (map.containsKey(attrName)){
 			bindAttributeWithObservable(view, attrName, map.get(attrName), model);
+		}
+	}
+
+	protected static void bindCommand(View view, BindingMap map, Object model, 
+			String commandName, Class<? extends MulticastListener<?>> multicastType) {
+		if (map.containsKey(commandName)){
+			Command command = Utility.getCommandForModel(map.get(commandName), model);
+			if (command!=null){
+				MulticastListener<?> listener = Binder.getMulticastListenerForView(view, multicastType);
+				if (listener!=null)
+					listener.register(command);
+			}
 		}
 	}
 

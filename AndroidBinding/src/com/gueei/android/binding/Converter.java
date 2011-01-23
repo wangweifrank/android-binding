@@ -4,8 +4,8 @@ import java.util.AbstractCollection;
 
 public abstract class Converter<T> extends DependentObservable<T> {
 
-	public Converter(IObservable... dependents){
-		super(dependents);
+	public Converter(Class<T> type, IObservable<?>... dependents){
+		super(type, dependents);
 	}
 	
 	public abstract void ConvertBack(Object value, Object[] outResult);
@@ -16,7 +16,7 @@ public abstract class Converter<T> extends DependentObservable<T> {
 		Object[] outResult = new Object[count];
 		ConvertBack(newValue, outResult);
 		for(int i=0; i<count; i++){
-			dependents[i].set(outResult[i], initiators);
+			dependents[i]._setObject(outResult[i], initiators);
 		}
 	}
 }

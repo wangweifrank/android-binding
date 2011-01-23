@@ -2,15 +2,13 @@ package com.gueei.android.binding;
 
 import java.util.ArrayList;
 
-import com.gueei.android.binding.bindingProviders.BindingProvider;
-
 import android.content.Context;
-import android.content.res.TypedArray;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.LayoutInflater.Factory;
+
+import com.gueei.android.binding.bindingProviders.BindingProvider;
 
 public class ViewFactory implements Factory {
 	

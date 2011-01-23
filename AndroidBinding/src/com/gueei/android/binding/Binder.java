@@ -21,7 +21,6 @@ import com.gueei.android.binding.listeners.MulticastListener;
 
 public class Binder {
 	private static Application mApplication;
-	private ViewFactory viewFactory;
 	
 	/**
 	 * Get the required attribute for the supplied view. This is done internally using the "tag" of the view
@@ -83,6 +82,17 @@ public class Binder {
 		return result;
 	}
 	
+	static void attachProcessedViewsToRootView(View rootView, ArrayList<View> processedViews){
+		rootView.setTag(R.id.tag_processedViews, processedViews);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public static ArrayList<View> getProcessedViewsFromRootView(View rootView){
+		Object objCollection = rootView.getTag(R.id.tag_processedViews);
+		if (objCollection instanceof ArrayList<?>) return (ArrayList<View>)objCollection;
+		return null;
+	}
+	
 	public static void init(Application application){
 		AttributeBinder.getInstance().registerProvider(new ViewProvider());
 		AttributeBinder.getInstance().registerProvider(new TextViewProvider());
@@ -97,6 +107,7 @@ public class Binder {
 		return mApplication;
 	}
 	
+	@SuppressWarnings("unchecked")
 	public static <T extends MulticastListener<?>> T getMulticastListenerForView(View view, Class<T> listenerType){
 		Object tag = view.getTag(R.id.tag_multicastListeners);
 		HashMap<Class<T>, T> collection;
@@ -116,7 +127,7 @@ public class Binder {
 			collection.put(listenerType, listener);
 			return listener;
 		} catch (Exception e){
-			// TODO: put in log
+			BindingLog.exception("Binder", e);
 			return null;
 		}		
 	}

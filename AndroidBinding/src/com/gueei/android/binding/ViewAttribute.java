@@ -1,25 +1,23 @@
 package com.gueei.android.binding;
 
-import java.lang.ref.WeakReference;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.AbstractCollection;
-import java.util.ArrayList;
 
-import android.util.Log;
 import android.view.View;
-import android.widget.EditText;
 
 public abstract class ViewAttribute<Tv extends View, T> extends Observable<T> {
 	
-	protected WeakReference<Tv> view;
+	protected Tv mView;
 	protected String attributeName;
 	private boolean readonly = false;
 	
-	public ViewAttribute(Tv view, String attributeName) {
-		super();
-		this.view = new WeakReference<Tv>(view);
+	public ViewAttribute(Class<T> type, Tv view, String attributeName) {
+		super(type);
+		this.mView = view;
 		this.attributeName = attributeName;
+	}
+	
+	protected Tv getView(){
+		return mView;
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -44,47 +42,51 @@ public abstract class ViewAttribute<Tv extends View, T> extends Observable<T> {
 		this.readonly = readonly;
 	}
 
-	private void setObject(Object newValue, AbstractCollection<Object> initiators){
+	@Override
+	public void _setObject(Object newValue, AbstractCollection<Object> initiators){
 		this.doSetAttributeValue(newValue);
 	}
 	
 	@Override
 	public abstract T get();
 
-	public void onAttributeChanged(View view, Object... args) {
-		try{
-			T value = this.get();
-			this.notifyChanged(this.view.get());
-		}catch (Exception e){
-			e.printStackTrace();
-		}
-	}
-	
 	private Bridge mBridge;
-	public void BindTo(IObservable prop){
-		if (prop == null) return;
+	public BindingType BindTo(IObservable<?> prop) {
+		if (prop == null) return BindingType.NoBinding;
+		BindingType binding = AcceptThisTypeAs(prop.getType());
+		if (binding.equals(BindingType.NoBinding)) return binding;
 		mBridge = new Bridge(this, prop);
 		prop.subscribe(mBridge);
-		this.subscribe(mBridge);
+		if (binding.equals(BindingType.TwoWay)) this.subscribe(mBridge);
 		prop.notifyChanged();
+		return binding;
+	}
+	
+	protected BindingType AcceptThisTypeAs(Class<?> type){
+		if (this.getType() != type){
+			if (this.getType().isAssignableFrom(type)){
+				return BindingType.OneWay;
+			}
+			return BindingType.NoBinding;
+		}
+		return BindingType.TwoWay;
 	}
 	
 	private class Bridge implements Observer{
 		ViewAttribute<Tv, T> mAttribute;
-		IObservable<Object> mBindedObservable;
-		public Bridge(ViewAttribute<Tv, T> attribute, IObservable<Object> observable){
+		IObservable<?> mBindedObservable;
+		public Bridge(ViewAttribute<Tv, T> attribute, IObservable<?> observable){
 			mAttribute = attribute;
 			mBindedObservable = observable;
 		}
 		
-		@SuppressWarnings("unchecked")
 		public void onPropertyChanged(IObservable<?> prop,
 				AbstractCollection<Object> initiators) {
 			if (prop==mAttribute){
-				mBindedObservable.set(prop.get(), initiators);
+				mBindedObservable._setObject(prop.get(), initiators);
 			}
 			else if (prop==mBindedObservable){
-				mAttribute.setObject(prop.get(), initiators);
+				mAttribute._setObject(prop.get(), initiators);
 			}
 		}
 	}

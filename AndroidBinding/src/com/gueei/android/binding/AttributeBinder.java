@@ -1,13 +1,10 @@
 package com.gueei.android.binding;
 
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 
-import com.gueei.android.binding.bindingProviders.BindingProvider;
-
-import android.content.Context;
-import android.util.AttributeSet;
 import android.view.View;
+
+import com.gueei.android.binding.bindingProviders.BindingProvider;
 
 public class AttributeBinder {
 	private static AttributeBinder _attributeFactory;

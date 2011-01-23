@@ -5,7 +5,7 @@ import android.database.Cursor;
 public class FloatField extends CursorField<Float> {
 
 	public FloatField(int columnIndex) {
-		super(columnIndex);
+		super(Float.class, columnIndex);
 	}
 
 	@Override

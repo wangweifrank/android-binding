@@ -98,11 +98,11 @@ public class CursorAdapter<T extends CursorRowModel> extends BaseAdapter {
 			if ((convertView == null) || ((row = getAttachedObservableCollection(convertView))==null)) {
 				Binder.InflateResult result = Binder.inflateView(mContext,
 						mLayoutId, parent, false);
+				returnView = result.rootView;
 				row = constructRow();
 				for(View view: result.processedViews){
 					AttributeBinder.getInstance().bindView(view, row);
 				}
-				returnView = result.rootView;
 				this.putAttachedObservableCollection(returnView, row);
 			}
 			row.resetInternalState(position);

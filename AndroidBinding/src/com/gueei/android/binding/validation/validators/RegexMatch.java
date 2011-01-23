@@ -16,7 +16,7 @@ public @interface RegexMatch{
 	public class RegexMatchValidator extends ValidatorBase<RegexMatch> {
 
 		@Override
-		public Class getAcceptedAnnotation() {
+		public Class<?> getAcceptedAnnotation() {
 			return RegexMatch.class;
 		}
 

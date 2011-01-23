@@ -2,6 +2,11 @@ package com.gueei.android.binding.exception;
 
 public class BindingException extends Exception {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -6230177679884976931L;
+
 	public BindingException() {
 		super();
 		// TODO Auto-generated constructor stub

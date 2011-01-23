@@ -6,11 +6,14 @@ import java.util.ArrayList;
 public class Observable<T> implements IObservable<T> {
 	private ArrayList<Observer> observers = new ArrayList<Observer>(1);
 	private T mValue;
+	private final Class<T> mType;
 	
-	public Observable(){
+	public Observable(Class<T> type){
+		mType = type;
 	}
 	
-	public Observable(T initValue){
+	public Observable(Class<T> type, T initValue){
+		this(type);
 		mValue = initValue;
 	}
 	
@@ -67,29 +70,32 @@ public class Observable<T> implements IObservable<T> {
 		notifyChanged(initiators);
 	}
 	
-	/* (non-Javadoc)
-	 * @see com.gueei.android.binding.IObservable#set(T)
-	 */
+	// Intenral use only. 
+	public void _setObject(Object newValue, AbstractCollection<Object> initiators){
+		T value = this.getType().cast(newValue);
+		if (value==null) return;
+		
+		this.set(value, initiators);
+	}
+	
 	public final void set(T newValue){
 		doSetValue(newValue, new ArrayList<Object>());
 		notifyChanged(mValue);
 	}
 	
 	protected void doSetValue(T newValue, AbstractCollection<Object> initiators){
-		try{
-			mValue = (T) newValue;
-		}
-		catch(Exception e){}
+		mValue = newValue;
 	}
 	
 	protected final void setWithoutNotify(T newValue){
 		mValue = newValue;
 	}
 	
-	/* (non-Javadoc)
-	 * @see com.gueei.android.binding.IObservable#get()
-	 */
 	public T get(){
 		return mValue;
+	}
+
+	public final Class<T> getType() {
+		return mType;
 	}
 }

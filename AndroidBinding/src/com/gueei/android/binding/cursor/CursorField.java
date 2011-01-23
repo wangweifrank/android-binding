@@ -1,16 +1,15 @@
 package com.gueei.android.binding.cursor;
 
-import java.util.AbstractCollection;
+import android.database.Cursor;
 
 import com.gueei.android.binding.Observable;
-
-import android.database.Cursor;
 
 public abstract class CursorField<T> extends Observable<T> {
 	
 	protected int mColumnIndex = -1;
 	
-	public CursorField(int columnIndex){
+	public CursorField(Class<T> type, int columnIndex){
+		super(type);
 		mColumnIndex = columnIndex;
 	}
 	

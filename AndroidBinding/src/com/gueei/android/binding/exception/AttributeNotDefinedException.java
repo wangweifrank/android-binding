@@ -2,6 +2,11 @@ package com.gueei.android.binding.exception;
 
 public class AttributeNotDefinedException extends BindingException {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 3063420613201292120L;
+
 	public AttributeNotDefinedException() {
 		super();
 		// TODO Auto-generated constructor stub

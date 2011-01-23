@@ -1,15 +1,13 @@
 package com.gueei.android.binding.listeners;
 
 import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import android.view.View;
+
 import com.gueei.android.binding.Command;
 import com.gueei.android.binding.ViewAttribute;
-
-import android.view.View;
 
 public abstract class MulticastListener<T> {
 	public abstract void registerToView(View v);
@@ -20,17 +18,22 @@ public abstract class MulticastListener<T> {
 	public void register(Command command){
 		commands.add(command);
 	}
-	public void register(ViewAttribute<?,?> viewAttribute){
-		attributes.add(viewAttribute);
-	}
+
 	public void register(T listener){
 		listeners.add(listener);
 	}
 	
-	public void notifyViewAttributes(View view, Object... args){
-		for(ViewAttribute attribute: attributes){
-			attribute.onAttributeChanged(view, args);
-		}
+	private boolean mBroadcasting;
+	public void nextActionIsNotFromUser(){
+		mBroadcasting = false;
+	}
+	
+	protected boolean isFromUser(){
+		return mBroadcasting;
+	}
+	
+	protected void clearBroadcastState(){
+		mBroadcasting = true;
 	}
 	
 	public void invokeCommands(View view, Object... args){

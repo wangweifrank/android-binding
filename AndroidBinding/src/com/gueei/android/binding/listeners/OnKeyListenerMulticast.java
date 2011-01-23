@@ -1,7 +1,5 @@
 package com.gueei.android.binding.listeners;
 
-import java.util.ArrayList;
-
 import android.view.KeyEvent;
 import android.view.View;
 
@@ -12,7 +10,10 @@ public class OnKeyListenerMulticast extends MulticastListener<View.OnKeyListener
 	}
 
 	public boolean onKey(View v, int keyCode, KeyEvent event) {
-		this.notifyViewAttributes(v, keyCode, event);
+		for (View.OnKeyListener l: listeners){
+			l.onKey(v, keyCode, event);
+		}
+
 		return false;
 	}
 }

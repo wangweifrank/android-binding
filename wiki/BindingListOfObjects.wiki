@@ -18,6 +18,40 @@ For all subclasses of Adapter View(including ListView, Spinner etc), it supports
 
 `itemTemplate` is the layout that each item will display with. All binding syntax can be used there (even binding with Command)
 
+And the music_row.xml:
+
+{{{
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:binding="http://www.gueei.com/android-binding/"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    binding:click="Play"
+    >
+    <TextView
+        android:layout_width="fill_parent"
+    	android:layout_height="wrap_content"
+    	android:textSize="30dip"
+    	binding:text="Title"
+     />
+     <TextView
+        android:layout_width="wrap_content"
+    	android:layout_height="wrap_content"
+    	android:textSize="12dip"
+    	binding:text="Artist"
+     />
+     <RatingBar
+        android:layout_width="wrap_content"
+    	android:layout_height="wrap_content"
+    	android:numStars="5"
+    	binding:rating="Rating"
+    	binding:visibility="DisplayRating"
+    	binding:onRatingChanged="Save"
+     />
+</LinearLayout>
+}}}
+
 = Cursor Binding = 
 
 In Android Binding, binding a cursor to Adapter Views is very similar in binding normal objects, take the [MusicPlayerDemo MusicPlayer Demo] as example:

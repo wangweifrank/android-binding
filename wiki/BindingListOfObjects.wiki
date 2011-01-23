@@ -1,0 +1,5 @@
+#summary Explain on how android-binding binds to list of objects
+
+= Introduction = 
+
+Android Binding is capable of binding to Object Array or Cursors. Binding to array supports full two-way binding just like the normal view models, but for cursor, it's a little bit different. 

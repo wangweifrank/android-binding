@@ -4,4 +4,4 @@
  * Getting Started
   * Why Android-Binding
 
- * [BindableAttribute Supported Views and Attributes]
+ * [BindableAttributes Supported Views and Attributes]

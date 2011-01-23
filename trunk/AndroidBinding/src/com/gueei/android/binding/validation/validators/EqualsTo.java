@@ -1,11 +1,10 @@
 package com.gueei.android.binding.validation.validators;
 
-import java.lang.annotation.Annotation;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
-import java.lang.reflect.Field;
-import com.gueei.android.binding.Observable;
 
+import com.gueei.android.binding.IObservable;
+import com.gueei.android.binding.Utility;
 import com.gueei.android.binding.validation.ValidatorBase;
 
 @Retention(RetentionPolicy.RUNTIME)
@@ -27,10 +26,10 @@ public @interface EqualsTo{
 		protected boolean doValidate(Object value, EqualsTo parameters,
 				Object model) {
 			try{
-				Field field = model.getClass().getField(parameters.Observable());
 				if (value == null) return true;
-				Object otherValue = ((Observable)field.get(model)).get();
-				if (otherValue==null) return true;
+				IObservable<?> observable = Utility.getObservableForModel(parameters.Observable(), model);
+				if (observable==null) return false;
+				Object otherValue = observable.get();
 				if ((value instanceof CharSequence) && (otherValue instanceof CharSequence)){
 					return compareCharSequence((CharSequence)value, (CharSequence)otherValue);
 				}

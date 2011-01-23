@@ -4,7 +4,7 @@ import android.database.Cursor;
 
 public class BlobField extends CursorField<byte[]> {
 	public BlobField(int columnIndex) {
-		super(columnIndex);
+		super(byte[].class, columnIndex);
 	}
 
 	@Override

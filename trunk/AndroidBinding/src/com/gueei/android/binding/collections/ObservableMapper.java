@@ -47,6 +47,10 @@ class ObservableMapper implements IPropertyContainer {
 	
 	// Remember! This maps 1-1 to the real observable
 	private class MockObservable extends Observable<Object> implements Observer{
+		public MockObservable() {
+			super(Object.class);
+		}
+
 		private WeakReference<IObservable<Object>> observingProperty = new WeakReference<IObservable<Object>>(null);
 		public Object get() {
 			if (observingProperty.get()!=null){

@@ -1,15 +1,10 @@
 package com.gueei.android.binding.bindingProviders;
 
-import android.content.Context;
-import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
-import android.util.AttributeSet;
 import android.view.View;
 import android.widget.ImageView;
 
 import com.gueei.android.binding.BindingMap;
-import com.gueei.android.binding.Command;
-import com.gueei.android.binding.R;
 import com.gueei.android.binding.ViewAttribute;
 import com.gueei.android.binding.viewAttributes.GenericViewAttribute;
 
@@ -23,7 +18,7 @@ public class ImageViewProvider extends BindingProvider {
 			if (attributeId.equals("srcDrawable")){
 				// TODO: Can change to very specific class to avoid the reflection methods
 				ViewAttribute<ImageView, Drawable> attr = new 
-					GenericViewAttribute<ImageView, Drawable>((ImageView)view, "srcDrawable",
+					GenericViewAttribute<ImageView, Drawable>(Drawable.class, (ImageView)view, "srcDrawable",
 							ImageView.class.getMethod("getDrawable"),
 							ImageView.class.getMethod("setImageDrawable", Drawable.class));
 				return (ViewAttribute<Tv, ?>) attr;

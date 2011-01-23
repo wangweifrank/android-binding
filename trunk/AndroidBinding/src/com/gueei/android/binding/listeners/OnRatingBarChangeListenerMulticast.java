@@ -14,9 +14,11 @@ public class OnRatingBarChangeListenerMulticast extends MulticastListener<OnRati
 	}
 
 	public void onRatingChanged(RatingBar view, float arg0, boolean fromUser) {
+		for(OnRatingBarChangeListener l: listeners){
+			l.onRatingChanged(view, arg0, fromUser);
+		}
 		if (fromUser){
 			this.invokeCommands(view, arg0, fromUser);
 		}
-		this.notifyViewAttributes(view, arg0, fromUser);
 	}
 }

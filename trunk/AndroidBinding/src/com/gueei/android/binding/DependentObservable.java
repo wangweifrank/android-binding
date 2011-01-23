@@ -5,10 +5,10 @@ import java.util.ArrayList;
 
 public abstract class DependentObservable<T> extends Observable<T> implements Observer{
 
-	protected IObservable[] dependents;
+	protected IObservable<?>[] dependents;
 	
-	public DependentObservable(IObservable... dependents) {
-		super();
+	public DependentObservable(Class<T> type, IObservable<?>... dependents) {
+		super(type);
 		for(IObservable<?> o : dependents){
 			o.subscribe(this);
 		}

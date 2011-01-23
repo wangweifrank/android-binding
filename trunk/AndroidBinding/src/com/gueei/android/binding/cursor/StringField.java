@@ -1,13 +1,11 @@
 package com.gueei.android.binding.cursor;
 
-import java.util.AbstractCollection;
-
 import android.database.Cursor;
 
 public class StringField extends CursorField<String> {
 
 	public StringField(int columnIndex) {
-		super(columnIndex);
+		super(String.class, columnIndex);
 	}
 
 	@Override

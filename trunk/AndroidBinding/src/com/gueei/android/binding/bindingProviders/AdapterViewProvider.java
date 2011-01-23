@@ -9,13 +9,13 @@ import com.gueei.android.binding.BindingMap;
 import com.gueei.android.binding.Command;
 import com.gueei.android.binding.Utility;
 import com.gueei.android.binding.ViewAttribute;
-import com.gueei.android.binding.cursor.CursorAdapter;
-import com.gueei.android.binding.listeners.OnItemClickedListenerMulticast;
+import com.gueei.android.binding.listeners.OnItemClickListenerMulticast;
 import com.gueei.android.binding.listeners.OnItemSelectedListenerMulticast;
 import com.gueei.android.binding.viewAttributes.ClickedIdViewAttribute;
 import com.gueei.android.binding.viewAttributes.ClickedItemViewAttribute;
 import com.gueei.android.binding.viewAttributes.GenericViewAttribute;
 import com.gueei.android.binding.viewAttributes.ItemSourceViewAttribute;
+import com.gueei.android.binding.viewAttributes.SelectedItemViewAttribute;
 
 public class AdapterViewProvider extends BindingProvider {
 
@@ -29,19 +29,13 @@ public class AdapterViewProvider extends BindingProvider {
 			if (attributeId.equals("adapter")) {
 				// TODO: Can change to very specific class to avoid the
 				// reflection methods
-				ViewAttribute<AdapterView, Adapter> attr = new GenericViewAttribute(
+				ViewAttribute<AdapterView, Adapter> attr = new GenericViewAttribute(Adapter.class,
 						(AdapterView) view, "adapter", 
 						AdapterView.class.getMethod("getAdapter"), 
 						AdapterView.class.getMethod("setAdapter", Adapter.class));
 				return (ViewAttribute<Tv, ?>) attr;
 			} else if (attributeId.equals("selectedItem")) {
-				ViewAttribute<AdapterView, Object> attr = new GenericViewAttribute(
-						(AdapterView) view, "selectedItem", AdapterView.class
-								.getMethod("getSelectedItem"), null);
-				attr.setReadonly(true);
-				Binder.getMulticastListenerForView
-					(view, OnItemSelectedListenerMulticast.class).register(attr);
-				return (ViewAttribute<Tv, ?>) attr;
+				return (ViewAttribute<Tv, ?>) new SelectedItemViewAttribute((AdapterView)view, "selectedItem");
 			} else if (attributeId.equals("clickedItem")){
 				ViewAttribute<AdapterView<?>, Object> attr = 
 					new ClickedItemViewAttribute((AdapterView)view, "clickedItem");
@@ -82,7 +76,7 @@ public class AdapterViewProvider extends BindingProvider {
 			Command command = Utility.getCommandForModel(map.get("itemClicked"), model);
 			if (command!=null){
 				Binder
-					.getMulticastListenerForView(view, OnItemClickedListenerMulticast.class)
+					.getMulticastListenerForView(view, OnItemClickListenerMulticast.class)
 					.register(command);
 			}
 		}

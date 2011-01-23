@@ -42,8 +42,6 @@ public class KeyListenerMulticast extends MulticastListener<KeyListener>
 	}
 
 	public boolean onKeyUp(View arg0, Editable arg1, int arg2, KeyEvent arg3) {
-		this.notifyViewAttributes(arg0, arg1, arg2, arg3);
-
 		if (originalListener!=null)
 			return originalListener.onKeyUp(arg0, arg1, arg2, arg3);
 		

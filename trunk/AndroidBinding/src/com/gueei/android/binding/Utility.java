@@ -3,7 +3,6 @@ package com.gueei.android.binding;
 import java.lang.reflect.Field;
 
 import android.content.Context;
-import android.view.View;
 
 public class Utility {
 	private static Object getFieldForModel(String fieldName, Object model){
@@ -15,7 +14,7 @@ public class Utility {
 		}
 	}
 	
-	public static IObservable<?> getObservableForModel(View view, String fieldName, Object model){
+	public static IObservable<?> getObservableForModel(String fieldName, Object model){
 		if (model instanceof IPropertyContainer){
 			try{
 				return ((IPropertyContainer)model).getObservableByName(fieldName);
@@ -25,7 +24,7 @@ public class Utility {
 		}
 		Object rawField = getFieldForModel(fieldName, model);
 		if (rawField instanceof Observable<?>)
-			return (IObservable<?>)rawField;
+			return (Observable<?>)rawField;
 		return null;
 	}
 

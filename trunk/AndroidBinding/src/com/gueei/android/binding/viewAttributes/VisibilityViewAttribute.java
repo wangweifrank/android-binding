@@ -2,36 +2,46 @@ package com.gueei.android.binding.viewAttributes;
 
 
 import android.view.View;
+
+import com.gueei.android.binding.BindingType;
 import com.gueei.android.binding.ViewAttribute;
 
 public class VisibilityViewAttribute extends ViewAttribute<View, Integer> {
 
 	public VisibilityViewAttribute(View view, String attributeName) {
-		super(view, attributeName);
+		super(Integer.class, view, attributeName);
 	}
 
 	@Override
 	protected void doSetAttributeValue(Object newValue) {
 		if (newValue==null){
-			this.view.get().setVisibility(View.GONE);
+			getView().setVisibility(View.GONE);
 			return;
 		}
 		if (newValue instanceof Boolean){
 			if ((Boolean)newValue)
-				this.view.get().setVisibility(View.VISIBLE);
+				getView().setVisibility(View.VISIBLE);
 			else
-				this.view.get().setVisibility(View.GONE);
+				getView().setVisibility(View.GONE);
 			return;
 		}
 		if (newValue instanceof Integer){
-			this.view.get().setVisibility((Integer)newValue);
+			getView().setVisibility((Integer)newValue);
 			return;
 		}
-		this.view.get().setVisibility(View.VISIBLE);
 	}
 
 	@Override
 	public Integer get() {
-		return this.view.get().getVisibility();
+		return getView().getVisibility();
+	}
+
+	@Override
+	protected BindingType AcceptThisTypeAs(Class<?> type) {
+		if (Boolean.class.isAssignableFrom(type))
+			return BindingType.OneWay;
+		if (Integer.class.isAssignableFrom(type))
+			return BindingType.TwoWay;
+		return BindingType.NoBinding;
 	}
 }

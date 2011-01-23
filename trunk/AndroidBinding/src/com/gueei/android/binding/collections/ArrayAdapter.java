@@ -1,20 +1,14 @@
 package com.gueei.android.binding.collections;
 
-import java.lang.reflect.Field;
-import java.util.HashMap;
-import java.util.Map.Entry;
+import android.content.Context;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.BaseAdapter;
 
 import com.gueei.android.binding.AttributeBinder;
 import com.gueei.android.binding.Binder;
 import com.gueei.android.binding.R;
-import com.gueei.android.binding.cursor.CursorField;
 import com.gueei.android.binding.utility.CachedModelReflector;
-
-import android.content.Context;
-import android.database.Cursor;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 
 public class ArrayAdapter<T> extends BaseAdapter {
 	private final Context mContext;
@@ -69,7 +63,6 @@ public class ArrayAdapter<T> extends BaseAdapter {
 		}
 	}
 	
-	@SuppressWarnings("unchecked")
 	private ObservableMapper getAttachedMapper(View convertView){
 		Object mappers = convertView.getTag(R.id.tag_observableCollection_attachedObservable);
 		if (mappers==null){

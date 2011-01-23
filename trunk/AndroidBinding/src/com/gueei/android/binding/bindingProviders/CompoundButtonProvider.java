@@ -9,28 +9,17 @@ import com.gueei.android.binding.Command;
 import com.gueei.android.binding.Utility;
 import com.gueei.android.binding.ViewAttribute;
 import com.gueei.android.binding.listeners.OnCheckedChangeListenerMulticast;
-import com.gueei.android.binding.viewAttributes.GenericViewAttribute;
+import com.gueei.android.binding.viewAttributes.CheckedViewAttribute;
 
 public class CompoundButtonProvider extends BindingProvider {
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public <Tv extends View> ViewAttribute<Tv, ?> createAttributeForView(View view, String attributeId) {
 		if (!(view instanceof CompoundButton)) return null;
-		try{
-			if (attributeId.equals("checked")){
-				// TODO: Can change to very specific class to avoid the reflection methods
-				ViewAttribute<CompoundButton, Boolean> attr = new GenericViewAttribute<CompoundButton, Boolean>(
-						(CompoundButton)view,
-						"checked", 
-						CompoundButton.class.getMethod("isChecked"),
-						CompoundButton.class.getMethod("setChecked", boolean.class));
-				Binder.getMulticastListenerForView(view, OnCheckedChangeListenerMulticast.class)
-					.register(attr);
-				return (ViewAttribute<Tv, ?>)attr;
-			}
-		}
-		catch(Exception e){
-			// Actually it should never reach this statement
+		if (attributeId.equals("checked")){
+			ViewAttribute<CompoundButton, Boolean> attr = new CheckedViewAttribute((CompoundButton)view);
+			return (ViewAttribute<Tv, ?>)attr;
 		}
 		return null;
 	}

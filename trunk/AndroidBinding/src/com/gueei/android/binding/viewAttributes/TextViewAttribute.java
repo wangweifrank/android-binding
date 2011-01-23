@@ -1,21 +1,29 @@
 package com.gueei.android.binding.viewAttributes;
 
-import java.util.AbstractCollection;
-
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.widget.TextView;
+import android.widget.EditText;
 
-import com.gueei.android.binding.Observable;
+import com.gueei.android.binding.Binder;
+import com.gueei.android.binding.BindingType;
 import com.gueei.android.binding.ViewAttribute;
+import com.gueei.android.binding.listeners.TextWatcherMulticast;
 
-public class TextViewAttribute extends ViewAttribute<TextView, CharSequence> {
+public class TextViewAttribute extends ViewAttribute<TextView, String>
+	implements TextWatcher{
 
 	public TextViewAttribute(TextView view, String attributeName) {
-		super(view, attributeName);
+		super(String.class, view, attributeName);
+		if (view instanceof EditText){
+			Binder.getMulticastListenerForView(view, TextWatcherMulticast.class)
+				.register(this);
+		}
 	}
 
 	@Override
-	public CharSequence get() {
-		return view.get().getText().toString();
+	public String get() {
+		return getView().getText().toString();
 	}
 	
 	private CharSequence cloneCharSequence(CharSequence o){
@@ -34,15 +42,40 @@ public class TextViewAttribute extends ViewAttribute<TextView, CharSequence> {
 	@Override
 	protected void doSetAttributeValue(Object newValue) {
 		if (newValue == null){
-			if (view.get().getText().length()==0) return;
-			view.get().setText("");
+			if (getView().getText().length()==0) return;
+			getView().setText("");
 			return;
 		}
 		if (!(newValue instanceof CharSequence)){
-			view.get().setText(newValue.toString());
+			getView().setText(newValue.toString());
 			return;
 		}
 		if (compareCharSequence((CharSequence)newValue, get())) return;
-		view.get().setText(cloneCharSequence((CharSequence)newValue));
+		getView().setText(cloneCharSequence((CharSequence)newValue));
+	}
+	
+	
+
+	public void afterTextChanged(Editable arg0) {
+	}
+
+	public void beforeTextChanged(CharSequence arg0, int arg1, int arg2,
+			int arg3) {
+	}
+	
+	private String mValue;
+
+	public void onTextChanged(CharSequence arg0, int arg1, int arg2, int arg3) {
+		if (!arg0.toString().equals(mValue)){
+			mValue = arg0.toString();
+			this.notifyChanged();
+		}
+	}
+
+	@Override
+	protected BindingType AcceptThisTypeAs(Class<?> type) {
+		if (CharSequence.class.isAssignableFrom(type))
+			return BindingType.TwoWay;
+		return BindingType.OneWay;
 	}
 }

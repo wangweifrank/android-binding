@@ -19,7 +19,7 @@ This is a book-keeping post that keep the list of supporting attributes.
 || background || drawable, Resource Integer || no ||
 || backgroundColor || Color Integer || no||
 || onClick || Command || yes||
-|| onLongClick || Command || no||
+|| onLongClick || Command || yes||
 || visibility || int, boolean || yes||
 
 = View Groups =
@@ -46,13 +46,13 @@ No special attributes, inherited from view
 == Rating Bar ==
 || Attribute || Accepted Data type || Currently Supported ||
 || rating || float || yes ||
-|| onRatingChanged || Command || no ||
+|| onRatingChanged || Command || yes ||
 
 = TextView =
 || Attribute || Accepted Data type || Currently Supported ||
 || lines || int || no||
 || text || CharSequence || yes ||
-|| onTextChanged || Command || no ||
+|| onTextChanged || Command || yes ||
 
 = AdapterView =
 || Attribute || Accepted Data type || Currently Supported ||

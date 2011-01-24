@@ -12,22 +12,35 @@
 	    binding:itemSource="MusicList"
 	    binding:itemTemplate="@layout/music_row"
     />
-    <LinearLayout
+    <TableLayout
 		android:layout_width="fill_parent"
 	    android:layout_height="wrap_content"
-    	android:orientation="horizontal">
-	    <Button
-		    android:layout_width="wrap_content"
-		    android:layout_height="wrap_content"
-		    binding:text="ScanStatus"
-		    binding:enabled="NotScanning"
-		    binding:click="ScanMusic"
-	    />
-	    <Button
-		    android:layout_width="wrap_content"
-		    android:layout_height="wrap_content"
-		    android:text="About.."
-		    binding:click="AboutProject"
-	    />
-    </LinearLayout>
+	    android:stretchColumns="0"
+    	>
+    	<TableRow>
+		    <Button
+			    android:layout_width="wrap_content"
+			    android:layout_height="wrap_content"
+			    android:layout_column="0"
+			    android:text="Stop"
+			    binding:enabled="IsPlaying"
+			    binding:onClick="Stop"
+		    />
+		    <Button
+			    android:layout_width="wrap_content"
+			    android:layout_height="wrap_content"
+			    android:layout_column="1"
+			    binding:text="ScanStatus"
+			    binding:enabled="NotScanning"
+			    binding:onClick="ScanMusic"
+		    />
+		    <Button
+			    android:layout_width="wrap_content"
+			    android:layout_height="wrap_content"
+			    android:layout_column="2"
+			    android:text="About.."
+			    binding:onClick="AboutProject"
+		    />
+	    </TableRow>
+    </TableLayout>
 </LinearLayout>

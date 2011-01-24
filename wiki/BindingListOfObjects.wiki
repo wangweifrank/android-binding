@@ -60,16 +60,16 @@ First, define the ViewModel:
 
 {{{
     public CursorSource MusicList;
-    MusicList = new CursorSource(MusicRowModel.class, mDb);
+    MusicList = new CursorSource(MusicRowModel.class, mFactory);
 }}}
 
 `CursorSource` is a special type for Android Binding to acknowledge that this is a Cursor need to bind. It has a constructor defined:
 
 {{{
-    CursorSource(Class<? extends CursorRowModel> rowModel, Object... injectParams);
+    CursorSource(Class<? extends CursorRowModel> rowModel, CursorRowModel.Factory factory);
 }}}
 
-`CursorRowModel` is a View Model that represents each record of Cursor, and `injectParams` is the additional (optional) parameters that every instance of RowModel would have. 
+`CursorRowModel` is a View Model that represents each record of Cursor, and factory includes a callback that request the application to construct new row models.  
 
 Now, let's look at the MusicRowModel:
 

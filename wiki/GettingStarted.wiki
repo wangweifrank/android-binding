@@ -1,5 +1,4 @@
 #summary Getting started to Android Binding
-#labels Featured
 
 = Table of Content = 
 

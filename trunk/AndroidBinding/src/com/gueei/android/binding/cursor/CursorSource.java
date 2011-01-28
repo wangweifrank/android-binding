@@ -6,21 +6,21 @@ import android.database.Cursor;
 
 import com.gueei.android.binding.Observable;
 
-@SuppressWarnings("unchecked")
-public final class CursorSource extends Observable<CursorRowTypeMap> {
-	private final CursorRowTypeMap mRowModelType;
+@SuppressWarnings({ "unchecked", "rawtypes" })
+public final class CursorSource<T extends CursorRowModel> extends Observable<CursorRowTypeMap> {
+	private final CursorRowTypeMap<T> mRowModelType;
 	
 	public void setCursor(Cursor cursor){
 		mRowModelType.setCursor(cursor);
 		notifyChanged();
 	}
 
-	public CursorSource(Class<?> rowModelType, Object... injectParameters){
+	public CursorSource(Class<T> rowModelType, CursorRowModel.Factory<T> factory){
 		super(CursorRowTypeMap.class);
-		mRowModelType = new CursorRowTypeMap(rowModelType, injectParameters);
+		mRowModelType = new CursorRowTypeMap(rowModelType, factory);
 	}
 	
-	public Class<? extends CursorRowModel> getRowModelType(){
+	public Class<T> getRowModelType(){
 		return mRowModelType.getRowType();
 	}
 

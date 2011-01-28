@@ -5,13 +5,17 @@ import android.database.Cursor;
 public class CursorRowTypeMap<T extends CursorRowModel> {
 	private Cursor mCursor;
 	private final Class<T> mRowType;
-	private final Object[] mInjectParameters;
+	private final CursorRowModel.Factory<T> mFactory;
 	
-	public CursorRowTypeMap(Class<T> rowType, Object... parameters){
+	public CursorRowTypeMap(Class<T> rowType, CursorRowModel.Factory<T> factory){
 		mRowType = rowType;
-		mInjectParameters = parameters;
+		mFactory = factory;
 	}
 
+	public CursorRowModel.Factory<T> getFactory(){
+		return mFactory;
+	}
+	
 	public Cursor getCursor() {
 		return mCursor;
 	}
@@ -22,9 +26,5 @@ public class CursorRowTypeMap<T extends CursorRowModel> {
 
 	public Class<T> getRowType() {
 		return mRowType;
-	}
-	
-	public Object[] getInjectParameters(){
-		return mInjectParameters;
 	}
 }

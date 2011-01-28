@@ -38,7 +38,7 @@ public class CachedModelReflector<T> implements IPropertyContainer {
 		return null;
 	}
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public IObservable<Object> getObservableByName(String name) throws Exception {
 		if (observables.containsKey(name)){
 			return (IObservable) observables.get(name).get(mObject);

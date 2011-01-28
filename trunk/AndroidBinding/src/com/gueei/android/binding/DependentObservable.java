@@ -16,7 +16,7 @@ public abstract class DependentObservable<T> extends Observable<T> implements Ob
 		this.onPropertyChanged(null, new ArrayList<Object>());
 	}
 
-	public abstract T calculateValue(Object... args);
+	public abstract T calculateValue(Object... args) throws Exception;
 	
 	public final void onPropertyChanged(IObservable<?> prop,
 			AbstractCollection<Object> initiators) {
@@ -35,8 +35,13 @@ public abstract class DependentObservable<T> extends Observable<T> implements Ob
 			for(int i=0; i<len; i++){
 				values[i] = dependents[i].get();
 			}
-			T value = this.calculateValue(values);
-			this.setWithoutNotify(value);
+			try{
+				T value = this.calculateValue(values);
+				this.setWithoutNotify(value);
+			}catch(Exception e){
+				BindingLog.exception
+					("DependentObservable.CalculateValue()", e);
+			}
 			dirty = false;
 		}
 		return super.get();

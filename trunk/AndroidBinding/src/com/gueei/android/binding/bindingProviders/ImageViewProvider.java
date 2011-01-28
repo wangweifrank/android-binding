@@ -1,12 +1,11 @@
 package com.gueei.android.binding.bindingProviders;
 
-import android.graphics.drawable.Drawable;
 import android.view.View;
 import android.widget.ImageView;
 
 import com.gueei.android.binding.BindingMap;
 import com.gueei.android.binding.ViewAttribute;
-import com.gueei.android.binding.viewAttributes.GenericViewAttribute;
+import com.gueei.android.binding.viewAttributes.ImageViewAttribute;
 
 public class ImageViewProvider extends BindingProvider {
 
@@ -14,18 +13,9 @@ public class ImageViewProvider extends BindingProvider {
 	@Override
 	public <Tv extends View>ViewAttribute<Tv, ?> createAttributeForView(View view, String attributeId) {
 		if (!(view instanceof ImageView)) return null;
-		try{
-			if (attributeId.equals("srcDrawable")){
-				// TODO: Can change to very specific class to avoid the reflection methods
-				ViewAttribute<ImageView, Drawable> attr = new 
-					GenericViewAttribute<ImageView, Drawable>(Drawable.class, (ImageView)view, "srcDrawable",
-							ImageView.class.getMethod("getDrawable"),
-							ImageView.class.getMethod("setImageDrawable", Drawable.class));
-				return (ViewAttribute<Tv, ?>) attr;
-			}
-		}
-		catch(Exception e){
-			// Actually it should never reach this statement
+		if (attributeId.equals("image")){
+			return 
+				(ViewAttribute<Tv, ?>) new ImageViewAttribute((ImageView)view);
 		}
 		return null;
 	}
@@ -33,6 +23,6 @@ public class ImageViewProvider extends BindingProvider {
 	@Override
 	public void bind(View view, BindingMap map, Object model) {
 		if (!(view instanceof ImageView)) return;
-		bindViewAttribute(view, map, model, "srcDrawable");
+		bindViewAttribute(view, map, model, "image");
 	}
 }

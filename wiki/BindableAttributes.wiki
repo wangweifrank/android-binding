@@ -34,10 +34,10 @@ No special attributes, inherited from view
 
 = ProgressBar =
 || Attribute || Accepted Data type || Currently Supported ||
-|| progress || float* || no ||
-|| secondaryProgress || float* || no||
+|| progress || float # || yes ||
+|| secondaryProgress || float # || yes||
 
-* remark: this is different from original, it is float and should be ranging from 0..1
+# remark: this is different from original, it is float and should be ranging from 0..1
 
 == Seek Bar == 
 || Attribute || Accepted Data type || Currently Supported ||

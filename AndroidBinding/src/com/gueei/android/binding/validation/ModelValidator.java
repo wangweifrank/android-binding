@@ -8,7 +8,7 @@ import com.gueei.android.binding.IObservable;
 import com.gueei.android.binding.Observable;
 
 public class ModelValidator {
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public static ValidationResult ValidateModel(Object model){
 		ValidationResult result = new ValidationResult();
 		for (Field field : model.getClass().getFields()){

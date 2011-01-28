@@ -4,6 +4,10 @@ import android.content.Context;
 import android.database.Cursor;
 
 public abstract class CursorRowModel {
+	public interface Factory<T extends CursorRowModel>{
+		public T createRowModel(Context context);
+	}
+	
 	private Context context;
 	private Cursor cursor;
 

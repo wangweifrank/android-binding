@@ -34,18 +34,10 @@ public class CursorAdapter<T extends CursorRowModel> extends BaseAdapter {
 	}
 	
 	private T constructRow(){
-		try {
-			T row  = mRowTypeMap.getRowType().newInstance();
-			row.setParameters(mRowTypeMap.getInjectParameters());
-			row.setContext(mContext);
-			row.setCursor(mCursor);
-			return row;
-		} catch (IllegalAccessException e) {
-			e.printStackTrace();
-		} catch (InstantiationException e) {
-			e.printStackTrace();
-		}
-		return null;
+		T row  = mRowTypeMap.getFactory().createRowModel(mContext);
+		row.setContext(mContext);
+		row.setCursor(mCursor);
+		return row;
 	}
 	
 	private void init(){

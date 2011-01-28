@@ -19,13 +19,12 @@ public class ItemSourceViewAttribute extends ViewAttribute<AdapterView<Adapter>,
 		super(Object.class,view, attributeName);
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	protected void doSetAttributeValue(Object newValue) {
 		if (newValue == null)
 			return;
 		if ((newValue instanceof CursorRowTypeMap)) {
-			setCursorAdapter((CursorRowTypeMap) newValue);
+			setCursorAdapter((CursorRowTypeMap<?>) newValue);
 			return;
 		}
 		if (newValue.getClass().isArray())
@@ -40,7 +39,8 @@ public class ItemSourceViewAttribute extends ViewAttribute<AdapterView<Adapter>,
 				return;
 			int itemTemplate = Utility.resolveResource(map.get("itemTemplate"),
 					Binder.getApplication());
-			ArrayAdapter adapter = new ArrayAdapter(Binder.getApplication(),
+			@SuppressWarnings("rawtypes")
+			ArrayAdapter<?> adapter = new ArrayAdapter(Binder.getApplication(),
 					newValue.getClass().getComponentType(),
 					(Object[]) newValue, itemTemplate);
 			getView().setAdapter(adapter);
@@ -50,7 +50,7 @@ public class ItemSourceViewAttribute extends ViewAttribute<AdapterView<Adapter>,
 	}
 
 	@SuppressWarnings("unchecked")
-	private void setCursorAdapter(CursorRowTypeMap rowTypeMap) {
+	private void setCursorAdapter(CursorRowTypeMap<?> rowTypeMap) {
 		Cursor cursor = rowTypeMap.getCursor();
 		if (cursor == null)
 			return;
@@ -67,6 +67,7 @@ public class ItemSourceViewAttribute extends ViewAttribute<AdapterView<Adapter>,
 			return;
 
 		try {
+			@SuppressWarnings("rawtypes")
 			CursorAdapter<?> adapter = new CursorAdapter(Binder
 					.getApplication(), rowTypeMap, itemTemplate);
 			getView().setAdapter(adapter);

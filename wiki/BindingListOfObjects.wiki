@@ -27,7 +27,7 @@ And the music_row.xml:
     android:orientation="vertical"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-    binding:click="Play"
+    binding:onClick="Play"
     >
     <TextView
         android:layout_width="fill_parent"

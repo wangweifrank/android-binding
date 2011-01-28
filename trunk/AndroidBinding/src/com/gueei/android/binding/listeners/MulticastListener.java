@@ -23,7 +23,7 @@ public abstract class MulticastListener<T> {
 		listeners.add(listener);
 	}
 	
-	private boolean mBroadcasting;
+	private boolean mBroadcasting = true;
 	public void nextActionIsNotFromUser(){
 		mBroadcasting = false;
 	}

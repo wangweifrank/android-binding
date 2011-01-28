@@ -16,11 +16,11 @@ public class OnCheckedChangeListenerMulticast
 	}
 
 	public void onCheckedChanged(CompoundButton arg0, boolean arg1) {
-		if (this.isFromUser()){
-			this.invokeCommands(arg0, arg1);
-		}
 		for(OnCheckedChangeListener l: listeners){
 			l.onCheckedChanged(arg0, arg1);
+		}
+		if (this.isFromUser()){
+			this.invokeCommands(arg0, arg1);
 		}
 		this.clearBroadcastState();
 	}

@@ -28,8 +28,8 @@ public class CompoundButtonProvider extends BindingProvider {
 	public void bind(View view, BindingMap map, Object model) {
 		if (!(view instanceof CompoundButton)) return;
 		bindViewAttribute(view, map, model, "checked");
-		if (map.containsKey("checkedChange")){
-			Command command = Utility.getCommandForModel(map.get("checkedChange"), model);
+		if (map.containsKey("onCheckedChange")){
+			Command command = Utility.getCommandForModel(map.get("onCheckedChange"), model);
 			if (command!=null){
 				Binder
 					.getMulticastListenerForView(view, OnCheckedChangeListenerMulticast.class)

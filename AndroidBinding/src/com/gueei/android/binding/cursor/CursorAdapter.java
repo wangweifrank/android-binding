@@ -18,7 +18,6 @@ public class CursorAdapter<T extends CursorRowModel> extends BaseAdapter {
 
 	private final Cursor mCursor;
 	private final CursorRowTypeMap<T> mRowTypeMap;
-	private T row;
 	private Context mContext;
 	private int mLayoutId;
 	
@@ -75,7 +74,7 @@ public class CursorAdapter<T extends CursorRowModel> extends BaseAdapter {
 		if (idField!=null){
 			mCursor.moveToPosition(position);
 			try {
-				return ((IdField)idField.get(row)).returnValue(mCursor);
+				return ((IdField)idField.get(constructRow())).returnValue(mCursor);
 			} catch (Exception e) {
 				return -1;
 			}

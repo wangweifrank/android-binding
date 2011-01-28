@@ -19,7 +19,7 @@ import com.gueei.android.binding.viewAttributes.SelectedItemViewAttribute;
 
 public class AdapterViewProvider extends BindingProvider {
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	public <Tv extends View> ViewAttribute<Tv, ?> createAttributeForView(
 			View view, String attributeId) {
@@ -64,16 +64,16 @@ public class AdapterViewProvider extends BindingProvider {
 		bindViewAttribute(view, map, model, "adapter");
 		bindViewAttribute(view, map, model, "itemSource");
 		
-		if (map.containsKey("itemSelected")){
-			Command command = Utility.getCommandForModel(map.get("itemSelected"), model);
+		if (map.containsKey("onItemSelected")){
+			Command command = Utility.getCommandForModel(map.get("onItemSelected"), model);
 			if (command!=null){
 				Binder
 					.getMulticastListenerForView(view, OnItemSelectedListenerMulticast.class)
 					.register(command);
 			}
 		}
-		if (map.containsKey("itemClicked")){
-			Command command = Utility.getCommandForModel(map.get("itemClicked"), model);
+		if (map.containsKey("onItemClicked")){
+			Command command = Utility.getCommandForModel(map.get("onItemClicked"), model);
 			if (command!=null){
 				Binder
 					.getMulticastListenerForView(view, OnItemClickListenerMulticast.class)

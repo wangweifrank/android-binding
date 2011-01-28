@@ -8,18 +8,6 @@
         <TableRow>
             <TextView android:layout_width="wrap_content"
                       android:layout_height="wrap_content"
-                      android:text="@string/targetAccountLabel"/>
-        </TableRow>
-        <TableRow>
-            <Spinner android:layout_height="wrap_content"
-                     android:layout_width="fill_parent"
-                     android:layout_weight="1"
-                     binding:selectedItem="SelectedAccount"
-                     binding:adapter="AccountList"/>
-        </TableRow>
-        <TableRow>
-            <TextView android:layout_width="wrap_content"
-                      android:layout_height="wrap_content"
                       android:text="@string/contactNameLabel"/>
         </TableRow>
         <TableRow>
@@ -41,7 +29,8 @@
             <Spinner android:layout_width="wrap_content"
                      android:layout_height="wrap_content"
                      binding:selectedItem="SelectedPhoneType"
-                     binding:adapter="PhoneTypeList"/>
+                     binding:itemTemplate="@layout/type_entry"
+                     binding:itemSource="PhoneTypeList"/>
         </TableRow>
         <TableRow>
             <TextView android:text="@string/contactEmailLabel"
@@ -56,14 +45,15 @@
             <Spinner android:layout_width="wrap_content"
                      android:layout_height="wrap_content"
                      binding:selectedItem="SelectedEmailType"
-                     binding:adapter="EmailTypeList"/>
+                     binding:itemTemplate="@layout/type_entry"
+                     binding:itemSource="EmailTypeList"/>
         </TableRow>
         <TableRow>
             <Button android:layout_height="wrap_content"
                     android:text="Show Result"
                     android:layout_width="fill_parent"
                     android:layout_weight="1"
-                    binding:click="SaveContact"/>
+                    binding:onClick="SaveContact"/>
         </TableRow>
     </TableLayout>
 </ScrollView>

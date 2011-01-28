@@ -6,20 +6,16 @@
               android:layout_height="fill_parent">
     <ListView android:layout_width="fill_parent"
               android:layout_height="wrap_content"
-              binding:itemTemplate="@layout/contact_entry"
-              binding:itemDataType="com.gueei.demo.contactmanager.ContactRowModel"
               binding:itemSource="ContactList"
-              binding:clickedItem="SelectedContact"
-              binding:clickedId="SelectedContactId"
-              binding:itemClicked="ViewContact"
+              binding:itemTemplate="@layout/contact_entry"
               android:layout_weight="1"/>
     <CheckBox android:layout_width="wrap_content"
               android:layout_height="wrap_content"
               binding:checked="ShowInvisible"
-              binding:checkedChange="PopulateList"
+              binding:onCheckedChange="PopulateList"
               android:text="@string/showInvisible"/>
     <Button android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            binding:click="AddContact"
+            binding:onClick="AddContact"
             android:text="@string/addContactButtonLabel"/>
 </LinearLayout>

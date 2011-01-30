@@ -76,6 +76,8 @@ public class TextViewAttribute extends ViewAttribute<TextView, String>
 	protected BindingType AcceptThisTypeAs(Class<?> type) {
 		if (CharSequence.class.isAssignableFrom(type))
 			return BindingType.TwoWay;
+		if (String.class.isAssignableFrom(type))
+			return BindingType.TwoWay;
 		return BindingType.OneWay;
 	}
 }

@@ -48,7 +48,7 @@ public class ArrayAdapter<T> extends BaseAdapter {
 				Binder.InflateResult result = Binder.inflateView(mContext,
 						mLayoutId, parent, false);
 				mapper = new ObservableMapper();
-				mapper.initMapping(observableNames, commandNames);
+				mapper.initMapping(observableNames, commandNames, mReflector, mArray[position]);
 				for(View view: result.processedViews){
 					AttributeBinder.getInstance().bindView(view, mapper);
 				}

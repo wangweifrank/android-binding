@@ -1,5 +1,7 @@
 package com.gueei.android.binding.bindingProviders;
 
+import java.util.ArrayList;
+
 import android.view.View;
 
 import com.gueei.android.binding.Binder;
@@ -27,17 +29,29 @@ public abstract class BindingProvider {
 	protected static boolean bindAttributeWithObservable
 		(View view, String viewAttributeName, String fieldName, Object model){
 		IObservable<?> property = Utility.getObservableForModel(fieldName, model);
-		if (property==null) return false;
-		try {
-			ViewAttribute<?,?> attr = Binder.getAttributeForView(view, viewAttributeName);
-			BindingType result = attr.BindTo(property);
-			if (result.equals(BindingType.NoBinding)){
-				BindingLog.warning("Binding Provider", fieldName + " cannot setup bind with attribute");
+		if (property!=null){
+			try {
+				ViewAttribute<?,?> attr = Binder.getAttributeForView(view, viewAttributeName);
+				BindingType result = attr.BindTo(property);
+				if (result.equals(BindingType.NoBinding)){
+					BindingLog.warning("Binding Provider", fieldName + " cannot setup bind with attribute");
+				}
+				return true;
+			} catch (AttributeNotDefinedException e) {
+				e.printStackTrace();
+				return false;
 			}
-			return true;
-		} catch (AttributeNotDefinedException e) {
-			e.printStackTrace();
-			return false;
+		}else{
+			// Bind just the value
+			Object value = Utility.getFieldForModel(fieldName, model);
+			try {
+				ViewAttribute<?,?> attr = Binder.getAttributeForView(view, viewAttributeName);
+				attr._setObject(value, new ArrayList<Object>());
+				return true;
+			} catch (AttributeNotDefinedException e) {
+				e.printStackTrace();
+				return false;
+			}
 		}
 	}
 	

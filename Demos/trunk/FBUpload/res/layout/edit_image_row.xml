@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:binding="http://www.gueei.com/android-binding/"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    >
+    <ImageView
+    	android:id="@+id/image_preview"
+    	android:layout_width="96px"
+    	android:layout_height="96px"
+    	binding:image="PreviewImage"
+    	/>
+    <TextView
+    	android:id="@+id/image_source_url"
+       	android:layout_width="wrap_content"
+    	android:layout_height="wrap_content"
+    	android:layout_toRightOf="@id/image_preview"
+    	android:layout_marginLeft="10dip"
+    	android:singleLine="true"
+    	android:textSize="10dip"
+    	binding:text="SourceUri"
+    />
+    <EditText
+       	android:layout_width="fill_parent"
+    	android:layout_height="wrap_content"
+    	android:layout_below="@id/image_source_url"
+    	android:layout_toRightOf="@id/image_preview"
+    	android:layout_marginLeft="10dip"
+    	android:hint="Enter Caption here.. "
+    	android:inputType="textMultiLine"
+    	binding:text="Caption"
+    />
+</RelativeLayout>

@@ -93,9 +93,6 @@ public class FBUpload extends Activity implements AuthListener {
     }
     
     public class EditImageViewModel {
-    	public final Observable<Uri> Source = new Observable<Uri>(Uri.class);
-    	public final Uri SourceUri;
-    	public final Observable<Bitmap> PreviewImage = new Observable<Bitmap>(Bitmap.class);
     	public final StringObservable Caption = new StringObservable(){
 			@Override
 			protected void doSetValue(String newValue,
@@ -104,7 +101,9 @@ public class FBUpload extends Activity implements AuthListener {
 				super.doSetValue(newValue, initiators);
 			}
     	};
-    	
+    	public final Observable<Uri> Source = new Observable<Uri>(Uri.class);
+    	public final Uri SourceUri;
+    	public final Observable<Bitmap> PreviewImage = new Observable<Bitmap>(Bitmap.class);
     	public EditImageViewModel(Uri source){
     		Source.set(source);
     		SourceUri = source;
@@ -126,6 +125,7 @@ public class FBUpload extends Activity implements AuthListener {
     		};
     		loadImageThread.start();
     	}
+    	
     }
 
     public class AccountRowModel extends CursorRowModel{

@@ -27,7 +27,6 @@
     	android:layout_below="@id/image_source_url"
     	android:layout_toRightOf="@id/image_preview"
     	android:layout_marginLeft="10dip"
-    	android:hint="Enter Caption here.. "
     	android:inputType="textMultiLine"
     	binding:text="Caption"
     />

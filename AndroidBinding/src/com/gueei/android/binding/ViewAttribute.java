@@ -1,6 +1,7 @@
 package com.gueei.android.binding;
 
 import java.util.AbstractCollection;
+import java.util.ArrayList;
 
 import android.app.Activity;
 import android.os.Handler;
@@ -38,11 +39,13 @@ public abstract class ViewAttribute<Tv extends View, T> extends Observable<T> {
 	@Override
 	protected void doSetValue(final T newValue, AbstractCollection<Object> initiators) {
 		if (readonly) return;
+		doSetAttributeValue(newValue);
+		/*
 		uiHandler.post(new Runnable(){
 			public void run() {
 				doSetAttributeValue(newValue);
 			}
-		});
+		});*/
 	}
 
 	public boolean isReadonly() {
@@ -74,7 +77,9 @@ public abstract class ViewAttribute<Tv extends View, T> extends Observable<T> {
 		mBridge = new Bridge(this, prop);
 		prop.subscribe(mBridge);
 		if (binding.equals(BindingType.TwoWay)) this.subscribe(mBridge);
-		prop.notifyChanged();
+		ArrayList<Object> initiators = new ArrayList<Object>();
+		initiators.add(prop);
+		this._setObject(prop.get(), initiators);
 		return binding;
 	}
 	

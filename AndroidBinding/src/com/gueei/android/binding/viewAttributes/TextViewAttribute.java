@@ -6,6 +6,7 @@ import android.widget.TextView;
 import android.widget.EditText;
 
 import com.gueei.android.binding.Binder;
+import com.gueei.android.binding.BindingLog;
 import com.gueei.android.binding.BindingType;
 import com.gueei.android.binding.ViewAttribute;
 import com.gueei.android.binding.listeners.TextWatcherMulticast;
@@ -61,13 +62,14 @@ public class TextViewAttribute extends ViewAttribute<TextView, String>
 
 	public void beforeTextChanged(CharSequence arg0, int arg1, int arg2,
 			int arg3) {
+		mValue = this.getView().getText().toString();
 	}
 	
 	private String mValue;
 
 	public void onTextChanged(CharSequence arg0, int arg1, int arg2, int arg3) {
 		if (!arg0.toString().equals(mValue)){
-			mValue = arg0.toString();
+			BindingLog.warning("TextViewAttribute", "onchange");
 			this.notifyChanged();
 		}
 	}

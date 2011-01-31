@@ -1,6 +1,7 @@
 package com.gueei.android.binding.viewAttributes;
 
 import android.database.Cursor;
+import android.widget.AbsSpinner;
 import android.widget.Adapter;
 import android.widget.AdapterView;
 
@@ -65,11 +66,19 @@ public class ItemSourceViewAttribute extends ViewAttribute<AdapterView<Adapter>,
 				Binder.getApplication());
 		if (itemTemplate < 0)
 			return;
+		
+		int spinnerTemplate = -1;
+		if (map.containsKey("spinnerTemplate")){
+			spinnerTemplate = Utility.resolveResource(map.get("spinnerTemplate"),
+				Binder.getApplication());
+		}
 
 		try {
-			@SuppressWarnings("rawtypes")
+			if (spinnerTemplate<0) spinnerTemplate = itemTemplate;
+			
+			@SuppressWarnings("rawtypes")			
 			CursorAdapter<?> adapter = new CursorAdapter(Binder
-					.getApplication(), rowTypeMap, itemTemplate);
+					.getApplication(), rowTypeMap, spinnerTemplate, itemTemplate);
 			getView().setAdapter(adapter);
 		} catch (Exception e) {
 			e.printStackTrace();

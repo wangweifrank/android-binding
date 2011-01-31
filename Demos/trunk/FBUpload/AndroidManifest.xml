@@ -20,12 +20,6 @@
         </activity>
 
     <activity android:name="FacebookLogin"></activity>
-<activity android:name="ManageAccount">
-	<intent-filter>
-		<category android:name="android.intent.category.LAUNCHER"/>
-		<action android:name="android.intent.action.MAIN"/>
-	</intent-filter>
-</activity>
 </application>
     <uses-sdk android:minSdkVersion="7" />
 

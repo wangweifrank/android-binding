@@ -5,10 +5,10 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     >
-    <TextView
-	    android:layout_width="fill_parent"
-	    android:layout_height="fill_parent"
-	    android:layout_weight="1"
-	    binding:text="Response"
-    />
+    <Spinner
+    	android:layout_width="fill_parent"
+    	android:layout_height="wrap_content"
+    	binding:itemSource="AccountList"
+    	binding:itemTemplate="@layout/account_item"/>
+    	
 </LinearLayout>

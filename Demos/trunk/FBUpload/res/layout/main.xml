@@ -7,7 +7,7 @@
     >
     <ListView
 	    android:layout_width="fill_parent"
-	    android:layout_height="fill_parent"
+	    android:layout_height="wrap_content"
 	    android:layout_weight="1"
     	binding:itemSource="EditImageList"
     	binding:itemTemplate="@layout/edit_image_row"
@@ -20,6 +20,19 @@
 		    android:layout_width="fill_parent"
 		    android:layout_height="fill_parent"
 		    android:layout_weight="1"
+		    binding:itemSource="AccountList"
+		    binding:itemTemplate="@layout/account_item"
+		    binding:selectedItem="SelectedAccount"
+		    binding:onItemSelected="FillAlbumList"
+		    binding:spinnerTemplate="@layout/account_selected_item"
+	    />
+	    <Spinner
+		    android:layout_width="fill_parent"
+		    android:layout_height="fill_parent"
+		    android:layout_weight="1"
+		    binding:itemSource="AlbumList"
+		    binding:itemTemplate="@layout/account_item"
+		    binding:spinnerTemplate="@layout/account_selected_item"
 	    />
 	    <Button
 		    android:layout_width="wrap_content"

@@ -13,7 +13,7 @@ import com.gueei.android.binding.Observable;
 import com.gueei.android.binding.Observer;
 import com.gueei.android.binding.utility.CachedModelReflector;
 
-class ObservableMapper implements IPropertyContainer {
+public class ObservableMapper implements IPropertyContainer {
 	@SuppressWarnings("rawtypes")
 	public HashMap<String, MockObservable> observableMapping = new HashMap<String, MockObservable>();
 	public HashMap<String, MockCommand> commandMapping = new HashMap<String, MockCommand>();
@@ -58,7 +58,7 @@ class ObservableMapper implements IPropertyContainer {
 	}
 	
 	// Remember! This maps 1-1 to the real observable
-	private class MockObservable<T> extends Observable<T> implements Observer{
+	class MockObservable<T> extends Observable<T> implements Observer{
 		public MockObservable(Class<T> type) {
 			super(type);
 		}
@@ -82,7 +82,10 @@ class ObservableMapper implements IPropertyContainer {
 		
 		public void onPropertyChanged(IObservable<?> prop,
 			AbstractCollection<Object> initiators) {
-			if (prop!=observingProperty.get()) return;
+			if (prop!=observingProperty.get()){
+				prop.unsubscribe(this);
+				return;
+			}
 			initiators.add(this);
 			this.notifyChanged(initiators);
 		}

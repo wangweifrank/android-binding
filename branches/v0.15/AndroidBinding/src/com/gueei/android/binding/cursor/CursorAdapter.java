@@ -19,16 +19,17 @@ public class CursorAdapter<T extends CursorRowModel> extends BaseAdapter {
 	private final Cursor mCursor;
 	private final CursorRowTypeMap<T> mRowTypeMap;
 	private Context mContext;
-	private int mLayoutId;
-	
+	private int mLayoutId = -1;
+	private int mDropDownLayoutId = -1;
 	private Field idField;
 	private HashMap<String, Field> fields = new HashMap<String, Field>();
 	
-	public CursorAdapter(Context context, CursorRowTypeMap<T> rowTypeMap, int layoutId){
+	public CursorAdapter(Context context, CursorRowTypeMap<T> rowTypeMap, int layoutId, int dropDownLayoutId){
 		mRowTypeMap = rowTypeMap;
 		mCursor = rowTypeMap.getCursor();
 		mContext = context;
 		mLayoutId = layoutId;
+		mDropDownLayoutId = dropDownLayoutId;
 		init();
 	}
 	
@@ -82,13 +83,21 @@ public class CursorAdapter<T extends CursorRowModel> extends BaseAdapter {
 		return -1;
 	}
 
-	public View getView(int position, View convertView, ViewGroup parent) {
+	@Override
+	public View getDropDownView(int position, View convertView, ViewGroup parent) {
+		return
+			mDropDownLayoutId > 0 ?
+					getView(position, convertView, parent, mDropDownLayoutId) :
+						getView(position, convertView, parent, mLayoutId);
+	}
+
+	private View getView(int position, View convertView, ViewGroup parent, int layoutId){
 		View returnView = convertView;
 		try {
 			T row;
 			if ((convertView == null) || ((row = getAttachedObservableCollection(convertView))==null)) {
 				Binder.InflateResult result = Binder.inflateView(mContext,
-						mLayoutId, parent, false);
+						layoutId, parent, false);
 				returnView = result.rootView;
 				row = constructRow();
 				for(View view: result.processedViews){
@@ -105,7 +114,11 @@ public class CursorAdapter<T extends CursorRowModel> extends BaseAdapter {
 		} catch (Exception e) {
 			e.printStackTrace();
 			return returnView;
-		}
+		}		
+	}
+	
+	public View getView(int position, View convertView, ViewGroup parent) {
+		return getView(position, convertView, parent, mLayoutId);
 	}
 	
 	@SuppressWarnings("unchecked")

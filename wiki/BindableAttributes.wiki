@@ -63,7 +63,9 @@ No special attributes, inherited from view
 || selectedId || long (readonly) || yes ||
 || itemSource || Array, Cursor* || experimental ||
 || itemTemplate || Layout Resource Id || yes ||
-|| adapter || Adapter (obsolete the itemSource/Template) || yes ||
+|| adapter || Adapter (overrides the itemSource/Template) || yes ||
+|| headerItem || Object (view model) || no (schedule in 0.2) ||
+|| headerItemTemplate || Layout Resource Id || no (schedule in 0.2) ||
 
 * Remark
 For array type of Item Source, two way binding is supported. Current restriction: Array must consists of exactly same type of objects, the object can consists of Observable / Command fields, like what you define in models. 
@@ -79,7 +81,7 @@ In such case, selectedItem / itemSource will return a copy of the CursorRowModel
 
 == AbsSpinner ==
 || Attribute || Accepted Data type || Optional || Currently Supported ||
-|| spinnerTemplate || Layout resource Id || yes (if unset, will use itemTemplate || 0.15 ||
+|| spinnerTemplate || Layout resource Id || yes (if unset, will use itemTemplate) || 0.15 ||
 
 = CompoundButton =
 || Attribute || Accepted Data type || Currently Supported ||

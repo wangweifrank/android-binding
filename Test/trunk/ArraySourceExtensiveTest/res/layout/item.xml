@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:binding="http://www.gueei.com/android-binding/"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    >
+    <ImageView
+        android:layout_width="fill_parent" 
+	    android:layout_height="wrap_content"
+	    binding:image="ImageThumb"
+    />
+    <TextView
+	    android:layout_width="fill_parent" 
+	    android:layout_height="wrap_content"
+	    android:ellipsize="marquee"
+	    binding:text="Path"
+	   />
+	<EditText
+	    android:layout_width="fill_parent" 
+	    android:layout_height="wrap_content"
+	    binding:text="Caption"
+	    />
+</LinearLayout>

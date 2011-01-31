@@ -45,6 +45,7 @@ public class ArrayAdapter<T> extends BaseAdapter {
 		try {
 			ObservableMapper mapper;
 			if ((convertView == null) || ((mapper = getAttachedMapper(convertView))==null)) {
+			//if (true){
 				Binder.InflateResult result = Binder.inflateView(mContext,
 						mLayoutId, parent, false);
 				mapper = new ObservableMapper();
@@ -55,7 +56,9 @@ public class ArrayAdapter<T> extends BaseAdapter {
 				returnView = result.rootView;
 				this.putAttachedMapper(returnView, mapper);
 			}
-			mapper.changeMapping(mReflector, mArray[position]);
+			synchronized(ArrayAdapter.class){
+				mapper.changeMapping(mReflector, mArray[position]);
+			}
 			return returnView;
 		} catch (Exception e) {
 			e.printStackTrace();

@@ -58,31 +58,31 @@ public class ObservableMapper implements IPropertyContainer {
 	}
 	
 	// Remember! This maps 1-1 to the real observable
-	class MockObservable<T> extends Observable<T> implements Observer{
+	private static class MockObservable<T> extends Observable<T> implements Observer{
 		public MockObservable(Class<T> type) {
 			super(type);
 		}
 
-		private WeakReference<IObservable<T>> observingProperty = new WeakReference<IObservable<T>>(null);
+		private IObservable<T> observingProperty;
 		public T get() {
-			if (observingProperty.get()!=null){
-				return observingProperty.get().get();
+			if (observingProperty!=null){
+				return observingProperty.get();
 			}
 			return null;
 		}
 
 		public void changeObservingProperty(IObservable<T> newProperty){
-			if (observingProperty.get()!=null){
-				observingProperty.get().unsubscribe(this);
+			if (observingProperty!=null){
+				observingProperty.unsubscribe(this);
 			}
 			newProperty.subscribe(this);
-			observingProperty = new WeakReference<IObservable<T>>(newProperty);
+			observingProperty = newProperty;
 			this.notifyChanged(this);
 		}
 		
 		public void onPropertyChanged(IObservable<?> prop,
 			AbstractCollection<Object> initiators) {
-			if (prop!=observingProperty.get()){
+			if (prop!=observingProperty){
 				prop.unsubscribe(this);
 				return;
 			}
@@ -93,8 +93,8 @@ public class ObservableMapper implements IPropertyContainer {
 		@Override
 		protected void doSetValue(T newValue,
 				AbstractCollection<Object> initiators) {
-			if (observingProperty.get()!=null){
-				observingProperty.get().set(newValue, initiators);
+			if (observingProperty!=null){
+				observingProperty.set(newValue, initiators);
 			}
 		}
 	}

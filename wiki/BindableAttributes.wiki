@@ -9,6 +9,7 @@ This is a book-keeping post that keep the list of supporting attributes.
  * View
    * View Groups
      * AdapterView
+       * AbsSpinner
    * ImageView
    * ProgressBar
    * TextView
@@ -76,7 +77,11 @@ In such case, selectedItem / itemSource will return a copy of the CursorRowModel
 || clickedItem || Object (readonly) || yes ||
 || clickedId || long (readonly) || yes ||
 
-== CompoundButton == 
+== AbsSpinner ==
+|| Attribute || Accepted Data type || Optional || Currently Supported ||
+|| spinnerTemplate || Layout resource Id || yes (if unset, will use itemTemplate || 0.15 ||
+
+= CompoundButton =
 || Attribute || Accepted Data type || Currently Supported ||
 || onCheckedChange || Command || yes ||
 || checked || boolean || yes ||

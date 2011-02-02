@@ -66,6 +66,8 @@ No special attributes, inherited from view
 || adapter || Adapter (overrides the itemSource/Template) || yes ||
 || headerItem || Object (view model) || no (schedule in 0.2) ||
 || headerItemTemplate || Layout Resource Id || no (schedule in 0.2) ||
+|| footerItem || Object (view model) || no (schedule in 0.2) ||
+|| footerItemTemplate || Layout Resource Id || no (schedule in 0.2) ||
 
 * Remark
 For array type of Item Source, two way binding is supported. Current restriction: Array must consists of exactly same type of objects, the object can consists of Observable / Command fields, like what you define in models. 

@@ -1,0 +1,25 @@
+#summary Syntax of Binding in XML file
+
+= Introduction =
+
+Currently, all binding is defined in XML namespace: `http://www.gueei.com/android-binding/`, so, a typical way is include this namespace in each layout file, alongside with the android one:
+
+{{{
+<LinearLayout xmlns:android="http://...."
+  xmlns:binding="http://www.gueei.com/android-binding/"
+..>
+}}}
+
+Binding is by default, to the *public observable* fields of the supplied ViewModel. For example:
+
+{{{
+    <TextView binding:text="FirstName" ...
+}}}
+
+Means the text of that TextView is binded to an Observable named `FirstName`. Note that the naming is *Case Sensitive*. 
+
+= Special Syntax =
+
+|| Syntax || Example || Effect || type || Supported ||
+|| . || binding:text="." || binding to Model itself || one-shot || planned in 0.15 ||
+|| _Converter_(_Observable_, ...) || binding:visibility="NOT(EditMode)", binding:width="ADD(A, B)" || Perform the Converter Operation || One-way/two-way (depending on Converter) || planned ||

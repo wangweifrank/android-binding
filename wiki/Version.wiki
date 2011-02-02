@@ -7,10 +7,10 @@
 
 == 0.2 ==
 
-* HeaderItem and FooterItem in AdapterView
+ * HeaderItem and FooterItem in AdapterView
 
 == 0.15 ==
 
-* Bug fix in Array Source 
-* Added Debugger for dumping object tree
-* Added IRowModel Interface
+ * Bug fix in Array Source 
+ * Added Debugger for dumping object tree
+ * Added IRowModel Interface

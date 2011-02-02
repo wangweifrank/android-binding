@@ -18,6 +18,15 @@ Binding is by default, to the *public observable* fields of the supplied ViewMod
 
 Means the text of that TextView is binded to an Observable named `FirstName`. Note that the naming is *Case Sensitive*. 
 
+= Binding Types =
+
+|| Type || Meaning ||
+|| One-way || Change on value will be reflected in User Interface, but not returned to Model ||
+|| Two-way || Same as One-way, but changes in UI also reflected in Model ||
+|| One-shot || Only one-time value-assignment from model to UI, UI will not acknowledged to further changes ||
+
+Not all attribute of Views will support all binding modes. For example, the `clickedItem` of AdapterViews is a read-only attribute, that the assignment of value to clickedItem will be ignored by the UI. 
+
 = Special Syntax =
 
 || Syntax || Example || Effect || type || Supported ||

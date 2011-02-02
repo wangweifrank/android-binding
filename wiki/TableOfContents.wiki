@@ -7,3 +7,4 @@
   * [IRowModel IRowModel interface]
   * [ArraySource Binding To Array]
  * [BindableAttributes Supported Views and Attributes]
+ * [Version]

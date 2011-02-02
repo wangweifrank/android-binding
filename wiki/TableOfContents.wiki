@@ -4,4 +4,6 @@
  * Getting Started
   * [Motivation Why Android Binding?]
  * [BindingListOfObjects Binding To List of Objects]
+  * [IRowModel IRowModel interface]
+  * [ArraySource Binding To Array]
  * [BindableAttributes Supported Views and Attributes]

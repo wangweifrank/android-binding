@@ -6,6 +6,7 @@
  * [BindingListOfObjects Binding To List of Objects]
   * [IRowModel IRowModel interface]
   * [ArraySource Binding To Array]
+ * [ModelValidation Model Validation]
  * [BindableAttributes Supported Views and Attributes]
  * [BindingSyntax Binding Syntax]
  * [Version]

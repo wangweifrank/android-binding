@@ -11,6 +11,8 @@ import com.gueei.android.binding.BindingType;
 import com.gueei.android.binding.Utility;
 import com.gueei.android.binding.ViewAttribute;
 import com.gueei.android.binding.collections.ArrayAdapter;
+import com.gueei.android.binding.collections.IRowModel;
+import com.gueei.android.binding.collections.IRowModelArrayAdapter;
 import com.gueei.android.binding.cursor.CursorAdapter;
 import com.gueei.android.binding.cursor.CursorRowTypeMap;
 
@@ -32,7 +34,7 @@ public class ItemSourceViewAttribute extends ViewAttribute<AdapterView<Adapter>,
 			setArrayAdapter(newValue);
 	}
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	private void setArrayAdapter(Object newValue) {
 		try {
 			BindingMap map = Binder.getBindingMapForView(getView());
@@ -40,11 +42,17 @@ public class ItemSourceViewAttribute extends ViewAttribute<AdapterView<Adapter>,
 				return;
 			int itemTemplate = Utility.resolveResource(map.get("itemTemplate"),
 					Binder.getApplication());
-			@SuppressWarnings("rawtypes")
-			ArrayAdapter<?> adapter = new ArrayAdapter(Binder.getApplication(),
-					newValue.getClass().getComponentType(),
-					(Object[]) newValue, itemTemplate);
-			getView().setAdapter(adapter);
+			if (newValue instanceof IRowModel[]){
+				IRowModelArrayAdapter adapter = new IRowModelArrayAdapter(Binder.getApplication(),
+						newValue.getClass().getComponentType(),
+						(IRowModel[]) newValue, itemTemplate);
+				getView().setAdapter(adapter);
+			}else{
+				ArrayAdapter adapter = new ArrayAdapter(Binder.getApplication(),
+						newValue.getClass().getComponentType(),
+						(Object[]) newValue, itemTemplate);
+				getView().setAdapter(adapter);
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

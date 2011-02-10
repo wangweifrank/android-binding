@@ -13,18 +13,18 @@ import com.gueei.android.binding.Observable;
 import com.gueei.android.binding.Observer;
 import com.gueei.android.binding.utility.CachedModelReflector;
 
-public class ObservableMapper implements IPropertyContainer {
+public class ObservableMapper<T> implements IPropertyContainer {
 	@SuppressWarnings("rawtypes")
 	public HashMap<String, MockObservable> observableMapping = new HashMap<String, MockObservable>();
 	public HashMap<String, MockCommand> commandMapping = new HashMap<String, MockCommand>();
 	public int mappedPosition;
-	private Object mappingModel;
-	private CachedModelReflector mReflector;
+	private T mappingModel;
+	private CachedModelReflector<T> mReflector;
 
 	
 	// Call once and only once
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public <T> void initMapping(String[] observable, String[] command, CachedModelReflector<T> reflector, T model){
+	public void initMapping(String[] observable, String[] command, CachedModelReflector<T> reflector, T model){
 		int numObservables = observable.length;
 		mappingModel = model;
 		mReflector = reflector;
@@ -41,8 +41,12 @@ public class ObservableMapper implements IPropertyContainer {
 		}
 	}
 	
+	public T getCurrentMapping(){
+		return mappingModel;
+	}
+	
 	@SuppressWarnings("unchecked")
-	public <T> void changeMapping(CachedModelReflector<T> reflector, T model){
+	public void changeMapping(CachedModelReflector<T> reflector, T model){
 		mappingModel = model;
 		try {
 			for(String key: observableMapping.keySet()){
@@ -63,7 +67,7 @@ public class ObservableMapper implements IPropertyContainer {
 			super(type);
 		}
 
-		private IObservable<T> observingProperty;
+		public IObservable<T> observingProperty;
 		public T get() {
 			if (observingProperty!=null){
 				return observingProperty.get();
@@ -75,6 +79,13 @@ public class ObservableMapper implements IPropertyContainer {
 			if (observingProperty!=null){
 				observingProperty.unsubscribe(this);
 			}
+			// This might not be the best idea. but so far it works :P
+			/*
+			for(Observer o: newProperty.getAllObservers()){
+				if (o instanceof MockObservable){
+					newProperty.unsubscribe(o);
+				}
+			}*/
 			newProperty.subscribe(this);
 			observingProperty = newProperty;
 			this.notifyChanged(this);

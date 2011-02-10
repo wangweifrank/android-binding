@@ -42,35 +42,42 @@ public class TextViewAttribute extends ViewAttribute<TextView, String>
 
 	@Override
 	protected void doSetAttributeValue(Object newValue) {
+		synchronized(this){
 		if (newValue == null){
 			if (getView().getText().length()==0) return;
+			mValue="";
 			getView().setText("");
 			return;
 		}
 		if (!(newValue instanceof CharSequence)){
+			mValue=newValue.toString();
 			getView().setText(newValue.toString());
 			return;
 		}
 		if (compareCharSequence((CharSequence)newValue, get())) return;
+		mValue=newValue.toString();
 		getView().setText(cloneCharSequence((CharSequence)newValue));
+		}
 	}
 	
-	
+	private boolean suppressChange = false;
 
 	public void afterTextChanged(Editable arg0) {
 	}
 
 	public void beforeTextChanged(CharSequence arg0, int arg1, int arg2,
 			int arg3) {
-		mValue = this.getView().getText().toString();
+		//mValue = this.getView().getText().toString();
 	}
 	
 	private String mValue;
 
 	public void onTextChanged(CharSequence arg0, int arg1, int arg2, int arg3) {
+		synchronized(this){
 		if (!arg0.toString().equals(mValue)){
 			BindingLog.warning("TextViewAttribute", "onchange");
 			this.notifyChanged();
+		}
 		}
 	}
 

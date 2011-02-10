@@ -29,6 +29,7 @@ public class ModelValidator {
 				}
 			}catch(Exception e){
 				// Should be impossible to get here
+				e.printStackTrace();
 				continue;
 			}
 		}

@@ -24,7 +24,7 @@ public abstract class ViewAttribute<Tv extends View, T> extends Observable<T> {
 		this.attributeName = attributeName;
 	}
 	
-	protected Tv getView(){
+	public Tv getView(){
 		return mView;
 	}
 	
@@ -69,7 +69,9 @@ public abstract class ViewAttribute<Tv extends View, T> extends Observable<T> {
 	@Override
 	public abstract T get();
 
-	private Bridge mBridge;
+	// Set to package internal for debug use
+	Bridge mBridge;
+	
 	public BindingType BindTo(IObservable<?> prop) {
 		if (prop == null) return BindingType.NoBinding;
 		BindingType binding = AcceptThisTypeAs(prop.getType());
@@ -93,7 +95,12 @@ public abstract class ViewAttribute<Tv extends View, T> extends Observable<T> {
 		return BindingType.TwoWay;
 	}
 	
-	private class Bridge implements Observer{
+	public IObservable<?> getBindedObservable(){
+		if (mBridge==null) return null;
+		return mBridge.mBindedObservable;
+	}
+	
+	class Bridge implements Observer{
 		ViewAttribute<Tv, T> mAttribute;
 		IObservable<?> mBindedObservable;
 		public Bridge(ViewAttribute<Tv, T> attribute, IObservable<?> observable){

@@ -98,4 +98,8 @@ public class Observable<T> implements IObservable<T> {
 	public final Class<T> getType() {
 		return mType;
 	}
+
+	public Observer[] getAllObservers() {
+		return observers.toArray(new Observer[0]);
+	}
 }

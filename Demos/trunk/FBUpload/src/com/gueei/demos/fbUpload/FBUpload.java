@@ -7,7 +7,9 @@ import java.util.Set;
 import com.gueei.android.binding.Binder;
 import com.gueei.android.binding.BindingLog;
 import com.gueei.android.binding.Command;
+import com.gueei.android.binding.Debugger;
 import com.gueei.android.binding.Observable;
+import com.gueei.android.binding.collections.IRowModel;
 import com.gueei.android.binding.cursor.CursorRowModel;
 import com.gueei.android.binding.cursor.CursorSource;
 import com.gueei.android.binding.cursor.IdField;
@@ -92,40 +94,37 @@ public class FBUpload extends Activity implements AuthListener {
     	}
     }
     
-    public class EditImageViewModel {
-    	public final StringObservable Caption = new StringObservable(){
-			@Override
-			protected void doSetValue(String newValue,
-					AbstractCollection<Object> initiators) {
-				BindingLog.warning("Caption", "set value: " + newValue + "     " + this.get());
-				super.doSetValue(newValue, initiators);
-			}
-    	};
+    public class EditImageViewModel implements IRowModel {
+    	public final StringObservable Caption = new StringObservable();
     	public final Observable<Uri> Source = new Observable<Uri>(Uri.class);
-    	public final Uri SourceUri;
     	public final Observable<Bitmap> PreviewImage = new Observable<Bitmap>(Bitmap.class);
     	public EditImageViewModel(Uri source){
     		Source.set(source);
-    		SourceUri = source;
-    		// Start async load of preview Image
-    		Thread loadImageThread = new Thread(){
+			Caption.set(source.getLastPathSegment());
+    	}
+    	Thread loadImageThread;
+		public void onAttachedToUI() {
+			Log.d("Binder", "onAttached" + Source.get());
+			loadImageThread = new Thread(){
     			Bitmap previewBmp;
 				public void run() {
 					String id = Source.get().getLastPathSegment();
-					previewBmp = MediaStore.Images.Thumbnails.getThumbnail
-						(getContentResolver(), Long.parseLong(id), 
-								MediaStore.Images.Thumbnails.MICRO_KIND, new BitmapFactory.Options());
 					try {
+						previewBmp = MediaStore.Images.Thumbnails.getThumbnail
+							(getContentResolver(), Long.parseLong(id), 
+									MediaStore.Images.Thumbnails.MICRO_KIND, new BitmapFactory.Options());
 						Thread.sleep(1500);
+						PreviewImage.set(previewBmp);
 					} catch (InterruptedException e) {
+						MediaStore.Images.Thumbnails.cancelThumbnailRequest(getContentResolver(), Long.parseLong(id));
 						e.printStackTrace();
 					}
-					PreviewImage.set(previewBmp);
 				}
     		};
-    		loadImageThread.start();
-    	}
-    	
+    		//loadImageThread.start();
+		}
+		public void onDetachedFromUI() {
+		}
     }
 
     public class AccountRowModel extends CursorRowModel{
@@ -166,6 +165,7 @@ public class FBUpload extends Activity implements AuthListener {
     	Cursor accounts = FBUploadApplication.getInstance().getAccountRepository().getAllAccounts();
     	this.startManagingCursor(accounts);
     	mModel.AccountList.setCursor(accounts);
+        Debugger.graphObject(mModel, 10, null, this);
 	}
     
 

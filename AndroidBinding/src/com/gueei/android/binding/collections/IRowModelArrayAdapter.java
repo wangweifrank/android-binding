@@ -59,7 +59,6 @@ public class IRowModelArrayAdapter<T extends IRowModel> extends BaseAdapter {
 			}
 			synchronized(IRowModelArrayAdapter.class){
 				T current = mapper.getCurrentMapping();
-				if (current!=null) current.onDetachedFromUI();
 				mArray[position].onAttachedToUI();
 				mapper.changeMapping(mReflector, mArray[position]);
 			}

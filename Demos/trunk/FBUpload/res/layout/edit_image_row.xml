@@ -4,31 +4,26 @@
     android:orientation="vertical"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
+    android:gravity="center_vertical"
+    android:padding="30dip"
+    android:spacing="20dip"
     >
     <ImageView
     	android:id="@+id/image_preview"
-    	android:layout_width="96px"
-    	android:layout_height="96px"
-    	binding:image="PreviewImage"
-    	/>
-    <TextView
-    	android:id="@+id/image_source_url"
-       	android:layout_width="wrap_content"
+    	android:layout_width="fill_parent"
     	android:layout_height="wrap_content"
-    	android:layout_toRightOf="@id/image_preview"
-    	android:layout_marginLeft="10dip"
-    	android:singleLine="true"
-    	android:textSize="10dip"
-    	binding:text="Source"
-    />
+    	android:maxWidth="512px"
+    	android:maxHeight="512px"
+    	binding:image="PreviewImage"
+	   	binding:onClick="EnableEdit"
+    	/>
     <EditText
     	android:id="@+id/image_caption"
        	android:layout_width="fill_parent"
     	android:layout_height="wrap_content"
-    	android:layout_below="@id/image_source_url"
-    	android:layout_toRightOf="@id/image_preview"
-    	android:layout_marginLeft="10dip"
-    	android:inputType="textMultiLine"
+    	android:layout_below="@id/image_preview"
+    	android:layout_marginTop="10dip"
+    	android:inputType="text"
     	binding:text="Caption"
     />
 </RelativeLayout>

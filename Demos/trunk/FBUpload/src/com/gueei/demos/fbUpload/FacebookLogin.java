@@ -1,6 +1,7 @@
 package com.gueei.demos.fbUpload;
 
 import com.facebook.android.DialogError;
+import com.facebook.android.Facebook;
 import com.facebook.android.Facebook.DialogListener;
 import com.facebook.android.FacebookError;
 
@@ -16,16 +17,18 @@ public class FacebookLogin extends Activity {
 	    super.onCreate(savedInstanceState);
 	    FBUploadApplication.getInstance().getFacebook().authorize(this, new String[]{
 	    		"publish_stream", "offline_access", "manage_pages"
-	    }, 0, new DialogListener(){
+	    }, Facebook.FORCE_DIALOG_AUTH, new DialogListener(){
 			public void onComplete(Bundle values) {
 				SessionStore.save(FBUploadApplication.getInstance().getFacebook(), FBUploadApplication.getInstance());
 				SessionEvents.onLoginSuccess();
 				finish();
 			}
 			public void onFacebookError(FacebookError e) {
+				e.printStackTrace();
 				SessionEvents.onLoginError(e.getErrorType());
 			}
 			public void onError(DialogError e) {
+				e.printStackTrace();
 				SessionEvents.onLoginError(e.getMessage());
 			}
 			public void onCancel() {

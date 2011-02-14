@@ -5,9 +5,10 @@ import com.gueei.demos.fbUpload.viewModels.UploadImageViewModel;
 import com.gueei.demos.fbUpload.SessionEvents.AuthListener;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 
-public class UploadImage extends Activity implements AuthListener {
+public class UploadImage extends Activity {
 	UploadImageViewModel mModel;
 	
 	@Override
@@ -16,19 +17,10 @@ public class UploadImage extends Activity implements AuthListener {
         setContentView(R.layout.main);
         mModel = new UploadImageViewModel(this);
         Binder.setAndBindContentView(this, R.layout.edit_upload_image, mModel);
-        SessionEvents.addAuthListener(this);
-        if (!FBUploadApplication.getInstance().requestAuthFacebook()){
-        	//loadList = true;
-        }
     }
-
-	public void onAuthSucceed() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void onAuthFail(String error) {
-		// TODO Auto-generated method stub
-		
+	
+	public void SelectAlbum(UploadImageViewModel.EditImage[] Images){
+		Intent intent = new Intent(this, SelectAlbumActivity.class);
+		this.startActivity(intent);
 	}
 }

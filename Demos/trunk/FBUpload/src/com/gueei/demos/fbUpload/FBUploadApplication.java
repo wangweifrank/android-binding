@@ -27,15 +27,15 @@ public class FBUploadApplication extends Application {
 		return mInstance;
 	}
 
-	public boolean requestAuthFacebook(){
+	public boolean requestAuthFacebook(Activity callingActivity){
 		if (getFacebook().isSessionValid()){
 			SessionEvents.onLoginSuccess();
 			return true;
 		}
 		// Start Facebook Login
 		Intent intent = new Intent(this, FacebookLogin.class);
-		intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-		this.startActivity(intent);
+		//intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+		callingActivity.startActivity(intent);
 		return false;
 	}
 	

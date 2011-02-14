@@ -47,7 +47,7 @@ public class FBUpload extends Activity implements AuthListener {
         mModel = new UploadImageDataViewModel();
         Binder.setAndBindContentView(this, R.layout.main, mModel);
         SessionEvents.addAuthListener(this);
-        if (!FBUploadApplication.getInstance().requestAuthFacebook()){
+        if (!FBUploadApplication.getInstance().requestAuthFacebook(this)){
         	loadList = true;
         }
     }

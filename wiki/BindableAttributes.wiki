@@ -8,6 +8,7 @@ This is a book-keeping post that keep the list of supporting attributes.
 = Class Hirerarchy =
  * View
    * View Groups
+     * ViewFlipper
      * AdapterView
        * AbsSpinner
    * ImageView
@@ -27,6 +28,11 @@ This is a book-keeping post that keep the list of supporting attributes.
 View groups include all layout objects (relative, linear etc). 
 
 No special attributes, inherited from view
+
+== ViewFlipper ==
+
+|| Attribute || Accepted Data type || Currently Supported ||
+|| displayedChild || int || 0.15 ||
 
 = ImageView =
 || Attribute || Accepted Data type || Currently Supported ||

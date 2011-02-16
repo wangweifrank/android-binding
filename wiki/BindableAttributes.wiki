@@ -6,15 +6,9 @@
 This is a book-keeping post that keep the list of supporting attributes. 
 
 = Class Hirerarchy =
- * View
-   * View Groups
-     * ViewFlipper
-     * AdapterView
-       * AbsSpinner
-   * ImageView
-   * ProgressBar
-   * TextView
-     * CompoundButton
+
+<wiki:toc max_depth="5" />
+
 
 = View =
 || Attribute || Accepted Data type || Currently Supported ||

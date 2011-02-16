@@ -5,7 +5,7 @@
 
 This is a book-keeping post that keep the list of supporting attributes. 
 
-= Class Hirerarchy =
+= Index =
 
 <wiki:toc max_depth="5" />
 
@@ -18,44 +18,47 @@ This is a book-keeping post that keep the list of supporting attributes.
 || onLongClick || Command || yes||
 || visibility || int, boolean || yes||
 
-= View Groups =
+== View Groups ==
 View groups include all layout objects (relative, linear etc). 
-
 No special attributes, inherited from view
 
-== ViewFlipper ==
-
+=== View Flipper ===
 || Attribute || Accepted Data type || Currently Supported ||
 || displayedChild || int || 0.15 ||
 
-= ImageView =
+== Image View ==
 || Attribute || Accepted Data type || Currently Supported ||
 || source || drawable, Resource Integer || partial ||
 || tint || color integer || no ||
 
-= ProgressBar =
+== Progress Bar ==
 || Attribute || Accepted Data type || Currently Supported ||
 || progress || float # || yes ||
 || secondaryProgress || float # || yes||
 
 # remark: this is different from original, it is float and should be ranging from 0..1
 
-== Seek Bar == 
+=== Seek Bar ===
 || Attribute || Accepted Data type || Currently Supported ||
 || onSeekBarChanged || Command || no ||
 
-== Rating Bar ==
+=== Rating Bar ===
 || Attribute || Accepted Data type || Currently Supported ||
 || rating || float || yes ||
 || onRatingChanged || Command || yes ||
 
-= TextView =
+== Text View ==
 || Attribute || Accepted Data type || Currently Supported ||
 || lines || int || no||
 || text || CharSequence || yes ||
 || onTextChanged || Command || yes ||
 
-= AdapterView =
+=== Compound Button ===
+|| Attribute || Accepted Data type || Currently Supported ||
+|| onCheckedChange || Command || yes ||
+|| checked || boolean || yes ||
+
+== Adapter View ==
 || Attribute || Accepted Data type || Currently Supported ||
 || onItemLongClicked || Command || no ||
 || onItemSelected || Command || yes ||
@@ -75,17 +78,12 @@ For array type of Item Source, two way binding is supported. Current restriction
 For Cursor type, only one way is supported; You need to supply a defined CursorRowModel to pass to the Binder. (TODO: Document needed) 
 In such case, selectedItem / itemSource will return a copy of the CursorRowModel filled with the data from cursor. If the data is modified, a manual calling to refresh the cursor is required. 
 
-== ListView ==
+=== List View ===
 || Attribute || Accepted Data type || Currently Supported ||
 || onItemClicked || Command || yes ||
 || clickedItem || Object (readonly) || yes ||
 || clickedId || long (readonly) || yes ||
 
-== AbsSpinner ==
+=== Abs Spinner ===
 || Attribute || Accepted Data type || Optional || Currently Supported ||
 || spinnerTemplate || Layout resource Id || yes (if unset, will use itemTemplate) || 0.15 ||
-
-= CompoundButton =
-|| Attribute || Accepted Data type || Currently Supported ||
-|| onCheckedChange || Command || yes ||
-|| checked || boolean || yes ||

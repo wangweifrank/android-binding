@@ -25,7 +25,7 @@ No special attributes, inherited from view
 === View Animator ===
 || Attribute || Accepted Data type || Currently Supported ||
 || displayedChild || int || 0.15 ||
-|| childViews || View[[]] (Observable<View[[]]>) || 0.15 ||
+|| childViews || View`[]` (Observable<View`[]`>) || 0.15 ||
 
 == Image View ==
 || Attribute || Accepted Data type || Currently Supported ||

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-	xmlns:binding="http://schemas.android.com/apk/res/com.example.binding.demo"
+	xmlns:binding="http://www.gueei.com/android-binding/"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
 >
@@ -18,7 +18,7 @@
 <Button  
     android:layout_width="fill_parent" 
     android:layout_height="wrap_content" 
-    binding:click="ToastResult"
+    binding:onClick="ToastResult"
     binding:text="ButtonName"
     />
 <EditText  
@@ -30,7 +30,7 @@
     android:layout_width="fill_parent" 
     android:layout_height="wrap_content" 
     android:text="Toggle other button"
-    binding:click="Toggle"
+    binding:onClick="Toggle"
     />
 </LinearLayout>
 </ScrollView>

@@ -1,6 +1,7 @@
 package com.example.binding.demo;
 
 import com.gueei.android.binding.Binder;
+import com.gueei.androidBindingDemo.R;
 
 import android.app.Activity;
 import android.os.Bundle;

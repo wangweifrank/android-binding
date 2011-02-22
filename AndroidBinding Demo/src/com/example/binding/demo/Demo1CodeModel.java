@@ -9,6 +9,7 @@ import android.widget.ArrayAdapter;
 
 import com.gueei.android.binding.DependentObservable;
 import com.gueei.android.binding.Observable;
+import com.gueei.androidBindingDemo.R;
 
 public class Demo1CodeModel {
 	private Context mContext;
@@ -30,14 +31,21 @@ public class Demo1CodeModel {
 						"Show the activity (Demo1.java)",
 						context.getResources().getDrawable(R.drawable.demo_activity))
 		};
-		Selection = new Observable<NameDrawablePair>(pairs[0]);
+		Selection = new Observable<NameDrawablePair>(NameDrawablePair.class, pairs[0]){
+			@Override
+			protected void doSetValue(NameDrawablePair newValue,
+					AbstractCollection<Object> initiators) {
+				// TODO Auto-generated method stub
+				super.doSetValue(newValue, initiators);
+			}
+		};
 		Adapter list = 
 			new ArrayAdapter<NameDrawablePair>
 				(context, android.R.layout.simple_spinner_dropdown_item, pairs);
-		ImageList = new Observable<Adapter>(list);
+		ImageList = new Observable<Adapter>(Adapter.class, list);
 		
 		ImageToShow = 
-			new DependentObservable<Drawable>(Selection){
+			new DependentObservable<Drawable>(Drawable.class, Selection){
 				@Override
 				public Drawable calculateValue(Object... args) {
 					return ((NameDrawablePair)args[0]).drawable;

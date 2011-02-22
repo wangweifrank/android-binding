@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-	xmlns:binding="http://schemas.android.com/apk/res/com.example.binding.demo"
+	xmlns:binding="http://www.gueei.com/android-binding/"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical"
@@ -23,7 +23,7 @@
     <ImageView 
         android:layout_width="900px"
     	android:layout_height="wrap_content"
-    	binding:srcDrawable="ImageToShow"
+    	binding:image="ImageToShow"
     	android:scaleType="fitStart"
     />
 </ScrollView>

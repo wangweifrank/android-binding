@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-	xmlns:binding="http://schemas.android.com/apk/res/com.example.binding.demo"
+	xmlns:binding="http://www.gueei.com/android-binding/"
     android:orientation="vertical"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent">
@@ -82,13 +82,13 @@
 <Button
     android:layout_width="wrap_content" 
     android:layout_height="wrap_content" 
-	binding:click="RunExplainActivity"
+	binding:onClick="RunExplainActivity"
 	android:text="Tell me what happens"
 />
 <Button
     android:layout_width="wrap_content" 
     android:layout_height="wrap_content" 
-	binding:click="RunCodeActivity"
+	binding:onClick="RunCodeActivity"
 	android:text="Show me the codes!"
 />
 </LinearLayout>

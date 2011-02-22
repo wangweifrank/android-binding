@@ -10,6 +10,8 @@ import android.widget.Toast;
 import com.gueei.android.binding.Command;
 import com.gueei.android.binding.DependentObservable;
 import com.gueei.android.binding.Observable;
+import com.gueei.android.binding.observables.StringObservable;
+import com.gueei.androidBindingDemo.R;
 
 public class DemoModel1 {
 	private Context mContext;
@@ -19,15 +21,16 @@ public class DemoModel1 {
 			new ArrayAdapter<String>
 				(context, android.R.layout.simple_spinner_dropdown_item,
 						new String[]{ "Mr.", "Ms.", "Dr.", "Pr." });
-		TitleList = new Observable<Adapter>(list);
+		TitleList = new Observable<Adapter>(Adapter.class, list);
 	}
 	
-	public Observable<String> FirstName = new Observable<String>("");
-	public Observable<String> LastName = new Observable<String>("");
-	public Observable<String> Title = new Observable<String>("");
-	public Observable<String> Email = new Observable<String>("");
+	public StringObservable FirstName = new StringObservable("");
+	public StringObservable LastName = new StringObservable("");
+	public StringObservable Title = new StringObservable("");
+	public StringObservable Email = new StringObservable("");
 	public Observable<Adapter> TitleList;
-	public DependentObservable<String> FullName = new DependentObservable<String>(FirstName, LastName, Title){
+	public DependentObservable<String> FullName = 
+		new DependentObservable<String>(String.class, FirstName, LastName, Title){
 		@Override
 		public String calculateValue(Object... arg) {
 			return arg[2] + " " + arg[0] + " " + arg[1];

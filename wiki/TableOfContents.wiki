@@ -10,4 +10,6 @@
   * [ArraySource Binding To Array]
  * [BindableAttributes Supported Views and Attributes]
  * [BindingSyntax Binding Syntax]
+ * Experimental Features
+  * [PojoViewModel]
  * [Version]

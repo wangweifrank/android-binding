@@ -1,18 +1,21 @@
 #summary Version History
 
-= Latest Release =
-0.11
-
-= Planned Updates =
-
-== 0.2 ==
-
- * HeaderItem and FooterItem in AdapterView
- * One-Shot Binding (Just assign the value to view in this case) to Non-Observable Fields
+= Release History =
 
 == 0.15 ==
 
  * Bug fix in Array Source 
  * Added Debugger for dumping object tree
  * Added IRowModel Interface
- * Binding Syntax: "." means to the Model itself; In most cases, it work best with text -- binding:text="." => and it will grab the value from Model's toString(). This is one shot. 
+ * Experimental: Pojo View Model Support
+
+== 0.11 ==
+
+ * initial release
+
+= Planned Updates =
+
+== 0.2 ==
+
+ * HeaderItem and FooterItem in AdapterView
+ * Inclusion of Binding Syntax

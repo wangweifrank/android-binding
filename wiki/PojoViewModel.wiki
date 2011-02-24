@@ -1,4 +1,5 @@
 #summary Pojo (Plain-Old-Java-Object) View Model support
+#labels Phase-Design,Featured
 
 = Introduction =
 

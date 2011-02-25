@@ -48,4 +48,10 @@ public class CachedModelReflector<T>  {
 		return null;
 	}
 
+	public Class<?> getValueTypeByName(String name){
+		if (values.containsKey(name)){
+			return values.get(name).getType();
+		}
+		return null;
+	}
 }

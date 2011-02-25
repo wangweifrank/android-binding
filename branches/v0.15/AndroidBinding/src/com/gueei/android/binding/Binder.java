@@ -16,6 +16,7 @@ import com.gueei.android.binding.bindingProviders.ImageViewProvider;
 import com.gueei.android.binding.bindingProviders.ProgressBarProvider;
 import com.gueei.android.binding.bindingProviders.RatingBarProvider;
 import com.gueei.android.binding.bindingProviders.TextViewProvider;
+import com.gueei.android.binding.bindingProviders.ViewAnimatorProvider;
 import com.gueei.android.binding.bindingProviders.ViewProvider;
 import com.gueei.android.binding.exception.AttributeNotDefinedException;
 import com.gueei.android.binding.listeners.MulticastListener;
@@ -73,6 +74,14 @@ public class Binder {
 		context.setContentView(result.rootView);
 	}
 	
+	/**
+	 * Inflate, and parse the binding information with Android binding
+	 * @param context
+	 * @param layoutId The xml layout declaration
+	 * @param parent Parent view of the group, just pass null in most cases
+	 * @param attachToRoot Pass false
+	 * @return Inflate Result. 
+	 */
 	public static InflateResult inflateView(Context context, int layoutId, ViewGroup parent, boolean attachToRoot){
 		LayoutInflater inflater = LayoutInflater.from(context).cloneInContext(context);
 		ViewFactory factory = new ViewFactory(inflater);
@@ -81,6 +90,20 @@ public class Binder {
 		result.rootView = inflater.inflate(layoutId, parent, attachToRoot);
 		result.processedViews = factory.getProcessedViews();
 		return result;
+	}
+	
+	/**
+	 * Returns the binded root view of the inflated view
+	 * @param context
+	 * @param inflatedView The inflated result from inflateView
+	 * @param model The view model that is going to bind to
+	 * @return RootView of the binded view
+	 */
+	public static View bindView(Context context, InflateResult inflatedView, Object model){
+		for(View v: inflatedView.processedViews){
+			AttributeBinder.getInstance().bindView(v, model);
+		}
+		return inflatedView.rootView;
 	}
 	
 	static void attachProcessedViewsToRootView(View rootView, ArrayList<View> processedViews){
@@ -102,6 +125,7 @@ public class Binder {
 		AttributeBinder.getInstance().registerProvider(new CompoundButtonProvider());
 		AttributeBinder.getInstance().registerProvider(new ProgressBarProvider());
 		AttributeBinder.getInstance().registerProvider(new RatingBarProvider());
+		AttributeBinder.getInstance().registerProvider(new ViewAnimatorProvider());
 		mApplication = application;
 	}
 

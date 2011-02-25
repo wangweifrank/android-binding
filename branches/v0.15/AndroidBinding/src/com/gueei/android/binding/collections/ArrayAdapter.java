@@ -18,6 +18,7 @@ public class ArrayAdapter<T> extends BaseAdapter {
 	private final CachedModelReflector<T> mReflector;
 	private String[] observableNames = new String[0];
 	private String[] commandNames = new String[0];
+	private String[] valueNames = new String[0];
 		
 	public ArrayAdapter(Context context, Class<T> arrayType, T[] array, int layoutId) throws Exception{
 		mContext = context;
@@ -26,6 +27,7 @@ public class ArrayAdapter<T> extends BaseAdapter {
 		mReflector = new CachedModelReflector<T>(arrayType);
 		observableNames = mReflector.observables.keySet().toArray(observableNames);
 		commandNames = mReflector.commands.keySet().toArray(commandNames);
+		valueNames = mReflector.values.keySet().toArray(valueNames);
 	}
 
 	public int getCount() {
@@ -50,7 +52,7 @@ public class ArrayAdapter<T> extends BaseAdapter {
 				Binder.InflateResult result = Binder.inflateView(mContext,
 						mLayoutId, parent, false);
 				mapper = new ObservableMapper();
-				mapper.initMapping(observableNames, commandNames, mReflector, mArray[position]);
+				mapper.initMapping(observableNames, commandNames, valueNames,  mReflector, mArray[position]);
 				for(View view: result.processedViews){
 					AttributeBinder.getInstance().bindView(view, mapper);
 				}

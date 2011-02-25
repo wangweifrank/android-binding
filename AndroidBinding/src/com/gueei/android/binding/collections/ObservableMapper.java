@@ -17,6 +17,8 @@ public class ObservableMapper<T> implements IPropertyContainer {
 	@SuppressWarnings("rawtypes")
 	public HashMap<String, MockObservable> observableMapping = new HashMap<String, MockObservable>();
 	public HashMap<String, MockCommand> commandMapping = new HashMap<String, MockCommand>();
+	@SuppressWarnings("rawtypes")
+	public HashMap<String, Observable> valueMapping = new HashMap<String, Observable>();
 	public int mappedPosition;
 	private T mappingModel;
 	private CachedModelReflector<T> mReflector;
@@ -24,7 +26,7 @@ public class ObservableMapper<T> implements IPropertyContainer {
 	
 	// Call once and only once
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public void initMapping(String[] observable, String[] command, CachedModelReflector<T> reflector, T model){
+	public void initMapping(String[] observable, String[] command, String[] value, CachedModelReflector<T> reflector, T model){
 		int numObservables = observable.length;
 		mappingModel = model;
 		mReflector = reflector;
@@ -34,6 +36,11 @@ public class ObservableMapper<T> implements IPropertyContainer {
 				observableMapping.put(observable[i], new MockObservable(obs.getType()));
 			} catch (Exception e) {
 			}
+		}
+		int numValues = value.length;
+		for (int i=0; i<numValues; i++){
+			Class<?> valueType = reflector.getValueTypeByName(value[i]);
+			valueMapping.put(value[i], new Observable(valueType));
 		}
 		int numCommands = command.length;
 		for(int i=0; i<numCommands; i++){
@@ -54,6 +61,9 @@ public class ObservableMapper<T> implements IPropertyContainer {
 			}
 			for(String key: commandMapping.keySet()){
 				commandMapping.get(key).changeCommand(reflector.getCommandByName(key, model));
+			}
+			for(String key: valueMapping.keySet()){
+				valueMapping.get(key).set(reflector.getValueByName(key, model));
 			}
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -79,13 +89,6 @@ public class ObservableMapper<T> implements IPropertyContainer {
 			if (observingProperty!=null){
 				observingProperty.unsubscribe(this);
 			}
-			// This might not be the best idea. but so far it works :P
-			/*
-			for(Observer o: newProperty.getAllObservers()){
-				if (o instanceof MockObservable){
-					newProperty.unsubscribe(o);
-				}
-			}*/
 			newProperty.subscribe(this);
 			observingProperty = newProperty;
 			this.notifyChanged(this);
@@ -109,7 +112,7 @@ public class ObservableMapper<T> implements IPropertyContainer {
 			}
 		}
 	}
-
+	
 	private class MockCommand implements Command{
 		private WeakReference<Command> command;
 		public void Invoke(View view, Object... args) {
@@ -128,7 +131,10 @@ public class ObservableMapper<T> implements IPropertyContainer {
 	}
 
 	public IObservable<?> getObservableByName(String name) {
-		return observableMapping.get(name);
+		if (observableMapping.containsKey(name))
+			return observableMapping.get(name); 
+		else
+			return valueMapping.get(name);
 	}
 
 	public Object getValueByName(String name) throws Exception {

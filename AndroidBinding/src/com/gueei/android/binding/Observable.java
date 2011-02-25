@@ -80,7 +80,7 @@ public class Observable<T> implements IObservable<T> {
 	
 	public final void set(T newValue){
 		doSetValue(newValue, new ArrayList<Object>());
-		notifyChanged(mValue);
+		notifyChanged(this);
 	}
 	
 	protected void doSetValue(T newValue, AbstractCollection<Object> initiators){

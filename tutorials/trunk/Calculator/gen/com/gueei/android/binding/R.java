@@ -5,7 +5,7 @@
  * should not be modified by hand.
  */
 
-package com.gueei.tutorials.calculator;
+package com.gueei.android.binding;
 
 public final class R {
     public static final class attr {

@@ -5,7 +5,7 @@
 	android:layout_height="fill_parent">
 	<TextView android:layout_width="fill_parent"
 		android:layout_height="fill_parent" android:textSize="45dip"
-		android:gravity="right|bottom" binding:text="formattedDisplay"
+		android:gravity="right|bottom" binding:text="FormattedDisplay"
 		android:layout_weight="1"/>
 	<TableLayout android:layout_width="fill_parent"
 		android:layout_height="wrap_content" android:stretchColumns="0,1,2,3"

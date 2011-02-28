@@ -12,7 +12,12 @@ public class Calculator extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Binder.init(this.getApplication());
+        // Use this one for POJO Model
+        // Wrapper creation may change in future release
         Binder.setAndBindContentView(this, R.layout.main, 
        		PojoViewModelWrapper.create(new CalculatorPojoViewModel()));
+        
+        // Un-comment this line if use original view model.
+        //Binder.setAndBindContentView(this, R.layout.main, new CalculatorViewModel());
     }
 }

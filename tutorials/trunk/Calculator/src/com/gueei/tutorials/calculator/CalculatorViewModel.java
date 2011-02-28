@@ -11,16 +11,16 @@ import com.gueei.android.binding.Observable;
 
 public class CalculatorViewModel {
 	public String current = "0";
-	public final Observable<Double> display = new Observable<Double>(Double.class, 0d);
-	public final DependentObservable<String> formattedDisplay = new DependentObservable<String>(String.class, display){
+	public final Observable<Double> Display = new Observable<Double>(Double.class, 0d);
+	public final DependentObservable<String> FormattedDisplay = new DependentObservable<String>(String.class, Display){
 		@Override
 		public String calculateValue(Object... arg0) throws Exception {
 			DecimalFormat format = new DecimalFormat();
 			format.applyPattern("#.######");
-			String output = format.format(display.get());
+			String output = format.format(Display.get());
 			if (output.length() <= MAXLENGTH) return output;
 			format.applyPattern("0.########E00");
-			return format.format(display.get());
+			return format.format(Display.get());
 		}
 	};
 	
@@ -85,7 +85,7 @@ public class CalculatorViewModel {
 		current = "0";
 		operands.clear();
 		operators.clear();
-		display.set(0d);
+		Display.set(0d);
 	}
 	
 	private void onBack(){
@@ -95,7 +95,7 @@ public class CalculatorViewModel {
 		if (temp.length()==0)
 			temp = "0";
 		current = temp;
-		display.set(Double.parseDouble(current));
+		Display.set(Double.parseDouble(current));
 	}
 	
 	private void addNumber(int number){
@@ -107,7 +107,7 @@ public class CalculatorViewModel {
 		}else{
 			current = temp + number;
 		}
-		display.set(Double.parseDouble(current));
+		Display.set(Double.parseDouble(current));
 	}
 	
 	private void putDot(){
@@ -118,7 +118,7 @@ public class CalculatorViewModel {
 			if (temp.indexOf(".") <0)
 				current = temp + ".";
 		}
-		display.set(Double.parseDouble(current));
+		Display.set(Double.parseDouble(current));
 	}
 	
 	private void operate(Operator operator){
@@ -145,7 +145,7 @@ public class CalculatorViewModel {
 					double a = operands.pop();
 					result = lastOperator.calculate(a, b);
 				}
-				display.set(result);
+				Display.set(result);
 				operands.push(result);
 				operators.pop();
 			}

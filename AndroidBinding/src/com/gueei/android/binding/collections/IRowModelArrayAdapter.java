@@ -11,7 +11,7 @@ import com.gueei.android.binding.Binder;
 import com.gueei.android.binding.R;
 import com.gueei.android.binding.utility.CachedModelReflector;
 
-public class ArrayAdapter<T> extends BaseAdapter {
+public class IRowModelArrayAdapter<T extends IRowModel> extends BaseAdapter {
 	private final Context mContext;
 	private final int mLayoutId;
 	private final T[] mArray;
@@ -20,7 +20,7 @@ public class ArrayAdapter<T> extends BaseAdapter {
 	private String[] commandNames = new String[0];
 	private String[] valueNames = new String[0];
 		
-	public ArrayAdapter(Context context, Class<T> arrayType, T[] array, int layoutId) throws Exception{
+	public IRowModelArrayAdapter(Context context, Class<T> arrayType, T[] array, int layoutId) throws Exception{
 		mContext = context;
 		mLayoutId = layoutId;
 		mArray = array;
@@ -46,20 +46,22 @@ public class ArrayAdapter<T> extends BaseAdapter {
 		View returnView = convertView;
 		if (position>=mArray.length) return returnView;
 		try {
-			ObservableMapper mapper;
+			ObservableMapper<T> mapper;
 			if ((convertView == null) || ((mapper = getAttachedMapper(convertView))==null)) {
 			//if (true){
 				Binder.InflateResult result = Binder.inflateView(mContext,
 						mLayoutId, parent, false);
-				mapper = new ObservableMapper();
-				mapper.initMapping(observableNames, commandNames, valueNames,  mReflector, mArray[position]);
+				mapper = new ObservableMapper<T>();
+				mapper.initMapping(observableNames, commandNames, valueNames, mReflector, mArray[position]);
 				for(View view: result.processedViews){
 					AttributeBinder.getInstance().bindView(view, mapper);
 				}
 				returnView = result.rootView;				
 				this.putAttachedMapper(returnView, mapper);
 			}
-			synchronized(ArrayAdapter.class){
+			synchronized(IRowModelArrayAdapter.class){
+				T current = mapper.getCurrentMapping();
+				mArray[position].onAttachedToUI();
 				mapper.changeMapping(mReflector, mArray[position]);
 			}
 			return returnView;
@@ -69,15 +71,16 @@ public class ArrayAdapter<T> extends BaseAdapter {
 		}
 	}
 	
-	private ObservableMapper getAttachedMapper(View convertView){
+	@SuppressWarnings("unchecked")
+	private ObservableMapper<T> getAttachedMapper(View convertView){
 		Object mappers = convertView.getTag(R.id.tag_observableCollection_attachedObservable);
 		if (mappers==null){
 			return null;
 		}
-		return (ObservableMapper)mappers;
+		return (ObservableMapper<T>)mappers;
 	}
 	
-	private void putAttachedMapper(View convertView, ObservableMapper mapper){
+	private void putAttachedMapper(View convertView, ObservableMapper<T> mapper){
 		convertView.setTag(R.id.tag_observableCollection_attachedObservable, mapper);
 	}
 }

@@ -1,6 +1,6 @@
 package com.gueei.android.binding;
 
-import java.util.ArrayList;
+import java.util.Hashtable;
 
 import android.view.View;
 
@@ -8,7 +8,7 @@ import com.gueei.android.binding.bindingProviders.BindingProvider;
 
 public class AttributeBinder {
 	private static AttributeBinder _attributeFactory;
-	private ArrayList<BindingProvider> providers = new ArrayList<BindingProvider>(
+	private Hashtable<Class<?>, BindingProvider> providers = new Hashtable<Class<?>, BindingProvider>(
 			10);
 
 	private AttributeBinder() {
@@ -27,7 +27,7 @@ public class AttributeBinder {
 
 	public ViewAttribute<?, ?> createAttributeForView(View view,
 			String attributeId) {
-		for (BindingProvider p : providers) {
+		for (BindingProvider p : providers.values()) {
 			ViewAttribute<?, ?> a = p.createAttributeForView(view, attributeId);
 			if (a != null)
 				return a;
@@ -36,14 +36,14 @@ public class AttributeBinder {
 	}
 
 	public void registerProvider(BindingProvider provider) {
-		if (providers.contains(provider))
+		if (providers.containsKey(provider.getClass()))
 			return;
-		providers.add(provider);
+		providers.put(provider.getClass(), provider);
 	}
 
 	public void bindView(View view, Object model) {
 		BindingMap map = Binder.getBindingMapForView(view);
-		for (BindingProvider p : providers) {
+		for (BindingProvider p : providers.values()) {
 			p.bind(view, map, model);
 		}
 	}

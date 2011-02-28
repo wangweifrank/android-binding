@@ -10,6 +10,9 @@ public interface IObservable<T> {
 	public abstract void subscribe(Observer o);
 
 	public abstract void unsubscribe(Observer o);
+	
+	// For debug purpose, internal use only
+	abstract Observer[] getAllObservers();
 
 	public abstract void notifyChanged(Object initiator);
 

@@ -30,5 +30,5 @@ Not all attribute of Views will support all binding modes. For example, the `cli
 = Special Syntax =
 
 || Syntax || Example || Effect || type || Supported ||
-|| . || binding:text="." || binding to Model itself || one-shot || planned in 0.15 ||
-|| _Converter_(_Observable_, ...) || binding:visibility="NOT(EditMode)", binding:width="ADD(A, B)" || Perform the Converter Operation || One-way/two-way (depending on Converter) || planned ||
+|| . || binding:text="." || binding to Model itself || one-shot || planned ||
+|| _Converter_(_Observable_, ...) || binding:visibility="NOT(EditMode)", binding:width="ADD(A, B)" || Perform the Converter Operation || One-way/two-way (depending on Converter) || from 0.17 ||

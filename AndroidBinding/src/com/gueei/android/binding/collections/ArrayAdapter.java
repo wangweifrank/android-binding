@@ -14,15 +14,17 @@ import com.gueei.android.binding.utility.CachedModelReflector;
 public class ArrayAdapter<T> extends BaseAdapter {
 	private final Context mContext;
 	private final int mLayoutId;
+	private final int mDropDownLayoutId;
 	private final T[] mArray;
 	private final CachedModelReflector<T> mReflector;
 	private String[] observableNames = new String[0];
 	private String[] commandNames = new String[0];
 	private String[] valueNames = new String[0];
 		
-	public ArrayAdapter(Context context, Class<T> arrayType, T[] array, int layoutId) throws Exception{
+	public ArrayAdapter(Context context, Class<T> arrayType, T[] array, int layoutId, int dropDownLayoutId) throws Exception{
 		mContext = context;
 		mLayoutId = layoutId;
+		mDropDownLayoutId = dropDownLayoutId;
 		mArray = array;
 		mReflector = new CachedModelReflector<T>(arrayType);
 		observableNames = mReflector.observables.keySet().toArray(observableNames);
@@ -42,7 +44,7 @@ public class ArrayAdapter<T> extends BaseAdapter {
 		return arg0;
 	}
 
-	public View getView(int position, View convertView, ViewGroup parent) {
+	private View getView(int position, View convertView, ViewGroup parent, int layoutId) {
 		View returnView = convertView;
 		if (position>=mArray.length) return returnView;
 		try {
@@ -50,7 +52,7 @@ public class ArrayAdapter<T> extends BaseAdapter {
 			if ((convertView == null) || ((mapper = getAttachedMapper(convertView))==null)) {
 			//if (true){
 				Binder.InflateResult result = Binder.inflateView(mContext,
-						mLayoutId, parent, false);
+						layoutId, parent, false);
 				mapper = new ObservableMapper();
 				mapper.initMapping(observableNames, commandNames, valueNames,  mReflector, mArray[position]);
 				for(View view: result.processedViews){
@@ -79,5 +81,17 @@ public class ArrayAdapter<T> extends BaseAdapter {
 	
 	private void putAttachedMapper(View convertView, ObservableMapper mapper){
 		convertView.setTag(R.id.tag_observableCollection_attachedObservable, mapper);
+	}
+	
+	@Override
+	public View getDropDownView(int position, View convertView, ViewGroup parent) {
+		return
+			mDropDownLayoutId > 0 ?
+					getView(position, convertView, parent, mDropDownLayoutId) :
+						getView(position, convertView, parent, mLayoutId);
+	}
+
+	public View getView(int position, View convertView, ViewGroup parent) {
+		return getView(position, convertView, parent, mLayoutId);
 	}
 }

@@ -6,6 +6,7 @@ import java.util.HashMap;
 import com.gueei.android.binding.Command;
 import com.gueei.android.binding.IObservable;
 import com.gueei.android.binding.IPropertyContainer;
+import com.gueei.android.binding.Observable;
 
 public class CachedModelReflector<T>  {
 	public HashMap<String, Field> observables = new HashMap<String, Field>();
@@ -24,6 +25,7 @@ public class CachedModelReflector<T>  {
 				values.put(f.getName(), f);
 			}
 		}
+		observables.put(".", null);
 	}
 	
 	public Command getCommandByName(String name, T object) throws Exception {
@@ -35,6 +37,8 @@ public class CachedModelReflector<T>  {
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public IObservable<Object> getObservableByName(String name, T object) throws Exception {
+		if (name.equals("."))
+			return new Observable(object.getClass(), object);
 		if (observables.containsKey(name)){
 			return (IObservable) observables.get(name).get(object);
 		}

@@ -40,8 +40,19 @@ public class ItemSourceViewAttribute extends ViewAttribute<AdapterView<Adapter>,
 			BindingMap map = Binder.getBindingMapForView(getView());
 			if (!map.containsKey("itemTemplate"))
 				return;
+			
 			int itemTemplate = Utility.resolveResource(map.get("itemTemplate"),
 					Binder.getApplication());
+			if (itemTemplate <= 0)
+				return;
+			
+			int spinnerTemplate = -1;
+			if (map.containsKey("spinnerTemplate")){
+				spinnerTemplate = Utility.resolveResource(map.get("spinnerTemplate"),
+					Binder.getApplication());
+			}
+			spinnerTemplate = spinnerTemplate >0 ? spinnerTemplate : itemTemplate;
+			
 			if (newValue instanceof IRowModel[]){
 				IRowModelArrayAdapter adapter = new IRowModelArrayAdapter(Binder.getApplication(),
 						newValue.getClass().getComponentType(),
@@ -50,7 +61,7 @@ public class ItemSourceViewAttribute extends ViewAttribute<AdapterView<Adapter>,
 			}else{
 				ArrayAdapter adapter = new ArrayAdapter(Binder.getApplication(),
 						newValue.getClass().getComponentType(),
-						(Object[]) newValue, itemTemplate);
+						(Object[]) newValue, spinnerTemplate, itemTemplate);
 				getView().setAdapter(adapter);
 			}
 		} catch (Exception e) {
@@ -72,7 +83,7 @@ public class ItemSourceViewAttribute extends ViewAttribute<AdapterView<Adapter>,
 
 		int itemTemplate = Utility.resolveResource(map.get("itemTemplate"),
 				Binder.getApplication());
-		if (itemTemplate < 0)
+		if (itemTemplate <= 0)
 			return;
 		
 		int spinnerTemplate = -1;

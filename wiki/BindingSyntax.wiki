@@ -33,8 +33,8 @@ Not all attribute of Views will support all binding modes. For example, the `cli
 || . || binding:text="." || binding to Model itself || one-shot || 0.17 ||
 || _Converter_(_Observable_, ...) || binding:visibility="NOT(EditMode)", binding:text="CONCAT(A,B,C...)" || Perform the Converter Operation || One-way/two-way (depending on Converter) || from 0.17 ||
 || com.example.package.CustomConverter || || Custom converter must use full path of package || depends || 0.17 ||
-|| _Converter_('String') || CONCAT('abc', _Observable_) _results_ abc_ValueOfObservable_ || || 0.17 ||
-
+|| _Converter_('String') || binding:text="CONCAT('abc', _Observable_)"  || _results_ abc_ValueOfObservable_ ||  || 0.17 ||
+ 
 = Built in Converters = 
 
 || Converter || binding-type || output type || input parameter types || input count || effect ||

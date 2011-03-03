@@ -8,6 +8,10 @@ Android Binding is a Open Source Framework (Licensed under GNU Lesser GPL) free 
 
 For details on the markup and supporting data type, please visit [BindableAttributes]
 
+= Availability =
+
+Compiled Demo app is immediately available in Android Market. Search "Markup Demo" for it. 
+
 = Using the Demo app =
 
  * View Demo: The View with binded View Model in action

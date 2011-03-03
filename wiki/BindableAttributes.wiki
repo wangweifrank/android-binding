@@ -17,6 +17,7 @@ This is a book-keeping post that keep the list of supporting attributes.
 || onClick || Command || yes||
 || onLongClick || Command || yes||
 || visibility || int, boolean || yes||
+|| enabled || boolean || yes ||
 
 == View Groups ==
 View groups include all layout objects (relative, linear etc). 

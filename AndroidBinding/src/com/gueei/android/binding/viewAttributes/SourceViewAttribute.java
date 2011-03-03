@@ -8,10 +8,10 @@ import android.widget.ImageView;
 import com.gueei.android.binding.BindingType;
 import com.gueei.android.binding.ViewAttribute;
 
-public class ImageViewAttribute extends ViewAttribute<ImageView, Object> {
+public class SourceViewAttribute extends ViewAttribute<ImageView, Object> {
 
-	public ImageViewAttribute(ImageView view) {
-		super(Object.class, view, "image");
+	public SourceViewAttribute(ImageView view) {
+		super(Object.class, view, "source");
 	}
 
 	@Override
@@ -19,6 +19,9 @@ public class ImageViewAttribute extends ViewAttribute<ImageView, Object> {
 		if (newValue==null){
 			getView().setImageDrawable(null);
 			return;
+		}
+		if (newValue instanceof Integer){
+			getView().setImageResource((Integer)newValue);
 		}
 		if (newValue instanceof Uri){
 			getView().setImageURI((Uri)newValue);

@@ -6,6 +6,7 @@ import android.widget.TextView;
 import android.widget.EditText;
 
 import com.gueei.android.binding.Binder;
+import com.gueei.android.binding.BindingLog;
 import com.gueei.android.binding.BindingType;
 import com.gueei.android.binding.ViewAttribute;
 import com.gueei.android.binding.listeners.TextWatcherMulticast;
@@ -41,40 +42,50 @@ public class TextViewAttribute extends ViewAttribute<TextView, String>
 
 	@Override
 	protected void doSetAttributeValue(Object newValue) {
+		synchronized(this){
 		if (newValue == null){
 			if (getView().getText().length()==0) return;
+			mValue="";
 			getView().setText("");
 			return;
 		}
 		if (!(newValue instanceof CharSequence)){
+			mValue=newValue.toString();
 			getView().setText(newValue.toString());
 			return;
 		}
 		if (compareCharSequence((CharSequence)newValue, get())) return;
+		mValue=newValue.toString();
 		getView().setText(cloneCharSequence((CharSequence)newValue));
+		}
 	}
 	
-	
+	private boolean suppressChange = false;
 
 	public void afterTextChanged(Editable arg0) {
 	}
 
 	public void beforeTextChanged(CharSequence arg0, int arg1, int arg2,
 			int arg3) {
+		//mValue = this.getView().getText().toString();
 	}
 	
 	private String mValue;
 
 	public void onTextChanged(CharSequence arg0, int arg1, int arg2, int arg3) {
+		synchronized(this){
 		if (!arg0.toString().equals(mValue)){
-			mValue = arg0.toString();
+			BindingLog.warning("TextViewAttribute", "onchange");
 			this.notifyChanged();
+		}
 		}
 	}
 
 	@Override
 	protected BindingType AcceptThisTypeAs(Class<?> type) {
 		if (CharSequence.class.isAssignableFrom(type))
+			return BindingType.TwoWay;
+		if (String.class.isAssignableFrom(type))
 			return BindingType.TwoWay;
 		return BindingType.OneWay;
 	}

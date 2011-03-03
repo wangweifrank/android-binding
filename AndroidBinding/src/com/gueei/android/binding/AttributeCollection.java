@@ -24,4 +24,8 @@ public class AttributeCollection {
 		}
 		return null;
 	}
+	
+	public ViewAttribute<?,?>[] getAllAttributes(){
+		return collection.values().toArray(new ViewAttribute<?,?>[0]);
+	}
 }

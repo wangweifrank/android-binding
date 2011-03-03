@@ -1,7 +1,10 @@
 package com.gueei.android.binding;
 
 import java.util.AbstractCollection;
+import java.util.ArrayList;
 
+import android.app.Activity;
+import android.os.Handler;
 import android.view.View;
 
 public abstract class ViewAttribute<Tv extends View, T> extends Observable<T> {
@@ -9,14 +12,19 @@ public abstract class ViewAttribute<Tv extends View, T> extends Observable<T> {
 	protected Tv mView;
 	protected String attributeName;
 	private boolean readonly = false;
+	private Handler uiHandler;
 	
 	public ViewAttribute(Class<T> type, Tv view, String attributeName) {
 		super(type);
+		
+		// TODO: Not sure if this is safe
+		uiHandler = new Handler();
+		
 		this.mView = view;
 		this.attributeName = attributeName;
 	}
 	
-	protected Tv getView(){
+	public Tv getView(){
 		return mView;
 	}
 	
@@ -29,9 +37,15 @@ public abstract class ViewAttribute<Tv extends View, T> extends Observable<T> {
 	protected abstract void doSetAttributeValue(Object newValue);
 	
 	@Override
-	protected void doSetValue(T newValue, AbstractCollection<Object> initiators) {
+	protected void doSetValue(final T newValue, AbstractCollection<Object> initiators) {
 		if (readonly) return;
-		this.doSetAttributeValue(newValue);
+		doSetAttributeValue(newValue);
+		/*
+		uiHandler.post(new Runnable(){
+			public void run() {
+				doSetAttributeValue(newValue);
+			}
+		});*/
 	}
 
 	public boolean isReadonly() {
@@ -43,14 +57,21 @@ public abstract class ViewAttribute<Tv extends View, T> extends Observable<T> {
 	}
 
 	@Override
-	public void _setObject(Object newValue, AbstractCollection<Object> initiators){
-		this.doSetAttributeValue(newValue);
+	public void _setObject(final Object newValue, AbstractCollection<Object> initiators){
+		if (readonly) return;
+		uiHandler.post(new Runnable(){
+			public void run() {
+				doSetAttributeValue(newValue);
+			}
+		});
 	}
 	
 	@Override
 	public abstract T get();
 
-	private Bridge mBridge;
+	// Set to package internal for debug use
+	Bridge mBridge;
+	
 	public BindingType BindTo(IObservable<?> prop) {
 		if (prop == null) return BindingType.NoBinding;
 		BindingType binding = AcceptThisTypeAs(prop.getType());
@@ -58,7 +79,9 @@ public abstract class ViewAttribute<Tv extends View, T> extends Observable<T> {
 		mBridge = new Bridge(this, prop);
 		prop.subscribe(mBridge);
 		if (binding.equals(BindingType.TwoWay)) this.subscribe(mBridge);
-		prop.notifyChanged();
+		ArrayList<Object> initiators = new ArrayList<Object>();
+		initiators.add(prop);
+		this._setObject(prop.get(), initiators);
 		return binding;
 	}
 	
@@ -72,7 +95,12 @@ public abstract class ViewAttribute<Tv extends View, T> extends Observable<T> {
 		return BindingType.TwoWay;
 	}
 	
-	private class Bridge implements Observer{
+	public IObservable<?> getBindedObservable(){
+		if (mBridge==null) return null;
+		return mBridge.mBindedObservable;
+	}
+	
+	class Bridge implements Observer{
 		ViewAttribute<Tv, T> mAttribute;
 		IObservable<?> mBindedObservable;
 		public Bridge(ViewAttribute<Tv, T> attribute, IObservable<?> observable){

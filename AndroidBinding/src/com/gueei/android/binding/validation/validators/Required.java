@@ -3,13 +3,15 @@ package com.gueei.android.binding.validation.validators;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
+import com.gueei.android.binding.R;
 import com.gueei.android.binding.validation.ValidatorBase;
 
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Required{
 	public Class<?> Validator() default RequiredValidator.class;
 
-	public String ErrorMessage() default "%fieldname% is a required field";
+	public String ErrorMessage() default "";
+	public int ErrorMessagRes() default R.string.validation_required_message;
 	
 	public class RequiredValidator extends ValidatorBase<Required> {
 

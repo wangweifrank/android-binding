@@ -5,8 +5,11 @@ import java.lang.reflect.Field;
 import android.content.Context;
 
 public class Utility {
-	private static Object getFieldForModel(String fieldName, Object model){
+	public static Object getFieldForModel(String fieldName, Object model){
 		try{
+			if (model instanceof IPropertyContainer){
+				return ((IPropertyContainer)model).getValueByName(fieldName);
+			}
 			Field field = model.getClass().getField(fieldName);
 			return field.get(model);
 		}catch(Exception e){
@@ -15,17 +18,7 @@ public class Utility {
 	}
 	
 	public static IObservable<?> getObservableForModel(String fieldName, Object model){
-		if (model instanceof IPropertyContainer){
-			try{
-				return ((IPropertyContainer)model).getObservableByName(fieldName);
-			}catch(Exception e){
-				return null;
-			}
-		}
-		Object rawField = getFieldForModel(fieldName, model);
-		if (rawField instanceof Observable<?>)
-			return (Observable<?>)rawField;
-		return null;
+		return BindingSyntaxResolver.constructObservableFromStatement(fieldName, model);
 	}
 
 	public static Command getCommandForModel(String fieldName, Object model){

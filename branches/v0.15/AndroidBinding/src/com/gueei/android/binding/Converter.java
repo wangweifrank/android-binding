@@ -8,13 +8,19 @@ public abstract class Converter<T> extends DependentObservable<T> {
 		super(type, dependents);
 	}
 	
-	public abstract void ConvertBack(Object value, Object[] outResult);
+	/**
+	 * 
+	 * @param value The value to convert back
+	 * @param outResult Output of the converted result
+	 * @return true if the converter can handle, false if doesn't
+	 */
+	public abstract boolean ConvertBack(Object value, Object[] outResult);
 
 	@Override
 	protected void doSetValue(T newValue, AbstractCollection<Object> initiators) {
 		int count = dependents.length;
 		Object[] outResult = new Object[count];
-		ConvertBack(newValue, outResult);
+		if (!ConvertBack(newValue, outResult)) return;
 		for(int i=0; i<count; i++){
 			dependents[i]._setObject(outResult[i], initiators);
 		}

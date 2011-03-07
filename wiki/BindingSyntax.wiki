@@ -27,13 +27,15 @@ Means the text of that TextView is binded to an Observable named `FirstName`. No
 
 Not all attribute of Views will support all binding modes. For example, the `clickedItem` of AdapterViews is a read-only attribute, that the assignment of value to clickedItem will be ignored by the UI. 
 
-= Other Syntax =
+= Syntaxes =
 
 || Syntax || Example || Effect || type || Supported ||
+|| '_string_' || || String constant || one-shot || yes ||
 || . || binding:text="." || binding to Model itself || one-shot || 0.17 ||
 || _Converter_(_Observable_, ...) || binding:visibility="NOT(EditMode)", binding:text="CONCAT(A,B,C...)" || Perform the Converter Operation || One-way/two-way (depending on Converter) || from 0.17 ||
 || com.example.package.CustomConverter || || Custom converter must use full path of package || depends || 0.17 ||
 || _Converter_('String') || binding:text="CONCAT('abc', _Observable_)"  || _results_ abc_ValueOfObservable_ ||  || 0.17 ||
+
 
 = Built in Converters = 
 
@@ -41,3 +43,4 @@ Not all attribute of Views will support all binding modes. For example, the `cli
 || NOT || two-way || Boolean || Boolean || one || performs NOT operation on input ||
 || EQUAL || one-way || Boolean || Any Object, Any Object || two || Compare first object with second object ||
 || CONCAT || one-way || String || String || unlimited || Concat string ||
+|| IF || one-way || Object || Boolean, Object, Object || 3 || Return the second parameter if First Parameter is true, else return third parameter ||

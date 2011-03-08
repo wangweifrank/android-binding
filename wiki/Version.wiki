@@ -23,9 +23,9 @@
 
 = Planned Updates =
 
-== 0.17 ==
+== 0.18 ==
 
- * Pojo Support for ArraySource / CursorSource
+ * More Built in Converters
 
 == 0.2 ==
 

@@ -5,6 +5,8 @@
 
 This is a book-keeping post that keep the list of supporting attributes. 
 
+Remarks: non-optional attribute means if it's omitted, it will eventually breaks the function of that Widget, for example, if no itemTemplate for ListView, the ListView will simply render nothing even you provided the itemSource and everything else. 
+
 = Index =
 
 <wiki:toc max_depth="5" />
@@ -89,3 +91,8 @@ In such case, selectedItem / itemSource will return a copy of the CursorRowModel
 === Abs Spinner ===
 || Attribute || Accepted Data type || Optional || Currently Supported ||
 || spinnerTemplate || Layout resource Id || yes (if unset, will use itemTemplate) || 0.15 ||
+
+=== Expandable List View ===
+|| Attribute || Accepted Data type || Optional || Currently Supported ||
+|| childItemSource || Array, Cursor || no || 0.18 ||
+|| childItemTemplate || Layout resource Id || no || 0.18 ||

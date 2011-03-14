@@ -28,6 +28,7 @@
  * Text Attribute (of TextViews) changed to CharSequence instead of String
  * More Built in Converters
  * ExpandableListView support
+ * Refactor of CursorSource and ArraySource to a common parent
 
 == 0.2 ==
 

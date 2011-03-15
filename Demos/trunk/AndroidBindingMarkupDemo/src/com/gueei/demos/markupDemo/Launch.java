@@ -16,7 +16,8 @@ public class Launch extends Activity {
 	
 	private final String[] AVAILABLE_DEMOS = {
 		"View", "TextView", "ImageView", "ProgressBar", "RatingBar", 
-		"CompoundButton", "SpinnerWithArraySource", "ListViewWithCursorSource"
+		"CompoundButton", "SpinnerWithArraySource", "ListViewWithCursorSource",
+		"Converters", "MasterDetailListView"
 	};
 	
     /** Called when the activity is first created. */
@@ -24,6 +25,7 @@ public class Launch extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Binder.init(this.getApplication());
+        
         /*
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
         try {

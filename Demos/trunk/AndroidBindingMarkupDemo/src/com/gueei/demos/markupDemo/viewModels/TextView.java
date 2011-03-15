@@ -8,7 +8,6 @@ import com.gueei.android.binding.observables.StringObservable;
 
 public class TextView {
 	public final StringObservable FirstName = new StringObservable("");
-	public final StringObservable Separator = new StringObservable(", ");
 	public final StringObservable LastName = new StringObservable("");
 	public final BooleanObservable Changed = new BooleanObservable(false);
 	public final Command TextChanging = new Command(){

@@ -1,5 +1,7 @@
 package com.gueei.demos.markupDemo;
 
+import java.util.AbstractCollection;
+
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.os.Bundle;
@@ -57,7 +59,14 @@ public class ViewDemoActivity extends Activity {
     }
     
     public final Observable<View[]> DisplayingView = new Observable<View[]>(View[].class);
-    public final IntegerObservable DisplayingViewIndex = new IntegerObservable(0);
+    public final IntegerObservable DisplayingViewIndex = new IntegerObservable(0){
+		@Override
+		protected void doSetValue(Integer newValue,
+				AbstractCollection<Object> initiators) {
+			// TODO Auto-generated method stub
+			super.doSetValue(newValue, initiators);
+		}
+    };
     public final IntegerObservable MarkupIndex = new IntegerObservable(1);
     public final IntegerObservable CodeIndex = new IntegerObservable(2);
     public final IntegerObservable DemoIndex = new IntegerObservable(0);

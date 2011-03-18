@@ -10,6 +10,7 @@ import android.webkit.WebView;
 import com.gueei.android.binding.Binder;
 import com.gueei.android.binding.Command;
 import com.gueei.android.binding.Observable;
+import com.gueei.android.binding.collections.ArrayListObservable;
 import com.gueei.android.binding.observables.ArraySource;
 
 public class Launch extends Activity {
@@ -17,7 +18,7 @@ public class Launch extends Activity {
 	private final String[] AVAILABLE_DEMOS = {
 		"View", "TextView", "ImageView", "ProgressBar", "RatingBar", 
 		"CompoundButton", "SpinnerWithArraySource", "ListViewWithCursorSource",
-		"Converters", "MasterDetailListView"
+		"Converters", "MasterDetailListView", "NestedCursor"
 	};
 	
     /** Called when the activity is first created. */
@@ -69,5 +70,7 @@ public class Launch extends Activity {
     
     public final Observable<Object> SelectedDemo = new Observable<Object>(Object.class);
     
-    public final ArraySource<String> Demos = new ArraySource<String>();
+    public final ArrayListObservable<String> Demos = new
+    	ArrayListObservable<String>(String.class);
+//    public final ArraySource<String> Demos = new ArraySource<String>();
 }

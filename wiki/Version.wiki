@@ -23,6 +23,14 @@
 
 = Planned Updates =
 
+== 0.2 ==
+
+ * May Skip 0.18 and release 0.2
+ * Refactor (and deprecated) ArraySource to ObservableCollection
+ * Built-in ArrayListObservable
+ * ExpandableListView support -> implies need Expandable Adapters. 
+ * CursorSource will be deprecated too, it will change to CursorObservable and act more like a data adapter instead of object reflection
+
 == 0.18 ==
 
  * Text Attribute (of TextViews) changed to CharSequence instead of String

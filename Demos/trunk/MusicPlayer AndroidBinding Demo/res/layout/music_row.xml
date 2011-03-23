@@ -23,7 +23,6 @@
     	android:layout_height="wrap_content"
     	android:numStars="5"
     	binding:rating="Rating"
-    	binding:visibility="DisplayRating"
     	binding:onRatingChanged="Save"
      />
 </LinearLayout>

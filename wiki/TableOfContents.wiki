@@ -6,8 +6,8 @@
  * Tutorials
   * [ModelValidation Model Validation]
  * [BindingListOfObjects Binding To List of Objects]
-  * [IRowModel IRowModel interface]
-  * [ArraySource Binding To Array]
+  * [BindingToCollection Binding to Collections]
+  * [BindingToCursors Binding to Cursor]
  * [BindableAttributes Supported Views and Attributes]
  * [BindingSyntax Binding Syntax]
  * Experimental Features

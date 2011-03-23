@@ -8,7 +8,7 @@ Since v0.2, a new way of binding to collection of objects is introduced. This is
 public class ArrayListObservable<T> extends ObservableCollection<T> implements Collection<T>
 }}}
 
-Since it is implemented Collection<T>, that means you can do most of the normal ArrayList operations on ArrayListObservable. 
+Since it is implemented `Collection<T>`, that means you can do most of the normal ArrayList operations on `ArrayListObservable`. 
 
 = Usage =
 

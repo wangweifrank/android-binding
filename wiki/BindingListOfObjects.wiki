@@ -14,7 +14,7 @@ For all subclasses of Adapter View(including ListView, Spinner etc), it supports
 	binding:itemTemplate="@layout/music_row"
 }}}
 
-`itemSource` is the 'List' to bind to. It can be either a special class `CursorSource` or simply an array of plain View Models. 
+`itemSource` is the 'List' to bind to. It accepts ObservableCollections and CursorObservables. 
 
 `itemTemplate` is the layout that each item will display with. All binding syntax can be used there (even binding with Command)
 
@@ -51,55 +51,3 @@ And the music_row.xml:
      />
 </LinearLayout>
 }}}
-
-= Cursor Binding = 
-
-In Android Binding, binding a cursor to Adapter Views is very similar in binding normal objects, take the [MusicPlayerDemo MusicPlayer Demo] as example:
-
-First, define the ViewModel:
-
-{{{
-    public CursorSource MusicList;
-    MusicList = new CursorSource(MusicRowModel.class, mFactory);
-}}}
-
-`CursorSource` is a special type for Android Binding to acknowledge that this is a Cursor need to bind. It has a constructor defined:
-
-{{{
-    CursorSource(Class<? extends CursorRowModel> rowModel, CursorRowModel.Factory factory);
-}}}
-
-`CursorRowModel` is a View Model that represents each record of Cursor, and factory includes a callback that request the application to construct new row models.  
-
-Now, let's look at the MusicRowModel:
-
-{{{
-public class MusicRowModel extends CursorRowModel {
-	public StringField Title = new StringField(1);
-	public StringField Artist = new StringField(3);
-	public IdField Id = new IdField(0);
-	public FloatField Rating = new FloatField(2);
-	
-	public Command Save = new Command(){
-		public void Invoke(View view, Object... args) {
-			Toast.makeText(getContext(), "Saving " + Title.get(), Toast.LENGTH_SHORT).show();
-			((MusicDb)getParameters()[0]).updateEntry(Id.get(), Title.get(), Rating.get(), Artist.get());
-			getCursor().requery();
-		}
-	};
-	
-	public Command Play = new Command(){
-		public void Invoke(View view, Object... args){
-			MusicPlayer.getInstance().play(Id.get(), Title.get());
-		}
-	};
-
-	@Override
-	public void resetInternalState(int position) {
-	}
-}
-}}}
-
-This is pretty much the same as normal ViewModel, excepts it is extending CursorRowModel, which supplies some useful information like Context, Cursor, Column Index etc. The StringField, IdField, FloatField is telling Android Binding that they are fields coming from Cursor, where the column index is supplied in the constructor; and in the above example, a `Save` Command is included, where, when the interface fires this, it will save the reflected Content back to the Database. 
-
-One last part is the `resetInternalState()` function. Since the idea of Cursor is _NOT_ loading all data to Memory, it is just loading those needed. (In other word, those _showing_ on screen). The CursorRowModel in Android-Binding is the same, Models will be reusing once the field is off from screen, that means, the same reference can means row #3 and sometime later #20 or #200. The `resetInternalState()` is called whenever it is reused in different position, where, if necessary, internal state of this object need to be reset. {TODO: Example} You don't have to worry about Cursor fields as they are filled automatically by Android-Binding. In above example, simply ignore this is fine. 

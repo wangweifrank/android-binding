@@ -2,7 +2,7 @@
 
 = Status =
 
-This is introduced from version 0.15.
+Removed due to complete refactoring on Array and Cursor bindings. 
 
 = Details =
 

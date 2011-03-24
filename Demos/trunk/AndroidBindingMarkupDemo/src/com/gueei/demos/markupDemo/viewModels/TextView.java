@@ -1,5 +1,6 @@
 package com.gueei.demos.markupDemo.viewModels;
 
+import android.os.Handler;
 import android.view.View;
 
 import com.gueei.android.binding.Command;
@@ -10,6 +11,7 @@ public class TextView {
 	public final StringObservable FirstName = new StringObservable("");
 	public final StringObservable LastName = new StringObservable("");
 	public final BooleanObservable Changed = new BooleanObservable(false);
+	Handler handler = new Handler();
 	public final Command TextChanging = new Command(){
 		private Thread resetChange;
 		public void Invoke(View view, Object... args) {
@@ -20,8 +22,11 @@ public class TextView {
 				@Override
 				public void run() {
 					try{
-						sleep(1000);
-						Changed.set(false);
+						handler.postDelayed(new Runnable(){
+							public void run(){
+								Changed.set(false);
+							}
+						}, 1000);
 					}catch(Exception e){
 						return;
 					}

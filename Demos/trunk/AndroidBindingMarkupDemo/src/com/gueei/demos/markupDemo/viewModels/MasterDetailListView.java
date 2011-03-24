@@ -1,12 +1,10 @@
 package com.gueei.demos.markupDemo.viewModels;
 
-import android.util.Log;
 import android.view.View;
 
 import com.gueei.android.binding.Command;
 import com.gueei.android.binding.collections.ArrayListObservable;
 import com.gueei.android.binding.collections.LazyLoadParent;
-import com.gueei.android.binding.observables.ArraySource;
 import com.gueei.android.binding.observables.StringObservable;
 
 public class MasterDetailListView {
@@ -14,26 +12,16 @@ public class MasterDetailListView {
 		new ArrayListObservable<MasterItem>(MasterItem.class);
 	
 	public MasterDetailListView(){
-		(new Thread(){
-			@Override
-			public void run() {
-				try{
-					for(int i=0; i<100; i++){
-						MasterItem item = new MasterItem();
-						MasterItems.add(item);
-						Log.d("Binder", "added item: " + i);
-						sleep(2000);
-					}
-				}catch(Exception e){
-					e.printStackTrace();
-					Log.i("Binder", "interrupted?");
-					return;
-				}
-			}
-		}).start();
+		for (int i=0; i<100; i++){
+			MasterItems.add(new MasterItem("MasterItem: " + i));
+		}
 	}
 	
 	public class MasterItem implements LazyLoadParent{
+		public MasterItem(String name){
+			Title.set(name);
+		}
+		
 		private int clickCount = 0;
 		public final Command ToastTitle = new Command(){
 			public void Invoke(View view, Object... args) {
@@ -44,16 +32,20 @@ public class MasterDetailListView {
 
 		public final StringObservable Title = new StringObservable("Master: ");
 		
-		public ArraySource<String> DetailItems = new ArraySource<String>();
-		public MasterItem(){
-		}
+		public ArrayListObservable<String> DetailItems = 
+			new ArrayListObservable<String>(String.class);
 		
 		public void onLoadChildren() {
 			String[] detail = new String[10];
 			for (int i=0; i<10; i++){
-				detail[i] = "Detail: " + i;
+				detail[i] = "Detail" + i + " of " + Title.get();
 			}
 			DetailItems.setArray(detail);
+		}
+		
+		@Override
+		public String toString(){
+			return Title.get();
 		}
 	}
 }

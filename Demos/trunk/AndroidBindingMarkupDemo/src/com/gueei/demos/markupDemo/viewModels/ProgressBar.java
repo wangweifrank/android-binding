@@ -1,16 +1,23 @@
 package com.gueei.demos.markupDemo.viewModels;
 
+import android.os.Handler;
+
 import com.gueei.android.binding.observables.FloatObservable;
 
 public class ProgressBar {
+	Handler handler = new Handler();
 	public ProgressBar(){
 		Thread setProgress = new Thread(){
 			@Override
 			public void run() {
 				super.run();
 				while(PrimaryProgress.get() < 1.0f){
-					PrimaryProgress.set(PrimaryProgress.get() + 0.005f);
-					SecondaryProgress.set(PrimaryProgress.get() * 1.5f);
+					handler.post(new Runnable(){
+						public void run(){
+							PrimaryProgress.set(PrimaryProgress.get() + 0.005f);
+							SecondaryProgress.set(PrimaryProgress.get() * 1.5f);							
+						}
+					});
 					try{
 						sleep(50);
 					}catch(Exception e){

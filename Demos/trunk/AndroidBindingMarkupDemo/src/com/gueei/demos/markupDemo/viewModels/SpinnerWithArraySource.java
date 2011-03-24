@@ -5,11 +5,13 @@ import android.widget.Toast;
 
 import com.gueei.android.binding.Command;
 import com.gueei.android.binding.Observable;
+import com.gueei.android.binding.collections.ArrayListObservable;
 import com.gueei.android.binding.observables.ArraySource;
 
 public class SpinnerWithArraySource {
 	public final Observable<Object> Selected = new Observable<Object>(Object.class);
-	public final ArraySource<String> ContinentNames = new ArraySource<String>();
+	public final ArrayListObservable<String> ContinentNames = 
+		new ArrayListObservable<String>(String.class);
 	public final Command ToastContinent = new Command(){
 		public void Invoke(View view, Object... args) {
 			Toast.makeText(view.getContext(), Selected.get().toString(), Toast.LENGTH_SHORT).show();

@@ -8,42 +8,43 @@ import android.provider.MediaStore;
 
 import com.gueei.android.binding.collections.ArrayListObservable;
 import com.gueei.android.binding.collections.LazyLoadParent;
+import com.gueei.android.binding.cursor.CursorObservable;
 import com.gueei.android.binding.cursor.CursorRowModel;
 import com.gueei.android.binding.cursor.CursorRowModel.Factory;
 import com.gueei.android.binding.cursor.CursorSource;
 import com.gueei.android.binding.cursor.IdField;
+import com.gueei.android.binding.cursor.IntegerField;
 import com.gueei.android.binding.cursor.StringField;
 
 public class NestedCursor {
 	public static class ContactRowModel extends CursorRowModel implements LazyLoadParent{
-		public StringField Title = new StringField(1);
-		public IdField Id = new IdField(0);
-		public ArrayListObservable<String> Emails = 
-			new ArrayListObservable<String>(String.class);
+		public StringField Title = new StringField(ContactsContract.Contacts.DISPLAY_NAME);
+		public IdField Id = new IdField(ContactsContract.Contacts._ID);
+		public CursorObservable<EmailRowModel> Emails = 
+			new CursorObservable<EmailRowModel>(EmailRowModel.class);
 		
 		@Override
 		public void onLoad(int position) {
 		}
 
 		public void onLoadChildren() {
-			Emails.add("A@BC.com");
-			Emails.add("D@EF.com");
-		}
-		
-		@Override
-		public String toString(){
-			return Title.get();
+			Cursor c = getContext().getContentResolver().query(
+					ContactsContract.CommonDataKinds.Email.CONTENT_URI, 
+					null,
+					ContactsContract.CommonDataKinds.Email.CONTACT_ID + " = ?", 
+					new String[]{Id.get().toString()}, null);
+			Emails.setCursor(c);
 		}
 	}
 	
-	private static final Factory<ContactRowModel> factory = new Factory<ContactRowModel>(){
-		public ContactRowModel createRowModel(Context context) {
-			return new ContactRowModel();
-		}
-	};
+	public static class EmailRowModel extends CursorRowModel{
+		public StringField Address = 
+			new StringField(ContactsContract.CommonDataKinds.Email.DATA);
+		public IntegerField Type = new IntegerField(ContactsContract.CommonDataKinds.Email.TYPE);
+	}
 	
-	public CursorSource<ContactRowModel> Contacts = new 
-		CursorSource<ContactRowModel>(ContactRowModel.class, factory);
+	public CursorObservable<ContactRowModel> Contacts = new 
+		CursorObservable<ContactRowModel>(ContactRowModel.class);
 	
 	public NestedCursor(Activity activity){
 		Cursor contact = activity.getContentResolver().query(

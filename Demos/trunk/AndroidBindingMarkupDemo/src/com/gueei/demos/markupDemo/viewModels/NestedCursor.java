@@ -1,20 +1,14 @@
 package com.gueei.demos.markupDemo.viewModels;
 
+import gueei.binding.collections.LazyLoadParent;
+import gueei.binding.cursor.CursorObservable;
+import gueei.binding.cursor.CursorRowModel;
+import gueei.binding.cursor.IdField;
+import gueei.binding.cursor.IntegerField;
+import gueei.binding.cursor.StringField;
 import android.app.Activity;
-import android.content.Context;
 import android.database.Cursor;
 import android.provider.ContactsContract;
-import android.provider.MediaStore;
-
-import com.gueei.android.binding.collections.ArrayListObservable;
-import com.gueei.android.binding.collections.LazyLoadParent;
-import com.gueei.android.binding.cursor.CursorObservable;
-import com.gueei.android.binding.cursor.CursorRowModel;
-import com.gueei.android.binding.cursor.CursorRowModel.Factory;
-import com.gueei.android.binding.cursor.CursorSource;
-import com.gueei.android.binding.cursor.IdField;
-import com.gueei.android.binding.cursor.IntegerField;
-import com.gueei.android.binding.cursor.StringField;
 
 public class NestedCursor {
 	public static class ContactRowModel extends CursorRowModel implements LazyLoadParent{

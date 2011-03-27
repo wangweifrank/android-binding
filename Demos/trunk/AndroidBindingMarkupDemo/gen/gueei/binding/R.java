@@ -5,7 +5,7 @@
  * should not be modified by hand.
  */
 
-package com.gueei.demos.markupDemo;
+package gueei.binding;
 
 public final class R {
     public static final class attr {

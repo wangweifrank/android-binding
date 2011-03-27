@@ -1,8 +1,9 @@
 package com.gueei.demos.markupDemo.converters;
 
-import com.gueei.android.binding.IObservable;
+import gueei.binding.IObservable;
+import gueei.binding.converters.EQUAL;
 
-public class NotEqual extends com.gueei.android.binding.converters.EQUAL {
+public class NotEqual extends EQUAL {
 
 	public NotEqual(IObservable<?>[] dependents) {
 		super(dependents);

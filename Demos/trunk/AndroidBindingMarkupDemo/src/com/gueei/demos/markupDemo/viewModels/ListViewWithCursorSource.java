@@ -1,17 +1,16 @@
 package com.gueei.demos.markupDemo.viewModels;
 
+import gueei.binding.Command;
+import gueei.binding.Observable;
+import gueei.binding.cursor.CursorObservable;
+import gueei.binding.cursor.CursorRowModel;
+import gueei.binding.cursor.IdField;
+import gueei.binding.cursor.StringField;
 import android.app.Activity;
 import android.database.Cursor;
 import android.provider.MediaStore;
 import android.view.View;
 import android.widget.Toast;
-
-import com.gueei.android.binding.Command;
-import com.gueei.android.binding.Observable;
-import com.gueei.android.binding.cursor.CursorObservable;
-import com.gueei.android.binding.cursor.CursorRowModel;
-import com.gueei.android.binding.cursor.IdField;
-import com.gueei.android.binding.cursor.StringField;
 
 public class ListViewWithCursorSource {
 	public ListViewWithCursorSource(Activity activity) throws Exception{

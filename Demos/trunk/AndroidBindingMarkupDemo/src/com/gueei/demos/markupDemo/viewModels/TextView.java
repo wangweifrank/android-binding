@@ -1,11 +1,10 @@
 package com.gueei.demos.markupDemo.viewModels;
 
+import gueei.binding.Command;
+import gueei.binding.observables.BooleanObservable;
+import gueei.binding.observables.StringObservable;
 import android.os.Handler;
 import android.view.View;
-
-import com.gueei.android.binding.Command;
-import com.gueei.android.binding.observables.BooleanObservable;
-import com.gueei.android.binding.observables.StringObservable;
 
 public class TextView {
 	public final StringObservable FirstName = new StringObservable("");

@@ -1,12 +1,10 @@
 package com.gueei.demos.markupDemo.viewModels;
 
+import gueei.binding.Command;
+import gueei.binding.Observable;
+import gueei.binding.collections.ArrayListObservable;
 import android.view.View;
 import android.widget.Toast;
-
-import com.gueei.android.binding.Command;
-import com.gueei.android.binding.Observable;
-import com.gueei.android.binding.collections.ArrayListObservable;
-import com.gueei.android.binding.observables.ArraySource;
 
 public class SpinnerWithArraySource {
 	public final Observable<Object> Selected = new Observable<Object>(Object.class);

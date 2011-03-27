@@ -1,11 +1,10 @@
 package com.gueei.demos.markupDemo.viewModels;
 
+import gueei.binding.Command;
+import gueei.binding.collections.ArrayListObservable;
+import gueei.binding.collections.LazyLoadParent;
+import gueei.binding.observables.StringObservable;
 import android.view.View;
-
-import com.gueei.android.binding.Command;
-import com.gueei.android.binding.collections.ArrayListObservable;
-import com.gueei.android.binding.collections.LazyLoadParent;
-import com.gueei.android.binding.observables.StringObservable;
 
 public class MasterDetailListView {
 	public final ArrayListObservable<MasterItem> MasterItems = 

@@ -1,8 +1,8 @@
 package com.gueei.demos.markupDemo.viewModels;
 
-import com.gueei.android.binding.DependentObservable;
-import com.gueei.android.binding.IObservable;
-import com.gueei.android.binding.observables.BooleanObservable;
+import gueei.binding.DependentObservable;
+import gueei.binding.IObservable;
+import gueei.binding.observables.BooleanObservable;
 
 public class Converters {
 	public final BooleanObservable A = new BooleanObservable(true);

@@ -1,7 +1,7 @@
 package com.gueei.demos.markupDemo.viewModels;
 
-import com.gueei.android.binding.Command;
-import com.gueei.android.binding.observables.BooleanObservable;
+import gueei.binding.Command;
+import gueei.binding.observables.BooleanObservable;
 
 public class View {
 	public Command Toggle = new Command(){

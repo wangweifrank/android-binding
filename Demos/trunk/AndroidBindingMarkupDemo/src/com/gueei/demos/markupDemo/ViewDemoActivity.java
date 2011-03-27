@@ -1,18 +1,15 @@
 package com.gueei.demos.markupDemo;
 
+import gueei.binding.Binder;
+import gueei.binding.Command;
+import gueei.binding.Observable;
+import gueei.binding.observables.IntegerObservable;
+
 import java.util.AbstractCollection;
 
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.View;
-import android.widget.Toast;
-
-import com.gueei.android.binding.Binder;
-import com.gueei.android.binding.Command;
-import com.gueei.android.binding.Observable;
-import com.gueei.android.binding.observables.IntegerObservable;
 
 public class ViewDemoActivity extends Activity {
 	String demoName;

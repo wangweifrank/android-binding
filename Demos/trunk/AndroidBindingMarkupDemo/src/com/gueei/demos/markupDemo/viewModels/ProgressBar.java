@@ -1,8 +1,7 @@
 package com.gueei.demos.markupDemo.viewModels;
 
+import gueei.binding.observables.FloatObservable;
 import android.os.Handler;
-
-import com.gueei.android.binding.observables.FloatObservable;
 
 public class ProgressBar {
 	Handler handler = new Handler();

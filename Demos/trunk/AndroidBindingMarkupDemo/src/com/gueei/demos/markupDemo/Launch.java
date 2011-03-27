@@ -1,17 +1,15 @@
 package com.gueei.demos.markupDemo;
 
+import gueei.binding.Binder;
+import gueei.binding.Command;
+import gueei.binding.Observable;
+import gueei.binding.collections.ArrayListObservable;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.webkit.WebView;
-
-import com.gueei.android.binding.Binder;
-import com.gueei.android.binding.Command;
-import com.gueei.android.binding.Observable;
-import com.gueei.android.binding.collections.ArrayListObservable;
-import com.gueei.android.binding.observables.ArraySource;
 
 public class Launch extends Activity {
 	

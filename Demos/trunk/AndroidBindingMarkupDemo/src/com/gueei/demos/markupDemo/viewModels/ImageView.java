@@ -1,12 +1,12 @@
 package com.gueei.demos.markupDemo.viewModels;
 
+import gueei.binding.Observable;
+import gueei.binding.observables.IntegerObservable;
 import android.app.Activity;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 
-import com.gueei.android.binding.Observable;
-import com.gueei.android.binding.observables.IntegerObservable;
 import com.gueei.demos.markupDemo.R;
 
 public class ImageView {

@@ -79,3 +79,14 @@ The `ADAPTER` by itself do nothing more than separating markups to different par
 
 `STITCH` is a converter accepts _any_ number of adapter, and resulting a single adapter the stitches all the adapters supplied into one. (Under the hood it is creating a `gueei.binding.CombinedAdapter`)
 This is useful when you need to create a list that needs to blend several collections together. 
+
+For example, you can do something like:
+{{{
+    STITCH(
+      ADAPTER({template=@layout/list_item, source=CURSOROBSERVABLE}),
+      ADAPTER({template=@layout/list_item2, source=ARRAYLISTOBSERVABLE})
+    )
+}}}
+to put two lists of content, one is from cursor, one is from array list, into one single list view.
+
+The above two Converters are just the basic, more will be coming. 

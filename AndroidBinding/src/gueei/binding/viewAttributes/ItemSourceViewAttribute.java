@@ -21,6 +21,12 @@ public class ItemSourceViewAttribute extends ViewAttribute<AdapterView<Adapter>,
 	protected void doSetAttributeValue(Object newValue) {
 		if (newValue == null)
 			return;
+		
+		if (newValue instanceof Adapter){
+			getView().setAdapter((Adapter)newValue);
+			return;
+		}
+		
 		BindingMap map = Binder.getBindingMapForView(getView());
 /*		if (!map.containsKey("itemTemplate"))
 			return;

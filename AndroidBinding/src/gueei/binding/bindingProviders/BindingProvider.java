@@ -26,15 +26,11 @@ public abstract class BindingProvider {
 	public static final String BindingNamespace = "http://www.gueei.com/android-binding/";
 	public abstract <Tv extends View> ViewAttribute<Tv, ?> createAttributeForView(View view, String attributeId);
 	public abstract void bind(View view, BindingMap map, Object model);
-	public IObservable<?> bindMultiple(View view, String attributeName, IObservable<?>... args){
-		return null;
-	}
 	
-	protected static boolean bindAttributeWithObservable
+	protected final boolean bindAttributeWithObservable
 		(View view, String viewAttributeName, String statement, Object model){
 		IObservable<?> property;
 		property = Utility.getObservableForModel(statement, model);
-		
 		if (property!=null){
 			try {
 				ViewAttribute<?,?> attr = Binder.getAttributeForView(view, viewAttributeName);
@@ -61,13 +57,13 @@ public abstract class BindingProvider {
 		}
 	}
 	
-	protected static void bindViewAttribute(View view, BindingMap map, Object model, String attrName) {
+	protected final void bindViewAttribute(View view, BindingMap map, Object model, String attrName) {
 		if (map.containsKey(attrName)){
 			bindAttributeWithObservable(view, attrName, map.get(attrName), model);
 		}
 	}
 	
-	protected static void bindCommand(View view, BindingMap map, Object model, 
+	protected final void bindCommand(View view, BindingMap map, Object model, 
 			String commandName, Class<? extends MulticastListener<?>> multicastType) {
 		if (map.containsKey(commandName)){
 			Command command = Utility.getCommandForModel(map.get(commandName), model);

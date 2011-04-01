@@ -1,6 +1,6 @@
 package gueei.binding.converters;
 
-import gueei.binding.DependentObservable;
+import gueei.binding.Converter;
 import gueei.binding.IObservable;
 
 /**
@@ -9,7 +9,7 @@ import gueei.binding.IObservable;
  * @author andy
  *
  */
-public class EQUAL extends DependentObservable<Boolean> {
+public class EQUAL extends Converter<Boolean> {
 
 	public EQUAL(IObservable<?>[] dependents) {
 		super(Boolean.class, dependents);

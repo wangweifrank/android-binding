@@ -1,6 +1,6 @@
 package gueei.binding.converters;
 
-import gueei.binding.DependentObservable;
+import gueei.binding.Converter;
 import gueei.binding.IObservable;
 import gueei.binding.collections.CombinedAdapter;
 import android.widget.Adapter;
@@ -10,7 +10,7 @@ import android.widget.Adapter;
  * @author andy
  *
  */
-public class STITCH extends DependentObservable<Adapter>{
+public class STITCH extends Converter<Adapter>{
 	public STITCH(IObservable<?>[] dependents) {
 		super(Adapter.class, dependents);
 	}

@@ -46,7 +46,7 @@ public class ExpandableCollectionAdapter extends BaseExpandableListAdapter{
 					((LazyLoadParent)item).onLoadChildren();
 				}
 				IObservable<?> child = 
-					gueei.binding.Utility.getObservableForModel(mChildName, item);
+					gueei.binding.Utility.getObservableForModel(mContext, mChildName, item);
 				mChildAdapters.put(groupPosition, 
 					Utility.getSimpleAdapter(mContext, child.get(), mChildLayoutId, -1));
 			}

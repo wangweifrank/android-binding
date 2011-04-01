@@ -30,7 +30,7 @@ public abstract class BindingProvider {
 	protected final boolean bindAttributeWithObservable
 		(View view, String viewAttributeName, String statement, Object model){
 		IObservable<?> property;
-		property = Utility.getObservableForModel(statement, model);
+		property = Utility.getObservableForModel(view.getContext(), statement, model);
 		if (property!=null){
 			try {
 				ViewAttribute<?,?> attr = Binder.getAttributeForView(view, viewAttributeName);

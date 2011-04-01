@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import android.content.Context;
+
 public class BindingSyntaxResolver {
 	private static final String DEFAULT_CONVERTER_PACKAGE = "gueei.binding.converters.";
 	
@@ -16,17 +18,19 @@ public class BindingSyntaxResolver {
 	private static final Pattern stringPattern = Pattern.compile("^'([^']*)'$");
 	
 	public static IObservable<?> constructObservableFromStatement(
+			final Context context,
 			final String bindingStatement, 
 			final Object model){
 		IObservable<?> result;
-		result = getConverterFromStatement(bindingStatement, model);
+		String statement = bindingStatement.trim();
+		result = getConverterFromStatement(context, statement, model);
 		if (result!=null) return result;
-		result = getDynamicObjectFromStatement(bindingStatement, model);
+		result = getDynamicObjectFromStatement(context, statement, model);
 		if (result!=null) return result;
-		return getObservableForModel(bindingStatement, model);
+		return getObservableForModel(statement, model);
 	}
 
-	private static IObservable<?> getConverterFromStatement(String statement, Object model){
+	private static Converter<?> getConverterFromStatement(final Context context, String statement, Object model){
 		Matcher m = converterPattern.matcher(statement);
 		if ((!m.matches()) || (m.groupCount()<3))
 			return null;
@@ -40,13 +44,15 @@ public class BindingSyntaxResolver {
 			int argumentCount = arguments.length;
 			IObservable<?>[] obs = new IObservable[argumentCount];
 			for (int i=0; i<argumentCount; i++){
-				obs[i] = constructObservableFromStatement(arguments[i], model);
+				obs[i] = constructObservableFromStatement(context, arguments[i], model);
 				if (obs[i] == null){
 					return null;
 				}
 			}
 			Constructor<?> constructor = Class.forName(converterName).getConstructor(IObservable[].class);
-			return (DependentObservable<?>)constructor.newInstance((Object)(obs));
+			Converter<?> converter = (Converter<?>)constructor.newInstance((Object)(obs));
+			converter.setContext(context);
+			return converter;
 		} catch (Exception e){
 			e.printStackTrace();
 			//BindingLog.warning("BindingSyntaxResolver", e.getMessage());
@@ -54,7 +60,8 @@ public class BindingSyntaxResolver {
 		}
 	}
 
-	private static IObservable<?> getDynamicObjectFromStatement(String statement, Object model) {
+	private static IObservable<?> getDynamicObjectFromStatement
+		(final Context context, final String statement, final Object model) {
 		Matcher m = dynamicObjectPattern.matcher(statement);
 		if (!m.matches()) return null;
 		
@@ -66,7 +73,7 @@ public class BindingSyntaxResolver {
 			if (indexOfEqual <=0 ) return null;
 			String name = arguments[i].substring(0, indexOfEqual).trim();
 			String obsStatement = arguments[i].substring(indexOfEqual+1).trim();
-			IObservable<?> obs = constructObservableFromStatement(obsStatement, model);
+			IObservable<?> obs = constructObservableFromStatement(context, obsStatement, model);
 			if (obs == null){
 				return null;
 			}

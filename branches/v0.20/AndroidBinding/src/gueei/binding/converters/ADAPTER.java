@@ -1,11 +1,11 @@
 package gueei.binding.converters;
 
-import android.widget.Adapter;
 import gueei.binding.Binder;
-import gueei.binding.DependentObservable;
+import gueei.binding.Converter;
 import gueei.binding.DynamicObject;
 import gueei.binding.IObservable;
 import gueei.binding.collections.Utility;
+import android.widget.Adapter;
 
 /**
  * ADAPTER accepts only one argument, and it must be DynamicObject
@@ -17,7 +17,7 @@ import gueei.binding.collections.Utility;
  * @author andy
  *
  */
-public class ADAPTER extends DependentObservable<Adapter> {
+public class ADAPTER extends Converter<Adapter> {
 	public ADAPTER(IObservable<?>[] dependents) {
 		super(Adapter.class, dependents);
 	}

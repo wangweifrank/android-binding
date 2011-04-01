@@ -36,7 +36,7 @@ public class CollectionAdapter extends BaseAdapter
 	public CollectionAdapter(Context context, IObservableCollection<?> collection, 
 			int layoutId, int dropDownLayoutId) throws Exception{
 		this(context, 
-				new BasicModelReflector(), collection, layoutId, dropDownLayoutId);		
+				new BasicModelReflector(context), collection, layoutId, dropDownLayoutId);		
 	}
 	public int getCount() {
 		return mCollection.size();

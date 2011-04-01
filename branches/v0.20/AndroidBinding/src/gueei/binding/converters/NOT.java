@@ -1,6 +1,6 @@
 package gueei.binding.converters;
 
-import gueei.binding.TwoWayDependentObservable;
+import gueei.binding.Converter;
 import gueei.binding.IObservable;
 
 /**
@@ -8,7 +8,7 @@ import gueei.binding.IObservable;
  * @author andy
  *
  */
-public class NOT extends TwoWayDependentObservable<Boolean> {
+public class NOT extends Converter<Boolean> {
 
 	public NOT(IObservable<?>[] dependents) {
 		super(Boolean.class, dependents);

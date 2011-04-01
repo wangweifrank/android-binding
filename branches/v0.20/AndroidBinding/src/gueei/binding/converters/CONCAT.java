@@ -1,11 +1,11 @@
 package gueei.binding.converters;
 
-import gueei.binding.DependentObservable;
+import gueei.binding.Converter;
 import gueei.binding.IObservable;
 import android.text.SpannableStringBuilder;
 
 
-public class CONCAT extends DependentObservable<CharSequence> {
+public class CONCAT extends Converter<CharSequence> {
 
 	public CONCAT(IObservable<?>[] dependents) {
 		super(CharSequence.class, dependents);

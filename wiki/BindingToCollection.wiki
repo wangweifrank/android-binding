@@ -1,4 +1,4 @@
-#How Android Binding supports binding to collection of objects
+#summary How Android Binding supports binding to collection of objects
 
 = Introduction =
 

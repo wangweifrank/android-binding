@@ -1,6 +1,19 @@
 #summary Version History
+#labels Featured
 
 = Release History =
+
+== 0.2 ==
+
+ * IMPORTANT! Framework Namespace prefix changed to gueei.binding, which is less verbose and easier to code
+ * Refactor (and deprecated) ArraySource to ObservableCollection
+ * CursorSource will be deprecated too, it will change to CursorObservable
+ * Built-in ArrayListObservable, HashSetObservable
+ * Experimental: ExpandableListView support 
+ * Modifying view model must done on UI thread
+ * Text Attribute (of TextViews) changed to CharSequence instead of String: you can format the text in HTML
+ * CursorFields now support creation via Column Name (alongside with column Index)
+ * As usual, looking the source code in Markup Demo would help learning the latest additions
 
 == 0.175 ==
 
@@ -22,26 +35,6 @@
  * initial release
 
 = Planned Updates =
-
-== 0.2 ==
-
- * May Skip 0.18 and release 0.2
- * Refactor (and deprecated) ArraySource to ObservableCollection
- * Built-in ArrayListObservable
- * ExpandableListView support -> implies need Expandable Adapters. 
- * CursorSource will be deprecated too, it will change to CursorObservable
- * Modifying view model must done on UI thread. 
- * CursorFields now support creation via Column Name (alongside with column Index)
-
-== 0.18 ==
-
- * Text Attribute (of TextViews) changed to CharSequence instead of String
- * More Built in Converters
- * ExpandableListView support
-
-== 0.2 ==
-
- * Refactoring binding to Cursor or Array or other collection
 
 == Future ==
 

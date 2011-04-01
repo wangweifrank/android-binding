@@ -16,7 +16,7 @@ public class Launch extends Activity {
 	private final String[] AVAILABLE_DEMOS = {
 		"View", "TextView", "ImageView", "ProgressBar", "RatingBar", 
 		"CompoundButton", "SpinnerWithArraySource", "ListViewWithCursorSource",
-		"Converters", "MasterDetailListView", "NestedCursor"
+		"Converters", "MasterDetailListView", "NestedCursor", "MultipleAdapters"
 	};
 	
     /** Called when the activity is first created. */

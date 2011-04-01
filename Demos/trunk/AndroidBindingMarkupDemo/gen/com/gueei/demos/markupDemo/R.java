@@ -31,19 +31,21 @@ public final class R {
         public static final int listviewwithcursorsource=0x7f030005;
         public static final int master_template=0x7f030006;
         public static final int masterdetaillistview=0x7f030007;
-        public static final int music_item=0x7f030008;
-        public static final int music_item_spinner=0x7f030009;
-        public static final int nestedcursor=0x7f03000a;
-        public static final int progressbar=0x7f03000b;
-        public static final int ratingbar=0x7f03000c;
-        public static final int select_demo=0x7f03000d;
-        public static final int simple_expandable_list_item_1=0x7f03000e;
-        public static final int simple_spinner_dropdown_item=0x7f03000f;
-        public static final int simple_spinner_item=0x7f030010;
-        public static final int spinnerwitharraysource=0x7f030011;
-        public static final int textview=0x7f030012;
-        public static final int view=0x7f030013;
-        public static final int view_demo=0x7f030014;
+        public static final int multipleadapters=0x7f030008;
+        public static final int music_item=0x7f030009;
+        public static final int music_item_spinner=0x7f03000a;
+        public static final int nestedcursor=0x7f03000b;
+        public static final int progressbar=0x7f03000c;
+        public static final int ratingbar=0x7f03000d;
+        public static final int section_name=0x7f03000e;
+        public static final int select_demo=0x7f03000f;
+        public static final int simple_expandable_list_item_1=0x7f030010;
+        public static final int simple_spinner_dropdown_item=0x7f030011;
+        public static final int simple_spinner_item=0x7f030012;
+        public static final int spinnerwitharraysource=0x7f030013;
+        public static final int textview=0x7f030014;
+        public static final int view=0x7f030015;
+        public static final int view_demo=0x7f030016;
     }
     public static final class raw {
         public static final int compoundbutton=0x7f040000;

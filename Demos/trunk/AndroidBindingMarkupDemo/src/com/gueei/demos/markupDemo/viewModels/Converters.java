@@ -9,8 +9,8 @@ public class Converters {
 	public final BooleanObservable B = new BooleanObservable(false);
 	
 	/**
-	 * Custom Converter:
-	 * Custom Converter can be extends from DependentObservable (One-way) or Converter (Two-way)
+	 * Custom TwoWayDependentObservable:
+	 * Custom TwoWayDependentObservable can be extends from DependentObservable (One-way) or TwoWayDependentObservable (Two-way)
 	 * It MUST have the CONSTRUCTOR(IObservable<?>[] dependents) defined
 	 * To reference custom converter, full package.class name must be provided; 
 	 * and becoz the following is an inner class, so it is referenced with a dollar sign 

@@ -12,23 +12,31 @@ public class BindingSyntaxResolver {
 	private static final String DEFAULT_CONVERTER_PACKAGE = "gueei.binding.converters.";
 	
 	private static final Pattern converterPattern = Pattern.compile("^([$a-zA-Z0-9._]+)\\((.+(\\s*?,\\s*.+)*)\\)");
+	private static final Pattern dynamicObjectPattern = Pattern.compile("^\\{(.+)\\}$");
 	private static final Pattern stringPattern = Pattern.compile("^'([^']*)'$");
 	
 	public static IObservable<?> constructObservableFromStatement(
 			final String bindingStatement, 
 			final Object model){
-		Matcher m = converterPattern.matcher(bindingStatement);
+		IObservable<?> result;
+		result = getConverterFromStatement(bindingStatement, model);
+		if (result!=null) return result;
+		result = getDynamicObjectFromStatement(bindingStatement, model);
+		if (result!=null) return result;
+		return getObservableForModel(bindingStatement, model);
+	}
+
+	private static IObservable<?> getConverterFromStatement(String statement, Object model){
+		Matcher m = converterPattern.matcher(statement);
 		if ((!m.matches()) || (m.groupCount()<3))
-			return getObservableForModel(bindingStatement, model);
+			return null;
 		
 		String converterName = m.group(1);
 		if (!converterName.contains(".")){
 			converterName = DEFAULT_CONVERTER_PACKAGE + converterName;
 		}
 		try {
-			Constructor<?> constructor = Class.forName(converterName).getConstructor(IObservable[].class);
 			String[] arguments = splitArguments(m.group(2));
-			
 			int argumentCount = arguments.length;
 			IObservable<?>[] obs = new IObservable[argumentCount];
 			for (int i=0; i<argumentCount; i++){
@@ -37,31 +45,35 @@ public class BindingSyntaxResolver {
 					return null;
 				}
 			}
+			Constructor<?> constructor = Class.forName(converterName).getConstructor(IObservable[].class);
 			return (DependentObservable<?>)constructor.newInstance((Object)(obs));
 		} catch (Exception e){
 			e.printStackTrace();
 			//BindingLog.warning("BindingSyntaxResolver", e.getMessage());
-			return getObservableForModel(bindingStatement, model);
+			return null;
 		}
 	}
 
-	/*
-	private static IObservable<?> getMultiBindingFromArguments(
-			View view, 
-			String attributeName,
-			String list,
-			Object model) {
-		String[] arguments = splitArguments(list);
+	private static IObservable<?> getDynamicObjectFromStatement(String statement, Object model) {
+		Matcher m = dynamicObjectPattern.matcher(statement);
+		if (!m.matches()) return null;
+		
+		DynamicObject dynamic = new DynamicObject();
+		String[] arguments = splitArguments(m.group(1));
 		int argumentCount = arguments.length;
-		IObservable<?>[] obs = new IObservable[argumentCount];
 		for (int i=0; i<argumentCount; i++){
-			obs[i] = constructObservableFromStatement(arguments[i], model);
-			if (obs[i] == null){
+			int indexOfEqual = arguments[i].indexOf('=');
+			if (indexOfEqual <=0 ) return null;
+			String name = arguments[i].substring(0, indexOfEqual).trim();
+			String obsStatement = arguments[i].substring(indexOfEqual+1).trim();
+			IObservable<?> obs = constructObservableFromStatement(obsStatement, model);
+			if (obs == null){
 				return null;
 			}
+			dynamic.putObservable(name, obs);
 		}
-		return MultiBinder.construct(view, attributeName, obs);
-	}*/
+		return dynamic;
+	}
 	
 	public static String[] splitArguments(String group){
 		ArrayList<String> arguments = new ArrayList<String>();
@@ -129,7 +141,7 @@ public class BindingSyntaxResolver {
 		Object rawField = getFieldForModel(fieldName, model);
 		if (rawField instanceof IObservable<?>)
 			return (IObservable<?>)rawField;
-		return new ConstantObservable<String>(String.class, "!!Error in resolving " + fieldName);
+		return null;
 	}
 	
 	private static IObservable<?> matchString(String fieldName){

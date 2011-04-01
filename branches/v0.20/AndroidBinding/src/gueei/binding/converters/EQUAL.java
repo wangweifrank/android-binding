@@ -4,7 +4,7 @@ import gueei.binding.DependentObservable;
 import gueei.binding.IObservable;
 
 /**
- * Converter to perform Equal operation. 
+ * TwoWayDependentObservable to perform Equal operation. 
  * Accepts two arguments only and return the Equals operation on A to B
  * @author andy
  *

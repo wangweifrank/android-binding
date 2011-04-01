@@ -2,9 +2,9 @@ package gueei.binding;
 
 import java.util.AbstractCollection;
 
-public abstract class Converter<T> extends DependentObservable<T> {
+public abstract class TwoWayDependentObservable<T> extends DependentObservable<T> {
 
-	public Converter(Class<T> type, IObservable<?>... dependents){
+	public TwoWayDependentObservable(Class<T> type, IObservable<?>... dependents){
 		super(type, dependents);
 	}
 	

@@ -26,13 +26,15 @@ public class ViewFactory implements Factory {
 	protected View CreateViewByInflater(String name, Context context,
 			AttributeSet attrs) {
 		try {
-			String prefix = "android.widget.";
+			String viewFullName = "android.widget." + name;
 			if ((name=="View") || (name=="ViewGroup"))
-				prefix = "android.view.";
-			if (name.contains("."))
-				prefix = null;
+				viewFullName = "android.view." + name;
+			else if (name.startsWith("binding.")){
+				viewFullName = "gueei.binding.widgets." + name.substring(name.indexOf('.') + 1);
+			}else if (name.contains("."))
+				viewFullName = name;
 			
-			View view = mInflater.createView(name, prefix,
+			View view = mInflater.createView(viewFullName, null,
 					attrs);
 			return view;
 		} catch (Exception e) {

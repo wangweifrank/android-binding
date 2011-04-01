@@ -57,7 +57,7 @@ public class ExpandableCursorAdapter<T extends CursorRowModel> extends BaseExpan
 					((LazyLoadParent)item).onLoadChildren();
 				}
 				IObservable<?> child = gueei.binding.Utility
-					.getObservableForModel(mChildName, item);
+					.getObservableForModel(mContext, mChildName, item);
 				
 				mChildAdapters.put(groupPosition,   
 					Utility.getSimpleAdapter(mContext, child.get(), mChildLayoutId, -1));

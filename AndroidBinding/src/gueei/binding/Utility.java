@@ -17,8 +17,8 @@ public class Utility {
 		}
 	}
 	
-	public static IObservable<?> getObservableForModel(String fieldName, Object model){
-		return BindingSyntaxResolver.constructObservableFromStatement(fieldName, model);
+	public static IObservable<?> getObservableForModel(Context context, String fieldName, Object model){
+		return BindingSyntaxResolver.constructObservableFromStatement(context, fieldName, model);
 	}
 
 	public static Command getCommandForModel(String fieldName, Object model){

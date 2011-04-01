@@ -1,5 +1,6 @@
 package gueei.binding.validation.validators;
 
+import gueei.binding.Binder;
 import gueei.binding.IObservable;
 import gueei.binding.Utility;
 import gueei.binding.validation.ValidatorBase;
@@ -28,7 +29,7 @@ public @interface EqualsTo{
 				Object model) {
 			try{
 				if (value == null) return true;
-				IObservable<?> observable = Utility.getObservableForModel(parameters.Observable(), model);
+				IObservable<?> observable = Utility.getObservableForModel(Binder.getApplication(), parameters.Observable(), model);
 				if (observable==null) return false;
 				Object otherValue = observable.get();
 				if ((value instanceof CharSequence) && (otherValue instanceof CharSequence)){

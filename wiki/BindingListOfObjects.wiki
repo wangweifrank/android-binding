@@ -71,7 +71,7 @@ The `ADAPTER` is provided as an alternative to replace `itemTemplate` and `spinn
       spinnerTemplate=@layout/LAYOUT_ID })
 }}}
 
-the curly brace notation is a new addition in version 0.2, which makes everything inside to be ONE single object (in `[DynamicObject]` type). The template, source and spinnerTemplate is representing itemTemplate, itemSource and spinnerTemplate respectively, which spinnerTemplate is optional. 
+the curly brace notation is a new addition in version 0.2, which makes everything inside to be ONE single object (in [DynamicObject] type). The template, source and spinnerTemplate is representing itemTemplate, itemSource and spinnerTemplate respectively, which spinnerTemplate is optional. 
 
 The `ADAPTER` by itself do nothing more than separating markups to different part, but it is a base on more complicated case, for example:
 

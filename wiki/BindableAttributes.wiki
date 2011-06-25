@@ -14,8 +14,8 @@ Remarks: non-optional attribute means if it's omitted, it will eventually breaks
 
 = View =
 || Attribute || Accepted Data type || Currently Supported ||
-|| background || drawable, Resource Integer || no ||
-|| backgroundColor || Color Integer || no||
+|| background || drawable, Resource Integer || v0.22 ||
+|| backgroundColor || Color Integer || v0.22||
 || onClick || Command || yes||
 || onLongClick || Command || yes||
 || visibility || int, boolean || yes||
@@ -32,7 +32,7 @@ No special attributes, inherited from view
 
 == Image View ==
 || Attribute || Accepted Data type || Currently Supported ||
-|| source || drawable, Resource Integer || partial ||
+|| source || drawable, Integer(Resource), Uri, Bitmap || yes ||
 || tint || color integer || no ||
 
 == Progress Bar ==
@@ -44,7 +44,7 @@ No special attributes, inherited from view
 
 === Seek Bar ===
 || Attribute || Accepted Data type || Currently Supported ||
-|| onSeekBarChange || Command || no ||
+|| onSeekBarChange || Command || v0.22 ||
 
 === Rating Bar ===
 || Attribute || Accepted Data type || Currently Supported ||

@@ -2,6 +2,7 @@ package gueei.binding.bindingProviders;
 
 import gueei.binding.BindingMap;
 import gueei.binding.ViewAttribute;
+import gueei.binding.listeners.OnSeekBarChangeListenerMulticast;
 import android.view.View;
 import android.widget.SeekBar;
 
@@ -15,5 +16,6 @@ public class SeekBarProvider extends BindingProvider {
 	@Override
 	public void bind(View view, BindingMap map, Object model) {
 		if (!(view instanceof SeekBar)) return;
+		bindCommand(view, map, model, "onSeekBarChange", OnSeekBarChangeListenerMulticast.class);
 	}
 }

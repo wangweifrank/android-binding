@@ -5,6 +5,7 @@ import gueei.binding.bindingProviders.CompoundButtonProvider;
 import gueei.binding.bindingProviders.ImageViewProvider;
 import gueei.binding.bindingProviders.ProgressBarProvider;
 import gueei.binding.bindingProviders.RatingBarProvider;
+import gueei.binding.bindingProviders.SeekBarProvider;
 import gueei.binding.bindingProviders.TextViewProvider;
 import gueei.binding.bindingProviders.ViewAnimatorProvider;
 import gueei.binding.bindingProviders.ViewProvider;
@@ -128,6 +129,7 @@ public class Binder {
 		AttributeBinder.getInstance().registerProvider(new ProgressBarProvider());
 		AttributeBinder.getInstance().registerProvider(new RatingBarProvider());
 		AttributeBinder.getInstance().registerProvider(new ViewAnimatorProvider());
+		AttributeBinder.getInstance().registerProvider(new SeekBarProvider());
 		mApplication = application;
 	}
 

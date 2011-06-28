@@ -5,6 +5,7 @@
 
 == 0.22==
  * Added support to some more View Attributes
+ * Added IF converter and ARGB converter
 
 == 0.2 ==
 

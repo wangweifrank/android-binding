@@ -23,7 +23,6 @@ public class DynamicObject extends Observable<DynamicObject> implements IPropert
 	}
 
 	public Command getCommandByName(String name) throws Exception {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
@@ -33,7 +32,6 @@ public class DynamicObject extends Observable<DynamicObject> implements IPropert
 	}
 
 	public Object getValueByName(String name) throws Exception {
-		// TODO Auto-generated method stub
 		return null;
 	}
 }

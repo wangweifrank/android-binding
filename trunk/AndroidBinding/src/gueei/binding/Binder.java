@@ -168,6 +168,6 @@ public class Binder {
 	}
 	
 	public static String currentVersion(){
-		return "0.2";
+		return "0.22";
 	}
 }

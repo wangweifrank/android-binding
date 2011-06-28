@@ -1,5 +1,6 @@
 package gueei.binding;
 
+import gueei.binding.observables.IntegerObservable;
 import gueei.binding.observables.StringObservable;
 
 import java.lang.reflect.Constructor;
@@ -16,6 +17,7 @@ public class BindingSyntaxResolver {
 	private static final Pattern converterPattern = Pattern.compile("^([$a-zA-Z0-9._]+)\\((.+(\\s*?,\\s*.+)*)\\)");
 	private static final Pattern dynamicObjectPattern = Pattern.compile("^\\{(.+)\\}$");
 	private static final Pattern stringPattern = Pattern.compile("^'([^']*)'$");
+	private static final Pattern numberPattern = Pattern.compile("^(\\+|\\-)?[0-9]*(\\.[0-9]+)?$");
 	
 	public static IObservable<?> constructObservableFromStatement(
 			final Context context,
@@ -130,6 +132,8 @@ public class BindingSyntaxResolver {
 			String fieldName, Object model){
 		IObservable<?> result = matchString(fieldName);
 		if (result!=null) return result;
+		result = matchInteger(fieldName);
+		if (result!=null) return result;
 		
 		if (model instanceof IPropertyContainer){
 			try{
@@ -155,6 +159,18 @@ public class BindingSyntaxResolver {
 		Matcher m = stringPattern.matcher(fieldName);
 		if (!m.matches()) return null;
 		return new StringObservable(m.group(1));
+	}
+	
+	private static IObservable<?> matchInteger(String fieldName){
+		Matcher m = numberPattern.matcher(fieldName);
+		if (!m.matches()) return null;
+		Integer value;
+		try{
+			value = Integer.parseInt(fieldName);
+		}catch(Exception e){
+			return null;
+		}
+		return new IntegerObservable(value);
 	}
 		
 	private static Object getFieldForModel(String fieldName, Object model){

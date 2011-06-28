@@ -3,6 +3,7 @@ package gueei.binding.bindingProviders;
 import gueei.binding.BindingMap;
 import gueei.binding.ViewAttribute;
 import gueei.binding.listeners.TextWatcherMulticast;
+import gueei.binding.viewAttributes.TextColorViewAttribute;
 import gueei.binding.viewAttributes.TextViewAttribute;
 import android.view.View;
 import android.widget.EditText;
@@ -21,6 +22,10 @@ public class TextViewProvider extends BindingProvider {
 			}
 			return (ViewAttribute<Tv, ?>) attr;
 		}
+		if (attributeId.equals("textColor")){
+			TextColorViewAttribute attr = new TextColorViewAttribute((TextView)view);
+			return (ViewAttribute<Tv, ?>) attr;
+		}
 		return null;
 	}
 
@@ -28,6 +33,7 @@ public class TextViewProvider extends BindingProvider {
 	public void bind(View view, BindingMap map, Object model) {
 		if (!(view instanceof TextView)) return;
 		bindViewAttribute(view, map, model, "text");
+		bindViewAttribute(view, map, model, "textColor");
 		if (view instanceof EditText){
 			bindCommand(view, map, model, "onTextChanged", TextWatcherMulticast.class);
 		}

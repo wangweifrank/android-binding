@@ -6,7 +6,7 @@ Converters is a powerful mechanism that frees the View Model from putting too mu
 
 Following is the list of Built-in Converters in latest version of Android Binding:
 
-<wiki:toc max_depth="1" />
+<wiki:toc max_depth="2" />
 
 = Logical =
 

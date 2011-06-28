@@ -4,6 +4,8 @@ import gueei.binding.Binder;
 import gueei.binding.Command;
 import gueei.binding.Observable;
 import gueei.binding.collections.ArrayListObservable;
+import gueei.binding.observables.BooleanObservable;
+import gueei.binding.observables.StringObservable;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
@@ -12,12 +14,6 @@ import android.view.View;
 import android.webkit.WebView;
 
 public class Launch extends Activity {
-	
-	private final String[] AVAILABLE_DEMOS = {
-		"View", "TextView", "ImageView", "ProgressBar", "SeekBar", "RatingBar", 
-		"CompoundButton", "SpinnerWithArraySource", "ListViewWithCursorSource",
-		"Converters", "MasterDetailListView", "NestedCursor", "MultipleAdapters"
-	};
 	
     /** Called when the activity is first created. */
     @Override
@@ -40,16 +36,28 @@ public class Launch extends Activity {
 		wv.loadData(bos.toString(), "text/html", "UTF-8");
 		*/
         
-        Demos.setArray(AVAILABLE_DEMOS);
+        Demos.add(new Demo("View", true));
+        Demos.add(new Demo("TextView"));
+        Demos.add(new Demo("ImageView"));
+        Demos.add(new Demo("ProgressBar"));
+        Demos.add(new Demo("SeekBar", true));
+        Demos.add(new Demo("RatingBar"));
+        Demos.add(new Demo("CompoundButton"));
+        Demos.add(new Demo("SpinnerWithArraySource"));
+        Demos.add(new Demo("ListViewWithCursorSource"));
+        Demos.add(new Demo("MasterDetailListView"));
+        Demos.add(new Demo("NestedCursor"));
+        Demos.add(new Demo("MultipleAdapters"));
+        
         Binder.setAndBindContentView(this, R.layout.select_demo, this);
     }
     
     public final Command ViewDemo = new Command(){
 		public void Invoke(View view, Object... args) {
 			if (SelectedDemo.get() == null) return;
-			String selection = SelectedDemo.get().toString();
+			Demo selection = (Demo)SelectedDemo.get();
 			Intent intent = new Intent(Launch.this, ViewDemoActivity.class);
-			intent.putExtra("DEMO", selection);
+			intent.putExtra("DEMO", selection.Name.get());
 			Launch.this.startActivity(intent);
 		}
     };
@@ -67,8 +75,19 @@ public class Launch extends Activity {
     };
     
     public final Observable<Object> SelectedDemo = new Observable<Object>(Object.class);
+
+    public final ArrayListObservable<Demo> Demos = new
+    	ArrayListObservable<Demo>(Demo.class);
     
-    public final ArrayListObservable<String> Demos = new
-    	ArrayListObservable<String>(String.class);
-//    public final ArraySource<String> Demos = new ArraySource<String>();
+    public static class Demo{
+    	public StringObservable Name = new StringObservable();
+    	public BooleanObservable NewAddition = new BooleanObservable();
+    	public Demo(String name, boolean newAddition){
+    		Name.set(name);
+    		NewAddition.set(newAddition);
+    	}
+    	public Demo(String name){
+    		this(name, false);
+    	}
+    }
 }

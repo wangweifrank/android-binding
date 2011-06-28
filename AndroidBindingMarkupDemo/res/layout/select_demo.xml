@@ -11,7 +11,7 @@
     	android:layout_height="fill_parent"
     	android:layout_weight="1"
     	binding:itemSource="Demos"
-    	binding:itemTemplate="@layout/list_item"
+    	binding:itemTemplate="@layout/demo_list_item"
     	binding:onItemClicked="ViewDemo"
     	binding:clickedItem="SelectedDemo"
     />

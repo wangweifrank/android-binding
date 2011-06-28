@@ -10,6 +10,7 @@
   * [BindingToCursors Binding to Cursor]
  * [BindableAttributes Supported Views and Attributes]
  * [BindingSyntax Binding Syntax]
+  * [Converters]
   * [DynamicObject Dynamic Object]
  * Experimental Features
   * [PojoViewModel]

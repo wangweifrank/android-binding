@@ -1,39 +1,27 @@
 package gueei.binding.listeners;
 
 import android.view.View;
-import android.widget.SeekBar;
+import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 
 public class OnCheckedChangeListenerMulticast
-	extends MulticastListener<SeekBar.OnSeekBarChangeListener>
-	implements SeekBar.OnSeekBarChangeListener{
+	extends MulticastListener<CompoundButton.OnCheckedChangeListener>
+	implements CompoundButton.OnCheckedChangeListener{
 
 	@Override
 	public void registerToView(View v) {
-		if (SeekBar.class.isInstance(v)){
-			((SeekBar)v).setOnSeekBarChangeListener(this);
+		if (CompoundButton.class.isInstance(v)){
+			((CompoundButton)v).setOnCheckedChangeListener(this);
 		}
 	}
 
-	public void onProgressChanged(SeekBar seekBar, int progress,
-			boolean fromUser) {
-		for(SeekBar.OnSeekBarChangeListener l: listeners){
-			l.onProgressChanged(seekBar, progress, fromUser);
+	public void onCheckedChanged(CompoundButton arg0, boolean arg1) {
+		for(OnCheckedChangeListener l: listeners){
+			l.onCheckedChanged(arg0, arg1);
 		}
 		if (this.isFromUser()){
-			this.invokeCommands(seekBar, fromUser);
+			this.invokeCommands(arg0, arg1);
 		}
 		this.clearBroadcastState();
-	}
-
-	public void onStartTrackingTouch(SeekBar seekBar) {
-		for(SeekBar.OnSeekBarChangeListener l: listeners){
-			l.onStartTrackingTouch(seekBar);
-		}
-	}
-
-	public void onStopTrackingTouch(SeekBar seekBar) {
-		for(SeekBar.OnSeekBarChangeListener l: listeners){
-			l.onStopTrackingTouch(seekBar);
-		}
 	}
 }

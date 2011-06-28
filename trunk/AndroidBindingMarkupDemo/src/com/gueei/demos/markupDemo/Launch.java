@@ -14,7 +14,7 @@ import android.webkit.WebView;
 public class Launch extends Activity {
 	
 	private final String[] AVAILABLE_DEMOS = {
-		"View", "TextView", "ImageView", "ProgressBar", "RatingBar", 
+		"View", "TextView", "ImageView", "ProgressBar", "SeekBar", "RatingBar", 
 		"CompoundButton", "SpinnerWithArraySource", "ListViewWithCursorSource",
 		"Converters", "MasterDetailListView", "NestedCursor", "MultipleAdapters"
 	};

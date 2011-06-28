@@ -14,10 +14,12 @@ import android.widget.SeekBar;
 public class ProgressViewAttribute extends ViewAttribute<ProgressBar, Float>
 	implements SeekBar.OnSeekBarChangeListener{
 	
+	private static final int PROGRESS_MAX = 10000;
+	
 	public ProgressViewAttribute(ProgressBar view) {
 		super(Float.class, view, "progress");
 		getView().setProgress(0);
-		getView().setMax(1000);
+		getView().setMax(PROGRESS_MAX);
 		if (view instanceof SeekBar){
 			Binder.getMulticastListenerForView(view, OnSeekBarChangeListenerMulticast.class)
 				.register(this);
@@ -28,13 +30,13 @@ public class ProgressViewAttribute extends ViewAttribute<ProgressBar, Float>
 	protected void doSetAttributeValue(Object newValue) {
 		if (newValue == null) return;
 		if (newValue instanceof Float){
-			getView().setProgress((int)Math.ceil((Float)newValue * 1000));
+			getView().setProgress((int)Math.ceil((Float)newValue * PROGRESS_MAX));
 		}
 	}
 
 	@Override
 	public Float get() {
-		return (float)getView().getProgress() / 1000f;
+		return (float)getView().getProgress() / (float)PROGRESS_MAX;
 	}
 
 	public void onProgressChanged(SeekBar seekBar, int progress,

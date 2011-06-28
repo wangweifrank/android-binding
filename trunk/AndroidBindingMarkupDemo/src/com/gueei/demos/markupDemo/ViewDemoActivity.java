@@ -27,6 +27,7 @@ public class ViewDemoActivity extends Activity {
         try{
         	loadDemo(demoName);
         }catch(Exception e){
+        	e.printStackTrace();
         	finish();
         }
     }

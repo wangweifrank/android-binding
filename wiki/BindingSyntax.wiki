@@ -39,9 +39,4 @@ Not all attribute of Views will support all binding modes. For example, the `cli
 
 = Built in Converters = 
 
-|| Converter || binding-type || output type || input parameter types || input count || effect ||
-|| NOT || two-way || Boolean || Boolean || one || performs NOT operation on input ||
-|| EQUAL || one-way || Boolean || Any Object, Any Object || two || Compare first object with second object ||
-|| CONCAT || one-way || String || String || unlimited || Concat string ||
-|| IF || one-way || Object || Boolean, Object, Object || 3 || Return the second parameter if First Parameter is true, else return third parameter ||
-|| HTML || one-way || Spanned || CharSequence || unlimited || Use built in Html.fromHtml() to stylize html string, it also act like CONCAT ||
+[Converters In separation Section]

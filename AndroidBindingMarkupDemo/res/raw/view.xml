@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:binding="http://www.gueei.com/android-binding/"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    >
+    <TextView
+    	android:layout_width="fill_parent"
+	    android:layout_height="fill_parent"
+	    android:layout_weight="1"
+	    android:minHeight="100dip"
+	    android:background="#CCCCCC"
+	    android:textColor="#000000"
+	    android:text="Click this area to toggle the visiblility of the next box. \n Any View can have onClick Attribute"
+	    binding:onClick="Toggle"
+    />
+	<TextView
+		android:layout_width="fill_parent"
+	    android:layout_height="fill_parent"
+	    android:minHeight="100dip"
+	    android:layout_weight="1"
+	    android:textColor="#FFFFFF"
+	    android:background="#666666"
+	    android:text="Click the above Text to hide this text. \nThis is binding to 'visibility' attribute"
+	    binding:visibility="TextVisible"
+	/>
+</LinearLayout>

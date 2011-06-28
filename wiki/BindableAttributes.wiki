@@ -55,6 +55,7 @@ No special attributes, inherited from view
 || Attribute || Accepted Data type || Currently Supported ||
 || lines || int || no||
 || text || CharSequence || yes ||
+|| textColor || int || 0.22 ||
 || onTextChanged || Command || yes ||
 
 === Compound Button ===

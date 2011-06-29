@@ -48,6 +48,7 @@ public class Launch extends Activity {
         Demos.add(new Demo("MasterDetailListView"));
         Demos.add(new Demo("NestedCursor"));
         Demos.add(new Demo("MultipleAdapters"));
+        Demos.add(new Demo("CustomView", true));
         
         Binder.setAndBindContentView(this, R.layout.select_demo, this);
     }

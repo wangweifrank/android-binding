@@ -8,6 +8,7 @@ import gueei.binding.Command;
 import gueei.binding.IObservable;
 import gueei.binding.Utility;
 import gueei.binding.ViewAttribute;
+import gueei.binding.IBindableView.AttributeHandlingMethod;
 import gueei.binding.exception.AttributeNotDefinedException;
 import gueei.binding.listeners.MulticastListener;
 

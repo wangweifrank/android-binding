@@ -3,6 +3,7 @@ package gueei.binding.bindingProviders;
 import gueei.binding.Binder;
 import gueei.binding.BindingMap;
 import gueei.binding.Command;
+import gueei.binding.IBindableView.AttributeHandlingMethod;
 import gueei.binding.Utility;
 import gueei.binding.ViewAttribute;
 import gueei.binding.listeners.OnItemClickListenerMulticast;
@@ -30,8 +31,6 @@ public class AdapterViewProvider extends BindingProvider {
 			return null;
 		try {
 			if (attributeId.equals("adapter")) {
-				// TODO: Can change to very specific class to avoid the
-				// reflection methods
 				ViewAttribute<AdapterView, Adapter> attr = new GenericViewAttribute(Adapter.class,
 						(AdapterView) view, "adapter", 
 						AdapterView.class.getMethod("getAdapter"), 

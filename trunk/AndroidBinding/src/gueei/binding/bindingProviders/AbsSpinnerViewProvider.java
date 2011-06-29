@@ -1,6 +1,7 @@
 package gueei.binding.bindingProviders;
 
 import gueei.binding.BindingMap;
+import gueei.binding.IBindableView.AttributeHandlingMethod;
 import gueei.binding.ViewAttribute;
 import android.view.View;
 import android.widget.AbsSpinner;

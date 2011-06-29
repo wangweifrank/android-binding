@@ -37,6 +37,16 @@ public class Binder {
 	 */
 	public static ViewAttribute<?, ?> getAttributeForView(View view, String attributeId)
 		throws AttributeNotDefinedException	{
+		
+		//  Check if it is custom view, if so, try to look for the attribute in custom view first
+		ViewAttribute<?, ?> viewAttribute = null;
+		
+		if (view instanceof IBindableView){
+			viewAttribute = ((IBindableView<?>)view).getViewAttribute(attributeId);
+			if (viewAttribute != null)
+				return viewAttribute;
+		}
+		
 		Object attributes = view.getTag(R.id.tag_attributes);
 		AttributeCollection collection;
 		if ((attributes!=null) && (attributes instanceof AttributeCollection)){
@@ -49,8 +59,8 @@ public class Binder {
 			view.setTag(R.id.tag_attributes, collection);
 		}
 		
-		ViewAttribute<?, ?> viewAttribute = 
-			AttributeBinder.getInstance().createAttributeForView(view, attributeId);
+		viewAttribute = AttributeBinder.getInstance().createAttributeForView(view, attributeId);
+		
 		if (viewAttribute == null) 
 			throw new AttributeNotDefinedException
 				("The view does not have attribute (id: " + attributeId + ") defined.");
@@ -58,7 +68,7 @@ public class Binder {
 		collection.putAttribute(attributeId, viewAttribute);
 		return viewAttribute;
 	}
-		
+	
  	static void putBindingMapToView(View view, BindingMap map){
 		view.setTag(R.id.tag_bindingmap, map);
 	}
@@ -121,15 +131,15 @@ public class Binder {
 	}
 	
 	public static void init(Application application){
-		AttributeBinder.getInstance().registerProvider(new ViewProvider());
-		AttributeBinder.getInstance().registerProvider(new TextViewProvider());
-		AttributeBinder.getInstance().registerProvider(new AdapterViewProvider());
-		AttributeBinder.getInstance().registerProvider(new ImageViewProvider());
-		AttributeBinder.getInstance().registerProvider(new CompoundButtonProvider());
-		AttributeBinder.getInstance().registerProvider(new ProgressBarProvider());
-		AttributeBinder.getInstance().registerProvider(new RatingBarProvider());
-		AttributeBinder.getInstance().registerProvider(new ViewAnimatorProvider());
 		AttributeBinder.getInstance().registerProvider(new SeekBarProvider());
+		AttributeBinder.getInstance().registerProvider(new RatingBarProvider());
+		AttributeBinder.getInstance().registerProvider(new ProgressBarProvider());
+		AttributeBinder.getInstance().registerProvider(new ViewAnimatorProvider());
+		AttributeBinder.getInstance().registerProvider(new CompoundButtonProvider());
+		AttributeBinder.getInstance().registerProvider(new ImageViewProvider());
+		AttributeBinder.getInstance().registerProvider(new AdapterViewProvider());
+		AttributeBinder.getInstance().registerProvider(new TextViewProvider());
+		AttributeBinder.getInstance().registerProvider(new ViewProvider());
 		mApplication = application;
 	}
 

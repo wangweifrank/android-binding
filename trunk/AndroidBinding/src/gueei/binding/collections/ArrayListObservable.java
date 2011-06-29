@@ -9,8 +9,15 @@ public class ArrayListObservable<T> extends ObservableCollection<T> implements C
 	private ArrayList<T> mArray;
 	
 	public ArrayListObservable(Class<T> type){
+		this(type, null);
+	}
+	
+	public ArrayListObservable(Class<T> type, T[] initArray){
 		mType = type;
 		mArray = new ArrayList<T>();
+		for(int i=0; i<initArray.length; i++){
+			mArray.add(initArray[i]);
+		}
 	}
 	
 	public T getItem(int position) {

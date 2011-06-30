@@ -60,4 +60,5 @@ issue:
 
 == Future ==
 
+ * Helper class to 'parcel' the View Model
  * HeaderItem and FooterItem in AdapterView

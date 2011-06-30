@@ -8,7 +8,7 @@
 v0.23a fixes some issues and may not stable enough:
 
 issue:
-#3 IObservable and similar is now exposing Collection<Object> instead of AbstractCollection
+#3 IObservable and similar is now exposing Collection instead of AbstractCollection
 #4 The Observable implementation change to WeakList instead of ArrayList. This would help release the reference once the View is disposed by the GC. In this case, re-Binding on ViewModel would be fine
 [Seriously, this one need extensive check]
 #7 Removed the redundant call.

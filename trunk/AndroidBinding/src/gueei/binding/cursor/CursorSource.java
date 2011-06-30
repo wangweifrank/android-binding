@@ -2,7 +2,7 @@ package gueei.binding.cursor;
 
 import gueei.binding.Observable;
 
-import java.util.AbstractCollection;
+import java.util.Collection;
 
 import android.database.Cursor;
 
@@ -28,7 +28,7 @@ public final class CursorSource<T extends CursorRowModel> extends Observable<Cur
 
 	@Override
 	protected void doSetValue(CursorRowTypeMap newValue,
-			AbstractCollection<Object> initiators) {
+			Collection<Object> initiators) {
 		// No set 
 	}
 

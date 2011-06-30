@@ -1,7 +1,7 @@
 package gueei.binding;
 
-import java.util.AbstractCollection;
+import java.util.Collection;
 
 public interface Observer {
-	public void onPropertyChanged(IObservable<?> prop, AbstractCollection<Object> initiators);
+	public void onPropertyChanged(IObservable<?> prop, Collection<Object> initiators);
 }

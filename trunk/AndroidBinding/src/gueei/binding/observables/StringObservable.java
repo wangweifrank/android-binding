@@ -2,7 +2,7 @@ package gueei.binding.observables;
 
 import gueei.binding.Observable;
 
-import java.util.AbstractCollection;
+import java.util.Collection;
 
 
 public class StringObservable extends Observable<String> {
@@ -16,7 +16,7 @@ public class StringObservable extends Observable<String> {
 
 	@Override
 	public void _setObject(Object newValue,
-			AbstractCollection<Object> initiators) {
+			Collection<Object> initiators) {
 		if (newValue!=null)
 			this.set(newValue.toString());
 	}

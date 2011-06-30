@@ -1,11 +1,12 @@
 package gueei.binding.collections;
 
-import java.util.AbstractCollection;
-
 import gueei.binding.Binder;
 import gueei.binding.IObservable;
 import gueei.binding.Observable;
 import gueei.binding.Observer;
+
+import java.util.Collection;
+
 import android.content.Context;
 import android.database.DataSetObserver;
 import android.view.View;
@@ -90,7 +91,7 @@ public class SingletonAdapter implements Adapter, SpinnerAdapter, Observer {
 	}
 
 	public void onPropertyChanged(IObservable<?> prop,
-			AbstractCollection<Object> initiators) {
+			Collection<Object> initiators) {
 		if (mDataSetObserver!=null)
 			mDataSetObserver.notify();
 	}

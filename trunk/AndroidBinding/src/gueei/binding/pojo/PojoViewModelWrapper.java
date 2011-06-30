@@ -7,7 +7,7 @@ import gueei.binding.IPropertyContainer;
 import gueei.binding.Observable;
 
 import java.lang.reflect.Method;
-import java.util.AbstractCollection;
+import java.util.Collection;
 import java.util.Hashtable;
 
 import android.view.View;
@@ -122,7 +122,7 @@ public class PojoViewModelWrapper<T extends PojoViewModel> implements IPropertyC
 		
 		@Override
 		protected void doSetValue(To newValue,
-				AbstractCollection<Object> initiators) {
+				Collection<Object> initiators) {
 			super.doSetValue(newValue, initiators);
 			if (mSetter==null) return; // Readonly
 			try{

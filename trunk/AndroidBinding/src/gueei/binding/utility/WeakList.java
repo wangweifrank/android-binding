@@ -37,6 +37,11 @@ public class WeakList<E> extends AbstractList<E> {
         items = new ArrayList<WeakReference<E>>();
         addAll(0, c);
     }
+
+    public WeakList(int initCapcacity) {
+        items = new ArrayList<WeakReference<E>>(initCapcacity);
+    }
+
     
     public void add(int index, E element) {
         items.add(index, new WeakReference<E>(element));
@@ -81,7 +86,8 @@ public class WeakList<E> extends AbstractList<E> {
         }
         
         public void remove() {
-            throw new UnsupportedOperationException();
+        	if (i-1 >= 0)
+        		items.remove(i-1);
         }
         
     }

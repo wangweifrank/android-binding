@@ -178,6 +178,6 @@ public class Binder {
 	}
 	
 	public static String currentVersion(){
-		return "0.22";
+		return "0.23a";
 	}
 }

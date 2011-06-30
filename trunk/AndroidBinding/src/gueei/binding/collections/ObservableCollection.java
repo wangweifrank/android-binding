@@ -5,7 +5,7 @@ import gueei.binding.IObservableCollection;
 import gueei.binding.Observer;
 import gueei.binding.utility.WeakList;
 
-import java.util.AbstractCollection;
+import java.util.Collection;
 
 
 public abstract class ObservableCollection<T> implements IObservableCollection<T>{
@@ -32,7 +32,7 @@ public abstract class ObservableCollection<T> implements IObservableCollection<T
 	public final void notifyChanged(Object initiator) {
 	}
 
-	public final void notifyChanged(AbstractCollection<Object> initiators) {
+	public final void notifyChanged(Collection<Object> initiators) {
 	}
 
 	public final void notifyChanged() {
@@ -40,7 +40,7 @@ public abstract class ObservableCollection<T> implements IObservableCollection<T
 
 	@SuppressWarnings("rawtypes")
 	public final void set(IObservableCollection newValue,
-			AbstractCollection<Object> initiators) {
+			Collection<Object> initiators) {
 	}
 
 	@SuppressWarnings("rawtypes")
@@ -50,7 +50,7 @@ public abstract class ObservableCollection<T> implements IObservableCollection<T
 	}
 
 	public final void _setObject(Object newValue,
-			AbstractCollection<Object> initiators) {
+			Collection<Object> initiators) {
 		// TODO Auto-generated method stub
 		
 	}

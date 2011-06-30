@@ -1,6 +1,6 @@
 package gueei.binding;
 
-import java.util.AbstractCollection;
+import java.util.Collection;
 
 public abstract class TwoWayDependentObservable<T> extends DependentObservable<T> {
 
@@ -17,7 +17,7 @@ public abstract class TwoWayDependentObservable<T> extends DependentObservable<T
 	public abstract boolean ConvertBack(Object value, Object[] outResult);
 
 	@Override
-	protected void doSetValue(T newValue, AbstractCollection<Object> initiators) {
+	protected void doSetValue(T newValue, Collection<Object> initiators) {
 		int count = dependents.length;
 		Object[] outResult = new Object[count];
 		if (!ConvertBack(newValue, outResult)) return;

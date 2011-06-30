@@ -1,6 +1,6 @@
 package gueei.binding;
 
-import java.util.AbstractCollection;
+import java.util.Collection;
 
 public class ConstantObservable<T> implements IObservable<T> {
 	private final Class<T> mType;
@@ -28,20 +28,20 @@ public class ConstantObservable<T> implements IObservable<T> {
 	public void notifyChanged(Object initiator) {
 	}
 
-	public void notifyChanged(AbstractCollection<Object> initiators) {
+	public void notifyChanged(Collection<Object> initiators) {
 	}
 
 	public void notifyChanged() {
 	}
 
-	public void set(T newValue, AbstractCollection<Object> initiators) {
+	public void set(T newValue, Collection<Object> initiators) {
 	}
 
 	public void set(T newValue) {
 	}
 
 	public void _setObject(Object newValue,
-			AbstractCollection<Object> initiators) {
+			Collection<Object> initiators) {
 	}
 
 	public T get() {

@@ -1,6 +1,6 @@
 package gueei.binding;
 
-import java.util.AbstractCollection;
+import java.util.Collection;
 import java.util.ArrayList;
 
 public abstract class DependentObservable<T> extends Observable<T> implements Observer{
@@ -19,7 +19,7 @@ public abstract class DependentObservable<T> extends Observable<T> implements Ob
 	public abstract T calculateValue(Object... args) throws Exception;
 	
 	public final void onPropertyChanged(IObservable<?> prop,
-			AbstractCollection<Object> initiators) {
+			Collection<Object> initiators) {
 		dirty = true;
 		initiators.add(this);
 		this.notifyChanged(initiators);

@@ -1,6 +1,6 @@
 package gueei.binding;
 
-import java.util.AbstractCollection;
+import java.util.Collection;
 import java.util.ArrayList;
 
 import android.view.View;
@@ -23,14 +23,14 @@ public abstract class ViewAttribute<Tv extends View, T> extends Observable<T> {
 	
 	@SuppressWarnings("unchecked")
 	public final <To> void onPropertyChanged(IObservable<To> prop, 
-			AbstractCollection<Object> initiators){
+			Collection<Object> initiators){
 		set((T)prop.get(), initiators);
 	}
 
 	protected abstract void doSetAttributeValue(Object newValue);
 	
 	@Override
-	protected void doSetValue(final T newValue, AbstractCollection<Object> initiators) {
+	protected void doSetValue(final T newValue, Collection<Object> initiators) {
 		if (readonly) return;
 		doSetAttributeValue(newValue);
 		/*
@@ -50,7 +50,7 @@ public abstract class ViewAttribute<Tv extends View, T> extends Observable<T> {
 	}
 
 	@Override
-	public void _setObject(final Object newValue, AbstractCollection<Object> initiators){
+	public void _setObject(final Object newValue, Collection<Object> initiators){
 		if (readonly) return;
 		doSetAttributeValue(newValue);
 		/*
@@ -105,7 +105,7 @@ public abstract class ViewAttribute<Tv extends View, T> extends Observable<T> {
 		}
 		
 		public void onPropertyChanged(IObservable<?> prop,
-				AbstractCollection<Object> initiators) {
+				Collection<Object> initiators) {
 			if (prop==mAttribute){
 				mBindedObservable._setObject(prop.get(), initiators);
 			}

@@ -1,6 +1,6 @@
 package gueei.binding;
 
-import java.util.AbstractCollection;
+import java.util.Collection;
 
 public interface IObservable<T> {
 
@@ -16,11 +16,11 @@ public interface IObservable<T> {
 
 	public abstract void notifyChanged(Object initiator);
 
-	public abstract void notifyChanged(AbstractCollection<Object> initiators);
+	public abstract void notifyChanged(Collection<Object> initiators);
 
 	public abstract void notifyChanged();
 
-	public abstract void set(T newValue, AbstractCollection<Object> initiators);
+	public abstract void set(T newValue, Collection<Object> initiators);
 
 	public abstract void set(T newValue);
 	
@@ -30,7 +30,7 @@ public interface IObservable<T> {
 	 * @param newValue
 	 * @param initiators
 	 */
-	public abstract void _setObject(Object newValue, AbstractCollection<Object> initiators);
+	public abstract void _setObject(Object newValue, Collection<Object> initiators);
 	
 	public abstract T get();
 }

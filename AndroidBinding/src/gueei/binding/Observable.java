@@ -1,10 +1,12 @@
 package gueei.binding;
 
-import java.util.AbstractCollection;
+import gueei.binding.utility.WeakList;
+
 import java.util.ArrayList;
+import java.util.Collection;
 
 public class Observable<T> implements IObservable<T> {
-	private ArrayList<Observer> observers = new ArrayList<Observer>(1);
+	private WeakList<Observer> observers = new WeakList<Observer>(1);
 	private T mValue;
 	private final Class<T> mType;
 	
@@ -43,7 +45,7 @@ public class Observable<T> implements IObservable<T> {
 	/* (non-Javadoc)
 	 * @see gueei.binding.IObservable#notifyChanged(java.util.AbstractCollection)
 	 */
-	public final void notifyChanged(AbstractCollection<Object> initiators){
+	public final void notifyChanged(Collection<Object> initiators){
 		initiators.add(this);
 		for(Observer o: observers){
 			if (initiators.contains(o)) continue;
@@ -56,14 +58,13 @@ public class Observable<T> implements IObservable<T> {
 	 */
 	public final void notifyChanged(){
 		ArrayList<Object> initiators = new ArrayList<Object>();
-		initiators.add(this);
 		notifyChanged(initiators);
 	}
 
 	/* (non-Javadoc)
 	 * @see gueei.binding.IObservable#set(T, java.util.AbstractCollection)
 	 */
-	public final void set(T newValue, AbstractCollection<Object> initiators){
+	public final void set(T newValue, Collection<Object> initiators){
 		if (initiators.contains(this)) return;
 		doSetValue(newValue, initiators);
 		initiators.add(this);
@@ -71,7 +72,7 @@ public class Observable<T> implements IObservable<T> {
 	}
 	
 	// Intenral use only. 
-	public void _setObject(Object newValue, AbstractCollection<Object> initiators){
+	public void _setObject(Object newValue, Collection<Object> initiators){
 		try{
 			T value = this.getType().cast(newValue);			
 			if (value==null) return;
@@ -86,7 +87,7 @@ public class Observable<T> implements IObservable<T> {
 		notifyChanged(this);
 	}
 	
-	protected void doSetValue(T newValue, AbstractCollection<Object> initiators){
+	protected void doSetValue(T newValue, Collection<Object> initiators){
 		mValue = newValue;
 	}
 	

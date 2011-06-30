@@ -1,5 +1,6 @@
 package gueei.binding.collections;
 
+import gueei.binding.BindingLog;
 import gueei.binding.Command;
 import gueei.binding.IObservable;
 import gueei.binding.IPropertyContainer;
@@ -8,7 +9,7 @@ import gueei.binding.Observer;
 import gueei.binding.utility.IModelReflector;
 
 import java.lang.ref.WeakReference;
-import java.util.AbstractCollection;
+import java.util.Collection;
 import java.util.HashMap;
 
 import android.view.View;
@@ -30,6 +31,7 @@ public class ObservableMapper implements IPropertyContainer {
 	@SuppressWarnings("unchecked")
 	public void changeMapping(IModelReflector reflector, Object model){
 		mappingModel = model;
+		BindingLog.warning("ObservableMapper", "change mapping");
 		try {
 			for(String key: observableMapping.keySet()){
 				IObservable<?> obs = reflector.getObservableByName(key, model);
@@ -81,7 +83,7 @@ public class ObservableMapper implements IPropertyContainer {
 		}
 		
 		public void onPropertyChanged(IObservable<?> prop,
-			AbstractCollection<Object> initiators) {
+			Collection<Object> initiators) {
 			if (prop!=observingProperty){
 				prop.unsubscribe(this);
 				return;
@@ -92,7 +94,7 @@ public class ObservableMapper implements IPropertyContainer {
 
 		@Override
 		protected void doSetValue(T newValue,
-				AbstractCollection<Object> initiators) {
+				Collection<Object> initiators) {
 			if (observingProperty!=null){
 				observingProperty.set(newValue, initiators);
 			}

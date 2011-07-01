@@ -12,4 +12,9 @@ public class BindingLog {
 	public static void exception(String occuredAt, Exception e){
 		Log.e(tag, occuredAt + " : " + e.getMessage());
 	}
+	
+	public static void debug(String occuredAt, String message){
+		Log.w(tag, occuredAt + " : " + message);
+	}
+
 }

@@ -2,8 +2,8 @@ package gueei.binding.bindingProviders;
 
 import gueei.binding.BindingMap;
 import gueei.binding.ViewAttribute;
-import gueei.binding.viewAttributes.ProgressViewAttribute;
-import gueei.binding.viewAttributes.SecondaryProgressViewAttribute;
+import gueei.binding.viewAttributes.progressBar.ProgressViewAttribute;
+import gueei.binding.viewAttributes.progressBar.SecondaryProgressViewAttribute;
 import android.view.View;
 import android.widget.ProgressBar;
 

@@ -1,4 +1,4 @@
-package gueei.binding.viewAttributes;
+package gueei.binding.viewAttributes.view;
 
 
 import gueei.binding.BindingType;

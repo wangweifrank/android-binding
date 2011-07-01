@@ -2,7 +2,7 @@ package gueei.binding.bindingProviders;
 
 import gueei.binding.BindingMap;
 import gueei.binding.ViewAttribute;
-import gueei.binding.viewAttributes.SourceViewAttribute;
+import gueei.binding.viewAttributes.imageView.SourceViewAttribute;
 import android.view.View;
 import android.widget.ImageView;
 

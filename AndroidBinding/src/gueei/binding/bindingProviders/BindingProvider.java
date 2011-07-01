@@ -8,7 +8,6 @@ import gueei.binding.Command;
 import gueei.binding.IObservable;
 import gueei.binding.Utility;
 import gueei.binding.ViewAttribute;
-import gueei.binding.IBindableView.AttributeHandlingMethod;
 import gueei.binding.exception.AttributeNotDefinedException;
 import gueei.binding.listeners.MulticastListener;
 
@@ -64,16 +63,16 @@ public abstract class BindingProvider {
 		}
 	}
 	
-	protected final void bindCommand(View view, BindingMap map, Object model, 
-			String commandName, Class<? extends MulticastListener<?>> multicastType) {
-		if (map.containsKey(commandName)){
-			Command command = Utility.getCommandForModel(map.get(commandName), model);
-			if (command!=null){
-				MulticastListener<?> listener = Binder.getMulticastListenerForView(view, multicastType);
-				if (listener!=null)
-					listener.register(command);
-			}
-		}
-	}
-
+//	protected final void bindCommand(View view, BindingMap map, Object model, 
+//			String commandName, Class<? extends MulticastListener<?>> multicastType) {
+//		if (map.containsKey(commandName)){
+//			Command command = Utility.getCommandForModel(map.get(commandName), model);
+//			if (command!=null){
+//				MulticastListener<?> listener = Binder.getMulticastListenerForView(view, multicastType);
+//				if (listener!=null)
+//					listener.register(command);
+//			}
+//		}
+//	}
+//
 }

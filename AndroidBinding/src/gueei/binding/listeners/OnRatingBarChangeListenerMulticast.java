@@ -17,8 +17,5 @@ public class OnRatingBarChangeListenerMulticast extends MulticastListener<OnRati
 		for(OnRatingBarChangeListener l: listeners){
 			l.onRatingChanged(view, arg0, fromUser);
 		}
-		if (fromUser){
-			this.invokeCommands(view, arg0, fromUser);
-		}
 	}
 }

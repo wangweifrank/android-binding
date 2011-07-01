@@ -2,8 +2,8 @@ package gueei.binding.bindingProviders;
 
 import gueei.binding.BindingMap;
 import gueei.binding.ViewAttribute;
-import gueei.binding.viewAttributes.ChildViewsViewAttribute;
-import gueei.binding.viewAttributes.DisplayedChildViewAttribute;
+import gueei.binding.viewAttributes.viewAnimator.ChildViewsViewAttribute;
+import gueei.binding.viewAttributes.viewAnimator.DisplayedChildViewAttribute;
 import android.view.View;
 import android.widget.ViewAnimator;
 

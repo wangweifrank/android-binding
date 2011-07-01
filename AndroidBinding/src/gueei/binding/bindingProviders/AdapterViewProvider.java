@@ -1,20 +1,16 @@
 package gueei.binding.bindingProviders;
 
-import gueei.binding.Binder;
 import gueei.binding.BindingMap;
-import gueei.binding.Command;
-import gueei.binding.IBindableView.AttributeHandlingMethod;
-import gueei.binding.Utility;
 import gueei.binding.ViewAttribute;
-import gueei.binding.listeners.OnItemClickListenerMulticast;
-import gueei.binding.listeners.OnItemSelectedListenerMulticast;
-import gueei.binding.viewAttributes.ClickedIdViewAttribute;
-import gueei.binding.viewAttributes.ClickedItemViewAttribute;
-import gueei.binding.viewAttributes.ExpandableListView_ItemSourceViewAttribute;
 import gueei.binding.viewAttributes.GenericViewAttribute;
-import gueei.binding.viewAttributes.ItemSourceViewAttribute;
-import gueei.binding.viewAttributes.ItemTemplateViewAttribute;
-import gueei.binding.viewAttributes.SelectedItemViewAttribute;
+import gueei.binding.viewAttributes.adapterView.ClickedIdViewAttribute;
+import gueei.binding.viewAttributes.adapterView.ClickedItemViewAttribute;
+import gueei.binding.viewAttributes.adapterView.ExpandableListView_ItemSourceViewAttribute;
+import gueei.binding.viewAttributes.adapterView.ItemSourceViewAttribute;
+import gueei.binding.viewAttributes.adapterView.ItemTemplateViewAttribute;
+import gueei.binding.viewAttributes.adapterView.OnItemClickedViewEvent;
+import gueei.binding.viewAttributes.adapterView.OnItemSelectedViewEvent;
+import gueei.binding.viewAttributes.adapterView.SelectedItemViewAttribute;
 import android.view.View;
 import android.widget.Adapter;
 import android.widget.AdapterView;
@@ -58,6 +54,10 @@ public class AdapterViewProvider extends BindingProvider {
 				return (ViewAttribute<Tv, ?>)new ItemTemplateViewAttribute(view, "itemTemplate");
 			} else if (attributeId.equals("spinnerTemplate")){
 				return (ViewAttribute<Tv, ?>)new ItemTemplateViewAttribute(view, "spinnerTemplate");
+			} else if (attributeId.equals("onItemSelected")){
+				return (ViewAttribute<Tv, ?>)new OnItemSelectedViewEvent((AdapterView)view);
+			} else if (attributeId.equals("onItemClicked")){
+				return (ViewAttribute<Tv, ?>)new OnItemClickedViewEvent((AdapterView)view);
 			}
 		} catch (Exception e) {
 			// Actually it should never reach this statement
@@ -75,22 +75,7 @@ public class AdapterViewProvider extends BindingProvider {
 		bindViewAttribute(view, map, model, "clickedId");
 		bindViewAttribute(view, map, model, "adapter");
 		bindViewAttribute(view, map, model, "itemSource");
-		
-		if (map.containsKey("onItemSelected")){
-			Command command = Utility.getCommandForModel(map.get("onItemSelected"), model);
-			if (command!=null){
-				Binder
-					.getMulticastListenerForView(view, OnItemSelectedListenerMulticast.class)
-					.register(command);
-			}
-		}
-		if (map.containsKey("onItemClicked")){
-			Command command = Utility.getCommandForModel(map.get("onItemClicked"), model);
-			if (command!=null){
-				Binder
-					.getMulticastListenerForView(view, OnItemClickListenerMulticast.class)
-					.register(command);
-			}
-		}
+		bindViewAttribute(view, map, model, "onItemSelected");
+		bindViewAttribute(view, map, model, "onItemClicked");
 	}
 }

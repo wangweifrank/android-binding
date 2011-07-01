@@ -1,12 +1,9 @@
 package gueei.binding.bindingProviders;
 
-import gueei.binding.Binder;
 import gueei.binding.BindingMap;
-import gueei.binding.Command;
-import gueei.binding.Utility;
 import gueei.binding.ViewAttribute;
-import gueei.binding.listeners.OnCheckedChangeListenerMulticast;
-import gueei.binding.viewAttributes.CheckedViewAttribute;
+import gueei.binding.viewAttributes.compoundButton.CheckedViewAttribute;
+import gueei.binding.viewAttributes.compoundButton.OnCheckedChangeViewEvent;
 import android.view.View;
 import android.widget.CompoundButton;
 
@@ -21,6 +18,9 @@ public class CompoundButtonProvider extends BindingProvider {
 			ViewAttribute<CompoundButton, Boolean> attr = new CheckedViewAttribute((CompoundButton)view);
 			return (ViewAttribute<Tv, ?>)attr;
 		}
+		if (attributeId.equals("onCheckedChange")){
+			return (ViewAttribute<Tv, ?>) new OnCheckedChangeViewEvent((CompoundButton)view);
+		}
 		return null;
 	}
 
@@ -28,13 +28,6 @@ public class CompoundButtonProvider extends BindingProvider {
 	public void bind(View view, BindingMap map, Object model) {
 		if (!(view instanceof CompoundButton)) return;
 		bindViewAttribute(view, map, model, "checked");
-		if (map.containsKey("onCheckedChange")){
-			Command command = Utility.getCommandForModel(map.get("onCheckedChange"), model);
-			if (command!=null){
-				Binder
-					.getMulticastListenerForView(view, OnCheckedChangeListenerMulticast.class)
-					.register(command);
-			}
-		}
+		bindViewAttribute(view, map, model, "onCheckedChange");
 	}
 }

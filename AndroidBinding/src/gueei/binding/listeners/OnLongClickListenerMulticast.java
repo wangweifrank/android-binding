@@ -17,7 +17,6 @@ public class OnLongClickListenerMulticast extends MulticastListener<View.OnLongC
 				returnValue = true;
 			}
 		}
-		this.invokeCommands(v);
 		return returnValue;
 	}
 }

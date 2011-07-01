@@ -1,25 +1,25 @@
-package gueei.binding.viewAttributes;
+package gueei.binding.viewAttributes.view;
 
 import gueei.binding.BindingType;
 import gueei.binding.ViewAttribute;
-import android.graphics.Color;
-import android.widget.TextView;
+import android.graphics.drawable.Drawable;
+import android.view.View;
 
 
-public class TextColorViewAttribute extends ViewAttribute<TextView, Integer> {
+public class BackgroundColorViewAttribute extends ViewAttribute<View, Integer> {
 
-	public TextColorViewAttribute(TextView view) {
+	public BackgroundColorViewAttribute(View view) {
 		super(Integer.class, view, "backgroundColor");
 	}
 
 	@Override
 	protected void doSetAttributeValue(Object newValue) {
 		if (newValue==null){
-			getView().setTextColor(Color.RED);
+			getView().setBackgroundColor(0);
 			return;
 		}
 		if (newValue instanceof Integer){
-			getView().setTextColor((Integer)newValue);
+			getView().setBackgroundColor((Integer)newValue);
 		}
 	}
 

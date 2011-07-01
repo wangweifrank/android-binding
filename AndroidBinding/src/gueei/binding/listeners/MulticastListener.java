@@ -16,10 +16,11 @@ public abstract class MulticastListener<T> {
 	protected ArrayList<T> listeners = new ArrayList<T>(0);
 	protected ArrayList<Command> commands = new ArrayList<Command>(1);
 	protected ArrayList<ViewAttribute<?,?>> attributes = new ArrayList<ViewAttribute<?,?>>(1);
-	public void register(Command command){
-		commands.add(command);
-	}
 
+	public void removeListener(T listener){
+		listeners.remove(listener);
+	}
+	
 	public void register(T listener){
 		listeners.add(listener);
 	}
@@ -37,12 +38,6 @@ public abstract class MulticastListener<T> {
 		mBroadcasting = true;
 	}
 	
-	public void invokeCommands(View view, Object... args){
-		for(Command command : commands){
-			command.Invoke(view, args);
-		}
-	}
-		
 	public static class Factory{
 		public static void RegisterConstructorE(Class<?> type, Constructor<?> constructor){
 			constructors.put(type, constructor);

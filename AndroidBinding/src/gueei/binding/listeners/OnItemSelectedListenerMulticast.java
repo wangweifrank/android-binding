@@ -18,13 +18,11 @@ public class OnItemSelectedListenerMulticast
 		for (AdapterView.OnItemSelectedListener l: listeners){
 			l.onItemSelected(arg0, arg1, arg2, arg3);
 		}
-		this.invokeCommands(arg0, arg1, arg2, arg3);
 	}
 
 	public void onNothingSelected(AdapterView<?> arg0) {
 		for (AdapterView.OnItemSelectedListener l: listeners){
 			l.onNothingSelected(arg0);
 		}
-		this.invokeCommands(arg0);
 	}
 }

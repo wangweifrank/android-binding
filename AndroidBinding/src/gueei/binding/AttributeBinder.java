@@ -108,19 +108,4 @@ public class AttributeBinder {
 		}
 		return false;
 	}
-
-	protected final void bindCommand(View view, BindingMap map, Object model,
-			String commandName,
-			Class<? extends MulticastListener<?>> multicastType) {
-		if (map.containsKey(commandName)) {
-			Command command = Utility.getCommandForModel(map.get(commandName),
-					model);
-			if (command != null) {
-				MulticastListener<?> listener = Binder
-						.getMulticastListenerForView(view, multicastType);
-				if (listener != null)
-					listener.register(command);
-			}
-		}
-	}
 }

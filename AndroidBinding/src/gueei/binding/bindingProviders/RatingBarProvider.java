@@ -2,8 +2,8 @@ package gueei.binding.bindingProviders;
 
 import gueei.binding.BindingMap;
 import gueei.binding.ViewAttribute;
-import gueei.binding.listeners.OnRatingBarChangeListenerMulticast;
-import gueei.binding.viewAttributes.RatingViewAttribute;
+import gueei.binding.viewAttributes.ratingBar.OnRatingChangedViewEvent;
+import gueei.binding.viewAttributes.ratingBar.RatingViewAttribute;
 import android.view.View;
 import android.widget.RatingBar;
 
@@ -17,6 +17,9 @@ public class RatingBarProvider extends BindingProvider {
 			RatingViewAttribute attr = new RatingViewAttribute((RatingBar)view);
 			return (ViewAttribute<Tv, ?>)attr;
 		}
+		if (attributeId.equals("onRatingChanged")){
+			return (ViewAttribute<Tv, ?>)new OnRatingChangedViewEvent((RatingBar)view);
+		}
 		return null;
 	}
 
@@ -25,6 +28,6 @@ public class RatingBarProvider extends BindingProvider {
 	public void bind(View view, BindingMap map, Object model) {
 		if (!(view instanceof RatingBar)) return;
 		bindViewAttribute(view, map, model, "rating");
-		bindCommand(view, map, model, "onRatingChanged", OnRatingBarChangeListenerMulticast.class);
+		bindViewAttribute(view, map, model, "onRatingChanged");
 	}
 }

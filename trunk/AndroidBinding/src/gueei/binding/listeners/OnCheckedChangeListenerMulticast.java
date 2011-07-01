@@ -19,9 +19,6 @@ public class OnCheckedChangeListenerMulticast
 		for(OnCheckedChangeListener l: listeners){
 			l.onCheckedChanged(arg0, arg1);
 		}
-		if (this.isFromUser()){
-			this.invokeCommands(arg0, arg1);
-		}
 		this.clearBroadcastState();
 	}
 }

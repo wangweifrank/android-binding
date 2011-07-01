@@ -1,4 +1,4 @@
-package gueei.binding.viewAttributes;
+package gueei.binding.viewAttributes.ratingBar;
 
 
 import gueei.binding.Binder;

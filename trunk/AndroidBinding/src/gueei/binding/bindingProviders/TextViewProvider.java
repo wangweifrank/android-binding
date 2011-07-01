@@ -2,9 +2,9 @@ package gueei.binding.bindingProviders;
 
 import gueei.binding.BindingMap;
 import gueei.binding.ViewAttribute;
-import gueei.binding.listeners.TextWatcherMulticast;
-import gueei.binding.viewAttributes.TextColorViewAttribute;
-import gueei.binding.viewAttributes.TextViewAttribute;
+import gueei.binding.viewAttributes.textView.OnTextChangedViewEvent;
+import gueei.binding.viewAttributes.textView.TextColorViewAttribute;
+import gueei.binding.viewAttributes.textView.TextViewAttribute;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -18,13 +18,16 @@ public class TextViewProvider extends BindingProvider {
 		if (!(view instanceof TextView)) return null;
 		if (attributeId.equals("text")){
 			TextViewAttribute attr = new TextViewAttribute((TextView)view, "text");
-			if (view instanceof EditText){
-			}
 			return (ViewAttribute<Tv, ?>) attr;
 		}
 		if (attributeId.equals("textColor")){
 			TextColorViewAttribute attr = new TextColorViewAttribute((TextView)view);
 			return (ViewAttribute<Tv, ?>) attr;
+		}
+		if (attributeId.equals("onTextChanged")){
+			if (view instanceof EditText){
+				return (ViewAttribute<Tv, ?>) (new OnTextChangedViewEvent((EditText)view));
+			}
 		}
 		return null;
 	}
@@ -35,7 +38,7 @@ public class TextViewProvider extends BindingProvider {
 		bindViewAttribute(view, map, model, "text");
 		bindViewAttribute(view, map, model, "textColor");
 		if (view instanceof EditText){
-			bindCommand(view, map, model, "onTextChanged", TextWatcherMulticast.class);
+			bindViewAttribute(view, map, model, "onTextChanged");
 		}
 	}
 }

@@ -1,4 +1,4 @@
-package gueei.binding.viewAttributes;
+package gueei.binding.viewAttributes.adapterView;
 
 import gueei.binding.Binder;
 import gueei.binding.BindingMap;

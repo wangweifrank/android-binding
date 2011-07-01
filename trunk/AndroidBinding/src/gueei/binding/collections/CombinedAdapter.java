@@ -68,7 +68,11 @@ public class CombinedAdapter extends BaseAdapter {
 
 	@Override
 	public int getViewTypeCount() {
-		return mAdapters.size();
+		int count = 0;
+		for(Adapter a: mAdapters){
+			count += a.getViewTypeCount();
+		}
+		return count;
 	}
 
 	private class TranslatedPosition{

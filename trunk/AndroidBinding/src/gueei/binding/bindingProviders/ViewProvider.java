@@ -2,12 +2,12 @@ package gueei.binding.bindingProviders;
 
 import gueei.binding.BindingMap;
 import gueei.binding.ViewAttribute;
-import gueei.binding.listeners.OnClickListenerMulticast;
-import gueei.binding.listeners.OnLongClickListenerMulticast;
-import gueei.binding.viewAttributes.BackgroundColorViewAttribute;
-import gueei.binding.viewAttributes.BackgroundViewAttribute;
-import gueei.binding.viewAttributes.EnabledViewAttribute;
-import gueei.binding.viewAttributes.VisibilityViewAttribute;
+import gueei.binding.viewAttributes.view.BackgroundColorViewAttribute;
+import gueei.binding.viewAttributes.view.BackgroundViewAttribute;
+import gueei.binding.viewAttributes.view.EnabledViewAttribute;
+import gueei.binding.viewAttributes.view.OnClickViewEvent;
+import gueei.binding.viewAttributes.view.OnLongClickViewEvent;
+import gueei.binding.viewAttributes.view.VisibilityViewAttribute;
 import android.view.View;
 
 
@@ -33,6 +33,12 @@ public class ViewProvider extends BindingProvider {
 				new BackgroundColorViewAttribute(view);
 			return attr;
 		}
+		else if (attributeId.equals("onClick")){
+			return new OnClickViewEvent(view);
+		}
+		else if (attributeId.equals("onLongClick")){
+			return new OnLongClickViewEvent(view);
+		}
 		return null;
 	}
 
@@ -43,7 +49,9 @@ public class ViewProvider extends BindingProvider {
 		bindViewAttribute(view, map, model, "visibility");
 		bindViewAttribute(view, map, model, "background");
 		bindViewAttribute(view, map, model, "backgroundColor");
-		bindCommand(view, map, model, "onClick", OnClickListenerMulticast.class);
-		bindCommand(view, map, model, "onLongClick", OnLongClickListenerMulticast.class);
+		bindViewAttribute(view, map, model, "onClick");
+		bindViewAttribute(view, map, model, "onLongClick");
+		// bindCommand(view, map, model, "onClick", OnClickListenerMulticast.class);
+		//bindCommand(view, map, model, "onLongClick", OnLongClickListenerMulticast.class);
 	}
 }

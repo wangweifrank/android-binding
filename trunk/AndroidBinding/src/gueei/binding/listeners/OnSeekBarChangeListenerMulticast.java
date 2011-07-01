@@ -19,9 +19,6 @@ public class OnSeekBarChangeListenerMulticast
 		for(SeekBar.OnSeekBarChangeListener l: listeners){
 			l.onProgressChanged(seekBar, progress, fromUser);
 		}
-		if (fromUser){
-			this.invokeCommands(seekBar, progress, fromUser);
-		}
 	}
 
 	public void onStartTrackingTouch(SeekBar seekBar) {

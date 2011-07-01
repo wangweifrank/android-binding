@@ -1,4 +1,4 @@
-package gueei.binding.viewAttributes;
+package gueei.binding.viewAttributes.progressBar;
 
 import gueei.binding.ViewAttribute;
 import android.widget.ProgressBar;

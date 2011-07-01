@@ -2,6 +2,7 @@ package gueei.binding.collections;
 
 import gueei.binding.AttributeBinder;
 import gueei.binding.Binder;
+import gueei.binding.BindingLog;
 import gueei.binding.CollectionObserver;
 import gueei.binding.IObservableCollection;
 import gueei.binding.R;
@@ -15,6 +16,18 @@ import android.widget.BaseAdapter;
 
 public class CollectionAdapter extends BaseAdapter
 	implements CollectionObserver{
+	@Override
+	public int getViewTypeCount() {
+		BindingLog.debug("Collection", "bindingView Type Count");
+		return super.getViewTypeCount();
+	}
+
+	@Override
+	public int getItemViewType(int position) {
+		BindingLog.debug("Collection", "gettype" + position);
+		return super.getItemViewType(position);
+	}
+
 	protected final Handler mHandler;
 	protected final Context mContext;
 	protected final int mLayoutId;

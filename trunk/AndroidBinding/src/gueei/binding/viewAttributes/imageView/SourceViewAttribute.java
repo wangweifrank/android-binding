@@ -1,4 +1,4 @@
-package gueei.binding.viewAttributes;
+package gueei.binding.viewAttributes.imageView;
 
 import gueei.binding.BindingType;
 import gueei.binding.ViewAttribute;

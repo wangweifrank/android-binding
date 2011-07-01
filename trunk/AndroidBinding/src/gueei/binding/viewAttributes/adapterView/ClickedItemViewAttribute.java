@@ -1,4 +1,4 @@
-package gueei.binding.viewAttributes;
+package gueei.binding.viewAttributes.adapterView;
 
 import gueei.binding.Binder;
 import gueei.binding.ViewAttribute;
@@ -8,31 +8,36 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 
 
-public class ClickedIdViewAttribute extends ViewAttribute<AdapterView<?>, Long>
+public class ClickedItemViewAttribute extends ViewAttribute<AdapterView<?>, Object>
 	implements OnItemClickListener{
 
-	private Long value;
+	private Object value;
 	
-	public ClickedIdViewAttribute(AdapterView<?> view, String attributeName) {
-		super(Long.class, view, attributeName);
+	public ClickedItemViewAttribute(AdapterView<?> view, String attributeName) {
+		super(Object.class, view, attributeName);
 		this.setReadonly(true);
 		Binder.getMulticastListenerForView(view, OnItemClickListenerMulticast.class)
 			.register(this);
 	}
 
 	@Override
-	public Long get() {
-		return value;
+	protected void doSetAttributeValue(Object newValue) {
+		// do nothing. this is a readonly attribute
 	}
 
 	@Override
-	protected void doSetAttributeValue(Object newValue) {
-		// Readonly, do nothing
+	public Object get() {
+		return value;
 	}
+
 
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 		if (!getView().equals(parent)) return;
-		this.value = id;
-		this.notifyChanged();
+		try{
+			this.value = getView().getItemAtPosition(position);
+			this.notifyChanged();
+		}catch(Exception e){
+		}
 	}
+	
 }

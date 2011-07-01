@@ -11,7 +11,6 @@ public class OnItemClickListenerMulticast extends MulticastListener<OnItemClickL
 		for(OnItemClickListener l:listeners){
 			l.onItemClick(arg0, arg1, arg2, arg3);
 		}
-		this.invokeCommands(arg0, arg1, arg2, arg3);
 	}
 
 	@Override

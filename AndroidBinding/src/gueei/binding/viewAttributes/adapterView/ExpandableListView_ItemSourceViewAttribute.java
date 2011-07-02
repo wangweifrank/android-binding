@@ -34,9 +34,9 @@ public class ExpandableListView_ItemSourceViewAttribute
 		if (!map.containsKey("childItemSource"))
 			return;
 		
-		int itemTemplate = Utility.resolveResource(map.get("itemTemplate"),
+		int itemTemplate = Utility.resolveLayoutResource(map.get("itemTemplate"),
 				getView().getContext());
-		int childItemTemplate = Utility.resolveResource(map.get("childItemTemplate"), 
+		int childItemTemplate = Utility.resolveLayoutResource(map.get("childItemTemplate"), 
 				getView().getContext());
 		String childItemSource = map.get("childItemSource");
 		
@@ -45,7 +45,7 @@ public class ExpandableListView_ItemSourceViewAttribute
 		
 		int spinnerTemplate = -1;
 		if (map.containsKey("spinnerTemplate")){
-			spinnerTemplate = Utility.resolveResource(map.get("spinnerTemplate"),
+			spinnerTemplate = Utility.resolveLayoutResource(map.get("spinnerTemplate"),
 				Binder.getApplication());
 		}
 		

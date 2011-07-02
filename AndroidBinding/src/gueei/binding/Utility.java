@@ -35,7 +35,7 @@ public class Utility {
 		return null;
 	}
 	
-	public static int resolveResource(String attrValue, Context context){
+	public static int resolveLayoutResource(String attrValue, Context context){
 		if (!attrValue.startsWith("@")) return -1;
 		String name = attrValue.substring(1); // remove the @ sign
 		return context.getResources().getIdentifier(name, "layout", context.getPackageName());

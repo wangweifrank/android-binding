@@ -26,7 +26,7 @@ public class ItemTemplateViewAttribute extends ViewAttribute<View, LayoutTemplat
 				template = new SingleLayoutTemplate((Integer)newValue);
 			return;
 		}else if (newValue instanceof CharSequence){
-			int value = Utility.resolveResource(newValue.toString(), getView().getContext());
+			int value = Utility.resolveLayoutResource(newValue.toString(), getView().getContext());
 			if (value>0){
 				template= new SingleLayoutTemplate(value);
 			}

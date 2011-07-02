@@ -47,7 +47,7 @@ public class ItemSourceViewAttribute extends ViewAttribute<AdapterView<Adapter>,
 		
 		int spinnerTemplate = -1;
 		if (map.containsKey("spinnerTemplate")){
-			spinnerTemplate = Utility.resolveResource(map.get("spinnerTemplate"),
+			spinnerTemplate = Utility.resolveLayoutResource(map.get("spinnerTemplate"),
 				Binder.getApplication());
 		}
 		

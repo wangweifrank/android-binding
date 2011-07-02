@@ -1,5 +1,6 @@
 package gueei.binding;
 
+import gueei.binding.observables.FloatObservable;
 import gueei.binding.observables.IntegerObservable;
 import gueei.binding.observables.StringObservable;
 
@@ -10,6 +11,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import android.content.Context;
+import android.util.TypedValue;
 
 public class BindingSyntaxResolver {
 	private static final String DEFAULT_CONVERTER_PACKAGE = "gueei.binding.converters.";
@@ -18,6 +20,7 @@ public class BindingSyntaxResolver {
 	private static final Pattern dynamicObjectPattern = Pattern.compile("^\\{(.+)\\}$");
 	private static final Pattern stringPattern = Pattern.compile("^'([^']*)'$");
 	private static final Pattern numberPattern = Pattern.compile("^(\\+|\\-)?[0-9]*(\\.[0-9]+)?$");
+	private static final Pattern resourcePattern = Pattern.compile("^@(([\\w\\.]+:)?(\\w+)/\\w+)$");
 	
 	public static IObservable<?> constructObservableFromStatement(
 			final Context context,
@@ -134,6 +137,8 @@ public class BindingSyntaxResolver {
 		if (result!=null) return result;
 		result = matchInteger(fieldName);
 		if (result!=null) return result;
+		result = matchResource(fieldName);
+		if (result!=null) return result;
 		
 		if (model instanceof IPropertyContainer){
 			try{
@@ -147,7 +152,7 @@ public class BindingSyntaxResolver {
 		}
 		// TODO: TEMP ONLY
 		if (fieldName.startsWith("@")){
-			return new ConstantObservable<Integer>(Integer.class, Utility.resolveResource(fieldName, Binder.getApplication()));
+			return new ConstantObservable<Integer>(Integer.class, Utility.resolveLayoutResource(fieldName, Binder.getApplication()));
 		}
 		Object rawField = getFieldForModel(fieldName, model);
 		if (rawField instanceof IObservable<?>)
@@ -171,6 +176,24 @@ public class BindingSyntaxResolver {
 			return null;
 		}
 		return new IntegerObservable(value);
+	}
+	
+	private static IObservable<?> matchResource(String fieldName){
+		Matcher m = resourcePattern.matcher(fieldName);
+		if ((!m.matches())||(m.groupCount()<2)) return null;
+		
+		int id = Utility.resolveLayoutResource(fieldName, Binder.getApplication());
+		
+		TypedValue outValue = new TypedValue();
+		Binder.getApplication().getResources().getValue(id, outValue, true);
+		switch(outValue.type){
+		case TypedValue.TYPE_STRING:
+			return new StringObservable(outValue.string.toString());
+		case TypedValue.TYPE_FLOAT:
+			return new FloatObservable(outValue.getFloat());
+		default:
+			return new IntegerObservable(outValue.data);
+		}
 	}
 		
 	private static Object getFieldForModel(String fieldName, Object model){

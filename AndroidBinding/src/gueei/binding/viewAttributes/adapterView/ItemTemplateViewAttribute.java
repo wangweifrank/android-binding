@@ -1,41 +1,41 @@
 package gueei.binding.viewAttributes.adapterView;
 
-import android.view.View;
 import gueei.binding.BindingType;
 import gueei.binding.Utility;
 import gueei.binding.ViewAttribute;
-import gueei.binding.viewAttributes.templates.LayoutTemplate;
-import gueei.binding.viewAttributes.templates.SingleLayoutTemplate;
+import gueei.binding.viewAttributes.templates.Layout;
+import gueei.binding.viewAttributes.templates.SingleTemplateLayout;
+import android.view.View;
 
-public class ItemTemplateViewAttribute extends ViewAttribute<View, LayoutTemplate> {
+public class ItemTemplateViewAttribute extends ViewAttribute<View, Layout> {
 
 	public ItemTemplateViewAttribute(View view,
 			String attributeName) {
-		super(LayoutTemplate.class, view, attributeName);
+		super(Layout.class, view, attributeName);
 	}
 
-	private LayoutTemplate template;
+	private Layout template;
 	
 	@Override
 	protected void doSetAttributeValue(Object newValue) {
-		if (newValue instanceof LayoutTemplate){
-			template = (LayoutTemplate)newValue;
+		if (newValue instanceof Layout){
+			template = (Layout)newValue;
 			return;
 		}else if (newValue instanceof Integer){
 			if ((Integer)newValue>0)
-				template = new SingleLayoutTemplate((Integer)newValue);
+				template = new SingleTemplateLayout((Integer)newValue);
 			return;
 		}else if (newValue instanceof CharSequence){
 			int value = Utility.resolveLayoutResource(newValue.toString(), getView().getContext());
 			if (value>0){
-				template= new SingleLayoutTemplate(value);
+				template = new SingleTemplateLayout((Integer)newValue);
 			}
 			return;
 		}
 	}
 
 	@Override
-	public LayoutTemplate get() {
+	public Layout get() {
 		return template;
 	}
 
@@ -44,7 +44,7 @@ public class ItemTemplateViewAttribute extends ViewAttribute<View, LayoutTemplat
 		if (Integer.class.isAssignableFrom(type) ||
 			CharSequence.class.isAssignableFrom(type)) 
 			return BindingType.OneWay;
-		if (LayoutTemplate.class.isAssignableFrom(type)) return BindingType.TwoWay;
+		if (Layout.class.isAssignableFrom(type)) return BindingType.TwoWay;
 		return BindingType.NoBinding;
 	}
 }

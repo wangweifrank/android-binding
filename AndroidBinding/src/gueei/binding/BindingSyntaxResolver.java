@@ -1,8 +1,8 @@
 package gueei.binding;
 
-import gueei.binding.observables.FloatObservable;
 import gueei.binding.observables.IntegerObservable;
 import gueei.binding.observables.StringObservable;
+import gueei.binding.viewAttributes.templates.Layout;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
@@ -181,18 +181,22 @@ public class BindingSyntaxResolver {
 	private static IObservable<?> matchResource(String fieldName){
 		Matcher m = resourcePattern.matcher(fieldName);
 		if ((!m.matches())||(m.groupCount()<2)) return null;
+		String typeName = m.group(3);
+
+		int id = Utility.resolveResourceId(fieldName, Binder.getApplication(), typeName);
 		
-		int id = Utility.resolveLayoutResource(fieldName, Binder.getApplication());
+		if ("layout".equals(typeName))
+			return new ConstantObservable<Layout>(Layout.class, new Layout(id));
 		
 		TypedValue outValue = new TypedValue();
 		Binder.getApplication().getResources().getValue(id, outValue, true);
 		switch(outValue.type){
 		case TypedValue.TYPE_STRING:
-			return new StringObservable(outValue.string.toString());
+			return new ConstantObservable<String>(String.class, outValue.string.toString());
 		case TypedValue.TYPE_FLOAT:
-			return new FloatObservable(outValue.getFloat());
+			return new ConstantObservable<Float>(Float.class, outValue.getFloat());
 		default:
-			return new IntegerObservable(outValue.data);
+			return new ConstantObservable<Integer>(Integer.class, outValue.data);
 		}
 	}
 		

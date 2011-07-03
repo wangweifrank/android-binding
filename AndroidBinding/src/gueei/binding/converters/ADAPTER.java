@@ -5,6 +5,7 @@ import gueei.binding.Converter;
 import gueei.binding.DynamicObject;
 import gueei.binding.IObservable;
 import gueei.binding.collections.Utility;
+import gueei.binding.viewAttributes.templates.LayoutTemplate;
 import android.widget.Adapter;
 
 /**
@@ -28,7 +29,7 @@ public class ADAPTER extends Converter<Adapter> {
 			DynamicObject object = (DynamicObject)args[0];
 			if (!object.observableExists("template")) return null;
 			if (!object.observableExists("source")) return null;
-			int template = (Integer)object.getObservableByName("template").get();
+			int template = ((LayoutTemplate)object.getObservableByName("template").get()).getTemplate();
 			int spinnerTemplate = -1;
 			if (object.observableExists("spinnerTemplate"))
 				spinnerTemplate = (Integer)object.getObservableByName("spinnerTemplate").get();

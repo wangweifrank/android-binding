@@ -88,7 +88,7 @@ public class PojoViewModelWrapper<T extends PojoViewModel> implements IPropertyC
 		return null;
 	}
 	
-	private class PojoCommand implements Command{
+	private class PojoCommand extends Command{
 		private final Method mMethod;
 		public PojoCommand(Method method){
 			mMethod = method;

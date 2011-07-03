@@ -8,17 +8,14 @@ import gueei.binding.Observable;
 import gueei.binding.Observer;
 import gueei.binding.utility.IModelReflector;
 
-import java.lang.ref.WeakReference;
 import java.util.Collection;
 import java.util.HashMap;
-
-import android.view.View;
 
 
 public class ObservableMapper implements IPropertyContainer {
 	@SuppressWarnings("rawtypes")
 	public HashMap<String, MockObservable> observableMapping = new HashMap<String, MockObservable>();
-	public HashMap<String, MockCommand> commandMapping = new HashMap<String, MockCommand>();
+	//public HashMap<String, MockCommand> commandMapping = new HashMap<String, MockCommand>();
 	@SuppressWarnings("rawtypes")
 	public HashMap<String, Observable> valueMapping = new HashMap<String, Observable>();
 	public int mappedPosition;
@@ -37,9 +34,11 @@ public class ObservableMapper implements IPropertyContainer {
 				IObservable<?> obs = reflector.getObservableByName(key, model);
 				observableMapping.get(key).changeObservingProperty(obs);
 			}
+			/*
 			for(String key: commandMapping.keySet()){
 				commandMapping.get(key).changeCommand(reflector.getCommandByName(key, model));
 			}
+			*/
 			for(String key: valueMapping.keySet()){
 				valueMapping.get(key).set(reflector.getValueByName(key, model));
 			}
@@ -100,7 +99,7 @@ public class ObservableMapper implements IPropertyContainer {
 			}
 		}
 	}
-	
+/*	
 	private class MockCommand implements Command{
 		private WeakReference<Command> command;
 		public void Invoke(View view, Object... args) {
@@ -126,7 +125,7 @@ public class ObservableMapper implements IPropertyContainer {
 		}
 		return commandMapping.get(name);
 	}
-
+*/
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public IObservable<?> getObservableByName(String name) throws Exception {
 		if ((!observableMapping.containsKey(name)) && (mReflector!=null)){
@@ -140,6 +139,10 @@ public class ObservableMapper implements IPropertyContainer {
 	}
 
 	public Object getValueByName(String name) throws Exception {
+		return null;
+	}
+
+	public Command getCommandByName(String name) throws Exception {
 		return null;
 	}
 }

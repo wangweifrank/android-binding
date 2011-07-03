@@ -4,6 +4,7 @@ import gueei.binding.Binder;
 import gueei.binding.IObservable;
 import gueei.binding.Observable;
 import gueei.binding.Observer;
+import gueei.binding.viewAttributes.templates.LayoutTemplate;
 
 import java.util.Collection;
 
@@ -20,11 +21,37 @@ import android.widget.SpinnerAdapter;
  */
 public class SingletonAdapter implements Adapter, SpinnerAdapter, Observer {
 	private final Object mObj;
-	private final int mLayoutId;
-	private final int mDropDownId;
+	private int mLayoutId;
+	private int mDropDownId;
 	private final Context mContext;
 	private View mView, mDropDownView;
 	private DataSetObserver mDataSetObserver;
+	private Observer templateObserver = new Observer(){
+		public void onPropertyChanged(IObservable<?> prop,
+				Collection<Object> initiators) {
+			mLayoutId = ((LayoutTemplate)prop).getTemplate();
+		}
+	};
+	private Observer dropDownTemplateObserver = new Observer(){
+		public void onPropertyChanged(IObservable<?> prop,
+				Collection<Object> initiators) {
+			mDropDownId = ((LayoutTemplate)prop).getTemplate();
+		}
+	};
+	
+	public SingletonAdapter(Context context, Object obj, LayoutTemplate template, LayoutTemplate dropDownTemplate){
+		mObj = obj;
+		mContext = context;
+		mLayoutId = template.getTemplate();
+		mDropDownId = dropDownTemplate.getTemplate();
+		
+		template.subscribe(templateObserver);
+		dropDownTemplate.subscribe(dropDownTemplateObserver);
+		
+		if(obj instanceof Observable){
+			((Observable<?>) obj).subscribe(this);
+		}		
+	}
 	
 	public SingletonAdapter(Context context, Object obj, int layoutId, int dropDownLayoutId){
 		mObj = obj;

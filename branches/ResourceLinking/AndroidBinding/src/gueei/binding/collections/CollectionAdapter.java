@@ -8,6 +8,7 @@ import gueei.binding.IObservableCollection;
 import gueei.binding.R;
 import gueei.binding.utility.BasicModelReflector;
 import gueei.binding.utility.IModelReflector;
+import gueei.binding.viewAttributes.templates.Layout;
 import android.content.Context;
 import android.os.Handler;
 import android.view.View;
@@ -30,27 +31,29 @@ public class CollectionAdapter extends BaseAdapter
 
 	protected final Handler mHandler;
 	protected final Context mContext;
-	protected final int mLayoutId;
-	protected final int mDropDownLayoutId;
+	protected final Layout mLayout, mDropDownLayout;
+	//protected final int mLayoutId;
+	//protected final int mDropDownLayoutId;
 	protected final IObservableCollection<?> mCollection;
 	protected final IModelReflector mReflector;
 		
 	public CollectionAdapter(Context context, IModelReflector reflector,
-			IObservableCollection<?> collection, int layoutId, int dropDownLayoutId) throws Exception{
+			IObservableCollection<?> collection, Layout layout, Layout dropDownLayout) throws Exception{
 		mHandler = new Handler();
 		mContext = context;
-		mLayoutId = layoutId;
-		mDropDownLayoutId = dropDownLayoutId;
+		mLayout = layout;
+		mDropDownLayout = dropDownLayout;
 		mCollection = collection;
 		mReflector = reflector;
 		collection.subscribe(this);
 	}
 	
 	public CollectionAdapter(Context context, IObservableCollection<?> collection, 
-			int layoutId, int dropDownLayoutId) throws Exception{
+			Layout layout, Layout dropDownLayout) throws Exception{
 		this(context, 
-				new BasicModelReflector(context), collection, layoutId, dropDownLayoutId);		
+				new BasicModelReflector(context), collection, layout, dropDownLayout);		
 	}
+	
 	public int getCount() {
 		return mCollection.size();
 	}
@@ -64,6 +67,7 @@ public class CollectionAdapter extends BaseAdapter
 	}
 
 	private View getView(int position, View convertView, ViewGroup parent, int layoutId) {
+		BindingLog.debug("Collection", "getView" + position);
 		View returnView = convertView;
 		if (position>=mCollection.size()) return returnView;
 		try {

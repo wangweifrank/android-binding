@@ -12,6 +12,7 @@ public abstract class LayoutTemplate extends Observable<LayoutTemplate> {
 	
 	public LayoutTemplate() {
 		super(LayoutTemplate.class);
+		this.set(this);
 	}
 	
 	public abstract int getTemplate();

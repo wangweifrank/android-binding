@@ -40,4 +40,10 @@ public class Utility {
 		String name = attrValue.substring(1); // remove the @ sign
 		return context.getResources().getIdentifier(name, "layout", context.getPackageName());
 	}
+	
+	public static int resolveResourceId(String attrValue, Context context, String type){
+		if (!attrValue.startsWith("@")) return -1;
+		String name = attrValue.substring(1); // remove the @ sign
+		return context.getResources().getIdentifier(name, type, context.getPackageName());
+	}
 }

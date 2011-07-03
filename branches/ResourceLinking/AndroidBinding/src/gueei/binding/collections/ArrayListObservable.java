@@ -93,6 +93,12 @@ public class ArrayListObservable<T> extends ObservableCollection<T> implements C
 		}
 		return result;
 	}
+	
+	public T remove(int index){
+		T obj = mArray.remove(index);
+		this.notifyCollectionChanged();
+		return obj;
+	}
 
 	public int size() {
 		return mArray.size();

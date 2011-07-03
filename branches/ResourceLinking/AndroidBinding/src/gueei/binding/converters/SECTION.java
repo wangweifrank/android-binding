@@ -3,6 +3,7 @@ package gueei.binding.converters;
 import gueei.binding.Converter;
 import gueei.binding.IObservable;
 import gueei.binding.collections.SingletonAdapter;
+import gueei.binding.viewAttributes.templates.LayoutTemplate;
 import android.widget.Adapter;
 
 /**
@@ -17,6 +18,6 @@ public class SECTION extends Converter<Adapter> {
 
 	@Override
 	public Adapter calculateValue(Object... args) throws Exception {
-		return new SingletonAdapter(this.getContext(), args[0], (Integer)args[1], (Integer)args[1]);
+		return new SingletonAdapter(this.getContext(), args[0], (LayoutTemplate)args[1], (LayoutTemplate)args[1]);
 	}
 }

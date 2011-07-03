@@ -6,6 +6,7 @@ import gueei.binding.BindingType;
 import gueei.binding.Utility;
 import gueei.binding.ViewAttribute;
 import gueei.binding.cursor.CursorRowTypeMap;
+import gueei.binding.viewAttributes.templates.Layout;
 import gueei.binding.viewAttributes.templates.LayoutTemplate;
 import android.widget.Adapter;
 import android.widget.AdapterView;
@@ -36,14 +37,15 @@ public class ItemSourceViewAttribute extends ViewAttribute<AdapterView<Adapter>,
 		if (itemTemplate <= 0)
 			return;
 */
-		LayoutTemplate template;
+		Layout template;
 		try{
 			ViewAttribute<?,?> attr = Binder.getAttributeForView(getView(), "itemTemplate");
-			template = ((LayoutTemplate)attr.get());
+			template = ((Layout)attr.get());
 		}catch(Exception e){
+			e.printStackTrace();
 			return;
 		}
-		int itemTemplate = template.getTemplate();
+		int itemTemplate = template.getLayoutId();
 		
 		int spinnerTemplate = -1;
 		if (map.containsKey("spinnerTemplate")){

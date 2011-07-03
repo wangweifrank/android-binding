@@ -72,7 +72,7 @@ public class CombinedAdapter extends BaseAdapter {
 		for(Adapter a: mAdapters){
 			count += a.getViewTypeCount();
 		}
-		return count;
+		return count == 0 ? 1 : count;
 	}
 
 	private class TranslatedPosition{

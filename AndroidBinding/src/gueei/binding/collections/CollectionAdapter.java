@@ -24,7 +24,7 @@ public class CollectionAdapter extends BaseAdapter
 
 	@Override
 	public int getItemViewType(int position) {
-		return mLayout.getLayoutTypeId(this.getItem(position), position);
+		return mLayout.getLayoutTypeId(position);
 	}
 
 	protected final Handler mHandler;
@@ -98,11 +98,11 @@ public class CollectionAdapter extends BaseAdapter
 	
 	@Override
 	public View getDropDownView(int position, View convertView, ViewGroup parent) {
-		return getView(position, convertView, parent, mDropDownLayout.getLayoutId(null, position));
+		return getView(position, convertView, parent, mDropDownLayout.getLayoutId(position));
 	}
 
 	public View getView(int position, View convertView, ViewGroup parent) {
-		return getView(position, convertView, parent, mLayout.getLayoutId(null, position));
+		return getView(position, convertView, parent, mLayout.getLayoutId(position));
 	}
 	
 	private ObservableMapper getAttachedMapper(View convertView){

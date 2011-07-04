@@ -1,12 +1,11 @@
 package gueei.binding.viewAttributes.adapterView;
 
 import gueei.binding.Binder;
-import gueei.binding.BindingMap;
 import gueei.binding.BindingType;
-import gueei.binding.Utility;
 import gueei.binding.ViewAttribute;
 import gueei.binding.collections.ExpandableCollectionAdapter;
 import gueei.binding.cursor.CursorRowTypeMap;
+import gueei.binding.viewAttributes.templates.Layout;
 import android.widget.Adapter;
 import android.widget.ExpandableListView;
 
@@ -24,41 +23,25 @@ public class ExpandableListView_ItemSourceViewAttribute
 		if (newValue == null)
 			return;
 		
-		BindingMap map = Binder.getBindingMapForView(getView());
-		if (!map.containsKey("itemTemplate"))
+		Layout template, childItemTemplate;
+		String childItemSource;
+		try{
+			template = ((Layout)Binder.getAttributeForView(getView(), "itemTemplate").get());
+			childItemTemplate = ((Layout)Binder.getAttributeForView(getView(), "childItemTemplate").get());
+			childItemSource = (String)(Binder.getAttributeForView(getView(), "childItemSource").get());
+			if (childItemSource ==null) return;
+		}catch(Exception e){
+			e.printStackTrace();
 			return;
-		
-		if (!map.containsKey("childItemTemplate"))
-			return;
-		
-		if (!map.containsKey("childItemSource"))
-			return;
-		
-		int itemTemplate = Utility.resolveLayoutResource(map.get("itemTemplate"),
-				getView().getContext());
-		int childItemTemplate = Utility.resolveLayoutResource(map.get("childItemTemplate"), 
-				getView().getContext());
-		String childItemSource = map.get("childItemSource");
-		
-		if ((itemTemplate <= 0)||(childItemTemplate<=0))
-			return;
-		
-		int spinnerTemplate = -1;
-		if (map.containsKey("spinnerTemplate")){
-			spinnerTemplate = Utility.resolveLayoutResource(map.get("spinnerTemplate"),
-				Binder.getApplication());
 		}
 		
-		spinnerTemplate = spinnerTemplate >0 ? spinnerTemplate : itemTemplate;
 		try {
-			/*
 			Adapter groupAdapter = 
 				gueei.binding.collections.Utility.getSimpleAdapter
-					(getView().getContext(), newValue, spinnerTemplate, itemTemplate);
+					(getView().getContext(), newValue, template, template);
 			ExpandableCollectionAdapter adapter = new ExpandableCollectionAdapter
 				(getView().getContext(), groupAdapter, childItemSource, childItemTemplate);
 			getView().setAdapter(adapter);
-			*/
 			
 		} catch (Exception e) {
 			e.printStackTrace();

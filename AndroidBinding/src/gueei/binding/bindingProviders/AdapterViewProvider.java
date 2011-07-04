@@ -3,6 +3,7 @@ package gueei.binding.bindingProviders;
 import gueei.binding.BindingMap;
 import gueei.binding.ViewAttribute;
 import gueei.binding.viewAttributes.GenericViewAttribute;
+import gueei.binding.viewAttributes.adapterView.ChildItemSourceViewAttribute;
 import gueei.binding.viewAttributes.adapterView.ClickedIdViewAttribute;
 import gueei.binding.viewAttributes.adapterView.ClickedItemViewAttribute;
 import gueei.binding.viewAttributes.adapterView.ExpandableListView_ItemSourceViewAttribute;
@@ -58,6 +59,12 @@ public class AdapterViewProvider extends BindingProvider {
 				return (ViewAttribute<Tv, ?>)new OnItemSelectedViewEvent((AdapterView)view);
 			} else if (attributeId.equals("onItemClicked")){
 				return (ViewAttribute<Tv, ?>)new OnItemClickedViewEvent((AdapterView)view);
+			} else if (attributeId.equals("childItemTemplate")){
+				if (view instanceof ExpandableListView)
+					return (ViewAttribute<Tv, ?>)new ItemTemplateViewAttribute(view, "childItemTemplate");
+			} else if (attributeId.equals("childItemSource")){
+				if (view instanceof ExpandableListView)
+					return (ViewAttribute<Tv, ?>)new ChildItemSourceViewAttribute((ExpandableListView)view);
 			}
 		} catch (Exception e) {
 			// Actually it should never reach this statement
@@ -70,10 +77,12 @@ public class AdapterViewProvider extends BindingProvider {
 		if (!(view instanceof AdapterView<?>)) return;
 		bindViewAttribute(view, map, model, "itemTemplate");
 		bindViewAttribute(view, map, model, "spinnerTemplate");
+		bindViewAttribute(view, map, model, "childItemTemplate");
 		bindViewAttribute(view, map, model, "selectedItem");
 		bindViewAttribute(view, map, model, "clickedItem");
 		bindViewAttribute(view, map, model, "clickedId");
 		bindViewAttribute(view, map, model, "adapter");
+		bindViewAttribute(view, map, model, "childItemSource");
 		bindViewAttribute(view, map, model, "itemSource");
 		bindViewAttribute(view, map, model, "onItemSelected");
 		bindViewAttribute(view, map, model, "onItemClicked");

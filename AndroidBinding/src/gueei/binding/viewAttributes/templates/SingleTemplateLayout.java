@@ -11,12 +11,12 @@ public class SingleTemplateLayout extends Layout {
 	}
 
 	@Override
-	public int getLayoutTypeId(Object item, int pos) {
+	public int getLayoutTypeId(int pos) {
 		return 0;
 	}
 
 	@Override
-	public int getLayoutId(Object item, int pos) {
+	public int getLayoutId(int pos) {
 		return getDefaultLayoutId();
 	}
 }

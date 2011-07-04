@@ -4,12 +4,10 @@ import gueei.binding.Binder;
 import gueei.binding.BindingLog;
 import gueei.binding.BindingMap;
 import gueei.binding.BindingType;
-import gueei.binding.Command;
 import gueei.binding.IObservable;
 import gueei.binding.Utility;
 import gueei.binding.ViewAttribute;
 import gueei.binding.exception.AttributeNotDefinedException;
-import gueei.binding.listeners.MulticastListener;
 
 import java.util.ArrayList;
 

@@ -15,9 +15,9 @@ public abstract class Layout {
 		return mDefaultId;
 	}
 	
-	public abstract int getLayoutTypeId(Object item, int pos);
+	public abstract int getLayoutTypeId(int pos);
 	
-	public abstract int getLayoutId(Object item, int pos);
+	public abstract int getLayoutId(int pos);
 	
 	public abstract int getTemplateCount();
 }

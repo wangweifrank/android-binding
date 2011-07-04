@@ -1,0 +1,13 @@
+#summary How Android-Binding inject the behavior on top of the SDK
+
+= Introduction =
+
+Android-Binding works along with the standard Android SDK. 
+
+= Glossary =
+
+ * View: Most often refers to widget classes (such as TextView, ImageView) in Android, but any subclass from _android.view.View_ is also considered as View. It is also the same as the View in MVVM
+
+
+
+ * View Attribute: The bindable attribute of each View Widget

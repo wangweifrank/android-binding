@@ -24,21 +24,21 @@ public class Utility {
 					layout, 
 					dropDownLayout);
 		}
-		/*
 		if (collection instanceof CursorObservable){
 			CursorObservable cobs = (CursorObservable)collection;
 			return new CursorObservableAdapter(Binder.getApplication(), 
-					cobs, layoutId, dropDownLayoutId);
+					cobs, layout, dropDownLayout);
 		}
+		/*
 		if (collection instanceof CursorRowTypeMap){
 			CursorRowTypeMap cursor = (CursorRowTypeMap)collection;
 			return new CursorSourceAdapter(Binder
-					.getApplication(), cursor, layoutId, dropDownLayoutId);
+					.getApplication(), cursor, layout, dropDownLayout);
 		}
 		if (collection.getClass().isArray()){
 			return new ArrayAdapter(Binder.getApplication(),
 					collection.getClass().getComponentType(),
-					(Object[]) collection, layoutId, dropDownLayoutId);
+					(Object[]) collection, layout, dropDownLayoutId);
 		}
 		*/
 		return null;

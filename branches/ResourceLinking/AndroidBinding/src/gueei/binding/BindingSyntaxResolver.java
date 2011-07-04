@@ -130,7 +130,21 @@ public class BindingSyntaxResolver {
 		}
 		return arguments.toArray(new String[0]);
 	}
-	
+
+	/**
+	 * get the Observable (either defined in model, or constants) from model
+	 * @param fieldName
+	 * @param model
+	 * @return IObservable
+	 * 
+	 * The resolving in done in following order:
+	 * 1. String (defined in '')
+	 * 2. Integer
+	 * 3. Resource
+	 * 4. Observable
+	 * 5. Constant from field
+	 * 6. Fall back (for backward compatibility) to String
+	 */
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	private static IObservable<?> getObservableForModel(
 			String fieldName, Object model){
@@ -151,14 +165,16 @@ public class BindingSyntaxResolver {
 		if (fieldName.equals(".")){
 			return new Observable(model.getClass(), model);
 		}
-		// TODO: TEMP ONLY
-		if (fieldName.startsWith("@")){
-			return new ConstantObservable<Integer>(Integer.class, Utility.resolveLayoutResource(fieldName, Binder.getApplication()));
-		}
+
 		Object rawField = getFieldForModel(fieldName, model);
 		if (rawField instanceof IObservable<?>)
 			return (IObservable<?>)rawField;
-		return null;
+		
+		if (rawField!=null){
+			return new ConstantObservable(rawField.getClass(), rawField);
+		}
+		
+		return new ConstantObservable<String>(String.class, fieldName);
 	}
 	
 	private static IObservable<?> matchString(String fieldName){

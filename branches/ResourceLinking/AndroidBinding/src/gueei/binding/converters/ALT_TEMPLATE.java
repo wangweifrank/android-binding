@@ -27,12 +27,12 @@ public class ALT_TEMPLATE extends Converter<Layout> {
 		}
 
 		@Override
-		public int getLayoutTypeId(Object item, int pos) {
+		public int getLayoutTypeId(int pos) {
 			return pos%mLayouts.length;
 		}
 
 		@Override
-		public int getLayoutId(Object item, int pos) {
+		public int getLayoutId(int pos) {
 			int idx = pos % mLayouts.length;
 			return mLayouts[idx];
 		}

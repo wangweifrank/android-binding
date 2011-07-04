@@ -65,5 +65,10 @@ public class BindingMap{
 		}
 		public String name;
 		public boolean handled = false;
+		
+		@Override
+		public String toString(){
+			return name + "_handled=" + handled;
+		}
 	}
 }

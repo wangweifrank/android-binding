@@ -12,11 +12,11 @@ import android.view.ViewGroup;
 import android.widget.CursorAdapter;
 
 import gueei.binding.R;
+import gueei.binding.viewAttributes.templates.Layout;
 
 public class CursorObservableAdapter<T extends CursorRowModel> extends CursorAdapter {
 	protected final CursorObservable<T> mCursorObservable;
-	protected int mLayoutId = -1;
-	protected int mDropDownLayoutId = -1;
+	protected Layout mLayout, mDDLayout;
 	protected final Context mContext;
 	protected Field idField;
 	
@@ -24,12 +24,12 @@ public class CursorObservableAdapter<T extends CursorRowModel> extends CursorAda
 	 * Beware this will (deprecated) change in API Level 11
 	 */
 	public CursorObservableAdapter
-		(Context context, CursorObservable<T> cursorObservable, int layoutId, int dropDownLayoutId){
+		(Context context, CursorObservable<T> cursorObservable, Layout layout, Layout ddLayout){
 		super(context, cursorObservable.getCursor());
 		mContext = context;
 		mCursorObservable = cursorObservable;
-		mLayoutId = layoutId;
-		mDropDownLayoutId = dropDownLayoutId;
+		mLayout = layout;
+		mDDLayout = ddLayout;
 	}
 
 	@Override
@@ -48,12 +48,12 @@ public class CursorObservableAdapter<T extends CursorRowModel> extends CursorAda
 
 	@Override
 	public View newView(Context context, Cursor cursor, ViewGroup parent) {
-		return newView(context, cursor, parent, mLayoutId);
+		return newView(context, cursor, parent, mLayout.getLayoutId(cursor.getPosition()));
 	}
 
 	@Override
 	public View newDropDownView(Context context, Cursor cursor, ViewGroup parent) {
-		return newView(context, cursor, parent, mDropDownLayoutId > 0 ? mDropDownLayoutId : mLayoutId);
+		return newView(context, cursor, parent, mDDLayout.getLayoutId(cursor.getPosition()));
 	}
 	
 	private View newView(Context context, Cursor cursor, ViewGroup parent, int layoutId){

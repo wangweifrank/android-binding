@@ -51,13 +51,14 @@ public class ExpandableListView_ItemSourceViewAttribute
 		
 		spinnerTemplate = spinnerTemplate >0 ? spinnerTemplate : itemTemplate;
 		try {
-			
+			/*
 			Adapter groupAdapter = 
 				gueei.binding.collections.Utility.getSimpleAdapter
 					(getView().getContext(), newValue, spinnerTemplate, itemTemplate);
 			ExpandableCollectionAdapter adapter = new ExpandableCollectionAdapter
 				(getView().getContext(), groupAdapter, childItemSource, childItemTemplate);
 			getView().setAdapter(adapter);
+			*/
 			
 		} catch (Exception e) {
 			e.printStackTrace();

@@ -35,7 +35,7 @@ public class ADAPTER extends Converter<Adapter> {
 				spinnerTemplate = (Integer)object.getObservableByName("spinnerTemplate").get();
 			spinnerTemplate = spinnerTemplate <0 ? template : spinnerTemplate;
 			IObservable<?> source = object.getObservableByName("source");
-			return Utility.getSimpleAdapter(Binder.getApplication(), source, template, spinnerTemplate);
+			return null; //Utility.getSimpleAdapter(Binder.getApplication(), source, template, spinnerTemplate);
 		}catch(Exception e){
 			return null;
 		}

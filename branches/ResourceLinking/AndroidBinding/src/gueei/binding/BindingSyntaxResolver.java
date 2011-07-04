@@ -3,6 +3,7 @@ package gueei.binding;
 import gueei.binding.observables.IntegerObservable;
 import gueei.binding.observables.StringObservable;
 import gueei.binding.viewAttributes.templates.Layout;
+import gueei.binding.viewAttributes.templates.SingleTemplateLayout;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
@@ -186,7 +187,7 @@ public class BindingSyntaxResolver {
 		int id = Utility.resolveResourceId(fieldName, Binder.getApplication(), typeName);
 		
 		if ("layout".equals(typeName))
-			return new ConstantObservable<Layout>(Layout.class, new Layout(id));
+			return new ConstantObservable<Layout>(Layout.class, new SingleTemplateLayout(id));
 		
 		TypedValue outValue = new TypedValue();
 		Binder.getApplication().getResources().getValue(id, outValue, true);

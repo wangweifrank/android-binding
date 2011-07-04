@@ -6,6 +6,7 @@ import gueei.binding.cursor.CursorObservable;
 import gueei.binding.cursor.CursorObservableAdapter;
 import gueei.binding.cursor.CursorRowTypeMap;
 import gueei.binding.cursor.CursorSourceAdapter;
+import gueei.binding.viewAttributes.templates.Layout;
 import android.content.Context;
 import android.widget.Adapter;
 
@@ -14,15 +15,16 @@ public class Utility {
 	@SuppressWarnings({ "unchecked", "rawtypes", "deprecation" })
 	public static Adapter getSimpleAdapter(
 			Context context, Object collection, 
-			int layoutId, int dropDownLayoutId) throws Exception{
+			Layout layout, Layout dropDownLayout) throws Exception{
 		if ((collection instanceof IObservableCollection)){
 			IObservableCollection obsCollection = (IObservableCollection)collection;
 			return new CollectionAdapter(
 					Binder.getApplication(), 
 					obsCollection, 
-					layoutId, 
-					dropDownLayoutId);
+					layout, 
+					dropDownLayout);
 		}
+		/*
 		if (collection instanceof CursorObservable){
 			CursorObservable cobs = (CursorObservable)collection;
 			return new CursorObservableAdapter(Binder.getApplication(), 
@@ -38,6 +40,7 @@ public class Utility {
 					collection.getClass().getComponentType(),
 					(Object[]) collection, layoutId, dropDownLayoutId);
 		}
+		*/
 		return null;
 	}
 }

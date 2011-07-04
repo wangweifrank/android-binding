@@ -29,14 +29,7 @@ public class ItemSourceViewAttribute extends ViewAttribute<AdapterView<Adapter>,
 		}
 		
 		BindingMap map = Binder.getBindingMapForView(getView());
-/*		if (!map.containsKey("itemTemplate"))
-			return;
-		
-		int itemTemplate = Utility.resolveResource(map.get("itemTemplate"),
-				Binder.getApplication());
-		if (itemTemplate <= 0)
-			return;
-*/
+
 		Layout template;
 		try{
 			ViewAttribute<?,?> attr = Binder.getAttributeForView(getView(), "itemTemplate");
@@ -45,7 +38,8 @@ public class ItemSourceViewAttribute extends ViewAttribute<AdapterView<Adapter>,
 			e.printStackTrace();
 			return;
 		}
-		int itemTemplate = template.getLayoutId();
+		
+		int itemTemplate = template.getDefaultLayoutId();
 		
 		int spinnerTemplate = -1;
 		if (map.containsKey("spinnerTemplate")){
@@ -56,7 +50,7 @@ public class ItemSourceViewAttribute extends ViewAttribute<AdapterView<Adapter>,
 		spinnerTemplate = spinnerTemplate >0 ? spinnerTemplate : itemTemplate;
 		try {
 			Adapter adapter = gueei.binding.collections.Utility.getSimpleAdapter
-				(getView().getContext(), newValue, spinnerTemplate, itemTemplate);
+				(getView().getContext(), newValue, template, template);
 			this.getView().setAdapter(adapter);
 			return;
 		} catch (Exception e) {

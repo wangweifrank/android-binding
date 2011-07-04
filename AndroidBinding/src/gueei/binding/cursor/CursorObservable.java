@@ -8,10 +8,11 @@ import java.util.ArrayList;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.database.DataSetObserver;
 
 
 @SuppressWarnings("rawtypes")
-public class CursorObservable<T extends CursorRowModel> extends Observable<CursorObservable> {
+public class CursorObservable<T extends CursorRowModel> extends Observable<CursorObservable>{
 	private Cursor mCursor;
 	private final Class<T> mRowModelType;
 	private final CursorRowModel.Factory<T> mFactory;
@@ -35,8 +36,21 @@ public class CursorObservable<T extends CursorRowModel> extends Observable<Curso
 		}
 	}
 
+	private DataSetObserver CursorDataSetObserver = new DataSetObserver(){
+		@Override
+		public void onChanged() {
+			notifyChanged();
+		}
+
+		@Override
+		public void onInvalidated() {
+			notifyChanged();
+		}
+	};
+	
 	public void setCursor(Cursor c){
 		mCursor = c;
+		mCursor.registerDataSetObserver(CursorDataSetObserver);
 		this.notifyChanged();
 	}
 	

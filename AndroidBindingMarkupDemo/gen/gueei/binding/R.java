@@ -48,12 +48,13 @@ public final class R {
         public static final int seekbar=0x7f030015;
         public static final int select_demo=0x7f030016;
         public static final int simple_expandable_list_item_1=0x7f030017;
-        public static final int simple_spinner_dropdown_item=0x7f030018;
-        public static final int simple_spinner_item=0x7f030019;
-        public static final int spinnerwitharraysource=0x7f03001a;
-        public static final int textview=0x7f03001b;
-        public static final int view=0x7f03001c;
-        public static final int view_demo=0x7f03001d;
+        public static final int simple_expandable_list_item_2=0x7f030018;
+        public static final int simple_spinner_dropdown_item=0x7f030019;
+        public static final int simple_spinner_item=0x7f03001a;
+        public static final int spinnerwitharraysource=0x7f03001b;
+        public static final int textview=0x7f03001c;
+        public static final int view=0x7f03001d;
+        public static final int view_demo=0x7f03001e;
     }
     public static final class raw {
         public static final int arraylistaslistviewsource=0x7f040000;

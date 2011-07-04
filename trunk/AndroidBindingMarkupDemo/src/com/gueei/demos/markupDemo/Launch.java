@@ -43,6 +43,7 @@ public class Launch extends Activity {
         Demos.add(new Demo("SeekBar", true));
         Demos.add(new Demo("RatingBar"));
         Demos.add(new Demo("CompoundButton"));
+        Demos.add(new Demo("ArrayListAsListViewSource", true));
         Demos.add(new Demo("SpinnerWithArraySource"));
         Demos.add(new Demo("ListViewWithCursorSource"));
         Demos.add(new Demo("MasterDetailListView"));

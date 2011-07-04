@@ -19,14 +19,12 @@ public class CollectionAdapter extends BaseAdapter
 	implements CollectionObserver{
 	@Override
 	public int getViewTypeCount() {
-		BindingLog.debug("Collection", "bindingView Type Count");
-		return super.getViewTypeCount();
+		return mLayout.getTemplateCount();
 	}
 
 	@Override
 	public int getItemViewType(int position) {
-		BindingLog.debug("Collection", "gettype" + position);
-		return super.getItemViewType(position);
+		return mLayout.getLayoutTypeId(this.getItem(position), position);
 	}
 
 	protected final Handler mHandler;
@@ -72,7 +70,9 @@ public class CollectionAdapter extends BaseAdapter
 		if (position>=mCollection.size()) return returnView;
 		try {
 			ObservableMapper mapper;
-			if ((convertView == null) || ((mapper = getAttachedMapper(convertView))==null)) {
+			if ((convertView == null) || 
+					((mapper = getAttachedMapper(convertView))==null)) {
+				
 				Binder.InflateResult result = Binder.inflateView(mContext,
 						layoutId, parent, false);
 				mapper = new ObservableMapper();
@@ -98,14 +98,11 @@ public class CollectionAdapter extends BaseAdapter
 	
 	@Override
 	public View getDropDownView(int position, View convertView, ViewGroup parent) {
-		return
-			mDropDownLayoutId > 0 ?
-					getView(position, convertView, parent, mDropDownLayoutId) :
-						getView(position, convertView, parent, mLayoutId);
+		return getView(position, convertView, parent, mDropDownLayout.getLayoutId(null, position));
 	}
 
 	public View getView(int position, View convertView, ViewGroup parent) {
-		return getView(position, convertView, parent, mLayoutId);
+		return getView(position, convertView, parent, mLayout.getLayoutId(null, position));
 	}
 	
 	private ObservableMapper getAttachedMapper(View convertView){
@@ -119,7 +116,7 @@ public class CollectionAdapter extends BaseAdapter
 	private void putAttachedMapper(View convertView, ObservableMapper mapper){
 		convertView.setTag(R.id.tag_observableCollection_attachedObservable, mapper);
 	}
-	
+		
 	public void onCollectionChanged(IObservableCollection<?> collection) {
 		mHandler.post(new Runnable(){
 			public void run(){

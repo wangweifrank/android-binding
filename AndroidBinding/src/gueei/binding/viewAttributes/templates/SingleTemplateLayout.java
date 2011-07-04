@@ -6,17 +6,17 @@ public class SingleTemplateLayout extends Layout {
 	}
 
 	@Override
-	public int getLayoutId(Object model) {
-		return getDefaultLayoutId();
-	}
-
-	@Override
 	public int getTemplateCount() {
 		return 1;
 	}
 
 	@Override
-	public int getLayoutType(Object model) {
+	public int getLayoutTypeId(Object item, int pos) {
 		return 0;
+	}
+
+	@Override
+	public int getLayoutId(Object item, int pos) {
+		return getDefaultLayoutId();
 	}
 }

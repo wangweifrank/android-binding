@@ -6,11 +6,13 @@ import gueei.binding.viewAttributes.adapterView.ChildItemSourceViewAttribute;
 import gueei.binding.viewAttributes.adapterView.ClickedIdViewAttribute;
 import gueei.binding.viewAttributes.adapterView.ClickedItemViewAttribute;
 import gueei.binding.viewAttributes.adapterView.ExpandableListView_ItemSourceViewAttribute;
+import gueei.binding.viewAttributes.adapterView.ExpandableListView_OnChildClickViewEvent;
 import gueei.binding.viewAttributes.adapterView.ItemSourceViewAttribute;
 import gueei.binding.viewAttributes.adapterView.ItemTemplateViewAttribute;
 import gueei.binding.viewAttributes.adapterView.OnItemClickedViewEvent;
 import gueei.binding.viewAttributes.adapterView.OnItemSelectedViewEvent;
 import gueei.binding.viewAttributes.adapterView.SelectedItemViewAttribute;
+import gueei.binding.viewAttributes.adapterView.ClickedChildViewAttribute;
 import android.view.View;
 import android.widget.Adapter;
 import android.widget.AdapterView;
@@ -42,6 +44,9 @@ public class AdapterViewProvider extends BindingProvider {
 				ViewAttribute<AdapterView<?>, Long> attr = 
 					new ClickedIdViewAttribute((AdapterView)view, "clickedId");
 				return (ViewAttribute<Tv, ?>) attr;
+			} else if (attributeId.equals("clickedChild")){
+				if (view instanceof ExpandableListView)
+					return (ViewAttribute<Tv, ?>)new ClickedChildViewAttribute((ExpandableListView)view);
 			} else if (attributeId.equals("itemSource")){
 				if (view instanceof ExpandableListView){
 					return (ViewAttribute<Tv, ?>)
@@ -64,6 +69,9 @@ public class AdapterViewProvider extends BindingProvider {
 			} else if (attributeId.equals("childItemSource")){
 				if (view instanceof ExpandableListView)
 					return (ViewAttribute<Tv, ?>)new ChildItemSourceViewAttribute((ExpandableListView)view);
+			} else if (attributeId.equals("onChildClick")){
+				if (view instanceof ExpandableListView)
+					return (ViewAttribute<Tv, ?>)new ExpandableListView_OnChildClickViewEvent((ExpandableListView)view);
 			}
 		} catch (Exception e) {
 			// Actually it should never reach this statement

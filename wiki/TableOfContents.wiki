@@ -11,6 +11,7 @@
  * [BindableAttributes Supported Views and Attributes]
  * [BindingSyntax Binding Syntax]
   * [Converters]
+  * [ResourceLinking]
   * [DynamicObject Dynamic Object]
  * Experimental Features
   * [PojoViewModel]

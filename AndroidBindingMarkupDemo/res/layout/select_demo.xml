@@ -6,14 +6,16 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     >
-	<ListView 
-		android:layout_width="fill_parent"
+	<ExpandableListView
+	    android:layout_width="fill_parent"
     	android:layout_height="fill_parent"
     	android:layout_weight="1"
-    	binding:itemSource="Demos"
-    	binding:itemTemplate="@layout/demo_list_item"
-    	binding:onItemClicked="ViewDemo"
-    	binding:clickedItem="SelectedDemo"
+    	binding:itemSource="DemoGroups"
+    	binding:itemTemplate="@layout/demo_group_template"
+    	binding:childItemSource="Demos"
+    	binding:childItemTemplate="@layout/demo_list_item"
+    	binding:onChildClick="ViewDemo"
+    	binding:clickedChild="SelectedDemo"
     />
     <Button
     	android:layout_width="fill_parent"

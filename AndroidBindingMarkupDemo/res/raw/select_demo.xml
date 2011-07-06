@@ -10,10 +10,10 @@
 		android:layout_width="fill_parent"
     	android:layout_height="fill_parent"
     	android:layout_weight="1"
-    	binding:itemSource="Demos"
-    	binding:itemTemplate="@layout/list_item"
-    	binding:onItemClicked="ViewDemo"
+    	binding:itemTemplate="@layout/demo_list_item"
     	binding:clickedItem="SelectedDemo"
+    	binding:onItemClicked="ViewDemo"
+    	binding:itemSource="Demos"
     />
     <Button
     	android:layout_width="fill_parent"

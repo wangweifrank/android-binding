@@ -21,35 +21,35 @@ public class Launch extends Activity {
         super.onCreate(savedInstanceState);
         Binder.init(this.getApplication());
         
-        /*
-        ByteArrayOutputStream bos = new ByteArrayOutputStream();
-        try {
-			XhtmlRendererFactory.getRenderer("xml").highlight("main", 
-					getResources().openRawResource(R.raw.main), 
-					bos, "UTF-8", false);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		Display.set(bos.toString());
+        DemoGroups.add(new DemoGroup(
+        		"Simple Views",
+        		new Demo("View", true), 
+        		new Demo("TextView"), 
+        		new Demo("ProgressBar"),
+        		new Demo("SeekBar", true),
+        		new Demo("RatingBar"),
+        		new Demo("CompoundButton"),
+        		new Demo("CustomView", true)
+        	));
         
-		WebView wv = (WebView)this.findViewById(R.id.wv);
-		wv.loadData(bos.toString(), "text/html", "UTF-8");
-		*/
+        DemoGroups.add(new DemoGroup(
+        		"Resource Linking",
+        		new Demo("ResourceLinking", true)
+        	));
         
-        Demos.add(new Demo("View", true));
-        Demos.add(new Demo("TextView"));
-        Demos.add(new Demo("ImageView"));
-        Demos.add(new Demo("ProgressBar"));
-        Demos.add(new Demo("SeekBar", true));
-        Demos.add(new Demo("RatingBar"));
-        Demos.add(new Demo("CompoundButton"));
-        Demos.add(new Demo("ArrayListAsListViewSource", true));
-        Demos.add(new Demo("SpinnerWithArraySource"));
-        Demos.add(new Demo("ListViewWithCursorSource"));
-        Demos.add(new Demo("MasterDetailListView"));
-        Demos.add(new Demo("NestedCursor"));
-        Demos.add(new Demo("MultipleAdapters"));
-        Demos.add(new Demo("CustomView", true));
+        DemoGroups.add(new DemoGroup(
+        		"Simple Lists",
+        		new Demo("ArrayListAsListViewSource", true),
+        		new Demo("SpinnerWithArraySource"),
+        		new Demo("ListViewWithCursorSource")
+        	));
+        
+        DemoGroups.add(new DemoGroup(
+        		"Compound/Nested Lists",
+        		new Demo("MasterDetailListView"),
+        		new Demo("NestedCursor"),
+        		new Demo("MultipleAdapters")
+        	));
         
         Binder.setAndBindContentView(this, R.layout.select_demo, this);
     }
@@ -76,10 +76,21 @@ public class Launch extends Activity {
 		}
     };
     
+    public static class DemoGroup{
+    	public StringObservable Title = new StringObservable();
+    	public final ArrayListObservable<Demo> Demos = new ArrayListObservable<Demo>(Demo.class);
+    	public DemoGroup(String title, Demo... demos){
+    		Title.set(title);
+    		for(int i=0; i<demos.length; i++){
+    			Demos.add(demos[i]);
+    		}
+    	}
+    }
+    
     public final Observable<Object> SelectedDemo = new Observable<Object>(Object.class);
 
-    public final ArrayListObservable<Demo> Demos = new
-    	ArrayListObservable<Demo>(Demo.class);
+    public final ArrayListObservable<DemoGroup> DemoGroups = new
+    	ArrayListObservable<DemoGroup>(DemoGroup.class);
     
     public static class Demo{
     	public StringObservable Name = new StringObservable();

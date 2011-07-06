@@ -1,6 +1,5 @@
 package gueei.binding.bindingProviders;
 
-import gueei.binding.BindingMap;
 import gueei.binding.ViewAttribute;
 import gueei.binding.viewAttributes.textView.OnTextChangedViewEvent;
 import gueei.binding.viewAttributes.textView.TextColorViewAttribute;
@@ -30,15 +29,5 @@ public class TextViewProvider extends BindingProvider {
 			}
 		}
 		return null;
-	}
-
-	@Override
-	public void bind(View view, BindingMap map, Object model) {
-		if (!(view instanceof TextView)) return;
-		bindViewAttribute(view, map, model, "text");
-		bindViewAttribute(view, map, model, "textColor");
-		if (view instanceof EditText){
-			bindViewAttribute(view, map, model, "onTextChanged");
-		}
 	}
 }

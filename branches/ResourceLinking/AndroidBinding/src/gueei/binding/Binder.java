@@ -25,6 +25,7 @@ import gueei.binding.R;
 
 
 public class Binder {
+	public static final String BindingNamespace = "http://www.gueei.com/android-binding/";
 	private static Application mApplication;
 	
 	/**

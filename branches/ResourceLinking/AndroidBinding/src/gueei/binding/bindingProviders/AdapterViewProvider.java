@@ -1,6 +1,5 @@
 package gueei.binding.bindingProviders;
 
-import gueei.binding.BindingMap;
 import gueei.binding.ViewAttribute;
 import gueei.binding.viewAttributes.GenericViewAttribute;
 import gueei.binding.viewAttributes.adapterView.ChildItemSourceViewAttribute;
@@ -70,21 +69,5 @@ public class AdapterViewProvider extends BindingProvider {
 			// Actually it should never reach this statement
 		}
 		return null;
-	}
-
-	@Override
-	public void bind(View view, BindingMap map, Object model) {
-		if (!(view instanceof AdapterView<?>)) return;
-		bindViewAttribute(view, map, model, "itemTemplate");
-		bindViewAttribute(view, map, model, "spinnerTemplate");
-		bindViewAttribute(view, map, model, "childItemTemplate");
-		bindViewAttribute(view, map, model, "selectedItem");
-		bindViewAttribute(view, map, model, "clickedItem");
-		bindViewAttribute(view, map, model, "clickedId");
-		bindViewAttribute(view, map, model, "adapter");
-		bindViewAttribute(view, map, model, "childItemSource");
-		bindViewAttribute(view, map, model, "itemSource");
-		bindViewAttribute(view, map, model, "onItemSelected");
-		bindViewAttribute(view, map, model, "onItemClicked");
 	}
 }

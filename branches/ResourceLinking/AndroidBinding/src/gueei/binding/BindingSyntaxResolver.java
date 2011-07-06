@@ -207,11 +207,21 @@ public class BindingSyntaxResolver {
 		
 		TypedValue outValue = new TypedValue();
 		Binder.getApplication().getResources().getValue(id, outValue, true);
+
+		// No idea why id will return TYPE_INT_BOOLEAN instead of TYPE_INT. 
+		if ("id".equals(typeName))
+			return new ConstantObservable<Integer>(Integer.class, outValue.data);
+		
 		switch(outValue.type){
 		case TypedValue.TYPE_STRING:
 			return new ConstantObservable<String>(String.class, outValue.string.toString());
+		case TypedValue.TYPE_DIMENSION:
+			return new ConstantObservable<TypedValue>(TypedValue.class, outValue);
+		case TypedValue.TYPE_FRACTION:
 		case TypedValue.TYPE_FLOAT:
 			return new ConstantObservable<Float>(Float.class, outValue.getFloat());
+		case TypedValue.TYPE_INT_BOOLEAN:
+			return new ConstantObservable<Boolean>(Boolean.class, outValue.data != 0);
 		default:
 			return new ConstantObservable<Integer>(Integer.class, outValue.data);
 		}

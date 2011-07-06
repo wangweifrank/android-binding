@@ -1,6 +1,5 @@
 package gueei.binding.bindingProviders;
 
-import gueei.binding.BindingMap;
 import gueei.binding.ViewAttribute;
 import gueei.binding.viewAttributes.ratingBar.OnRatingChangedViewEvent;
 import gueei.binding.viewAttributes.ratingBar.RatingViewAttribute;
@@ -21,13 +20,5 @@ public class RatingBarProvider extends BindingProvider {
 			return (ViewAttribute<Tv, ?>)new OnRatingChangedViewEvent((RatingBar)view);
 		}
 		return null;
-	}
-
-
-	@Override
-	public void bind(View view, BindingMap map, Object model) {
-		if (!(view instanceof RatingBar)) return;
-		bindViewAttribute(view, map, model, "rating");
-		bindViewAttribute(view, map, model, "onRatingChanged");
 	}
 }

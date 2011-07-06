@@ -16,7 +16,7 @@ public class SelectedItemViewAttribute extends ViewAttribute<AdapterView<?>, Obj
 		super(Object.class, view, attributeName);
 		this.setReadonly(true);
 		Binder.getMulticastListenerForView(view, OnItemSelectedListenerMulticast.class)
-			.register(this);
+			.registerWithHighPriority(this);
 	}
 
 	@Override

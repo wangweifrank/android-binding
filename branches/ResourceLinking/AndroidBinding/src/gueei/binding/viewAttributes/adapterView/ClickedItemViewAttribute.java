@@ -17,7 +17,7 @@ public class ClickedItemViewAttribute extends ViewAttribute<AdapterView<?>, Obje
 		super(Object.class, view, attributeName);
 		this.setReadonly(true);
 		Binder.getMulticastListenerForView(view, OnItemClickListenerMulticast.class)
-			.register(this);
+			.registerWithHighPriority(this);
 	}
 
 	@Override

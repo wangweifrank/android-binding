@@ -154,9 +154,9 @@ public class CursorObservableAdapter<T extends CursorRowModel> extends BaseAdapt
 	}
 
 	@Override
-	public T getItem(int position) {
+	public T getItem(int offset) {
 		T row = constructRow(mContext);
-		this.getCursor().moveToPosition(position);
+		this.getCursor().moveToPosition(offset);
 		mCursorObservable.fillData(row, this.getCursor());
 		return row;
 	}
@@ -173,8 +173,8 @@ public class CursorObservableAdapter<T extends CursorRowModel> extends BaseAdapt
 	}
 
 	@Override
-	public int getItemViewType(int position) {
-		return mLayout.getLayoutTypeId(position);
+	public int getItemViewType(int offset) {
+		return mLayout.getLayoutTypeId(offset);
 	}
 
 	@Override

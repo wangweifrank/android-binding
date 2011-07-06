@@ -53,13 +53,6 @@ public abstract class ViewAttribute<Tv extends View, T> extends Observable<T> {
 	public void _setObject(final Object newValue, Collection<Object> initiators){
 		if (readonly) return;
 		doSetAttributeValue(newValue);
-		/*
-		uiHandler.post(new Runnable(){
-			public void run() {
-				doSetAttributeValue(newValue);
-			}
-		});
-		*/
 	}
 	
 	@Override
@@ -78,6 +71,9 @@ public abstract class ViewAttribute<Tv extends View, T> extends Observable<T> {
 		ArrayList<Object> initiators = new ArrayList<Object>();
 		initiators.add(prop);
 		this._setObject(prop.get(), initiators);
+		
+		// Broadcast initial change
+		notifyChanged(initiators);
 		return binding;
 	}
 	

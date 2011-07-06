@@ -1,12 +1,16 @@
 package gueei.binding.viewAttributes.adapterView;
 
+import java.util.Collection;
+
 import gueei.binding.Binder;
-import gueei.binding.BindingMap;
+import gueei.binding.BindingLog;
 import gueei.binding.BindingType;
-import gueei.binding.Utility;
+import gueei.binding.IObservable;
+import gueei.binding.Observer;
 import gueei.binding.ViewAttribute;
 import gueei.binding.collections.ExpandableCollectionAdapter;
 import gueei.binding.cursor.CursorRowTypeMap;
+import gueei.binding.viewAttributes.templates.Layout;
 import android.widget.Adapter;
 import android.widget.ExpandableListView;
 
@@ -14,47 +18,57 @@ import android.widget.ExpandableListView;
 public class ExpandableListView_ItemSourceViewAttribute 
 	extends ViewAttribute<ExpandableListView, Object> {
 	
+	Layout template, childItemTemplate;
+	String childItemSource;
+	
+	private Observer attrObserver = new Observer(){
+		public void onPropertyChanged(IObservable<?> prop,
+				Collection<Object> initiators) {
+			createAdapter();
+		}
+	};
+	
 	public  ExpandableListView_ItemSourceViewAttribute 
 		(ExpandableListView view) {
 		super(Object.class,view, "itemSource");
+		try{
+			ViewAttribute<?,?> attrItemTemplate = Binder.getAttributeForView(getView(), "itemTemplate");
+			ViewAttribute<?,?> attrChildItemTemplate = Binder.getAttributeForView(getView(), "childItemTemplate");
+			ViewAttribute<?,?> attrChildItemSource = Binder.getAttributeForView(getView(), "childItemSource");
+			attrItemTemplate.subscribe(attrObserver);
+			attrChildItemTemplate.subscribe(attrObserver);
+			attrChildItemSource.subscribe(attrObserver);
+		}catch(Exception e){
+			BindingLog.exception("ExpandableListView_ItemSourceViewAttribute", e);
+		}
+		createAdapter();
 	}
 
+	private void getAttributeValue() throws Exception {
+		template = ((Layout)Binder.getAttributeForView(getView(), "itemTemplate").get());
+		childItemTemplate = ((Layout)Binder.getAttributeForView(getView(), "childItemTemplate").get());
+		childItemSource = (String)(Binder.getAttributeForView(getView(), "childItemSource").get());
+	}
+
+	private Object mValue;
+	
 	@Override
 	protected void doSetAttributeValue(Object newValue) {
-		if (newValue == null)
-			return;
-		
-		BindingMap map = Binder.getBindingMapForView(getView());
-		if (!map.containsKey("itemTemplate"))
-			return;
-		
-		if (!map.containsKey("childItemTemplate"))
-			return;
-		
-		if (!map.containsKey("childItemSource"))
-			return;
-		
-		int itemTemplate = Utility.resolveResource(map.get("itemTemplate"),
-				getView().getContext());
-		int childItemTemplate = Utility.resolveResource(map.get("childItemTemplate"), 
-				getView().getContext());
-		String childItemSource = map.get("childItemSource");
-		
-		if ((itemTemplate <= 0)||(childItemTemplate<=0))
-			return;
-		
-		int spinnerTemplate = -1;
-		if (map.containsKey("spinnerTemplate")){
-			spinnerTemplate = Utility.resolveResource(map.get("spinnerTemplate"),
-				Binder.getApplication());
-		}
-		
-		spinnerTemplate = spinnerTemplate >0 ? spinnerTemplate : itemTemplate;
+		mValue = newValue;
+		createAdapter();
+	}
+
+	private void createAdapter(){
+		if (mValue==null) return;
+
 		try {
+			getAttributeValue();
+			if ((template==null) || (childItemTemplate==null) || (childItemSource==null))
+				return;
 			
 			Adapter groupAdapter = 
 				gueei.binding.collections.Utility.getSimpleAdapter
-					(getView().getContext(), newValue, spinnerTemplate, itemTemplate);
+					(getView().getContext(), mValue, template, template);
 			ExpandableCollectionAdapter adapter = new ExpandableCollectionAdapter
 				(getView().getContext(), groupAdapter, childItemSource, childItemTemplate);
 			getView().setAdapter(adapter);
@@ -64,7 +78,7 @@ public class ExpandableListView_ItemSourceViewAttribute
 			return;
 		}
 	}
-
+	
 	@Override
 	public Object get() {
 		// Set only attribute

@@ -2,6 +2,7 @@ package gueei.binding.cursor;
 
 import gueei.binding.AttributeBinder;
 import gueei.binding.Binder;
+import gueei.binding.BindingLog;
 
 import java.lang.reflect.Field;
 
@@ -9,33 +10,153 @@ import android.content.Context;
 import android.database.Cursor;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.BaseAdapter;
 import android.widget.CursorAdapter;
 
 import gueei.binding.R;
+import gueei.binding.collections.ObservableMapper;
+import gueei.binding.viewAttributes.templates.Layout;
 
-public class CursorObservableAdapter<T extends CursorRowModel> extends CursorAdapter {
+public class CursorObservableAdapter<T extends CursorRowModel> extends BaseAdapter {
+	
 	protected final CursorObservable<T> mCursorObservable;
-	protected int mLayoutId = -1;
-	protected int mDropDownLayoutId = -1;
+	protected Layout mLayout, mDDLayout;
 	protected final Context mContext;
 	protected Field idField;
-	
-	/**
-	 * Beware this will (deprecated) change in API Level 11
-	 */
+
 	public CursorObservableAdapter
-		(Context context, CursorObservable<T> cursorObservable, int layoutId, int dropDownLayoutId){
-		super(context, cursorObservable.getCursor());
+		(Context context, CursorObservable<T> cursorObservable, Layout layout, Layout ddLayout){
 		mContext = context;
 		mCursorObservable = cursorObservable;
-		mLayoutId = layoutId;
-		mDropDownLayoutId = dropDownLayoutId;
+		mLayout = layout;
+		mDDLayout = ddLayout;
+	}
+	
+	@Override
+	public int getViewTypeCount() {
+		return mLayout.getTemplateCount();
 	}
 
 	@Override
-	public T getItem(int position) {
+	public int getItemViewType(int position) {
+		return mLayout.getLayoutTypeId(position);
+	}
+	
+	public int getCount() {
+		return mCursorObservable.getCursor().getCount();
+	}
+
+	public Object getItem(int position) {
 		T row = constructRow(mContext);
-		this.getCursor().moveToPosition(position);
+		mCursorObservable.getCursor().moveToPosition(position);
+		mCursorObservable.fillData(row, mCursorObservable.getCursor());
+		return row;
+	}
+
+	public long getItemId(int position) {
+		return position;
+	}
+	
+	private T constructRow(Context context){
+		return mCursorObservable.newRowModel(context);
+	}
+	
+	
+	@Override
+	public View getDropDownView(int position, View convertView, ViewGroup parent) {
+		return getView(position, convertView, parent, mDDLayout.getLayoutId(position));
+	}
+
+	public View getView(int position, View convertView, ViewGroup parent) {
+		return getView(position, convertView, parent, mLayout.getLayoutId(position));
+	}
+	
+	private View getView(int position, View convertView, ViewGroup parent, int layoutId) {
+		View returnView = convertView;
+		Cursor cursor = mCursorObservable.getCursor();
+		cursor.moveToPosition(position);
+
+		BindingLog.debug("CursorObservableAdapter", "pos:" + position + ", id:" + layoutId + ", " + cursor.getString(1));
+		if (position>=cursor.getCount()) return returnView;
+		try {
+			if ((convertView == null) || 
+					(getAttachedObservableCollection(convertView))==null ||
+					(getAttachedViewTypeId(convertView) != layoutId)) {
+				returnView = newView(cursor, parent, layoutId);
+			}
+			bindView(returnView, cursor);
+			return returnView;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return returnView;
+		}
+	}
+		
+	@SuppressWarnings("unchecked")
+	private T getAttachedObservableCollection(View convertView){
+		Object collections = convertView.getTag(R.id.tag_observableCollection_attachedObservable);
+		if (collections==null){
+			return null;
+		}
+		return (T)collections;
+	}
+	
+	private void putAttachedObservableCollection(View convertView, T collection){
+		convertView.setTag(R.id.tag_observableCollection_attachedObservable, collection);
+	}
+	
+	@SuppressWarnings("unchecked")
+	private int getAttachedViewTypeId(View convertView){
+		Object objId = convertView.getTag(R.id.tag_observableCollection_viewTypeId);
+		if ((objId==null)|| (!(objId instanceof Integer))){
+			return -1;
+		}
+		return (Integer)objId;
+	}
+	
+	
+	private void putAttachedViewTypeId(View convertView, int layoutId){
+		convertView.setTag(R.id.tag_observableCollection_viewTypeId, layoutId);
+	}
+
+	private void bindView(View view, Cursor cursor) {
+		T row = getAttachedObservableCollection(view);
+		mCursorObservable.fillData(row, cursor);
+	}
+	
+	private View newView(Cursor cursor, ViewGroup parent, int layoutId){
+		try {
+			Binder.InflateResult result = Binder.inflateView(mContext, layoutId, parent, false);
+			View returnView = result.rootView;
+			T row = constructRow(mContext);
+			for(View view: result.processedViews){
+				AttributeBinder.getInstance().bindView(view, row);
+			}
+			this.putAttachedObservableCollection(returnView, row);
+			this.putAttachedViewTypeId(returnView, layoutId);
+			return returnView;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+		
+	/**
+	 * Beware this will (deprecated) change in API Level 11
+	 *
+	public CursorObservableAdapter
+		(Context context, CursorObservable<T> cursorObservable, Layout layout, Layout ddLayout){
+		super(context, cursorObservable.getCursor());
+		mContext = context;
+		mCursorObservable = cursorObservable;
+		mLayout = layout;
+		mDDLayout = ddLayout;
+	}
+
+	@Override
+	public T getItem(int offset) {
+		T row = constructRow(mContext);
+		this.getCursor().moveToPosition(offset);
 		mCursorObservable.fillData(row, this.getCursor());
 		return row;
 	}
@@ -48,12 +169,22 @@ public class CursorObservableAdapter<T extends CursorRowModel> extends CursorAda
 
 	@Override
 	public View newView(Context context, Cursor cursor, ViewGroup parent) {
-		return newView(context, cursor, parent, mLayoutId);
+		return newView(context, cursor, parent, mLayout.getLayoutId(cursor.getPosition()));
+	}
+
+	@Override
+	public int getItemViewType(int offset) {
+		return mLayout.getLayoutTypeId(offset);
+	}
+
+	@Override
+	public int getViewTypeCount() {
+		return mLayout.getTemplateCount();
 	}
 
 	@Override
 	public View newDropDownView(Context context, Cursor cursor, ViewGroup parent) {
-		return newView(context, cursor, parent, mDropDownLayoutId > 0 ? mDropDownLayoutId : mLayoutId);
+		return newView(context, cursor, parent, mDDLayout.getLayoutId(cursor.getPosition()));
 	}
 	
 	private View newView(Context context, Cursor cursor, ViewGroup parent, int layoutId){
@@ -88,4 +219,5 @@ public class CursorObservableAdapter<T extends CursorRowModel> extends CursorAda
 	private T constructRow(Context context){
 		return mCursorObservable.newRowModel(context);
 	}
+	*/
 }

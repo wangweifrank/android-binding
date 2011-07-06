@@ -3,6 +3,7 @@ package gueei.binding.cursor;
 import gueei.binding.IObservable;
 import gueei.binding.collections.LazyLoadParent;
 import gueei.binding.collections.Utility;
+import gueei.binding.viewAttributes.templates.Layout;
 
 import java.util.Hashtable;
 
@@ -19,7 +20,7 @@ import android.widget.BaseExpandableListAdapter;
 public class ExpandableCursorAdapter<T extends CursorRowModel> extends BaseExpandableListAdapter{
 	
 	private final String mChildName;
-	private final int mChildLayoutId;
+	private final Layout mChildLayout;
 	private final CursorObservableAdapter<T> mCursorAdapter; 
 	private volatile Hashtable<Integer, Adapter> mChildAdapters;
 	private final Cursor mCursor;
@@ -34,15 +35,15 @@ public class ExpandableCursorAdapter<T extends CursorRowModel> extends BaseExpan
 	};
 	
 	public ExpandableCursorAdapter(Context context,
-			CursorObservable<T> cursorObservable, int layoutId, int dropDownLayoutId,
-			String childName, int childLayoutId) {
+			CursorObservable<T> cursorObservable, Layout layout, Layout ddLayout,
+			String childName, Layout childLayout) {
 		mChildName = childName;
-		mChildLayoutId = childLayoutId;
+		mChildLayout = childLayout;
 		mChildAdapters = new Hashtable<Integer, Adapter>();
 		mCursor = cursorObservable.getCursor();
 		mCursor.registerDataSetObserver(CursorObserver);
 		mCursorAdapter = new CursorObservableAdapter<T>
-			(context, cursorObservable, layoutId, dropDownLayoutId);
+			(context, cursorObservable, layout, ddLayout);
 		mContext = context;
 	}
 
@@ -60,7 +61,8 @@ public class ExpandableCursorAdapter<T extends CursorRowModel> extends BaseExpan
 					.getObservableForModel(mContext, mChildName, item);
 				
 				mChildAdapters.put(groupPosition,   
-					Utility.getSimpleAdapter(mContext, child.get(), mChildLayoutId, -1));
+					Utility.getSimpleAdapter(mContext, child.get(), mChildLayout, mChildLayout));
+
 				return mChildAdapters.get(groupPosition);
 			}catch(Exception e){
 				e.printStackTrace();

@@ -7,4 +7,5 @@
 	<item type="id" name="tag_observableCollection_position"/>
 	<item type="id" name="tag_observableCollection_attachedObservable"/>
 	<item type="id" name="tag_observableCollection_processedViews"/>
+	<item type="id" name="tag_observableCollection_viewTypeId"/>
 </resources>

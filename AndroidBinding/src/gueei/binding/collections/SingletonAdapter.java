@@ -4,6 +4,8 @@ import gueei.binding.Binder;
 import gueei.binding.IObservable;
 import gueei.binding.Observable;
 import gueei.binding.Observer;
+import gueei.binding.viewAttributes.templates.Layout;
+import gueei.binding.viewAttributes.templates.SingleTemplateLayout;
 
 import java.util.Collection;
 
@@ -20,20 +22,24 @@ import android.widget.SpinnerAdapter;
  */
 public class SingletonAdapter implements Adapter, SpinnerAdapter, Observer {
 	private final Object mObj;
-	private final int mLayoutId;
-	private final int mDropDownId;
 	private final Context mContext;
 	private View mView, mDropDownView;
 	private DataSetObserver mDataSetObserver;
+	private final Layout mTemplate, mDropDownTemplate;
 	
-	public SingletonAdapter(Context context, Object obj, int layoutId, int dropDownLayoutId){
+	public SingletonAdapter(Context context, Object obj, Layout template, Layout dropDownTemplate){
 		mObj = obj;
 		mContext = context;
-		mLayoutId = layoutId;
-		mDropDownId = dropDownLayoutId > 0 ? dropDownLayoutId : layoutId;
+		mTemplate = template;
+		mDropDownTemplate = dropDownTemplate;
+		
 		if(obj instanceof Observable){
 			((Observable<?>) obj).subscribe(this);
-		}
+		}		
+	}
+	
+	public SingletonAdapter(Context context, Object obj, int layoutId, int dropDownLayoutId){
+		this(context, obj, new SingleTemplateLayout(layoutId), new SingleTemplateLayout(dropDownLayoutId));
 	}
 	
 	public int getCount() {
@@ -49,20 +55,20 @@ public class SingletonAdapter implements Adapter, SpinnerAdapter, Observer {
 	}
 
 	public int getItemViewType(int position) {
-		return 0;
+		return mTemplate.getLayoutTypeId(position);
 	}
 
 	public View getView(int position, View convertView, ViewGroup parent) {
 		if (mView==null){
 			mView = Binder.bindView(mContext, 
-						Binder.inflateView(mContext, mLayoutId, parent, false),
+						Binder.inflateView(mContext, mTemplate.getDefaultLayoutId(), parent, false),
 						mObj);
 		}
 		return mView;
 	}
 
 	public int getViewTypeCount() {
-		return 1;
+		return mTemplate.getTemplateCount();
 	}
 
 	public boolean hasStableIds() {
@@ -84,7 +90,7 @@ public class SingletonAdapter implements Adapter, SpinnerAdapter, Observer {
 	public View getDropDownView(int position, View convertView, ViewGroup parent) {
 		if (mDropDownView==null){
 			mDropDownView = Binder.bindView(mContext, 
-						Binder.inflateView(mContext, mDropDownId, parent, false),
+						Binder.inflateView(mContext, mDropDownTemplate.getDefaultLayoutId(), parent, false),
 						mObj);
 		}
 		return mDropDownView;

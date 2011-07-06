@@ -8,6 +8,7 @@ import gueei.binding.IObservableCollection;
 import gueei.binding.R;
 import gueei.binding.utility.BasicModelReflector;
 import gueei.binding.utility.IModelReflector;
+import gueei.binding.viewAttributes.templates.Layout;
 import android.content.Context;
 import android.os.Handler;
 import android.view.View;
@@ -18,39 +19,39 @@ public class CollectionAdapter extends BaseAdapter
 	implements CollectionObserver{
 	@Override
 	public int getViewTypeCount() {
-		BindingLog.debug("Collection", "bindingView Type Count");
-		return super.getViewTypeCount();
+		return mLayout.getTemplateCount();
 	}
 
 	@Override
 	public int getItemViewType(int position) {
-		BindingLog.debug("Collection", "gettype" + position);
-		return super.getItemViewType(position);
+		return mLayout.getLayoutTypeId(position);
 	}
 
 	protected final Handler mHandler;
 	protected final Context mContext;
-	protected final int mLayoutId;
-	protected final int mDropDownLayoutId;
+	protected final Layout mLayout, mDropDownLayout;
+	//protected final int mLayoutId;
+	//protected final int mDropDownLayoutId;
 	protected final IObservableCollection<?> mCollection;
 	protected final IModelReflector mReflector;
 		
 	public CollectionAdapter(Context context, IModelReflector reflector,
-			IObservableCollection<?> collection, int layoutId, int dropDownLayoutId) throws Exception{
+			IObservableCollection<?> collection, Layout layout, Layout dropDownLayout) throws Exception{
 		mHandler = new Handler();
 		mContext = context;
-		mLayoutId = layoutId;
-		mDropDownLayoutId = dropDownLayoutId;
+		mLayout = layout;
+		mDropDownLayout = dropDownLayout;
 		mCollection = collection;
 		mReflector = reflector;
 		collection.subscribe(this);
 	}
 	
 	public CollectionAdapter(Context context, IObservableCollection<?> collection, 
-			int layoutId, int dropDownLayoutId) throws Exception{
+			Layout layout, Layout dropDownLayout) throws Exception{
 		this(context, 
-				new BasicModelReflector(context), collection, layoutId, dropDownLayoutId);		
+				new BasicModelReflector(context), collection, layout, dropDownLayout);		
 	}
+	
 	public int getCount() {
 		return mCollection.size();
 	}
@@ -64,11 +65,14 @@ public class CollectionAdapter extends BaseAdapter
 	}
 
 	private View getView(int position, View convertView, ViewGroup parent, int layoutId) {
+		BindingLog.debug("Collection", "getView" + position);
 		View returnView = convertView;
 		if (position>=mCollection.size()) return returnView;
 		try {
 			ObservableMapper mapper;
-			if ((convertView == null) || ((mapper = getAttachedMapper(convertView))==null)) {
+			if ((convertView == null) || 
+					((mapper = getAttachedMapper(convertView))==null)) {
+				
 				Binder.InflateResult result = Binder.inflateView(mContext,
 						layoutId, parent, false);
 				mapper = new ObservableMapper();
@@ -94,14 +98,11 @@ public class CollectionAdapter extends BaseAdapter
 	
 	@Override
 	public View getDropDownView(int position, View convertView, ViewGroup parent) {
-		return
-			mDropDownLayoutId > 0 ?
-					getView(position, convertView, parent, mDropDownLayoutId) :
-						getView(position, convertView, parent, mLayoutId);
+		return getView(position, convertView, parent, mDropDownLayout.getLayoutId(position));
 	}
 
 	public View getView(int position, View convertView, ViewGroup parent) {
-		return getView(position, convertView, parent, mLayoutId);
+		return getView(position, convertView, parent, mLayout.getLayoutId(position));
 	}
 	
 	private ObservableMapper getAttachedMapper(View convertView){
@@ -115,7 +116,7 @@ public class CollectionAdapter extends BaseAdapter
 	private void putAttachedMapper(View convertView, ObservableMapper mapper){
 		convertView.setTag(R.id.tag_observableCollection_attachedObservable, mapper);
 	}
-	
+		
 	public void onCollectionChanged(IObservableCollection<?> collection) {
 		mHandler.post(new Runnable(){
 			public void run(){

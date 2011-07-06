@@ -1,6 +1,5 @@
 package gueei.binding;
 
-import gueei.binding.listeners.MulticastListener;
 import android.view.View;
 
 /*
@@ -16,22 +15,6 @@ import android.view.View;
  * other "parent" to create this attribute. 
  */
 public interface IBindableView<T extends View & IBindableView<T>> {
-	public enum AttributeHandlingMethod{
-		Command, ViewAttribute, Ignore
-	}
-	
-	/** Implementation is responsible to tell what type is the provided attributeName
-	 * is binding. 
-	 * Recommended naming style is:
-	 * View Attributes: viewAttributeName
-	 * Commands: onEventName 
-	 * 
-	 * @param attributeName the name of the attribute to bind to.
-	 * @return AttributeHandlingMethod
-	 * Attribute, Command or Ignore to anything unknown (will be handle by super class)
-	 */
-	public AttributeHandlingMethod getAttributeHandlingMethod(String attributeName);
-	
 	/**
 	 * The view class is recommended to create their View Attributes
 	 * If you want to override the default behavior of other ViewAttributes, you can return it here
@@ -40,11 +23,4 @@ public interface IBindableView<T extends View & IBindableView<T>> {
 	 * @return the ViewAttribute, or null if don't want to handle
 	 */
 	public ViewAttribute<T, ?> getViewAttribute(String attributeId);
-
-	/**
-	 * Provide the type of the multicast listener that associated with the command name
-	 * @param attributeName
-	 * @return
-	 */
-	public MulticastListener<?> getMulticastListener(String attributeId);
 }

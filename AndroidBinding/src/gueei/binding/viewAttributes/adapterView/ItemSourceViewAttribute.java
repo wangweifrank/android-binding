@@ -1,20 +1,47 @@
 package gueei.binding.viewAttributes.adapterView;
 
 import gueei.binding.Binder;
-import gueei.binding.BindingMap;
 import gueei.binding.BindingType;
-import gueei.binding.Utility;
+import gueei.binding.IObservable;
+import gueei.binding.Observer;
 import gueei.binding.ViewAttribute;
 import gueei.binding.cursor.CursorRowTypeMap;
-import gueei.binding.viewAttributes.templates.LayoutTemplate;
+import gueei.binding.viewAttributes.templates.Layout;
+
+import java.util.Collection;
+
 import android.widget.Adapter;
 import android.widget.AdapterView;
 
 
 public class ItemSourceViewAttribute extends ViewAttribute<AdapterView<Adapter>, Object> {
 
+	Layout template, spinnerTemplate;
+	ViewAttribute<?,Layout> itemTemplateAttr, spinnerTemplateAttr; 
+
+	private Observer templateObserver = new Observer(){
+		public void onPropertyChanged(IObservable<?> prop,
+				Collection<Object> initiators) {
+			template = itemTemplateAttr.get();
+			spinnerTemplate = spinnerTemplateAttr.get();
+		}
+	};
+	
+	@SuppressWarnings("unchecked")
 	public ItemSourceViewAttribute(AdapterView<Adapter> view, String attributeName) {
 		super(Object.class,view, attributeName);
+		
+		try{
+			itemTemplateAttr = (ViewAttribute<?,Layout>)Binder.getAttributeForView(getView(), "itemTemplate");
+			itemTemplateAttr.subscribe(templateObserver);
+			spinnerTemplateAttr = (ViewAttribute<?,Layout>)Binder.getAttributeForView(getView(), "spinnerTemplate");
+			spinnerTemplateAttr.subscribe(templateObserver);
+			template = itemTemplateAttr.get();
+			spinnerTemplate = spinnerTemplateAttr.get();
+		}catch(Exception e){
+			e.printStackTrace();
+			return;
+		}
 	}
 
 	@Override
@@ -27,34 +54,13 @@ public class ItemSourceViewAttribute extends ViewAttribute<AdapterView<Adapter>,
 			return;
 		}
 		
-		BindingMap map = Binder.getBindingMapForView(getView());
-/*		if (!map.containsKey("itemTemplate"))
-			return;
+		if (template==null) return;
 		
-		int itemTemplate = Utility.resolveResource(map.get("itemTemplate"),
-				Binder.getApplication());
-		if (itemTemplate <= 0)
-			return;
-*/
-		LayoutTemplate template;
-		try{
-			ViewAttribute<?,?> attr = Binder.getAttributeForView(getView(), "itemTemplate");
-			template = ((LayoutTemplate)attr.get());
-		}catch(Exception e){
-			return;
-		}
-		int itemTemplate = template.getTemplate();
+		spinnerTemplate = spinnerTemplate == null ? template : spinnerTemplate;
 		
-		int spinnerTemplate = -1;
-		if (map.containsKey("spinnerTemplate")){
-			spinnerTemplate = Utility.resolveResource(map.get("spinnerTemplate"),
-				Binder.getApplication());
-		}
-		
-		spinnerTemplate = spinnerTemplate >0 ? spinnerTemplate : itemTemplate;
 		try {
 			Adapter adapter = gueei.binding.collections.Utility.getSimpleAdapter
-				(getView().getContext(), newValue, spinnerTemplate, itemTemplate);
+				(getView().getContext(), newValue, spinnerTemplate, template);
 			this.getView().setAdapter(adapter);
 			return;
 		} catch (Exception e) {

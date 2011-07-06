@@ -25,6 +25,7 @@ import gueei.binding.R;
 
 
 public class Binder {
+	public static final String BindingNamespace = "http://www.gueei.com/android-binding/";
 	private static Application mApplication;
 	
 	/**
@@ -178,6 +179,6 @@ public class Binder {
 	}
 	
 	public static String currentVersion(){
-		return "0.23a";
+		return "0.3";
 	}
 }

@@ -1,6 +1,7 @@
 package gueei.binding.collections;
 
 import gueei.binding.IObservable;
+import gueei.binding.viewAttributes.templates.Layout;
 
 import java.util.WeakHashMap;
 
@@ -14,15 +15,15 @@ import android.widget.BaseExpandableListAdapter;
 
 public class ExpandableCollectionAdapter extends BaseExpandableListAdapter{
 	private final String mChildName;
-	private final int mChildLayoutId;
+	private final Layout mChildLayout;
 	private final WeakHashMap<Integer, Adapter> mChildAdapters =
 		new WeakHashMap<Integer, Adapter>();
 	private final Adapter mGroupAdapter;
 	private final Context mContext;
 
-	public ExpandableCollectionAdapter(Context context, Adapter groupAdapter, String childName, int childLayoutId){
+	public ExpandableCollectionAdapter(Context context, Adapter groupAdapter, String childName, Layout childLayout){
 		mChildName = childName;
-		mChildLayoutId = childLayoutId;
+		mChildLayout = childLayout;
 		mContext = context;
 		mGroupAdapter = groupAdapter;
 	}
@@ -48,7 +49,7 @@ public class ExpandableCollectionAdapter extends BaseExpandableListAdapter{
 				IObservable<?> child = 
 					gueei.binding.Utility.getObservableForModel(mContext, mChildName, item);
 				mChildAdapters.put(groupPosition, 
-					Utility.getSimpleAdapter(mContext, child.get(), mChildLayoutId, -1));
+					Utility.getSimpleAdapter(mContext, child.get(), mChildLayout, mChildLayout));
 			}
 			return mChildAdapters.get(groupPosition);
 		}catch(Exception e){

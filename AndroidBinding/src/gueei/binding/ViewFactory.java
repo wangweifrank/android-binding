@@ -1,7 +1,5 @@
 package gueei.binding;
 
-import gueei.binding.bindingProviders.BindingProvider;
-
 import java.util.ArrayList;
 
 import android.content.Context;
@@ -51,7 +49,7 @@ public class ViewFactory implements Factory {
 		int count = attrs.getAttributeCount();
 		for(int i=0; i<count; i++){
 			String attrName = attrs.getAttributeName(i);
-			String attrValue = attrs.getAttributeValue(BindingProvider.BindingNamespace, attrName);
+			String attrValue = attrs.getAttributeValue(Binder.BindingNamespace, attrName);
 			if (attrValue!=null){
 				map.put(attrName, attrValue);
 			}

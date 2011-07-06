@@ -17,6 +17,7 @@ public final class R {
         public static final int tag_observableCollection_attachedObservable=0x7f020005;
         public static final int tag_observableCollection_position=0x7f020004;
         public static final int tag_observableCollection_processedViews=0x7f020006;
+        public static final int tag_observableCollection_viewTypeId=0x7f020007;
         public static final int tag_processedViews=0x7f020003;
     }
     public static final class string {

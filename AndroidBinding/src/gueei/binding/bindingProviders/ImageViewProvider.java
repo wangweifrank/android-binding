@@ -1,6 +1,5 @@
 package gueei.binding.bindingProviders;
 
-import gueei.binding.BindingMap;
 import gueei.binding.ViewAttribute;
 import gueei.binding.viewAttributes.imageView.SourceViewAttribute;
 import android.view.View;
@@ -18,11 +17,5 @@ public class ImageViewProvider extends BindingProvider {
 				(ViewAttribute<Tv, ?>) new SourceViewAttribute((ImageView)view);
 		}
 		return null;
-	}
-
-	@Override
-	public void bind(View view, BindingMap map, Object model) {
-		if (!(view instanceof ImageView)) return;
-		bindViewAttribute(view, map, model, "source");
 	}
 }

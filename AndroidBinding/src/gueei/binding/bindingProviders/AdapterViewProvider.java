@@ -1,16 +1,18 @@
 package gueei.binding.bindingProviders;
 
-import gueei.binding.BindingMap;
 import gueei.binding.ViewAttribute;
 import gueei.binding.viewAttributes.GenericViewAttribute;
+import gueei.binding.viewAttributes.adapterView.ChildItemSourceViewAttribute;
 import gueei.binding.viewAttributes.adapterView.ClickedIdViewAttribute;
 import gueei.binding.viewAttributes.adapterView.ClickedItemViewAttribute;
 import gueei.binding.viewAttributes.adapterView.ExpandableListView_ItemSourceViewAttribute;
+import gueei.binding.viewAttributes.adapterView.ExpandableListView_OnChildClickViewEvent;
 import gueei.binding.viewAttributes.adapterView.ItemSourceViewAttribute;
 import gueei.binding.viewAttributes.adapterView.ItemTemplateViewAttribute;
 import gueei.binding.viewAttributes.adapterView.OnItemClickedViewEvent;
 import gueei.binding.viewAttributes.adapterView.OnItemSelectedViewEvent;
 import gueei.binding.viewAttributes.adapterView.SelectedItemViewAttribute;
+import gueei.binding.viewAttributes.adapterView.ClickedChildViewAttribute;
 import android.view.View;
 import android.widget.Adapter;
 import android.widget.AdapterView;
@@ -42,6 +44,9 @@ public class AdapterViewProvider extends BindingProvider {
 				ViewAttribute<AdapterView<?>, Long> attr = 
 					new ClickedIdViewAttribute((AdapterView)view, "clickedId");
 				return (ViewAttribute<Tv, ?>) attr;
+			} else if (attributeId.equals("clickedChild")){
+				if (view instanceof ExpandableListView)
+					return (ViewAttribute<Tv, ?>)new ClickedChildViewAttribute((ExpandableListView)view);
 			} else if (attributeId.equals("itemSource")){
 				if (view instanceof ExpandableListView){
 					return (ViewAttribute<Tv, ?>)
@@ -58,24 +63,19 @@ public class AdapterViewProvider extends BindingProvider {
 				return (ViewAttribute<Tv, ?>)new OnItemSelectedViewEvent((AdapterView)view);
 			} else if (attributeId.equals("onItemClicked")){
 				return (ViewAttribute<Tv, ?>)new OnItemClickedViewEvent((AdapterView)view);
+			} else if (attributeId.equals("childItemTemplate")){
+				if (view instanceof ExpandableListView)
+					return (ViewAttribute<Tv, ?>)new ItemTemplateViewAttribute(view, "childItemTemplate");
+			} else if (attributeId.equals("childItemSource")){
+				if (view instanceof ExpandableListView)
+					return (ViewAttribute<Tv, ?>)new ChildItemSourceViewAttribute((ExpandableListView)view);
+			} else if (attributeId.equals("onChildClick")){
+				if (view instanceof ExpandableListView)
+					return (ViewAttribute<Tv, ?>)new ExpandableListView_OnChildClickViewEvent((ExpandableListView)view);
 			}
 		} catch (Exception e) {
 			// Actually it should never reach this statement
 		}
 		return null;
-	}
-
-	@Override
-	public void bind(View view, BindingMap map, Object model) {
-		if (!(view instanceof AdapterView<?>)) return;
-		bindViewAttribute(view, map, model, "itemTemplate");
-		bindViewAttribute(view, map, model, "spinnerTemplate");
-		bindViewAttribute(view, map, model, "selectedItem");
-		bindViewAttribute(view, map, model, "clickedItem");
-		bindViewAttribute(view, map, model, "clickedId");
-		bindViewAttribute(view, map, model, "adapter");
-		bindViewAttribute(view, map, model, "itemSource");
-		bindViewAttribute(view, map, model, "onItemSelected");
-		bindViewAttribute(view, map, model, "onItemClicked");
 	}
 }

@@ -1,6 +1,5 @@
 package gueei.binding.bindingProviders;
 
-import gueei.binding.BindingMap;
 import gueei.binding.ViewAttribute;
 import gueei.binding.viewAttributes.view.BackgroundColorViewAttribute;
 import gueei.binding.viewAttributes.view.BackgroundViewAttribute;
@@ -40,18 +39,5 @@ public class ViewProvider extends BindingProvider {
 			return new OnLongClickViewEvent(view);
 		}
 		return null;
-	}
-
-
-	@Override
-	public void bind(View view, BindingMap map, Object model) {
-		bindViewAttribute(view, map, model, "enabled");
-		bindViewAttribute(view, map, model, "visibility");
-		bindViewAttribute(view, map, model, "background");
-		bindViewAttribute(view, map, model, "backgroundColor");
-		bindViewAttribute(view, map, model, "onClick");
-		bindViewAttribute(view, map, model, "onLongClick");
-		// bindCommand(view, map, model, "onClick", OnClickListenerMulticast.class);
-		//bindCommand(view, map, model, "onLongClick", OnLongClickListenerMulticast.class);
 	}
 }

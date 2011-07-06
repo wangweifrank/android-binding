@@ -2,6 +2,8 @@ package gueei.binding;
 
 import gueei.binding.observables.IntegerObservable;
 import gueei.binding.observables.StringObservable;
+import gueei.binding.viewAttributes.templates.Layout;
+import gueei.binding.viewAttributes.templates.SingleTemplateLayout;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
@@ -10,6 +12,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import android.content.Context;
+import android.util.TypedValue;
 
 public class BindingSyntaxResolver {
 	private static final String DEFAULT_CONVERTER_PACKAGE = "gueei.binding.converters.";
@@ -18,6 +21,7 @@ public class BindingSyntaxResolver {
 	private static final Pattern dynamicObjectPattern = Pattern.compile("^\\{(.+)\\}$");
 	private static final Pattern stringPattern = Pattern.compile("^'([^']*)'$");
 	private static final Pattern numberPattern = Pattern.compile("^(\\+|\\-)?[0-9]*(\\.[0-9]+)?$");
+	private static final Pattern resourcePattern = Pattern.compile("^@(([\\w\\.]+:)?(\\w+)/\\w+)$");
 	
 	public static IObservable<?> constructObservableFromStatement(
 			final Context context,
@@ -126,13 +130,29 @@ public class BindingSyntaxResolver {
 		}
 		return arguments.toArray(new String[0]);
 	}
-	
+
+	/**
+	 * get the Observable (either defined in model, or constants) from model
+	 * @param fieldName
+	 * @param model
+	 * @return IObservable
+	 * 
+	 * The resolving in done in following order:
+	 * 1. String (defined in '')
+	 * 2. Integer
+	 * 3. Resource
+	 * 4. Observable
+	 * 5. Constant from field
+	 * 6. Fall back (for backward compatibility) to String
+	 */
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	private static IObservable<?> getObservableForModel(
 			String fieldName, Object model){
 		IObservable<?> result = matchString(fieldName);
 		if (result!=null) return result;
 		result = matchInteger(fieldName);
+		if (result!=null) return result;
+		result = matchResource(fieldName);
 		if (result!=null) return result;
 		
 		if (model instanceof IPropertyContainer){
@@ -145,14 +165,16 @@ public class BindingSyntaxResolver {
 		if (fieldName.equals(".")){
 			return new Observable(model.getClass(), model);
 		}
-		// TODO: TEMP ONLY
-		if (fieldName.startsWith("@")){
-			return new ConstantObservable<Integer>(Integer.class, Utility.resolveResource(fieldName, Binder.getApplication()));
-		}
+
 		Object rawField = getFieldForModel(fieldName, model);
 		if (rawField instanceof IObservable<?>)
 			return (IObservable<?>)rawField;
-		return null;
+		
+		if (rawField!=null){
+			return new ConstantObservable(rawField.getClass(), rawField);
+		}
+		
+		return new ConstantObservable<String>(String.class, fieldName);
 	}
 	
 	private static IObservable<?> matchString(String fieldName){
@@ -171,6 +193,38 @@ public class BindingSyntaxResolver {
 			return null;
 		}
 		return new IntegerObservable(value);
+	}
+	
+	private static IObservable<?> matchResource(String fieldName){
+		Matcher m = resourcePattern.matcher(fieldName);
+		if ((!m.matches())||(m.groupCount()<2)) return null;
+		String typeName = m.group(3);
+
+		int id = Utility.resolveResourceId(fieldName, Binder.getApplication(), typeName);
+		
+		if ("layout".equals(typeName))
+			return new ConstantObservable<Layout>(Layout.class, new SingleTemplateLayout(id));
+		
+		TypedValue outValue = new TypedValue();
+		Binder.getApplication().getResources().getValue(id, outValue, true);
+
+		// No idea why id will return TYPE_INT_BOOLEAN instead of TYPE_INT. 
+		if ("id".equals(typeName))
+			return new ConstantObservable<Integer>(Integer.class, outValue.data);
+		
+		switch(outValue.type){
+		case TypedValue.TYPE_STRING:
+			return new ConstantObservable<String>(String.class, outValue.string.toString());
+		case TypedValue.TYPE_DIMENSION:
+			return new ConstantObservable<TypedValue>(TypedValue.class, outValue);
+		case TypedValue.TYPE_FRACTION:
+		case TypedValue.TYPE_FLOAT:
+			return new ConstantObservable<Float>(Float.class, outValue.getFloat());
+		case TypedValue.TYPE_INT_BOOLEAN:
+			return new ConstantObservable<Boolean>(Boolean.class, outValue.data != 0);
+		default:
+			return new ConstantObservable<Integer>(Integer.class, outValue.data);
+		}
 	}
 		
 	private static Object getFieldForModel(String fieldName, Object model){

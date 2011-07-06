@@ -2,10 +2,10 @@ package gueei.binding;
 
 import gueei.binding.bindingProviders.BindingProvider;
 import gueei.binding.exception.AttributeNotDefinedException;
-import gueei.binding.listeners.MulticastListener;
 
 import java.util.ArrayList;
 import java.util.Hashtable;
+import java.util.Map.Entry;
 
 import android.view.View;
 
@@ -46,23 +46,8 @@ public class AttributeBinder {
 
 	public void bindView(View view, Object model) {
 		BindingMap map = Binder.getBindingMapForView(view);
-		if (view instanceof IBindableView){
-			for(String attrName : map.getAllKeys()){
-				IBindableView<?> bview = (IBindableView<?>)view;
-				switch(bview.getAttributeHandlingMethod(attrName)){
-				case ViewAttribute:
-					if (bindViewAttribute(view, map, model, attrName))
-						map.setAsHandled(attrName);
-					break;
-				case Command:
-					break;
-				default:
-					break;
-				}
-			}
-		}
-		for (BindingProvider p : providers.values()) {
-			p.bind(view, map, model);
+		for(Entry<String, String> entry: map.getMapTable().entrySet()){
+			bindAttributeWithObservable(view, entry.getKey(), entry.getValue(), model);
 		}
 	}
 
@@ -98,14 +83,5 @@ public class AttributeBinder {
 				return false;
 			}
 		}
-	}
-
-	protected final boolean bindViewAttribute(View view, BindingMap map,
-			Object model, String attrName) {
-		if (map.containsKey(attrName)) {
-			return bindAttributeWithObservable(view, attrName, map.get(attrName),
-					model);
-		}
-		return false;
 	}
 }

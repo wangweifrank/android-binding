@@ -1,6 +1,5 @@
 package gueei.binding.bindingProviders;
 
-import gueei.binding.BindingMap;
 import gueei.binding.ViewAttribute;
 import gueei.binding.viewAttributes.progressBar.ProgressViewAttribute;
 import gueei.binding.viewAttributes.progressBar.SecondaryProgressViewAttribute;
@@ -22,13 +21,5 @@ public class ProgressBarProvider extends BindingProvider {
 				new SecondaryProgressViewAttribute((ProgressBar)view);
 		}
 		return null;
-	}
-
-
-	@Override
-	public void bind(View view, BindingMap map, Object model) {
-		if (!(view instanceof ProgressBar)) return;
-		bindViewAttribute(view, map, model, "progress");
-		bindViewAttribute(view, map, model, "secondaryProgress");
 	}
 }

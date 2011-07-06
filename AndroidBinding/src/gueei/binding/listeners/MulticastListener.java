@@ -1,8 +1,5 @@
 package gueei.binding.listeners;
 
-import gueei.binding.Command;
-import gueei.binding.ViewAttribute;
-
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -14,8 +11,6 @@ public abstract class MulticastListener<T> {
 	public abstract void registerToView(View v);
 	
 	protected ArrayList<T> listeners = new ArrayList<T>(0);
-	protected ArrayList<Command> commands = new ArrayList<Command>(1);
-	protected ArrayList<ViewAttribute<?,?>> attributes = new ArrayList<ViewAttribute<?,?>>(1);
 
 	public void removeListener(T listener){
 		listeners.remove(listener);
@@ -23,6 +18,10 @@ public abstract class MulticastListener<T> {
 	
 	public void register(T listener){
 		listeners.add(listener);
+	}
+	
+	public void registerWithHighPriority(T listener){
+		listeners.add(0, listener);
 	}
 	
 	private boolean mBroadcasting = true;

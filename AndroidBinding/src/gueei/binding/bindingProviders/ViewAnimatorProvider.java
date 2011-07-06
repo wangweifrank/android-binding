@@ -1,6 +1,5 @@
 package gueei.binding.bindingProviders;
 
-import gueei.binding.BindingMap;
 import gueei.binding.ViewAttribute;
 import gueei.binding.viewAttributes.viewAnimator.ChildViewsViewAttribute;
 import gueei.binding.viewAttributes.viewAnimator.DisplayedChildViewAttribute;
@@ -25,12 +24,5 @@ public class ViewAnimatorProvider extends BindingProvider {
 			return (ViewAttribute<Tv, ?>) attr;
 		}
 		return null;
-	}
-
-	@Override
-	public void bind(View view, BindingMap map, Object model) {
-		if (!(view instanceof ViewAnimator)) return;
-		bindViewAttribute(view, map, model, "childViews");
-		bindViewAttribute(view, map, model, "displayedChild");
 	}
 }

@@ -2,84 +2,139 @@ package gueei.binding.collections;
 
 import java.util.ArrayList;
 
+import android.database.DataSetObserver;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Adapter;
 import android.widget.BaseAdapter;
 
-public class CombinedAdapter extends BaseAdapter {
-	private ArrayList<Adapter> mAdapters = new ArrayList<Adapter>();
-	
-	public void addAdapter(Adapter adapter){
-		mAdapters.add(adapter);
-	}
+public class CombinedAdapter extends BaseAdapter{
+	private ArrayList<TranslatedAdapter> mTranslated = new ArrayList<TranslatedAdapter>();
 
-	public int getCount() {
-		int count = 0;
-		for(Adapter a: mAdapters){
-			count += a.getCount();
+	private DataSetObserver observer = new DataSetObserver(){
+		@Override
+		public void onChanged() {
+			super.onChanged();
+			calculateTranslation();
+			notifyDataSetChanged();
 		}
-		return count;
+		
+		@Override
+		public void onInvalidated() {
+			super.onInvalidated();
+			notifyDataSetInvalidated();
+			calculateTranslation();
+		}
+	};
+
+	public void addAdapter(Adapter[] adapter){
+		for (int i=0; i<adapter.length; i++){
+			mTranslated.add(new TranslatedAdapter(adapter[i]));
+			adapter[i].registerDataSetObserver(observer);
+		}
+		
+		calculateTranslation();
+		notifyDataSetChanged();
+	}
+	
+	/**
+	 * Add a new adapter to combined adapter, whenever a new adapter is added, the 
+	 * List will be invalidated.
+	 * @param adapter
+	 */
+	public void addAdapter(Adapter adapter){
+		mTranslated.add(new TranslatedAdapter(adapter));
+		adapter.registerDataSetObserver(observer);
+		
+		calculateTranslation();
+		notifyDataSetChanged();
+	}
+	
+	public void remvoeAdapter(Adapter adapter){
+		for(int i=0; i<mTranslated.size(); i++){
+			if (mTranslated.get(i).adapter.equals(adapter)){
+				mTranslated.remove(i);
+				adapter.unregisterDataSetObserver(observer);
+				break;
+			}
+		}
+		calculateTranslation();
+		notifyDataSetChanged();
+	}
+	
+	private int mItemCount, mItemTypeCount;
+	
+	private void calculateTranslation(){
+		int pos = 0;
+		int typeOffset = 0;
+		mItemTypeCount = 0;
+		mItemCount = 0;
+		for(TranslatedAdapter p: mTranslated){
+			p.offset = pos;
+			p.itemTypeOffset = typeOffset;
+			pos += p.adapter.getCount();
+			typeOffset += p.adapter.getViewTypeCount();
+		}
+
+		mItemCount = pos;
+		mItemTypeCount = typeOffset;
+	}
+	
+	public int getCount() {
+		return mItemCount;
 	}
 
 	public Object getItem(int position) {
-		TranslatedPosition pos = getTranslatedPosition(position);
-		if (pos!=null)
-			return pos.adapter.getItem(pos.position);
+		TranslatedAdapter adapter = getAdapterAt(position);
+		if (adapter!=null)
+			return adapter.adapter.getItem(position - adapter.offset);
 		return null;
 	}
 
-	private TranslatedPosition getTranslatedPosition(int position){
-		int count = 0;
-		int length = mAdapters.size();
-		int index = 0;
-		while (index<length){
-			Adapter a = mAdapters.get(index);
-			if (position< count + a.getCount()){
-				return new TranslatedPosition(position - count, a);
-			}
-			count += a.getCount();
-			index ++;
+	private TranslatedAdapter getAdapterAt(int position){
+		int length = mTranslated.size();
+		TranslatedAdapter adapter; 
+		for (int i=0; i<length; i++){
+			adapter = mTranslated.get(i);
+			if(position >= adapter.offset + adapter.adapter.getCount())
+				continue;
+			else
+				return adapter;
 		}
 		return null;
 	}
 	
 	public long getItemId(int position) {
-		TranslatedPosition pos = getTranslatedPosition(position);
-		if (pos!=null)
-			return pos.adapter.getItemId(pos.position);
-		return 0;
+		TranslatedAdapter adapter = getAdapterAt(position);
+		if (adapter!=null)
+			return adapter.adapter.getItemId(position - adapter.offset);
+		return -1;
 	}
 
 	public View getView(int position, View convertView, ViewGroup parent) {
-		TranslatedPosition pos = getTranslatedPosition(position);
-		if (pos!=null)
-			return pos.adapter.getView(pos.position, convertView, parent);
+		TranslatedAdapter adapter = getAdapterAt(position);
+		if (adapter!=null)
+			return adapter.adapter.getView(position - adapter.offset, convertView, parent);
 		return null;
 	}
 
 	@Override
 	public int getItemViewType(int position) {
-		TranslatedPosition pos = getTranslatedPosition(position);
-		if (pos!=null)
-			return mAdapters.indexOf(pos.adapter);
-		return -1;
+		TranslatedAdapter adapter = getAdapterAt(position);
+		if (adapter!=null)
+			return adapter.itemTypeOffset + adapter.adapter.getItemViewType(position - adapter.offset);
+		return BaseAdapter.IGNORE_ITEM_VIEW_TYPE;
 	}
 
 	@Override
 	public int getViewTypeCount() {
-		int count = 0;
-		for(Adapter a: mAdapters){
-			count += a.getViewTypeCount();
-		}
-		return count == 0 ? 1 : count;
+		return mItemTypeCount;
 	}
 
-	private class TranslatedPosition{
-		public final int position;
+	private class TranslatedAdapter{
+		public int offset, itemTypeOffset;
 		public final Adapter adapter;
-		public TranslatedPosition(int pos, Adapter adapter){
-			position = pos;
+		public TranslatedAdapter(Adapter adapter){
 			this.adapter =adapter;
 		}
 	}

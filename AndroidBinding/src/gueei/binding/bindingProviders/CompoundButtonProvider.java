@@ -1,6 +1,5 @@
 package gueei.binding.bindingProviders;
 
-import gueei.binding.BindingMap;
 import gueei.binding.ViewAttribute;
 import gueei.binding.viewAttributes.compoundButton.CheckedViewAttribute;
 import gueei.binding.viewAttributes.compoundButton.OnCheckedChangeViewEvent;
@@ -22,12 +21,5 @@ public class CompoundButtonProvider extends BindingProvider {
 			return (ViewAttribute<Tv, ?>) new OnCheckedChangeViewEvent((CompoundButton)view);
 		}
 		return null;
-	}
-
-	@Override
-	public void bind(View view, BindingMap map, Object model) {
-		if (!(view instanceof CompoundButton)) return;
-		bindViewAttribute(view, map, model, "checked");
-		bindViewAttribute(view, map, model, "onCheckedChange");
 	}
 }

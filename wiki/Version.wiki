@@ -5,10 +5,10 @@
 
 == 0.3a ==
 
-* [CustomView Custom View API]
-* ExpandableListView added onChildClick, clickedChild attributes
-* [ResourceLinking]
-* Major refactoring of the binding process, removed redundant codes
+ * [CustomView Custom View API]
+ * ExpandableListView added onChildClick, clickedChild attributes
+ * [ResourceLinking]
+ * Major refactoring of the binding process, removed redundant codes
 
 == 0.23a ==
 

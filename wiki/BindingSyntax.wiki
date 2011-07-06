@@ -32,7 +32,7 @@ Not all attribute of Views will support all binding modes. For example, the `cli
 || Syntax || Example || Effect || type || Supported ||
 || '_string_' || || String constant || one-shot || yes ||
 || _number_ || 123 || Integer constant || one-shot || 0.22 ||
-|| @_id_ || @layout/main || Integer constant, evaluate with Android's id system || one-shot || 0.2 ||
+|| @_id_ || @layout/main || Depending on type, e.g. @layout/... returns Layout, @color/... returns int || one-shot || 0.3 ||
 || . || binding:text="." || binding to Model itself || one-shot || 0.17 ||
 || _Converter_(_Observable_, ...) || binding:visibility="NOT(EditMode)", binding:text="CONCAT(A,B,C...)" || Perform the Converter Operation || One-way/two-way (depending on Converter) || from 0.17 ||
 || com.example.package.CustomConverter || || Custom converter must use full path of package || depends || 0.17 ||

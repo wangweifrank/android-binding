@@ -13,6 +13,7 @@
   * [Converters]
   * [ResourceLinking]
   * [DynamicObject Dynamic Object]
+ * [CustomView Custom Bindable View]
  * Experimental Features
   * [PojoViewModel]
  * [Development Developer and Contributor]

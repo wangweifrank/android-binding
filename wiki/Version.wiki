@@ -3,6 +3,13 @@
 
 = Release History =
 
+== 0.3a ==
+
+* [CustomView Custom View API]
+* ExpandableListView added onChildClick, clickedChild attributes
+* [ResourceLinking]
+* Major refactoring of the binding process, removed redundant codes
+
 == 0.23a ==
 
 v0.23a fixes some issues and may not stable enough:
@@ -53,10 +60,6 @@ issue:
  * initial release
 
 = Planned Updates =
-
-== 0.25 ==
-
- * Interface for binding to Custom (User-defined) Views. 
 
 == Future ==
 

@@ -2,11 +2,10 @@ package gueei.binding.collections;
 
 import gueei.binding.AttributeBinder;
 import gueei.binding.Binder;
-import gueei.binding.BindingLog;
 import gueei.binding.CollectionObserver;
 import gueei.binding.IObservableCollection;
 import gueei.binding.R;
-import gueei.binding.utility.BasicModelReflector;
+import gueei.binding.utility.CachedModelReflector;
 import gueei.binding.utility.IModelReflector;
 import gueei.binding.viewAttributes.templates.Layout;
 import android.content.Context;
@@ -46,10 +45,11 @@ public class CollectionAdapter extends BaseAdapter
 		collection.subscribe(this);
 	}
 	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public CollectionAdapter(Context context, IObservableCollection<?> collection, 
 			Layout layout, Layout dropDownLayout) throws Exception{
 		this(context, 
-				new BasicModelReflector(context), collection, layout, dropDownLayout);		
+				new CachedModelReflector(collection.getComponentType()), collection, layout, dropDownLayout);		
 	}
 	
 	public int getCount() {
@@ -65,7 +65,6 @@ public class CollectionAdapter extends BaseAdapter
 	}
 
 	private View getView(int position, View convertView, ViewGroup parent, int layoutId) {
-		BindingLog.debug("Collection", "getView" + position);
 		View returnView = convertView;
 		if (position>=mCollection.size()) return returnView;
 		try {

@@ -1,6 +1,5 @@
 package gueei.binding.collections;
 
-import gueei.binding.BindingLog;
 import gueei.binding.Command;
 import gueei.binding.IObservable;
 import gueei.binding.IPropertyContainer;
@@ -15,7 +14,7 @@ import java.util.HashMap;
 public class ObservableMapper implements IPropertyContainer {
 	@SuppressWarnings("rawtypes")
 	public HashMap<String, MockObservable> observableMapping = new HashMap<String, MockObservable>();
-	//public HashMap<String, MockCommand> commandMapping = new HashMap<String, MockCommand>();
+
 	@SuppressWarnings("rawtypes")
 	public HashMap<String, Observable> valueMapping = new HashMap<String, Observable>();
 	public int mappedPosition;
@@ -28,7 +27,6 @@ public class ObservableMapper implements IPropertyContainer {
 	@SuppressWarnings("unchecked")
 	public void changeMapping(IModelReflector reflector, Object model){
 		mappingModel = model;
-		BindingLog.warning("ObservableMapper", "change mapping");
 		try {
 			for(String key: observableMapping.keySet()){
 				IObservable<?> obs = reflector.getObservableByName(key, model);

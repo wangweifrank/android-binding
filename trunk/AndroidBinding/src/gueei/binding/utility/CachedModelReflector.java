@@ -13,23 +13,14 @@ public class CachedModelReflector<T> implements ICachedModelReflector<T> {
 	private HashMap<String, Field> commands= new HashMap<String, Field>();
 	private HashMap<String, Field> values= new HashMap<String, Field>();
 	
-	/* (non-Javadoc)
-	 * @see gueei.binding.utility.ICachedModelReflector#getObservables()
-	 */
 	public HashMap<String, Field> getObservables() {
 		return observables;
 	}
 
-	/* (non-Javadoc)
-	 * @see gueei.binding.utility.ICachedModelReflector#getCommands()
-	 */
 	public HashMap<String, Field> getCommands() {
 		return commands;
 	}
 
-	/* (non-Javadoc)
-	 * @see gueei.binding.utility.ICachedModelReflector#getValues()
-	 */
 	public HashMap<String, Field> getValues() {
 		return values;
 	}
@@ -49,9 +40,6 @@ public class CachedModelReflector<T> implements ICachedModelReflector<T> {
 		observables.put(".", null);
 	}
 	
-	/* (non-Javadoc)
-	 * @see gueei.binding.utility.ICachedModelReflector#getCommandByName(java.lang.String, T)
-	 */
 	public Command getCommandByName(String name, Object object) throws Exception {
 		if (commands.containsKey(name)){
 			return (Command) commands.get(name).get(object);
@@ -59,22 +47,16 @@ public class CachedModelReflector<T> implements ICachedModelReflector<T> {
 		return null;
 	}
 
-	/* (non-Javadoc)
-	 * @see gueei.binding.utility.ICachedModelReflector#getObservableByName(java.lang.String, T)
-	 */
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public IObservable<Object> getObservableByName(String name, Object object) throws Exception {
 		if (name.equals("."))
 			return new Observable(object.getClass(), object);
-		if (observables.containsKey(name)){
-			return (IObservable) observables.get(name).get(object);
-		}
-		return null;
+		Field obs = observables.get(name);
+		if (obs==null) return null;
+		
+		return (IObservable) obs.get(object);
 	}
 
-	/* (non-Javadoc)
-	 * @see gueei.binding.utility.ICachedModelReflector#getValueByName(java.lang.String, T)
-	 */
 	public Object getValueByName(String name, Object object) throws Exception {
 		if (values.containsKey(name)){
 			return values.get(name).get(object);
@@ -82,9 +64,6 @@ public class CachedModelReflector<T> implements ICachedModelReflector<T> {
 		return null;
 	}
 
-	/* (non-Javadoc)
-	 * @see gueei.binding.utility.ICachedModelReflector#getValueTypeByName(java.lang.String)
-	 */
 	public Class<?> getValueTypeByName(String name){
 		if (values.containsKey(name)){
 			return values.get(name).getType();

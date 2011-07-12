@@ -67,6 +67,7 @@ No special attributes, inherited from view
 || Attribute || Accepted Data type || Currently Supported ||
 || onItemLongClicked || Command || no ||
 || onItemSelected || Command || yes ||
+|| selectedPosition || Integer || 0.31 ||
 || selectedItem || Object (readonly) || yes ||
 || selectedId || long (readonly) || yes ||
 || itemSource || Array, Cursor* || experimental ||

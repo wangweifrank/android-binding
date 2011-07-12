@@ -17,7 +17,7 @@ import android.widget.AdapterView;
 public class ItemSourceViewAttribute extends ViewAttribute<AdapterView<Adapter>, Object> {
 
 	Layout template, spinnerTemplate;
-	ViewAttribute<?,Layout> itemTemplateAttr, spinnerTemplateAttr; 
+	ViewAttribute<?,Layout> itemTemplateAttr, spinnerTemplateAttr;
 
 	private Observer templateObserver = new Observer(){
 		public void onPropertyChanged(IObservable<?> prop,
@@ -62,6 +62,8 @@ public class ItemSourceViewAttribute extends ViewAttribute<AdapterView<Adapter>,
 			Adapter adapter = gueei.binding.collections.Utility.getSimpleAdapter
 				(getView().getContext(), newValue, spinnerTemplate, template);
 			this.getView().setAdapter(adapter);
+			ViewAttribute<?,Integer> SelectedPosition = (ViewAttribute<?,Integer>)Binder.getAttributeForView(getView(), "selectedPosition");
+			getView().setSelection(SelectedPosition.get());
 			return;
 		} catch (Exception e) {
 			e.printStackTrace();

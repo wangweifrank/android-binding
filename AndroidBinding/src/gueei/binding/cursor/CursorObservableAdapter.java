@@ -3,6 +3,8 @@ package gueei.binding.cursor;
 import gueei.binding.AttributeBinder;
 import gueei.binding.Binder;
 import gueei.binding.BindingLog;
+import gueei.binding.R;
+import gueei.binding.viewAttributes.templates.Layout;
 
 import java.lang.reflect.Field;
 
@@ -11,11 +13,6 @@ import android.database.Cursor;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.CursorAdapter;
-
-import gueei.binding.R;
-import gueei.binding.collections.ObservableMapper;
-import gueei.binding.viewAttributes.templates.Layout;
 
 public class CursorObservableAdapter<T extends CursorRowModel> extends BaseAdapter {
 	
@@ -105,7 +102,6 @@ public class CursorObservableAdapter<T extends CursorRowModel> extends BaseAdapt
 		convertView.setTag(R.id.tag_observableCollection_attachedObservable, collection);
 	}
 	
-	@SuppressWarnings("unchecked")
 	private int getAttachedViewTypeId(View convertView){
 		Object objId = convertView.getTag(R.id.tag_observableCollection_viewTypeId);
 		if ((objId==null)|| (!(objId instanceof Integer))){

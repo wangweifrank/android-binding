@@ -13,6 +13,7 @@ import gueei.binding.viewAttributes.adapterView.OnItemClickedViewEvent;
 import gueei.binding.viewAttributes.adapterView.OnItemSelectedViewEvent;
 import gueei.binding.viewAttributes.adapterView.SelectedItemViewAttribute;
 import gueei.binding.viewAttributes.adapterView.ClickedChildViewAttribute;
+import gueei.binding.viewAttributes.adapterView.SelectedPositionViewAttribute;
 import android.view.View;
 import android.widget.Adapter;
 import android.widget.AdapterView;
@@ -36,6 +37,8 @@ public class AdapterViewProvider extends BindingProvider {
 				return (ViewAttribute<Tv, ?>) attr;
 			} else if (attributeId.equals("selectedItem")) {
 				return (ViewAttribute<Tv, ?>) new SelectedItemViewAttribute((AdapterView)view, "selectedItem");
+			} else if (attributeId.equals("selectedPosition")) {
+				return (ViewAttribute<Tv, ?>) new SelectedPositionViewAttribute((AdapterView)view);
 			} else if (attributeId.equals("clickedItem")){
 				ViewAttribute<AdapterView<?>, Object> attr = 
 					new ClickedItemViewAttribute((AdapterView)view, "clickedItem");

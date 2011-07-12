@@ -4,6 +4,7 @@ import gueei.binding.Command;
 import gueei.binding.Observable;
 import gueei.binding.collections.ArrayListObservable;
 import gueei.binding.collections.HashMapObservable;
+import gueei.binding.observables.IntegerObservable;
 import android.view.View;
 import android.widget.Toast;
 
@@ -13,6 +14,8 @@ public class SpinnerWithArraySource {
 		new ArrayListObservable<String>(String.class);
 	public final HashMapObservable<Integer, String> ContinentNames2 = 
 		new HashMapObservable<Integer, String>(Integer.class, String.class);
+
+	public final IntegerObservable SelectedPosition = new IntegerObservable(2);
 	
 	public final Command ToastContinent = new Command(){
 		public void Invoke(View view, Object... args) {

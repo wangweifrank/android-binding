@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
       package="com.gueei.demos.markupDemo"
-      android:versionName="0.3v07" android:versionCode="7">
+      android:versionCode="8" android:versionName="0.31v08">
     <uses-sdk android:minSdkVersion="7" />
     <uses-permission android:name="android.permission.READ_CONTACTS"></uses-permission>
 

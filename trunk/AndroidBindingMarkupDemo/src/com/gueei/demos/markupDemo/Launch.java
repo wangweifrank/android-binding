@@ -41,7 +41,9 @@ public class Launch extends Activity {
         		"Simple Lists",
         		new Demo("ArrayListAsListViewSource", true),
         		new Demo("SpinnerWithArraySource", true),
-        		new Demo("ListViewWithCursorSource")
+        		new Demo("ListViewWithCursorSource"),
+        		new Demo("SingleChoiceList", true),
+        		new Demo("MultipleChoiceList", true)
         	));
         
         DemoGroups.add(new DemoGroup(

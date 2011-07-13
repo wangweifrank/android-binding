@@ -3,6 +3,7 @@ package gueei.binding;
 import gueei.binding.bindingProviders.AdapterViewProvider;
 import gueei.binding.bindingProviders.CompoundButtonProvider;
 import gueei.binding.bindingProviders.ImageViewProvider;
+import gueei.binding.bindingProviders.ListViewProvider;
 import gueei.binding.bindingProviders.ProgressBarProvider;
 import gueei.binding.bindingProviders.RatingBarProvider;
 import gueei.binding.bindingProviders.SeekBarProvider;
@@ -138,6 +139,7 @@ public class Binder {
 		AttributeBinder.getInstance().registerProvider(new ViewAnimatorProvider());
 		AttributeBinder.getInstance().registerProvider(new CompoundButtonProvider());
 		AttributeBinder.getInstance().registerProvider(new ImageViewProvider());
+		AttributeBinder.getInstance().registerProvider(new ListViewProvider());
 		AttributeBinder.getInstance().registerProvider(new AdapterViewProvider());
 		AttributeBinder.getInstance().registerProvider(new TextViewProvider());
 		AttributeBinder.getInstance().registerProvider(new ViewProvider());

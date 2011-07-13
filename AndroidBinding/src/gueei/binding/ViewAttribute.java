@@ -20,13 +20,13 @@ public abstract class ViewAttribute<Tv extends View, T> extends Observable<T> {
 	public Tv getView(){
 		return mView;
 	}
-	
+	/*
 	@SuppressWarnings("unchecked")
 	public final <To> void onPropertyChanged(IObservable<To> prop, 
 			Collection<Object> initiators){
 		set((T)prop.get(), initiators);
 	}
-
+	*/
 	protected abstract void doSetAttributeValue(Object newValue);
 	
 	@Override

@@ -93,6 +93,20 @@ In such case, selectedItem / itemSource will return a copy of the CursorRowModel
 === Abs Spinner ===
 || Attribute || Accepted Data type || Optional || Currently Supported ||
 || spinnerTemplate || Layout resource Id || yes (if unset, will use itemTemplate) || yes ||
+|| selectedPosition || Integer || yes || 0.31 ||
+
+* Remark
+The selectedPosition returns the position (i.e. index) of the selection. 
+
+
+
+=== ListView ===
+|| Attribute || Accepted Data type || Optional || Currently Supported ||
+|| checkedItemPosition  || Integer || yes || 0.31 ||
+|| checkedItemPositions  || SparseBooleanArray || yes || 0.31 ||
+
+* Remark
+Note the name of the above two attributes, only one (s) is different. First one only function when the `ChoiceMode` of the ListView is set to `singleChoice`, while the second one is set to `multipleChoice`. Due to performance consideration, only position of item(s) is returned, developers are responsible to determine which object(s) is returned. 
 
 === Expandable List View ===
 || Attribute || Accepted Data type || Optional || Currently Supported ||

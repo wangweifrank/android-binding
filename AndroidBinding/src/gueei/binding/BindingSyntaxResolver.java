@@ -17,9 +17,10 @@ import android.util.TypedValue;
 public class BindingSyntaxResolver {
 	private static final String DEFAULT_CONVERTER_PACKAGE = "gueei.binding.converters.";
 	
-	private static final Pattern converterPattern = Pattern.compile("^([$a-zA-Z0-9._]+)\\((.+(\\s*?,\\s*.+)*)\\)");
+	private static final Pattern converterPattern = 
+			Pattern.compile("^([$a-zA-Z0-9._]+)\\((.+(\\s*?,\\s*.+)*)\\)", Pattern.DOTALL);
 	private static final Pattern dynamicObjectPattern = Pattern.compile("^\\{(.+)\\}$");
-	private static final Pattern stringPattern = Pattern.compile("^'([^']*)'$");
+	private static final Pattern stringPattern = Pattern.compile("^'(([^']|\\\\')*)'$");
 	private static final Pattern numberPattern = Pattern.compile("^(\\+|\\-)?[0-9]*(\\.[0-9]+)?$");
 	private static final Pattern resourcePattern = Pattern.compile("^@(([\\w\\.]+:)?(\\w+)/\\w+)$");
 	
@@ -180,7 +181,7 @@ public class BindingSyntaxResolver {
 	private static IObservable<?> matchString(String fieldName){
 		Matcher m = stringPattern.matcher(fieldName);
 		if (!m.matches()) return null;
-		return new StringObservable(m.group(1));
+		return new StringObservable(m.group(1).replace("\\'", "'"));
 	}
 	
 	private static IObservable<?> matchInteger(String fieldName){

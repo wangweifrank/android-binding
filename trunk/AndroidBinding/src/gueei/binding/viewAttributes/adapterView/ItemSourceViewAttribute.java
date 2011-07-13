@@ -45,6 +45,7 @@ public class ItemSourceViewAttribute extends ViewAttribute<AdapterView<Adapter>,
 	}
 
 	@Override
+	@SuppressWarnings("unchecked")
 	protected void doSetAttributeValue(Object newValue) {
 		if (newValue == null)
 			return;

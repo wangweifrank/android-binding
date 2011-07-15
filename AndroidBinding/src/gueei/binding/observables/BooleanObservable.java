@@ -10,4 +10,10 @@ public class BooleanObservable extends Observable<Boolean> {
 	public BooleanObservable(boolean value){
 		super(Boolean.class, value);
 	}
+	
+	public boolean toggle(){
+		boolean value = !this.get();
+		this.set(value);
+		return value;
+	}
 }

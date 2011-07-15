@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.Map.Entry;
 
+import android.content.Context;
 import android.view.View;
 
 public class AttributeBinder {
@@ -44,15 +45,15 @@ public class AttributeBinder {
 		providers.put(provider.getClass(), provider);
 	}
 
-	public void bindView(View view, Object model) {
+	public void bindView(Context context, View view, Object model) {
 		BindingMap map = Binder.getBindingMapForView(view);
 		for(Entry<String, String> entry: map.getMapTable().entrySet()){
-			bindAttributeWithObservable(view, entry.getKey(), entry.getValue(), model);
+			bindAttributeWithObservable(context, view, entry.getKey(), entry.getValue(), model);
 		}
 	}
 
-	protected final boolean bindAttributeWithObservable(View view,
-			String viewAttributeName, String statement, Object model) {
+	protected final boolean bindAttributeWithObservable(Context context, 
+			View view, String viewAttributeName, String statement, Object model) {
 		IObservable<?> property;
 		property = Utility.getObservableForModel(view.getContext(), statement,
 				model);
@@ -60,7 +61,7 @@ public class AttributeBinder {
 			try {
 				ViewAttribute<?, ?> attr = Binder.getAttributeForView(view,
 						viewAttributeName);
-				BindingType result = attr.BindTo(property);
+				BindingType result = attr.BindTo(context, property);
 				if (result.equals(BindingType.NoBinding)) {
 					BindingLog.warning("Binding Provider", statement
 							+ " cannot setup bind with attribute");

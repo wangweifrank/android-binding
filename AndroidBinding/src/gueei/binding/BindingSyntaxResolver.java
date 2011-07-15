@@ -212,6 +212,8 @@ public class BindingSyntaxResolver {
 		// No idea why id will return TYPE_INT_BOOLEAN instead of TYPE_INT. 
 		if ("id".equals(typeName))
 			return new ConstantObservable<Integer>(Integer.class, outValue.data);
+		if (typeName.startsWith("drawable"))
+			return new ConstantObservable<Integer>(Integer.class, id);
 		
 		switch(outValue.type){
 		case TypedValue.TYPE_STRING:

@@ -3,6 +3,7 @@ package gueei.binding;
 import java.util.Collection;
 import java.util.ArrayList;
 
+import android.content.Context;
 import android.view.View;
 
 public abstract class ViewAttribute<Tv extends View, T> extends Observable<T> {
@@ -61,20 +62,29 @@ public abstract class ViewAttribute<Tv extends View, T> extends Observable<T> {
 	// Set to package internal for debug use
 	Bridge mBridge;
 	
-	public BindingType BindTo(IObservable<?> prop) {
+	public BindingType BindTo(Context context, IObservable<?> prop) {
 		if (prop == null) return BindingType.NoBinding;
 		BindingType binding = AcceptThisTypeAs(prop.getType());
 		if (binding.equals(BindingType.NoBinding)) return binding;
+		
+		onBind(context, prop, binding);
+		
+		return binding;
+	}
+	
+	/*
+	 * Hook to allow modifying of binding behavior in subclasses
+	 */
+	protected void onBind(Context context, IObservable<?> prop, BindingType binding){
 		mBridge = new Bridge(this, prop);
 		prop.subscribe(mBridge);
 		if (binding.equals(BindingType.TwoWay)) this.subscribe(mBridge);
+
 		ArrayList<Object> initiators = new ArrayList<Object>();
 		initiators.add(prop);
 		this._setObject(prop.get(), initiators);
-		
 		// Broadcast initial change
-		notifyChanged(initiators);
-		return binding;
+		notifyChanged(initiators);		
 	}
 	
 	protected BindingType AcceptThisTypeAs(Class<?> type){

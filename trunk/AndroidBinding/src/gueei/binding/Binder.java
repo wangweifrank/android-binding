@@ -7,6 +7,7 @@ import gueei.binding.bindingProviders.ListViewProvider;
 import gueei.binding.bindingProviders.ProgressBarProvider;
 import gueei.binding.bindingProviders.RatingBarProvider;
 import gueei.binding.bindingProviders.SeekBarProvider;
+import gueei.binding.bindingProviders.TabHostProvider;
 import gueei.binding.bindingProviders.TextViewProvider;
 import gueei.binding.bindingProviders.ViewAnimatorProvider;
 import gueei.binding.bindingProviders.ViewProvider;
@@ -83,10 +84,10 @@ public class Binder {
 	
 	public static void setAndBindContentView(Activity context, int layoutId, Object model){
 		InflateResult result = inflateView(context, layoutId, null, false);
-		for(View v: result.processedViews){
-			AttributeBinder.getInstance().bindView(v, model);
-		}
 		context.setContentView(result.rootView);
+		for(View v: result.processedViews){
+			AttributeBinder.getInstance().bindView(context, v, model);
+		}
 	}
 	
 	/**
@@ -116,7 +117,7 @@ public class Binder {
 	 */
 	public static View bindView(Context context, InflateResult inflatedView, Object model){
 		for(View v: inflatedView.processedViews){
-			AttributeBinder.getInstance().bindView(v, model);
+			AttributeBinder.getInstance().bindView(context, v, model);
 		}
 		return inflatedView.rootView;
 	}
@@ -133,6 +134,7 @@ public class Binder {
 	}
 	
 	public static void init(Application application){
+		AttributeBinder.getInstance().registerProvider(new TabHostProvider());
 		AttributeBinder.getInstance().registerProvider(new SeekBarProvider());
 		AttributeBinder.getInstance().registerProvider(new RatingBarProvider());
 		AttributeBinder.getInstance().registerProvider(new ProgressBarProvider());

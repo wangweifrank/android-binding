@@ -79,7 +79,7 @@ public class CollectionAdapter extends BaseAdapter
 				mCollection.onLoad(position);
 				mapper.startCreateMapping(mReflector, model);
 				for(View view: result.processedViews){
-					AttributeBinder.getInstance().bindView(view, mapper);
+					AttributeBinder.getInstance().bindView(mContext, view, mapper);
 				}
 				mapper.endCreateMapping();
 				returnView = result.rootView;

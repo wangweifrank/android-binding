@@ -86,7 +86,7 @@ public class CursorSourceAdapter<T extends CursorRowModel> extends CursorAdapter
 			View returnView = result.rootView;
 			row = constructRow(context, cursor);
 			for(View view: result.processedViews){
-				AttributeBinder.getInstance().bindView(view, row);
+				AttributeBinder.getInstance().bindView(mContext, view, row);
 			}
 			this.putAttachedObservableCollection(returnView, row);
 			return returnView;

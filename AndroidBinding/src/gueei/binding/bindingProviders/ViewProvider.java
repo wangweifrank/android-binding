@@ -1,6 +1,7 @@
 package gueei.binding.bindingProviders;
 
 import gueei.binding.ViewAttribute;
+import gueei.binding.viewAttributes.view.AnimationViewAttribute;
 import gueei.binding.viewAttributes.view.BackgroundColorViewAttribute;
 import gueei.binding.viewAttributes.view.BackgroundViewAttribute;
 import gueei.binding.viewAttributes.view.EnabledViewAttribute;
@@ -34,9 +35,10 @@ public class ViewProvider extends BindingProvider {
 		}
 		else if (attributeId.equals("onClick")){
 			return new OnClickViewEvent(view);
-		}
-		else if (attributeId.equals("onLongClick")){
+		}else if (attributeId.equals("onLongClick")){
 			return new OnLongClickViewEvent(view);
+		}else if (attributeId.equals("animation")){
+			return new AnimationViewAttribute(view);
 		}
 		return null;
 	}

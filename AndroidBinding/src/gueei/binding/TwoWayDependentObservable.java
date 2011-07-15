@@ -18,11 +18,11 @@ public abstract class TwoWayDependentObservable<T> extends DependentObservable<T
 
 	@Override
 	protected void doSetValue(T newValue, Collection<Object> initiators) {
-		int count = dependents.length;
+		int count = mDependents.length;
 		Object[] outResult = new Object[count];
 		if (!ConvertBack(newValue, outResult)) return;
 		for(int i=0; i<count; i++){
-			dependents[i]._setObject(outResult[i], initiators);
+			mDependents[i]._setObject(outResult[i], initiators);
 		}
 	}
 }

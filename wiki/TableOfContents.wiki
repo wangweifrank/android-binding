@@ -15,6 +15,7 @@
   * [DynamicObject Dynamic Object]
  * [CustomView Custom Bindable View]
  * Experimental Features
+  * [Animation]
   * [PojoViewModel]
  * [Development Developer and Contributor]
   * [UnderTheHood Under the Hood]

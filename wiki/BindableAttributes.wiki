@@ -1,7 +1,7 @@
 #summary Attributes that is (going) to be supported in Android Binding
 #labels Featured
 
-= Introudction = 
+= Introduction = 
 
 This is a book-keeping post that keep the list of supporting attributes. 
 

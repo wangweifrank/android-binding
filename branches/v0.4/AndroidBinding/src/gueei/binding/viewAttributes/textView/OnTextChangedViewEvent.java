@@ -26,6 +26,7 @@ public class OnTextChangedViewEvent extends ViewEventAttribute<EditText> impleme
 
 	@Override
 	protected void registerToListener(EditText view) {
-		Binder.getMulticastListenerForView(view, TextWatcherMulticast.class).register(this);
+		Binder.getMulticastListenerForView(view, TextWatcherMulticast.class)
+			.register(this);
 	}
 }

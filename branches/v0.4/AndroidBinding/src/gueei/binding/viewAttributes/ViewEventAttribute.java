@@ -34,6 +34,6 @@ public abstract class ViewEventAttribute<T extends View> extends ViewAttribute<T
 	
 	public void invokeCommand(View view, Object...args){
 		if (mCommand!=null)
-			mCommand.Invoke(view, args);
+			mCommand.InvokeCommand(view, args);
 	}
 }

@@ -20,7 +20,7 @@ public class TextViewAttribute extends ViewAttribute<TextView, CharSequence>
 		super(CharSequence.class, view, attributeName);
 		if (view instanceof EditText){
 			Binder.getMulticastListenerForView(view, TextWatcherMulticast.class)
-				.register(this);
+				.registerWithHighPriority(this);
 		}
 	}
 

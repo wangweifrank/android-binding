@@ -1,5 +1,6 @@
 package gueei.binding;
 
+import gueei.binding.utility.WeakList;
 import android.view.View;
 
 public abstract class Command extends Observable<Command> {
@@ -12,5 +13,30 @@ public abstract class Command extends Observable<Command> {
 		return this;
 	}
 
+	public void InvokeCommand(View view, Object... args){
+		for(CommandListener l: listeners){
+			l.onBeforeInvoke();
+		}
+		Invoke(view, args);
+		for(CommandListener l: listeners){
+			l.onAfterInvoke();
+		}
+	}
+	
 	public abstract void Invoke(View view, Object... args);
+	
+	WeakList<CommandListener> listeners = new WeakList<CommandListener>();
+	
+	public void addCommandListener(CommandListener l){
+		listeners.add(l);
+	}
+	
+	public void removeCommandListener(CommandListener l){
+		listeners.remove(l);
+	}
+	
+	public interface CommandListener{
+		public void onBeforeInvoke();
+		public void onAfterInvoke();
+	}
 }

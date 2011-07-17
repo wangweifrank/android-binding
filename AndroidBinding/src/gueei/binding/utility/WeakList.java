@@ -92,4 +92,20 @@ public class WeakList<E> extends AbstractList<E> {
         
     }
 
+	@Override
+	public boolean remove(Object object) {
+		int len = items.size();
+		for(int i=0; i<len; i++){
+			if (items.get(i).get().equals(object)){
+				items.remove(i);
+				return true;
+			}
+		}
+		return false;
+	}
+
+	@Override
+	public boolean add(E object) {
+		return items.add(new WeakReference<E>(object));
+	}
 }

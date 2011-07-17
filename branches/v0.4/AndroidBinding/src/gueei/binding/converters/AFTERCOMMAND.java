@@ -19,11 +19,11 @@ public class AFTERCOMMAND extends Converter<AnimationTrigger> implements Command
 	 * this Requires three input
 	 * 1. Animation Id
 	 * 2. Any Command
-	 * 3. Boolean Condition
+	 * 3. Boolean Condition (Optional, if ignore, assume True)
 	 */
 	@Override
 	public AnimationTrigger calculateValue(Object... args) throws Exception {
-		if (args.length<3) return null;
+		if (args.length<2) return null;
 		if (!(args[0] instanceof Integer)){
 			return null;
 		}
@@ -34,7 +34,10 @@ public class AFTERCOMMAND extends Converter<AnimationTrigger> implements Command
 				mCommand = (Command)(args[1]);
 				mCommand.addCommandListener(this);
 			}
-		condition = Boolean.TRUE.equals(args[2]);
+		if (args.length < 3)
+			condition = true;
+		else
+			condition = Boolean.TRUE.equals(args[2]);
 		return mTrigger;
 	}
 

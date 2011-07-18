@@ -23,10 +23,11 @@ public class Launch extends Activity {
         
         DemoGroups.add(new DemoGroup(
         		"Simple Views",
-        		new Demo("View", true), 
-        		new Demo("TextView"), 
+        		new Demo("View"), 
+        		new Demo("TextView"),
+        		new Demo("ImageView"), 
         		new Demo("ProgressBar"),
-        		new Demo("SeekBar", true),
+        		new Demo("SeekBar"),
         		new Demo("RatingBar"),
         		new Demo("CompoundButton"),
         		new Demo("CustomView", true)
@@ -52,6 +53,11 @@ public class Launch extends Activity {
         		new Demo("NestedCursor"),
         		new Demo("MultipleAdapters")
         	));
+        
+        DemoGroups.add(new DemoGroup(
+        		"Animation",
+        		new Demo("AnimationTrigger", true)
+        ));
         
         Binder.setAndBindContentView(this, R.layout.select_demo, this);
     }

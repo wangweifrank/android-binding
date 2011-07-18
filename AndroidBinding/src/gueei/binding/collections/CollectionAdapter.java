@@ -105,15 +105,11 @@ public class CollectionAdapter extends BaseAdapter
 	}
 	
 	private ObservableMapper getAttachedMapper(View convertView){
-		Object mappers = convertView.getTag(R.id.tag_observableCollection_attachedObservable);
-		if (mappers==null){
-			return null;
-		}
-		return (ObservableMapper)mappers;
+		return Binder.getViewTag(convertView).get(ObservableMapper.class);
 	}
 	
 	private void putAttachedMapper(View convertView, ObservableMapper mapper){
-		convertView.setTag(R.id.tag_observableCollection_attachedObservable, mapper);
+		Binder.getViewTag(convertView).put(ObservableMapper.class, mapper);
 	}
 		
 	public void onCollectionChanged(IObservableCollection<?> collection) {

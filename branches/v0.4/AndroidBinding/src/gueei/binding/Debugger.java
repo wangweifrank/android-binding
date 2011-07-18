@@ -13,12 +13,7 @@ public class Debugger {
 		
 		printer.println("view: " + view.toString(), level);
 		
-		Object attributes = view.getTag(R.id.tag_attributes);
-		if ((attributes==null) || !(attributes instanceof AttributeCollection)){
-			printer.println("No attribute at the moment", level);
-			return;
-		}
-		AttributeCollection collection = (AttributeCollection)attributes;
+		AttributeCollection collection = Binder.getAttributeCollectionOfView(view);
 		for (ViewAttribute<?,?> attr : collection.getAllAttributes()){
 			if (attr == caller) continue;
 			graphAttribute(attr, level-1, printer, view);

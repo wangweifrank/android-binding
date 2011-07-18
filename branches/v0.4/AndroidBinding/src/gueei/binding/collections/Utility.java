@@ -4,8 +4,6 @@ import gueei.binding.Binder;
 import gueei.binding.IObservableCollection;
 import gueei.binding.cursor.CursorObservable;
 import gueei.binding.cursor.CursorObservableAdapter;
-import gueei.binding.cursor.CursorRowTypeMap;
-import gueei.binding.cursor.CursorSourceAdapter;
 import gueei.binding.viewAttributes.templates.Layout;
 import android.content.Context;
 import android.widget.Adapter;

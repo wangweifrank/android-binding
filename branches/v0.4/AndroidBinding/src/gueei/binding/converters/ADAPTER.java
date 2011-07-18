@@ -1,6 +1,5 @@
 package gueei.binding.converters;
 
-import gueei.binding.Binder;
 import gueei.binding.Converter;
 import gueei.binding.DynamicObject;
 import gueei.binding.IObservable;
@@ -38,7 +37,7 @@ public class ADAPTER extends Converter<Adapter> {
 			
 			IObservable<?> source = object.getObservableByName("source");
 			
-			return Utility.getSimpleAdapter(Binder.getApplication(), source, template, spinnerTemplate);
+			return Utility.getSimpleAdapter(getContext(), source, template, spinnerTemplate);
 		}catch(Exception e){
 			return null;
 		}

@@ -3,7 +3,7 @@ package gueei.binding.listeners;
 import android.view.View;
 import android.widget.ExpandableListView;
 
-public class OnChildClickListenerMulticast extends MulticastListener<ExpandableListView.OnChildClickListener> 
+public class OnChildClickListenerMulticast extends ViewMulticastListener<ExpandableListView.OnChildClickListener> 
 	implements ExpandableListView.OnChildClickListener {
 
 	@Override

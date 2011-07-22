@@ -68,8 +68,8 @@ public abstract class ObservableCollection<T> implements IObservableCollection<T
 	}
 
 	public void notifyCollectionChanged() {
-		for(CollectionObserver c: mCollectionObservers){
-			c.onCollectionChanged(this);
+		for(Object c: mCollectionObservers.toArray()){
+			((CollectionObserver)c).onCollectionChanged(this);
 		}
 	}
 }

@@ -14,12 +14,12 @@ public abstract class Command extends Observable<Command> {
 	}
 
 	public void InvokeCommand(View view, Object... args){
-		for(CommandListener l: listeners){
-			l.onBeforeInvoke();
+		for(Object l: listeners.toArray()){
+			((CommandListener)l).onBeforeInvoke();
 		}
 		Invoke(view, args);
-		for(CommandListener l: listeners){
-			l.onAfterInvoke();
+		for(Object l: listeners.toArray()){
+			((CommandListener)l).onAfterInvoke();
 		}
 	}
 	

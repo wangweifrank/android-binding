@@ -5,5 +5,5 @@ import gueei.binding.utility.TypeAsKeyHashMap;
 
 import java.util.HashMap;
 
-public class MulticastListenerCollection extends TypeAsKeyHashMap<MulticastListener> {
+public class MulticastListenerCollection extends TypeAsKeyHashMap<ViewMulticastListener> {
 }

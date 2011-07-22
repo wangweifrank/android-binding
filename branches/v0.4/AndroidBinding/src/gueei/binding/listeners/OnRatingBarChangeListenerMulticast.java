@@ -4,7 +4,7 @@ import android.view.View;
 import android.widget.RatingBar;
 import android.widget.RatingBar.OnRatingBarChangeListener;
 
-public class OnRatingBarChangeListenerMulticast extends MulticastListener<OnRatingBarChangeListener>
+public class OnRatingBarChangeListenerMulticast extends ViewMulticastListener<OnRatingBarChangeListener>
 	implements OnRatingBarChangeListener{
 
 	@Override

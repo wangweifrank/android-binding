@@ -1,0 +1,54 @@
+package gueei.binding.app;
+
+import gueei.binding.Binder;
+import gueei.binding.menu.MenuBinder;
+import android.app.Activity;
+import android.os.Bundle;
+import android.view.Menu;
+import android.view.View;
+
+public class BindingActivity extends Activity {
+
+	MenuBinder menuBinder;
+	Object mMenuViewModel;
+	View mRootView;
+	
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+	}
+	
+	protected View setAndBindRootView(int layoutId, Object contentViewModel){
+		if (mRootView!=null){
+			throw new IllegalStateException("Root view is already created");
+		}
+		mRootView = 
+				Binder.bindView(this, Binder.inflateView(this, layoutId, null, false), contentViewModel);
+		setContentView(mRootView);
+		return mRootView;
+	}
+	
+	protected void setAndBindOptionsMenu(int menuId, Object menuViewModel){
+		if (menuBinder!=null){
+			throw new IllegalStateException("Options menu can only set once");
+		}
+		menuBinder = new MenuBinder(menuId);
+		mMenuViewModel = menuViewModel;
+	}
+	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// No menu is defined
+		if (menuBinder==null)
+			return false;
+		return menuBinder.onCreateOptionsMenu(this, menu, mMenuViewModel);
+	}
+
+	@Override
+	public boolean onPrepareOptionsMenu(Menu menu) {
+		if (menuBinder==null)
+			return false;
+		return menuBinder.onPrepareOptionsMenu(this, menu);
+	}
+	
+}

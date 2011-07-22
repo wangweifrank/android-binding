@@ -32,6 +32,11 @@ public class Launch extends Activity {
         		new Demo("CompoundButton"),
         		new Demo("CustomView", true)
         	));
+
+        DemoGroups.add(new DemoGroup(
+        		"Menu",
+        		new Demo("OptionsMenu", true, OptionsMenu.class)
+        	));
         
         DemoGroups.add(new DemoGroup(
         		"Resource Linking",
@@ -66,7 +71,12 @@ public class Launch extends Activity {
 		public void Invoke(View view, Object... args) {
 			if (SelectedDemo.get() == null) return;
 			Demo selection = (Demo)SelectedDemo.get();
-			Intent intent = new Intent(Launch.this, ViewDemoActivity.class);
+			Intent intent;
+			if (selection.DemoActivity!=null){
+				intent = new Intent(Launch.this, selection.DemoActivity);
+			}else{
+				intent = new Intent(Launch.this, ViewDemoActivity.class);
+			}
 			intent.putExtra("DEMO", selection.Name.get());
 			Launch.this.startActivity(intent);
 		}
@@ -103,6 +113,11 @@ public class Launch extends Activity {
     public static class Demo{
     	public StringObservable Name = new StringObservable();
     	public BooleanObservable NewAddition = new BooleanObservable();
+    	public Class<?> DemoActivity;
+    	public Demo(String name, boolean newAddition, Class<?> activity){
+    		this(name, newAddition);
+    		DemoActivity = activity;
+    	}
     	public Demo(String name, boolean newAddition){
     		Name.set(name);
     		NewAddition.set(newAddition);

@@ -4,9 +4,6 @@ import gueei.binding.Binder;
 import gueei.binding.Command;
 import gueei.binding.Observable;
 import gueei.binding.observables.IntegerObservable;
-
-import java.util.AbstractCollection;
-
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;

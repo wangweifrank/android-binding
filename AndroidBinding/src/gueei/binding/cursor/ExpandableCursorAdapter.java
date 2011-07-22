@@ -48,7 +48,7 @@ public class ExpandableCursorAdapter<T extends CursorRowModel> extends BaseExpan
 	}
 
 	private synchronized Adapter getChildAdapter(int groupPosition){
-		Log.d("Binder", "Get Child Adapter " + groupPosition);
+		Log.d("BinderV30", "Get Child Adapter " + groupPosition);
 		synchronized(this){
 			if (mChildAdapters.containsKey(groupPosition))
 				return mChildAdapters.get(groupPosition);

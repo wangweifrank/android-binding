@@ -5,7 +5,7 @@ import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 
 public class OnCheckedChangeListenerMulticast
-	extends MulticastListener<CompoundButton.OnCheckedChangeListener>
+	extends ViewMulticastListener<CompoundButton.OnCheckedChangeListener>
 	implements CompoundButton.OnCheckedChangeListener{
 
 	@Override

@@ -1,5 +1,7 @@
 package gueei.binding.listeners;
 
+import gueei.binding.MulticastListener;
+
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -7,9 +9,14 @@ import java.util.HashMap;
 import android.view.View;
 
 
-public abstract class MulticastListener<T> {
+public abstract class ViewMulticastListener<T> extends MulticastListener<View, T> {
 	public abstract void registerToView(View v);
 	
+	@Override
+	public void registerToHost(View host) {
+		registerToView(host);
+	}
+
 	protected ArrayList<T> listeners = new ArrayList<T>(0);
 
 	public void removeListener(T listener){
@@ -58,10 +65,10 @@ public abstract class MulticastListener<T> {
 			constructors = new HashMap<Class<?>, Constructor<?>>();
 		
 		@SuppressWarnings("unchecked")
-		public static <T> MulticastListener<T> create(T listenerType, View v){
+		public static <T> ViewMulticastListener<T> create(T listenerType, View v){
 			if (constructors.containsKey(listenerType)){
 				try {
-					MulticastListener<T> listener = (MulticastListener<T>)constructors.get(listenerType).newInstance();
+					ViewMulticastListener<T> listener = (ViewMulticastListener<T>)constructors.get(listenerType).newInstance();
 					listener.registerToView(v);
 					return listener;
 				} catch (Exception e) {

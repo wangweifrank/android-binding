@@ -12,8 +12,7 @@ import android.view.View;
 
 public class AttributeBinder {
 	private static AttributeBinder _attributeFactory;
-	private Hashtable<Class<?>, BindingProvider> providers = new Hashtable<Class<?>, BindingProvider>(
-			10);
+	private ArrayList<BindingProvider> providers = new ArrayList<BindingProvider>(10);
 
 	private AttributeBinder() {
 	}
@@ -31,7 +30,7 @@ public class AttributeBinder {
 
 	public ViewAttribute<?, ?> createAttributeForView(View view,
 			String attributeId) {
-		for (BindingProvider p : providers.values()) {
+		for (BindingProvider p : providers) {
 			ViewAttribute<?, ?> a = p.createAttributeForView(view, attributeId);
 			if (a != null)
 				return a;
@@ -40,9 +39,7 @@ public class AttributeBinder {
 	}
 
 	public void registerProvider(BindingProvider provider) {
-		if (providers.containsKey(provider.getClass()))
-			return;
-		providers.put(provider.getClass(), provider);
+		providers.add(provider);
 	}
 
 	public void bindView(Context context, View view, Object model) {
@@ -71,7 +68,11 @@ public class AttributeBinder {
 				e.printStackTrace();
 				return false;
 			}
-		} else {
+		} 
+		return false;
+		/*
+		 else {
+		 
 			// Bind just the value
 			Object value = Utility.getFieldForModel(statement, model);
 			try {
@@ -84,5 +85,6 @@ public class AttributeBinder {
 				return false;
 			}
 		}
+		*/
 	}
 }

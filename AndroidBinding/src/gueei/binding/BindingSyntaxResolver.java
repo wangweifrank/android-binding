@@ -28,6 +28,7 @@ public class BindingSyntaxResolver {
 			final Context context,
 			final String bindingStatement, 
 			final Object model){
+		if(bindingStatement == null)return null;
 		IObservable<?> result;
 		String statement = bindingStatement.trim();
 		result = getConverterFromStatement(context, statement, model);
@@ -175,7 +176,8 @@ public class BindingSyntaxResolver {
 			return new ConstantObservable(rawField.getClass(), rawField);
 		}
 		
-		return new ConstantObservable<String>(String.class, fieldName);
+		// No more fall back
+		return null; // new ConstantObservable<String>(String.class, fieldName);
 	}
 	
 	private static IObservable<?> matchString(String fieldName){

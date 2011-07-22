@@ -201,7 +201,7 @@ public class CursorObservableAdapter<T extends CursorRowModel> extends BaseAdapt
 	
 	private View newView(Context context, Cursor cursor, ViewGroup parent, int layoutId){
 		try {
-			Binder.InflateResult result = Binder.inflateView(context, layoutId, parent, false);
+			BinderV30.InflateResult result = BinderV30.inflateView(context, layoutId, parent, false);
 			View returnView = result.rootView;
 			T row = constructRow(context);
 			for(View view: result.processedViews){

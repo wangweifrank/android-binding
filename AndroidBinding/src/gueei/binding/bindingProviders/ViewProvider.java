@@ -7,6 +7,7 @@ import gueei.binding.viewAttributes.view.BackgroundViewAttribute;
 import gueei.binding.viewAttributes.view.EnabledViewAttribute;
 import gueei.binding.viewAttributes.view.OnClickViewEvent;
 import gueei.binding.viewAttributes.view.OnLongClickViewEvent;
+import gueei.binding.viewAttributes.view.SelectedViewAttribute;
 import gueei.binding.viewAttributes.view.VisibilityViewAttribute;
 import android.view.View;
 
@@ -39,6 +40,8 @@ public class ViewProvider extends BindingProvider {
 			return new OnLongClickViewEvent(view);
 		}else if (attributeId.equals("animation")){
 			return new AnimationViewAttribute(view);
+		}else if (attributeId.equals("selected")){
+			return new SelectedViewAttribute(view);
 		}
 		return null;
 	}

@@ -12,7 +12,7 @@ import gueei.binding.bindingProviders.TextViewProvider;
 import gueei.binding.bindingProviders.ViewAnimatorProvider;
 import gueei.binding.bindingProviders.ViewProvider;
 import gueei.binding.exception.AttributeNotDefinedException;
-import gueei.binding.listeners.MulticastListener;
+import gueei.binding.listeners.ViewMulticastListener;
 import gueei.binding.listeners.MulticastListenerCollection;
 
 import java.util.ArrayList;
@@ -26,7 +26,9 @@ import android.view.ViewGroup;
 
 
 public class Binder {
-	public static final String BindingNamespace = "http://www.gueei.com/android-binding/";
+	public static final String BINDING_NAMESPACE = "http://www.gueei.com/android-binding/";
+	public static final String ANDROID_NAMESPACE = "http://schemas.android.com/apk/res/android";
+	
 	private static Application mApplication;
 	
 	/**
@@ -167,7 +169,7 @@ public class Binder {
 		return mApplication;
 	}
 
-	public static <T extends MulticastListener<?>> T getMulticastListenerForView(View view, Class<T> listenerType){
+	public static <T extends ViewMulticastListener<?>> T getMulticastListenerForView(View view, Class<T> listenerType){
 		
 		MulticastListenerCollection collection = getViewTag(view).get(MulticastListenerCollection.class);
 		if (collection==null){
@@ -184,7 +186,7 @@ public class Binder {
 			collection.put(listenerType, listener);
 			return listener;
 		} catch (Exception e){
-			BindingLog.exception("Binder", e);
+			BindingLog.exception("BinderV30", e);
 			return null;
 		}		
 	}

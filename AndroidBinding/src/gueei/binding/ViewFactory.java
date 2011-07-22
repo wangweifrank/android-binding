@@ -49,7 +49,7 @@ public class ViewFactory implements Factory {
 		int count = attrs.getAttributeCount();
 		for(int i=0; i<count; i++){
 			String attrName = attrs.getAttributeName(i);
-			String attrValue = attrs.getAttributeValue(Binder.BindingNamespace, attrName);
+			String attrValue = attrs.getAttributeValue(Binder.BINDING_NAMESPACE, attrName);
 			if (attrValue!=null){
 				map.put(attrName, attrValue);
 			}

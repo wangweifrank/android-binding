@@ -30,11 +30,11 @@ public class Utility {
 		/*
 		if (collection instanceof CursorRowTypeMap){
 			CursorRowTypeMap cursor = (CursorRowTypeMap)collection;
-			return new CursorSourceAdapter(Binder
+			return new CursorSourceAdapter(BinderV30
 					.getApplication(), cursor, layout, dropDownLayout);
 		}
 		if (collection.getClass().isArray()){
-			return new ArrayAdapter(Binder.getApplication(),
+			return new ArrayAdapter(BinderV30.getApplication(),
 					collection.getClass().getComponentType(),
 					(Object[]) collection, layout, dropDownLayoutId);
 		}

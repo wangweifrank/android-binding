@@ -110,7 +110,7 @@ Note the name of the above two attributes, only one (s) is different. First one 
 
 === Expandable List View ===
 || Attribute || Accepted Data type || Optional || Currently Supported ||
-|| childItemSource || Array, Cursor || no || yes ||
+|| childItemSource || String (Binding Syntax) || no || yes ||
 || childItemTemplate || Layout resource Id || no || yes ||
 || clickedChild || Object || yes || 0.3 ||
 || onChildClick || Command || yes || 0.3 ||

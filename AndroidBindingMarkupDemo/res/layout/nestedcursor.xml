@@ -11,7 +11,7 @@
     	android:layout_height="fill_parent"
     	binding:itemSource="Contacts"
     	binding:itemTemplate="ALT_TEMPLATE(@layout/simple_expandable_list_item_1, @layout/simple_expandable_list_item_2)"
-    	binding:childItemSource="Emails"
+    	binding:childItemSource="'Emails'"
     	binding:childItemTemplate="@layout/email_item"
     />
 </LinearLayout>

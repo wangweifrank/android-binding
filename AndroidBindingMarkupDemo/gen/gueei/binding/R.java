@@ -27,7 +27,16 @@ public final class R {
         public static final int icon=0x7f020000;
     }
     public static final class id {
-        public static final int tableLayout=0x7f0b0000;
+        public static final int bookmark=0x7f0c0005;
+        public static final int browser=0x7f0c0003;
+        public static final int browser_visibility=0x7f0c0002;
+        public static final int button1=0x7f0c0001;
+        public static final int happy=0x7f0c0007;
+        public static final int neutral=0x7f0c0008;
+        public static final int refresh=0x7f0c0004;
+        public static final int sad=0x7f0c0009;
+        public static final int submenu=0x7f0c0006;
+        public static final int tableLayout=0x7f0c0000;
     }
     public static final class integer {
         public static final int max_speed=0x7f090000;
@@ -55,23 +64,27 @@ public final class R {
         public static final int music_item=0x7f030013;
         public static final int music_item_spinner=0x7f030014;
         public static final int nestedcursor=0x7f030015;
-        public static final int progressbar=0x7f030016;
-        public static final int ratingbar=0x7f030017;
-        public static final int resourcelinking=0x7f030018;
-        public static final int section_name=0x7f030019;
-        public static final int seekbar=0x7f03001a;
-        public static final int select_demo=0x7f03001b;
-        public static final int simple_expandable_list_item_1=0x7f03001c;
-        public static final int simple_expandable_list_item_2=0x7f03001d;
-        public static final int simple_list_item_multiple_choice=0x7f03001e;
-        public static final int simple_list_item_single_choice=0x7f03001f;
-        public static final int simple_spinner_dropdown_item=0x7f030020;
-        public static final int simple_spinner_item=0x7f030021;
-        public static final int singlechoicelist=0x7f030022;
-        public static final int spinnerwitharraysource=0x7f030023;
-        public static final int textview=0x7f030024;
-        public static final int view=0x7f030025;
-        public static final int view_demo=0x7f030026;
+        public static final int optionsmenu=0x7f030016;
+        public static final int progressbar=0x7f030017;
+        public static final int ratingbar=0x7f030018;
+        public static final int resourcelinking=0x7f030019;
+        public static final int section_name=0x7f03001a;
+        public static final int seekbar=0x7f03001b;
+        public static final int select_demo=0x7f03001c;
+        public static final int simple_expandable_list_item_1=0x7f03001d;
+        public static final int simple_expandable_list_item_2=0x7f03001e;
+        public static final int simple_list_item_multiple_choice=0x7f03001f;
+        public static final int simple_list_item_single_choice=0x7f030020;
+        public static final int simple_spinner_dropdown_item=0x7f030021;
+        public static final int simple_spinner_item=0x7f030022;
+        public static final int singlechoicelist=0x7f030023;
+        public static final int spinnerwitharraysource=0x7f030024;
+        public static final int textview=0x7f030025;
+        public static final int view=0x7f030026;
+        public static final int view_demo=0x7f030027;
+    }
+    public static final class menu {
+        public static final int optionsmenu=0x7f0b0000;
     }
     public static final class raw {
         public static final int animationtrigger=0x7f050000;

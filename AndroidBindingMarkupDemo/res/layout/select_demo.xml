@@ -12,7 +12,7 @@
     	android:layout_weight="1"
     	binding:itemSource="DemoGroups"
     	binding:itemTemplate="@layout/demo_group_template"
-    	binding:childItemSource="Demos"
+    	binding:childItemSource="'Demos'"
     	binding:childItemTemplate="@layout/demo_list_item"
     	binding:onChildClick="ViewDemo"
     	binding:clickedChild="SelectedDemo"

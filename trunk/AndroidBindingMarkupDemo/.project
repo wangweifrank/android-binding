@@ -31,10 +31,5 @@
 		<nature>org.eclipse.jdt.core.javanature</nature>
 	</natures>
 	<linkedResources>
-		<link>
-			<name>AndroidBinding_src</name>
-			<type>2</type>
-			<locationURI>_android_AndroidBinding_d17d9136/src</locationURI>
-		</link>
 	</linkedResources>
 </projectDescription>

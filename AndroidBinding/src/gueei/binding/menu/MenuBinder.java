@@ -4,23 +4,24 @@ import gueei.binding.Binder;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Hashtable;
 
 import org.xmlpull.v1.XmlPullParserException;
 
 import android.app.Activity;
 import android.content.res.XmlResourceParser;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.util.Xml;
 import android.view.Menu;
+import android.view.MenuItem;
 
 // Each MenuBinder correspond to one AbsMenuBridge xml. 
 // Instance should be kept by the activity
 public class MenuBinder {
 	private boolean firstCreate = true;
 	private final int mMenuResId;
-	private ArrayList<AbsMenuBridge> items = 
-			new ArrayList<AbsMenuBridge>();
+	private Hashtable<Integer, AbsMenuBridge> items = 
+			new Hashtable<Integer, AbsMenuBridge>();
 	
 	public MenuBinder(int menuResId){
 		mMenuResId = menuResId;
@@ -49,7 +50,7 @@ public class MenuBinder {
 								item = MenuGroupBridge.create(id, attrs, activity, model);
 							}
 							if (item!=null){
-								items.add(item);
+								items.put(id, item);
 							}
 						}
 					}
@@ -63,7 +64,7 @@ public class MenuBinder {
 			firstCreate = false;
 		}
 		
-		for(AbsMenuBridge item: items){
+		for(AbsMenuBridge item: items.values()){
 			item.onCreateOptionItem(menu);
 		}
 		
@@ -71,9 +72,17 @@ public class MenuBinder {
 	}
 	
 	public boolean onPrepareOptionsMenu(Activity activity, Menu menu){
-		for(AbsMenuBridge item: items){
+		for(AbsMenuBridge item: items.values()){
 			item.onPrepareOptionItem(menu);
 		}
 		return true;
+	}
+	
+	public boolean onOptionsItemSelected(Activity activity, MenuItem mi){
+		AbsMenuBridge item = items.get(mi.getItemId());
+		if (item!=null){
+			return item.onOptionsItemSelected(mi);
+		}
+		return false;
 	}
 }

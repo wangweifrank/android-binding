@@ -2,6 +2,7 @@ package gueei.binding.menu;
 
 import android.app.Activity;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import gueei.binding.Command;
@@ -15,30 +16,18 @@ import gueei.binding.IObservable;
  * @author andy
  *
  */
-public class MenuItemBridge extends AbsMenuBridge
-	implements android.view.MenuItem.OnMenuItemClickListener{
+public class MenuItemBridge extends AbsMenuBridge{
 
 	private Command onClickCommand;
 	
-	private IObservable<?> title, visible, enabled;
+	private IObservable<?> title, visible, enabled, checked;
 	
 	public MenuItemBridge(int id){
 		super(id);
 	}
-
-	public boolean onMenuItemClick(android.view.MenuItem item) {
-		if (onClickCommand!=null){
-			onClickCommand.Invoke(null, item);
-			return true;
-		}
-		return false;
-	}
 	
 	public void onCreateOptionItem(Menu menu){
 		MenuItem item = menu.findItem(mId);
-		if (item!=null){
-			item.setOnMenuItemClickListener(this);
-		}
 	}
 	
 	public void onPrepareOptionItem(Menu menu){
@@ -56,6 +45,10 @@ public class MenuItemBridge extends AbsMenuBridge
 		}
 		if (enabled!=null){
 			item.setEnabled(Boolean.TRUE.equals(enabled.get()));
+		}
+		if (checked!=null){
+			Log.d("Binder", "prepare: " + Boolean.TRUE.equals(checked.get()));
+			item.setChecked(Boolean.TRUE.equals(checked.get()));
 		}
 	}
 	
@@ -78,6 +71,27 @@ public class MenuItemBridge extends AbsMenuBridge
 		if ((temp!=null)){
 			bridge.enabled = temp;
 		}
+		temp = getObservableFromAttribute(activity, attributes, "checked", model);
+		if ((temp!=null)){
+			bridge.checked = temp;
+		}		
 		return bridge;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		boolean output = false;
+		if (onClickCommand!=null){
+			onClickCommand.Invoke(null, item);
+			output = true;
+		}
+
+		if (checked!=null){
+			if (Boolean.class.isAssignableFrom(checked.getType()))
+				((IObservable<Boolean>)checked).set(!item.isChecked());
+			Log.d("Binder", "Checked: "+ item.isChecked() + " " + checked.get());
+		}
+		return output;
 	}
 }

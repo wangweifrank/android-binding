@@ -6,6 +6,7 @@ import gueei.binding.IObservable;
 import android.app.Activity;
 import android.util.AttributeSet;
 import android.view.Menu;
+import android.view.MenuItem;
 
 /**
  * An instance of AbsMenuBridge maps to one xml
@@ -18,8 +19,6 @@ public abstract class AbsMenuBridge {
 		mId = id;
 	}
 	
-	public abstract boolean onMenuItemClick(android.view.MenuItem item);
-	
 	public abstract void onCreateOptionItem(Menu menu);
 	
 	public abstract void onPrepareOptionItem(Menu menu);
@@ -31,4 +30,6 @@ public abstract class AbsMenuBridge {
 		}
 		return null;
 	}
+
+	public abstract boolean onOptionsItemSelected(MenuItem item);
 }

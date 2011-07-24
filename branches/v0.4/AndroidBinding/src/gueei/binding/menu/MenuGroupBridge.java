@@ -13,11 +13,6 @@ public class MenuGroupBridge extends AbsMenuBridge {
 	}
 
 	@Override
-	public boolean onMenuItemClick(MenuItem item) {
-		return false;
-	}
-
-	@Override
 	public void onCreateOptionItem(Menu menu) {
 	}
 
@@ -41,5 +36,10 @@ public class MenuGroupBridge extends AbsMenuBridge {
 		}
 		
 		return bridge;
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		return false;
 	}
 }

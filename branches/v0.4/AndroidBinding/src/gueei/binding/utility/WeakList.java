@@ -101,6 +101,10 @@ public class WeakList<E> extends AbstractList<E> {
 		synchronized(this){
 			int len = items.size();
 			for(int i=0; i<len; i++){
+				if (items.get(i).get() == null){
+					items.remove(i);
+					return remove(object);
+				}
 				if (items.get(i).get().equals(object)){
 					items.remove(i);
 					return true;

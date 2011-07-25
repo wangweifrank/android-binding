@@ -1,30 +1,31 @@
 package gueei.binding.collections;
 
-import gueei.binding.Binder;
 import gueei.binding.IObservableCollection;
 import gueei.binding.cursor.CursorObservable;
 import gueei.binding.cursor.CursorObservableAdapter;
 import gueei.binding.viewAttributes.templates.Layout;
 import android.content.Context;
 import android.widget.Adapter;
+import android.widget.Filter;
 
 
 public class Utility {
 	@SuppressWarnings({ "unchecked", "rawtypes", "deprecation" })
 	public static Adapter getSimpleAdapter(
 			Context context, Object collection, 
-			Layout layout, Layout dropDownLayout) throws Exception{
+			Layout layout, Layout dropDownLayout, Filter filter) throws Exception{
 		if ((collection instanceof IObservableCollection)){
 			IObservableCollection obsCollection = (IObservableCollection)collection;
 			return new CollectionAdapter(
-					Binder.getApplication(), 
+					context, 
 					obsCollection, 
 					layout, 
-					dropDownLayout);
+					dropDownLayout,
+					filter);
 		}
 		if (collection instanceof CursorObservable){
 			CursorObservable cobs = (CursorObservable)collection;
-			return new CursorObservableAdapter(Binder.getApplication(), 
+			return new CursorObservableAdapter(context, 
 					cobs, layout, dropDownLayout);
 		}
 		/*

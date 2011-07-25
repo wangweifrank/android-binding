@@ -68,7 +68,7 @@ public class ExpandableListView_ItemSourceViewAttribute
 			
 			Adapter groupAdapter = 
 				gueei.binding.collections.Utility.getSimpleAdapter
-					(getView().getContext(), mValue, template, template);
+					(getView().getContext(), mValue, template, template, null);
 			ExpandableCollectionAdapter adapter = new ExpandableCollectionAdapter
 				(getView().getContext(), groupAdapter, childItemSource, childItemTemplate);
 			getView().setAdapter(adapter);

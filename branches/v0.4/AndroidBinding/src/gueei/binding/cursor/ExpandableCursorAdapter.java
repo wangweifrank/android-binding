@@ -61,7 +61,7 @@ public class ExpandableCursorAdapter<T extends CursorRowModel> extends BaseExpan
 					.getObservableForModel(mContext, mChildName, item);
 				
 				mChildAdapters.put(groupPosition,   
-					Utility.getSimpleAdapter(mContext, child.get(), mChildLayout, mChildLayout));
+					Utility.getSimpleAdapter(mContext, child.get(), mChildLayout, mChildLayout, null));
 
 				return mChildAdapters.get(groupPosition);
 			}catch(Exception e){

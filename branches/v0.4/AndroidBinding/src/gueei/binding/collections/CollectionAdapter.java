@@ -4,7 +4,6 @@ import gueei.binding.AttributeBinder;
 import gueei.binding.Binder;
 import gueei.binding.CollectionObserver;
 import gueei.binding.IObservableCollection;
-import gueei.binding.R;
 import gueei.binding.utility.CachedModelReflector;
 import gueei.binding.utility.IModelReflector;
 import gueei.binding.viewAttributes.templates.Layout;
@@ -13,9 +12,11 @@ import android.os.Handler;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Filter;
+import android.widget.Filterable;
 
 public class CollectionAdapter extends BaseAdapter
-	implements CollectionObserver{
+	implements CollectionObserver, Filterable{
 	@Override
 	public int getViewTypeCount() {
 		return mLayout.getTemplateCount();
@@ -29,20 +30,32 @@ public class CollectionAdapter extends BaseAdapter
 	protected final Handler mHandler;
 	protected final Context mContext;
 	protected final Layout mLayout, mDropDownLayout;
-	//protected final int mLayoutId;
-	//protected final int mDropDownLayoutId;
 	protected final IObservableCollection<?> mCollection;
 	protected final IModelReflector mReflector;
-		
+	protected final Filter mFilter;
+
 	public CollectionAdapter(Context context, IModelReflector reflector,
-			IObservableCollection<?> collection, Layout layout, Layout dropDownLayout) throws Exception{
+			IObservableCollection<?> collection, Layout layout, Layout dropDownLayout, Filter filter) throws Exception{
 		mHandler = new Handler();
 		mContext = context;
 		mLayout = layout;
 		mDropDownLayout = dropDownLayout;
 		mCollection = collection;
 		mReflector = reflector;
+		mFilter = filter;
 		collection.subscribe(this);
+	}
+	
+	public CollectionAdapter(Context context, IModelReflector reflector,
+			IObservableCollection<?> collection, Layout layout, Layout dropDownLayout) throws Exception{
+		this(context, reflector, collection, layout, dropDownLayout, null);
+	}
+	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public CollectionAdapter(Context context, IObservableCollection<?> collection, 
+			Layout layout, Layout dropDownLayout, Filter filter) throws Exception{
+		this(context, 
+				new CachedModelReflector(collection.getComponentType()), collection, layout, dropDownLayout, filter);
 	}
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
@@ -118,5 +131,9 @@ public class CollectionAdapter extends BaseAdapter
 				notifyDataSetChanged();
 			}
 		});
+	}
+
+	public Filter getFilter() {
+		return mFilter;
 	}
 }

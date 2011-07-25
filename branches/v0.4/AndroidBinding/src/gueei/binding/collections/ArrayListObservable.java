@@ -4,7 +4,10 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 
-public class ArrayListObservable<T> extends ObservableCollection<T> implements Collection<T> {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class ArrayListObservable<T> extends ObservableCollection<T> implements Collection<T>, Parcelable{
 	private final Class<T> mType;
 	private ArrayList<T> mArray;
 	
@@ -131,4 +134,34 @@ public class ArrayListObservable<T> extends ObservableCollection<T> implements C
 		}
 		return result;
 	}
+
+	public int describeContents() {
+		return 0;
+	}
+
+	public void writeToParcel(Parcel dest, int flags) {
+		dest.writeArray(this.toArray());
+	}
+	
+	@Override
+	public void _setObject(Object newValue, Collection<Object> initiators) {
+		if (newValue instanceof ArrayListObservable){
+			this.clear();
+			this.setArray(
+					(T[])((ArrayListObservable<T>)newValue).toArray());
+		}
+	}
+
+	public static final Parcelable.Creator<ArrayListObservable<?>> CREATOR =
+			new Parcelable.Creator<ArrayListObservable<?>>() {
+				@SuppressWarnings({ "rawtypes", "unchecked" })
+				public ArrayListObservable<?> createFromParcel(Parcel source) {
+					Object[] arr = source.readArray(this.getClass().getClassLoader());
+					return new ArrayListObservable(arr.getClass().getComponentType(), arr);
+				}
+
+				public ArrayListObservable<?>[] newArray(int size) {
+					return new ArrayListObservable[size];
+				}
+			};
 }

@@ -33,7 +33,10 @@ public class Launch extends Activity {
 						new Demo("CompoundButton"), 
 						new Demo("CustomView", true)));
 		DemoGroups.add(new DemoGroup("Menu", new Demo("OptionsMenu", true, OptionsMenu.class)));
-		DemoGroups.add(new DemoGroup("Resource Linking", new Demo("ResourceLinking", true)));
+		DemoGroups.add(new DemoGroup("Application related", 
+				new Demo("ResourceLinking", true),
+				new Demo("Parceling", true, Parceling.class)
+		));
 		DemoGroups.add(new DemoGroup("Simple Lists", 
 				new Demo("ArrayListAsListViewSource"),
 				new Demo("SpinnerWithArraySource"), 

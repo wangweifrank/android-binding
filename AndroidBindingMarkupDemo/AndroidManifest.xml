@@ -16,6 +16,7 @@
             </intent-filter>
         </activity>
 		<activity android:name=".ViewDemoActivity"/>
+		<activity android:name="Parceling"></activity>
 
     </application>
 </manifest>

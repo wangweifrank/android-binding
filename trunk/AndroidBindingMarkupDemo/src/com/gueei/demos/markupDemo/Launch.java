@@ -22,14 +22,25 @@ public class Launch extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		Binder.init(this.getApplication());
-		DemoGroups.add(new DemoGroup("Simple Views", new Demo("View"), new Demo("TextView"), new Demo("ImageView"),
-									 new Demo("ProgressBar"), new Demo("SeekBar"), new Demo("RatingBar"),
-									 new Demo("CompoundButton"), new Demo("CustomView", true)));
+		DemoGroups.add(
+				new DemoGroup("Simple Views", 
+						new Demo("View"), 
+						new Demo("TextView"), 
+						new Demo("ImageView"),
+						new Demo("ProgressBar"), 
+						new Demo("SeekBar"), 
+						new Demo("RatingBar"),
+						new Demo("CompoundButton"), 
+						new Demo("CustomView", true)));
 		DemoGroups.add(new DemoGroup("Menu", new Demo("OptionsMenu", true, OptionsMenu.class)));
 		DemoGroups.add(new DemoGroup("Resource Linking", new Demo("ResourceLinking", true)));
-		DemoGroups.add(new DemoGroup("Simple Lists", new Demo("ArrayListAsListViewSource", true),
-									 new Demo("SpinnerWithArraySource", true), new Demo("ListViewWithCursorSource"),
-									 new Demo("SingleChoiceList", true), new Demo("MultipleChoiceList", true)));
+		DemoGroups.add(new DemoGroup("Simple Lists", 
+				new Demo("ArrayListAsListViewSource"),
+				new Demo("SpinnerWithArraySource"), 
+				new Demo("ListViewWithCursorSource"), 
+				new Demo("SingleChoiceList"), 
+				new Demo("MultipleChoiceList"),
+				new Demo("FilterArrayList", true)));
 		DemoGroups
 				.add(new DemoGroup("Compound/Nested Lists", new Demo("MasterDetailListView"),
 								   new Demo("NestedCursor"),

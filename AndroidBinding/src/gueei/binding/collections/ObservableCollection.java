@@ -45,14 +45,10 @@ public abstract class ObservableCollection<T> implements IObservableCollection<T
 
 	@SuppressWarnings("rawtypes")
 	public final void set(IObservableCollection newValue) {
-		// TODO Auto-generated method stub
-		
 	}
 
-	public final void _setObject(Object newValue,
+	public void _setObject(Object newValue,
 			Collection<Object> initiators) {
-		// TODO Auto-generated method stub
-		
 	}
 
 	public final IObservableCollection<?> get() {

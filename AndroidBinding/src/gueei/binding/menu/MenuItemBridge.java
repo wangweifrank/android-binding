@@ -56,8 +56,8 @@ public class MenuItemBridge extends AbsMenuBridge{
 			Activity activity, Object model) {
 		MenuItemBridge bridge = new MenuItemBridge(id);
 		IObservable<?> temp = getObservableFromAttribute(activity, attributes, "onClick", model);
-		if ((temp!=null)&&(temp instanceof Command)){
-			bridge.onClickCommand = (Command)temp;
+		if ((temp!=null)&&(temp.get() instanceof Command)){
+			bridge.onClickCommand = (Command)temp.get();
 		}
 		temp = getObservableFromAttribute(activity, attributes, "title", model);
 		if ((temp!=null)){

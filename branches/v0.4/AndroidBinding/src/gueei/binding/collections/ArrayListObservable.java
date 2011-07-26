@@ -3,11 +3,13 @@ package gueei.binding.collections;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.List;
+import java.util.ListIterator;
 
 import android.os.Parcel;
 import android.os.Parcelable;
 
-public class ArrayListObservable<T> extends ObservableCollection<T> implements Collection<T>, Parcelable{
+public class ArrayListObservable<T> extends ObservableCollection<T> implements List<T>, Parcelable{
 	private final Class<T> mType;
 	private ArrayList<T> mArray;
 	
@@ -53,7 +55,7 @@ public class ArrayListObservable<T> extends ObservableCollection<T> implements C
 		this.notifyCollectionChanged();
 	}
 	
-	public int indexOf(T item){
+	public int indexOf(Object item){
 		return mArray.indexOf(item);
 	}
 
@@ -140,7 +142,11 @@ public class ArrayListObservable<T> extends ObservableCollection<T> implements C
 	}
 
 	public void writeToParcel(Parcel dest, int flags) {
-		dest.writeArray(this.toArray());
+		try{
+			dest.writeArray(this.toArray());
+		}catch(Exception e){
+			// The array is not parcelable.. ok?
+		}
 	}
 	
 	@Override
@@ -164,4 +170,37 @@ public class ArrayListObservable<T> extends ObservableCollection<T> implements C
 					return new ArrayListObservable[size];
 				}
 			};
+
+	public void add(int location, T object) {
+	}
+
+	public boolean addAll(int arg0, Collection<? extends T> arg1) {
+		return false;
+	}
+
+	public T get(int location) {
+		return mArray.get(location);
+	}
+
+	public int lastIndexOf(Object object) {
+		return mArray.lastIndexOf(object);
+	}
+
+	public ListIterator<T> listIterator() {
+		return mArray.listIterator();
+	}
+
+	public ListIterator<T> listIterator(int location) {
+		return mArray.listIterator(location);
+	}
+
+	public T set(int location, T object) {
+		T temp = mArray.set(location, object);
+		notifyCollectionChanged();
+		return temp; 
+	}
+
+	public List<T> subList(int start, int end) {
+		return mArray.subList(start, end);
+	}
 }

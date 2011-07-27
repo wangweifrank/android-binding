@@ -43,11 +43,16 @@ public class Launch extends Activity {
 				new Demo("ListViewWithCursorSource"), 
 				new Demo("SingleChoiceList"), 
 				new Demo("MultipleChoiceList"),
-				new Demo("FilterArrayList", true)));
+				new Demo("FilterArrayList", true)
+				));
 		DemoGroups
 				.add(new DemoGroup("Compound/Nested Lists", new Demo("MasterDetailListView"),
 								   new Demo("NestedCursor"),
 								   new Demo("CursorContentUpdate", true), new Demo("MultipleAdapters")));
+		DemoGroups.add(new DemoGroup("Dynamic Lists", 
+				new Demo("LazyLoadArrayList", true),
+				new Demo("DynamicLoadingArrayList", true)
+				));
 		DemoGroups.add(new DemoGroup("Animation", new Demo("AnimationTrigger", true)));
 		Binder.setAndBindContentView(this, R.layout.select_demo, this);
 	}

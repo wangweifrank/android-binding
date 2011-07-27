@@ -9,7 +9,10 @@ import java.util.ListIterator;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-public class ArrayListObservable<T> extends ObservableCollection<T> implements List<T>, Parcelable{
+public class ArrayListObservable<T> 
+	extends ObservableCollection<T> 
+	implements List<T>, Parcelable, LazyLoadCollection{
+	
 	private final Class<T> mType;
 	private ArrayList<T> mArray;
 	
@@ -150,6 +153,7 @@ public class ArrayListObservable<T> extends ObservableCollection<T> implements L
 	}
 	
 	@Override
+	@SuppressWarnings({ "unchecked"})
 	public void _setObject(Object newValue, Collection<Object> initiators) {
 		if (newValue instanceof ArrayListObservable){
 			this.clear();
@@ -202,5 +206,11 @@ public class ArrayListObservable<T> extends ObservableCollection<T> implements L
 
 	public List<T> subList(int start, int end) {
 		return mArray.subList(start, end);
+	}
+
+	public void onDisplay(int position) {
+	}
+
+	public void onHide(int position) {
 	}
 }

@@ -2,6 +2,7 @@ package gueei.binding.bindingProviders;
 
 import gueei.binding.ViewAttribute;
 import gueei.binding.viewAttributes.GenericViewAttribute;
+import gueei.binding.viewAttributes.adapterView.AdapterViewAttribute;
 import gueei.binding.viewAttributes.adapterView.ChildItemSourceViewAttribute;
 import gueei.binding.viewAttributes.adapterView.ClickedIdViewAttribute;
 import gueei.binding.viewAttributes.adapterView.ClickedItemViewAttribute;
@@ -30,11 +31,7 @@ public class AdapterViewProvider extends BindingProvider {
 			return null;
 		try {
 			if (attributeId.equals("adapter")) {
-				ViewAttribute<AdapterView, Adapter> attr = new GenericViewAttribute(Adapter.class,
-						(AdapterView) view, "adapter", 
-						AdapterView.class.getMethod("getAdapter"), 
-						AdapterView.class.getMethod("setAdapter", Adapter.class));
-				return (ViewAttribute<Tv, ?>) attr;
+				return (ViewAttribute<Tv, ?>) new AdapterViewAttribute((AdapterView)view);
 			} else if (attributeId.equals("selectedItem")) {
 				return (ViewAttribute<Tv, ?>) new SelectedItemViewAttribute((AdapterView)view, "selectedItem");
 			} else if (attributeId.equals("selectedPosition")) {

@@ -11,12 +11,13 @@ import android.content.Context;
 import android.os.Handler;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.BaseAdapter;
 import android.widget.Filter;
 import android.widget.Filterable;
 
 public class CollectionAdapter extends BaseAdapter
-	implements CollectionObserver, Filterable{
+	implements CollectionObserver, Filterable, LazyLoadAdapter{
 	@Override
 	public int getViewTypeCount() {
 		return mLayout.getTemplateCount();
@@ -82,6 +83,12 @@ public class CollectionAdapter extends BaseAdapter
 		if (position>=mCollection.size()) return returnView;
 		try {
 			ObservableMapper mapper;
+			
+			mCollection.onLoad(position);
+			if (mHelper!=null && !mHelper.isBusy())	{
+				((LazyLoadCollection)mCollection).onDisplay(position);
+			}
+			
 			if ((convertView == null) || 
 					((mapper = getAttachedMapper(convertView))==null)) {
 				
@@ -89,7 +96,6 @@ public class CollectionAdapter extends BaseAdapter
 						layoutId, parent, false);
 				mapper = new ObservableMapper();
 				Object model = mCollection.getItem(position);
-				mCollection.onLoad(position);
 				mapper.startCreateMapping(mReflector, model);
 				for(View view: result.processedViews){
 					AttributeBinder.getInstance().bindView(mContext, view, mapper);
@@ -97,8 +103,6 @@ public class CollectionAdapter extends BaseAdapter
 				mapper.endCreateMapping();
 				returnView = result.rootView;
 				this.putAttachedMapper(returnView, mapper);
-			}else{
-				mCollection.onLoad(position);
 			}
 			mapper.changeMapping(mReflector, mCollection.getItem(position));
 			return returnView;
@@ -135,5 +139,55 @@ public class CollectionAdapter extends BaseAdapter
 
 	public Filter getFilter() {
 		return mFilter;
+	}
+
+	private Mode mMode = Mode.LoadWhenStopped;
+	private LazyLoadRootAdapterHelper mHelper;
+	
+	public void setRoot(AbsListView view) {
+		if (mCollection instanceof LazyLoadCollection)
+			mHelper = new LazyLoadRootAdapterHelper(view, this, mMode);
+	}
+
+	public void setMode(Mode mode) {
+		if (mHelper!=null)
+		{
+			mHelper.setMode(mode);
+		}
+		mMode = mode;
+	}
+
+	private int lastDisplayingFirst = 0, lastTotal = 0;
+	
+	public void onVisibleChildrenChanged(int first, int total) {
+		if (total<=0) return;
+		if (lastDisplayingFirst == first){
+			if (total==lastTotal) return;
+			if (lastTotal<total){
+				for(int i=first+lastTotal; i<first+total; i++){
+					((LazyLoadCollection)mCollection).onDisplay(i);
+				}
+			}
+		}else{
+			if (lastDisplayingFirst < first){
+				int offCount = first - lastDisplayingFirst;
+				for(int i=first+total-offCount; i<first+total; i++){
+					((LazyLoadCollection)mCollection).onDisplay(i);
+				}
+				for(int i=lastDisplayingFirst; i<lastDisplayingFirst + offCount; i++){
+					((LazyLoadCollection)mCollection).onHide(i);
+				}
+			}else{
+				int offCount = lastDisplayingFirst - first;
+				for(int i=first; i<first+offCount; i++){
+					((LazyLoadCollection)mCollection).onDisplay(i);
+				}
+				for(int i=first+total; i<lastDisplayingFirst+total; i++){
+					((LazyLoadCollection)mCollection).onHide(i);
+				}
+			}
+		}
+		lastTotal = total;
+		lastDisplayingFirst = first;
 	}
 }

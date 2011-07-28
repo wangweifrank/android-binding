@@ -12,6 +12,7 @@
     	binding:itemSource="MusicList"
     	binding:itemTemplate="@layout/music_item"
     	binding:onItemClicked="ItemClickedCommand"
+        binding:onItemLongClicked="ItemLongClickedCommand"
     	binding:clickedItem="ClickedItem"
     />
 </LinearLayout>

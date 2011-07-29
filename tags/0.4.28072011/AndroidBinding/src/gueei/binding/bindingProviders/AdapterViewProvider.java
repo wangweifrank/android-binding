@@ -10,6 +10,7 @@ import gueei.binding.viewAttributes.adapterView.ExpandableListView_ItemSourceVie
 import gueei.binding.viewAttributes.adapterView.ExpandableListView_OnChildClickViewEvent;
 import gueei.binding.viewAttributes.adapterView.ItemSourceViewAttribute;
 import gueei.binding.viewAttributes.adapterView.ItemTemplateViewAttribute;
+import gueei.binding.viewAttributes.adapterView.LongClickedItemViewAttribute;
 import gueei.binding.viewAttributes.adapterView.OnItemClickedViewEvent;
 import gueei.binding.viewAttributes.adapterView.OnItemLongClickedViewEvent;
 import gueei.binding.viewAttributes.adapterView.OnItemSelectedViewEvent;
@@ -39,6 +40,8 @@ public class AdapterViewProvider extends BindingProvider {
 				ViewAttribute<AdapterView<?>, Object> attr = 
 					new ClickedItemViewAttribute((AdapterView)view, "clickedItem");
 				return (ViewAttribute<Tv, ?>) attr;
+			} else if (attributeId.equals("longClickedItem")){
+				return (ViewAttribute<Tv, ?>) new LongClickedItemViewAttribute((AdapterView)view, "longClickedItem");
 			} else if (attributeId.equals("clickedId")){
 				ViewAttribute<AdapterView<?>, Long> attr = 
 					new ClickedIdViewAttribute((AdapterView)view, "clickedId");

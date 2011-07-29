@@ -1,7 +1,9 @@
 package com.gueei.demos.markupDemo;
 
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Toast;
+import gueei.binding.Command;
 import gueei.binding.app.BindingActivity;
 import gueei.binding.collections.ArrayListObservable;
 import gueei.binding.observables.BooleanObservable;

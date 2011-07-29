@@ -9,6 +9,12 @@
 	<TextView
 		android:layout_width="fill_parent"
 	    android:layout_height="wrap_content"
+	    android:textSize="20dip"
+	    android:text="Following values are persisted (thru bundle). Try to rotate the Phone/Tablet to force the Activity to recreate"
+	/>
+	<TextView
+		android:layout_width="fill_parent"
+	    android:layout_height="wrap_content"
 	    binding:text="CONCAT('long: ', SaveLong)"
 	/>
 	<TextView

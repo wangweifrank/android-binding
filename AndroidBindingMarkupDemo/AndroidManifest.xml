@@ -16,8 +16,8 @@
             </intent-filter>
         </activity>
 		<activity android:name=".ViewDemoActivity"/>
-		<activity android:name="Parceling"></activity>
-		<activity android:name="OptionsMenu"></activity>
+		<activity android:name=".Parceling"></activity>
+		<activity android:name=".OptionsMenu"></activity>
 
     </application>
 </manifest>

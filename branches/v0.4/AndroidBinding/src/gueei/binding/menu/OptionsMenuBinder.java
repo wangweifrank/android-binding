@@ -15,15 +15,15 @@ import android.util.Xml;
 import android.view.Menu;
 import android.view.MenuItem;
 
-// Each MenuBinder correspond to one AbsMenuBridge xml. 
+// Each OptionsMenuBinder correspond to one AbsMenuBridge xml. 
 // Instance should be kept by the activity
-public class MenuBinder {
+public class OptionsMenuBinder {
 	private boolean firstCreate = true;
 	private final int mMenuResId;
 	private Hashtable<Integer, AbsMenuBridge> items = 
 			new Hashtable<Integer, AbsMenuBridge>();
 	
-	public MenuBinder(int menuResId){
+	public OptionsMenuBinder(int menuResId){
 		mMenuResId = menuResId;
 	}
 	

@@ -1,10 +1,21 @@
 package gueei.binding.bindingProviders;
 
 import gueei.binding.ViewAttribute;
-import gueei.binding.viewAttributes.GenericViewAttribute;
-import gueei.binding.viewAttributes.adapterView.*;
+import gueei.binding.viewAttributes.adapterView.AdapterViewAttribute;
+import gueei.binding.viewAttributes.adapterView.ChildItemSourceViewAttribute;
+import gueei.binding.viewAttributes.adapterView.ClickedChildViewAttribute;
+import gueei.binding.viewAttributes.adapterView.ClickedIdViewAttribute;
+import gueei.binding.viewAttributes.adapterView.ClickedItemViewAttribute;
+import gueei.binding.viewAttributes.adapterView.ExpandableListView_ItemSourceViewAttribute;
+import gueei.binding.viewAttributes.adapterView.ExpandableListView_OnChildClickViewEvent;
+import gueei.binding.viewAttributes.adapterView.ItemSourceViewAttribute;
+import gueei.binding.viewAttributes.adapterView.ItemTemplateViewAttribute;
+import gueei.binding.viewAttributes.adapterView.OnItemClickedViewEvent;
+import gueei.binding.viewAttributes.adapterView.OnItemLongClickedViewEvent;
+import gueei.binding.viewAttributes.adapterView.OnItemSelectedViewEvent;
+import gueei.binding.viewAttributes.adapterView.SelectedItemViewAttribute;
+import gueei.binding.viewAttributes.adapterView.SelectedPositionViewAttribute;
 import android.view.View;
-import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.ExpandableListView;
 

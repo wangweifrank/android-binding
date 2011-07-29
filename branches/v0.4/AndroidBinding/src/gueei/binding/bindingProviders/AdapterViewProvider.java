@@ -2,19 +2,7 @@ package gueei.binding.bindingProviders;
 
 import gueei.binding.ViewAttribute;
 import gueei.binding.viewAttributes.GenericViewAttribute;
-import gueei.binding.viewAttributes.adapterView.AdapterViewAttribute;
-import gueei.binding.viewAttributes.adapterView.ChildItemSourceViewAttribute;
-import gueei.binding.viewAttributes.adapterView.ClickedIdViewAttribute;
-import gueei.binding.viewAttributes.adapterView.ClickedItemViewAttribute;
-import gueei.binding.viewAttributes.adapterView.ExpandableListView_ItemSourceViewAttribute;
-import gueei.binding.viewAttributes.adapterView.ExpandableListView_OnChildClickViewEvent;
-import gueei.binding.viewAttributes.adapterView.ItemSourceViewAttribute;
-import gueei.binding.viewAttributes.adapterView.ItemTemplateViewAttribute;
-import gueei.binding.viewAttributes.adapterView.OnItemClickedViewEvent;
-import gueei.binding.viewAttributes.adapterView.OnItemSelectedViewEvent;
-import gueei.binding.viewAttributes.adapterView.SelectedItemViewAttribute;
-import gueei.binding.viewAttributes.adapterView.ClickedChildViewAttribute;
-import gueei.binding.viewAttributes.adapterView.SelectedPositionViewAttribute;
+import gueei.binding.viewAttributes.adapterView.*;
 import android.view.View;
 import android.widget.Adapter;
 import android.widget.AdapterView;
@@ -40,6 +28,8 @@ public class AdapterViewProvider extends BindingProvider {
 				ViewAttribute<AdapterView<?>, Object> attr = 
 					new ClickedItemViewAttribute((AdapterView)view, "clickedItem");
 				return (ViewAttribute<Tv, ?>) attr;
+			} else if (attributeId.equals("longClickedItem")){
+				return (ViewAttribute<Tv, ?>) new LongClickedItemViewAttribute((AdapterView)view, "longClickedItem");
 			} else if (attributeId.equals("clickedId")){
 				ViewAttribute<AdapterView<?>, Long> attr = 
 					new ClickedIdViewAttribute((AdapterView)view, "clickedId");
@@ -63,7 +53,9 @@ public class AdapterViewProvider extends BindingProvider {
 				return (ViewAttribute<Tv, ?>)new OnItemSelectedViewEvent((AdapterView)view);
 			} else if (attributeId.equals("onItemClicked")){
 				return (ViewAttribute<Tv, ?>)new OnItemClickedViewEvent((AdapterView)view);
-			} else if (attributeId.equals("childItemTemplate")){
+			} else if (attributeId.equals("onItemLongClicked")){
+                return (ViewAttribute<Tv, ?>)new OnItemLongClickedViewEvent((AdapterView)view);
+            } else if (attributeId.equals("childItemTemplate")){
 				if (view instanceof ExpandableListView)
 					return (ViewAttribute<Tv, ?>)new ItemTemplateViewAttribute(view, "childItemTemplate");
 			} else if (attributeId.equals("childItemSource")){

@@ -32,11 +32,17 @@ public class ListViewWithCursorSource {
 	
 	public final Command ItemClickedCommand = new Command(){
 		public void Invoke(View view, Object... args) {
-			Toast.makeText(view.getContext(), ((MusicItem)ClickedItem.get()).Title.get(), Toast.LENGTH_SHORT)
+			Toast.makeText(view.getContext(),((MusicItem)ClickedItem.get()).Title.get(), Toast.LENGTH_SHORT)
 				.show();
 		}
 	};
-	
+
+	public final Command ItemLongClickedCommand = new Command(){
+		public void Invoke(View view, Object... args) {
+			Toast.makeText(view.getContext(),"Long clicked: " + ((MusicItem)ClickedItem.get()).Title.get(), Toast.LENGTH_SHORT)
+				.show();
+		}
+	};
 	public static class MusicItem extends CursorRowModel{
 		public final IdField Id = new IdField(MediaStore.Audio.Media._ID);
 		public final StringField Title = new StringField(MediaStore.Audio.Media.TITLE);

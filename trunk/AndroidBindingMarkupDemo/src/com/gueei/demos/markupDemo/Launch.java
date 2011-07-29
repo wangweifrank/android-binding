@@ -40,7 +40,7 @@ public class Launch extends Activity {
 		DemoGroups.add(new DemoGroup("Simple Lists", 
 				new Demo("ArrayListAsListViewSource"),
 				new Demo("SpinnerWithArraySource"), 
-				new Demo("ListViewWithCursorSource"), 
+				new Demo("ListViewWithCursorSource", true), 
 				new Demo("SingleChoiceList"), 
 				new Demo("MultipleChoiceList"),
 				new Demo("FilterArrayList", true)

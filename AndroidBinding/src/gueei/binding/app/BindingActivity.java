@@ -1,7 +1,7 @@
 package gueei.binding.app;
 
 import gueei.binding.Binder;
-import gueei.binding.menu.MenuBinder;
+import gueei.binding.menu.OptionsMenuBinder;
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -10,7 +10,7 @@ import android.view.View;
 
 public class BindingActivity extends Activity {
 
-	MenuBinder menuBinder;
+	OptionsMenuBinder menuBinder;
 	Object mMenuViewModel;
 	View mRootView;
 	
@@ -33,7 +33,7 @@ public class BindingActivity extends Activity {
 		if (menuBinder!=null){
 			throw new IllegalStateException("Options menu can only set once");
 		}
-		menuBinder = new MenuBinder(menuId);
+		menuBinder = new OptionsMenuBinder(menuId);
 		mMenuViewModel = menuViewModel;
 	}
 	

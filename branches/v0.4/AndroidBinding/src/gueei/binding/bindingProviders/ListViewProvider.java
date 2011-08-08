@@ -1,6 +1,7 @@
 package gueei.binding.bindingProviders;
 
 import gueei.binding.ViewAttribute;
+import gueei.binding.iConst;
 import gueei.binding.viewAttributes.adapterView.listView.CheckedItemPositionsViewAttribute;
 import gueei.binding.viewAttributes.adapterView.listView.CheckedItemPositionViewAttribute;
 import gueei.binding.viewAttributes.adapterView.listView.FilterConstraintViewAttribute;
@@ -24,7 +25,7 @@ public class ListViewProvider extends BindingProvider {
 				return (ViewAttribute<Tv, ?>) new CheckedItemPositionsViewAttribute((ListView)view);
 			}else if (attributeId.equals("filter")) {
 				return (ViewAttribute<Tv, ?>) new FilterViewAttribute((ListView)view);
-			}else if (attributeId.equals("filterConstraint")) {
+			}else if (attributeId.equals(iConst.ATTR_FILTER_CONSTRAINT)) {
 				return (ViewAttribute<Tv, ?>) new FilterConstraintViewAttribute((ListView)view);
 			}
 		} catch (Exception e) {

@@ -53,10 +53,8 @@ public abstract class ViewMulticastListener<T> extends MulticastListener<View, T
 			try {
 				RegisterConstructorE(type, listener.getConstructor());
 			} catch (SecurityException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} catch (NoSuchMethodException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}

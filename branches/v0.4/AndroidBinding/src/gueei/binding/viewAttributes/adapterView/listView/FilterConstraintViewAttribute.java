@@ -5,11 +5,12 @@ import gueei.binding.ViewAttribute;
 import android.widget.Adapter;
 import android.widget.Filterable;
 import android.widget.ListView;
+import gueei.binding.iConst;
 
 public class FilterConstraintViewAttribute extends ViewAttribute<ListView, CharSequence>{
 
 	public FilterConstraintViewAttribute(ListView view) {
-		super(CharSequence.class, view, "filterConstraint");
+		super(CharSequence.class, view, iConst.ATTR_FILTER_CONSTRAINT);
 	}
 
 	@Override
@@ -18,7 +19,7 @@ public class FilterConstraintViewAttribute extends ViewAttribute<ListView, CharS
 			try {
 				@SuppressWarnings("unchecked")
 				Adapter adapter = 
-						((ViewAttribute<?, Adapter>)Binder.getAttributeForView(getView(), "adapter")).get();
+						((ViewAttribute<?, Adapter>)Binder.getAttributeForView(getView(), iConst.ATTR_ADAPTER)).get();
 				if (adapter instanceof Filterable){
 					((Filterable)adapter).getFilter().filter((CharSequence)newValue);
 				}

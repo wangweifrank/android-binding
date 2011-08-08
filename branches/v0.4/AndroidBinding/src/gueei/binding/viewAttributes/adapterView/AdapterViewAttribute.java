@@ -5,10 +5,11 @@ import android.widget.Adapter;
 import android.widget.AdapterView;
 import gueei.binding.ViewAttribute;
 import gueei.binding.collections.LazyLoadAdapter;
+import gueei.binding.iConst;
 
 public class AdapterViewAttribute<T extends Adapter> extends ViewAttribute<AdapterView<T>, Adapter> {
 	public AdapterViewAttribute(AdapterView<T> view) {
-		super(Adapter.class, view, "adapter");
+		super(Adapter.class, view, iConst.ATTR_ADAPTER);
 	}
 
 	@SuppressWarnings("unchecked")

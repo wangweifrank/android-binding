@@ -12,7 +12,7 @@ public abstract class ObservableCollection<T> implements IObservableCollection<T
 
 	private WeakList<CollectionObserver> mCollectionObservers
 		= new WeakList<CollectionObserver>();
-	
+
 	@SuppressWarnings("rawtypes")
 	public Class<IObservableCollection> getType() {
 		return IObservableCollection.class;
@@ -25,7 +25,6 @@ public abstract class ObservableCollection<T> implements IObservableCollection<T
 	}
 
 	public final Observer[] getAllObservers() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
@@ -43,7 +42,6 @@ public abstract class ObservableCollection<T> implements IObservableCollection<T
 			Collection<Object> initiators) {
 	}
 
-	@SuppressWarnings("rawtypes")
 	public final void set(IObservableCollection newValue) {
 	}
 
@@ -67,5 +65,9 @@ public abstract class ObservableCollection<T> implements IObservableCollection<T
 		for(Object c: mCollectionObservers.toArray()){
 			((CollectionObserver)c).onCollectionChanged(this);
 		}
+	}
+
+	public long getItemId(int position) {
+		return position;
 	}
 }

@@ -1,6 +1,7 @@
 package gueei.binding.bindingProviders;
 
 import gueei.binding.ViewAttribute;
+import gueei.binding.iConst;
 import gueei.binding.viewAttributes.GenericViewAttribute;
 import gueei.binding.viewAttributes.adapterView.*;
 import android.view.View;
@@ -18,11 +19,11 @@ public class AdapterViewProvider extends BindingProvider {
 		if (!(view instanceof AdapterView))
 			return null;
 		try {
-			if (attributeId.equals("adapter")) {
+			if (attributeId.equals(iConst.ATTR_ADAPTER)) {
 				return (ViewAttribute<Tv, ?>) new AdapterViewAttribute((AdapterView)view);
-			} else if (attributeId.equals("selectedItem")) {
-				return (ViewAttribute<Tv, ?>) new SelectedItemViewAttribute((AdapterView)view, "selectedItem");
-			} else if (attributeId.equals("selectedPosition")) {
+			} else if (attributeId.equals(iConst.ATTR_SELECTED_ITEM)) {
+				return (ViewAttribute<Tv, ?>) new SelectedItemViewAttribute((AdapterView)view, iConst.ATTR_SELECTED_ITEM);
+			} else if (attributeId.equals(iConst.ATTR_SELECTED_POSITION)) {
 				return (ViewAttribute<Tv, ?>) new SelectedPositionViewAttribute((AdapterView)view);
 			} else if (attributeId.equals("clickedItem")){
 				ViewAttribute<AdapterView<?>, Object> attr = 

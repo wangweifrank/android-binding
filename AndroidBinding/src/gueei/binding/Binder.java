@@ -23,7 +23,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
+import gueei.binding.obligatoryAttributeProviders.AbsSpinnerObligatoryAttributeProvider;
 
 public class Binder {
 	public static final String BINDING_NAMESPACE = "http://www.gueei.com/android-binding/";
@@ -92,6 +92,7 @@ public class Binder {
 	}
 	
  	static void putBindingMapToView(View view, BindingMap map){
+		ObligatoryAttributeKeeper.getInstance().merge(view, map);
  		getViewTag(view).put(BindingMap.class, map);
 	}
 	
@@ -162,6 +163,8 @@ public class Binder {
 		AttributeBinder.getInstance().registerProvider(new AdapterViewProvider());
 		AttributeBinder.getInstance().registerProvider(new TextViewProvider());
 		AttributeBinder.getInstance().registerProvider(new ViewProvider());
+		// obligatory attributes
+		ObligatoryAttributeKeeper.getInstance().registerProvider(new AbsSpinnerObligatoryAttributeProvider());
 		mApplication = application;
 	}
 

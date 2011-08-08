@@ -5,11 +5,12 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import gueei.binding.Binder;
 import gueei.binding.ViewAttribute;
+import gueei.binding.iConst;
 import gueei.binding.listeners.OnItemSelectedListenerMulticast;
 
 public class SelectedPositionViewAttribute extends ViewAttribute<AdapterView<?>, Integer> implements OnItemSelectedListener {
 	public SelectedPositionViewAttribute(AdapterView<?> view) {
-		super(Integer.class, view, "selectedPosition");
+		super(Integer.class, view, iConst.ATTR_SELECTED_POSITION);
 		Binder.getMulticastListenerForView(view, OnItemSelectedListenerMulticast.class).register(this);
 	}
 

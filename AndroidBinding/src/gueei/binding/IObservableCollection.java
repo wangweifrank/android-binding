@@ -8,6 +8,7 @@ public interface IObservableCollection<T> extends IObservable<IObservableCollect
 	void unsubscribe(CollectionObserver c);
 	void notifyCollectionChanged();
 	T getItem(int position);
+	long getItemId(int position);
 	void onLoad(int position);
 	Class<T> getComponentType();
 	int size();

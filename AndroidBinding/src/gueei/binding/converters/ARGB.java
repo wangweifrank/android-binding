@@ -8,7 +8,7 @@ import gueei.binding.IObservable;
  * Covert to Color value of three components or four components
  * If only three arguments specified, color will be RGB
  * if four arguments provided, color will be ARGB
- * return type as Android Color integer 
+ * return type as Android Color integer
  */
 
 public class ARGB extends Converter<Integer> {

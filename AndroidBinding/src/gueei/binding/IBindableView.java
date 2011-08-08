@@ -19,7 +19,7 @@ public interface IBindableView<T extends View & IBindableView<T>> {
 	 * The view class is recommended to create their View Attributes
 	 * If you want to override the default behavior of other ViewAttributes, you can return it here
 	 * or else, returning null will pass the control to super classes' implementation
-	 * @param attributeName
+	 * @param attributeId
 	 * @return the ViewAttribute, or null if don't want to handle
 	 */
 	public ViewAttribute<T, ?> getViewAttribute(String attributeId);

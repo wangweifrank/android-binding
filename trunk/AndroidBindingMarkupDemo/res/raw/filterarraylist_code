@@ -8,12 +8,12 @@ import gueei.binding.collections.ArrayListObservable;
 import gueei.binding.observables.StringObservable;
 
 public class FilterArrayList {
-	public final StringObservable FilterText = 
+	public final StringObservable FilterText =
 			new StringObservable();
-	
+
 	public final ArrayListObservable<String> ListFiltered =
 			new ArrayListObservable<String>(String.class);
-	
+
 	public final Observable<Filter> ListFilter = new Observable<Filter>(Filter.class, new Filter(){
 		@Override
 		protected FilterResults performFiltering(CharSequence constraint) {
@@ -43,7 +43,7 @@ public class FilterArrayList {
 			}
 		}
 	});
-	
+
 	private static final String[] DATA = {
         "Abbaye de Belloc", "Abbaye du Mont des Cats", "Abertam",
         "Abondance", "Ackawi", "Acorn", "Adelost", "Affidelice au Chablis",

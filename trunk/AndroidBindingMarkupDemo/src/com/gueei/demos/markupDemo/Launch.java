@@ -46,7 +46,8 @@ public class Launch extends Activity {
 				new Demo("ListViewWithCursorSource", true),
 				new Demo("SingleChoiceList"), 
 				new Demo("MultipleChoiceList"),
-				new Demo("FilterArrayList", true)
+				new Demo("FilterArrayList", true),
+				new Demo("FilterCursorList", true)
 				));
 		DemoGroups
 				.add(new DemoGroup("Compound/Nested Lists", new Demo("MasterDetailListView"),

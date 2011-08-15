@@ -10,17 +10,7 @@ package gueei.binding;
 public final class R {
     public static final class attr {
     }
-    public static final class id {
-        public static final int tag_attributes=0x7f020001;
-        public static final int tag_bindingmap=0x7f020000;
-        public static final int tag_multicastListeners=0x7f020002;
-        public static final int tag_observableCollection_attachedObservable=0x7f020005;
-        public static final int tag_observableCollection_position=0x7f020004;
-        public static final int tag_observableCollection_processedViews=0x7f020006;
-        public static final int tag_observableCollection_viewTypeId=0x7f020007;
-        public static final int tag_processedViews=0x7f020003;
-    }
     public static final class string {
-        public static final int validation_required_message=0x7f030000;
+        public static final int validation_required_message=0x7f020000;
     }
 }

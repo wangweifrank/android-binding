@@ -6,6 +6,7 @@ import gueei.binding.IObservable;
 import gueei.binding.Observer;
 import gueei.binding.ViewAttribute;
 import gueei.binding.cursor.CursorRowTypeMap;
+import gueei.binding.exception.AttributeNotDefinedException;
 import gueei.binding.viewAttributes.templates.Layout;
 
 import java.util.Collection;
@@ -18,6 +19,7 @@ public class ItemSourceViewAttribute extends ViewAttribute<AdapterView<Adapter>,
 
 	Layout template, spinnerTemplate;
 	ViewAttribute<?,Layout> itemTemplateAttr, spinnerTemplateAttr;
+	Object mValue;
 
 	private Observer templateObserver = new Observer(){
 		public void onPropertyChanged(IObservable<?> prop,
@@ -51,7 +53,11 @@ public class ItemSourceViewAttribute extends ViewAttribute<AdapterView<Adapter>,
 			return;
 		
 		if (newValue instanceof Adapter){
-			getView().setAdapter((Adapter)newValue);
+			try {
+				((ViewAttribute<?, Adapter>)Binder.getAttributeForView(getView(), "adapter")).set((Adapter)newValue);
+			} catch (AttributeNotDefinedException e) {
+				e.printStackTrace();
+			}
 			return;
 		}
 		
@@ -61,10 +67,11 @@ public class ItemSourceViewAttribute extends ViewAttribute<AdapterView<Adapter>,
 		
 		try {
 			Adapter adapter = gueei.binding.collections.Utility.getSimpleAdapter
-				(getView().getContext(), newValue, spinnerTemplate, template);
-			this.getView().setAdapter(adapter);
+				(getView().getContext(), newValue, spinnerTemplate, template, null);
+			((ViewAttribute<?, Adapter>)Binder.getAttributeForView(getView(), "adapter")).set(adapter);
 			ViewAttribute<?,Integer> SelectedPosition = (ViewAttribute<?,Integer>)Binder.getAttributeForView(getView(), "selectedPosition");
 			getView().setSelection(SelectedPosition.get());
+			mValue = newValue;
 			return;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -74,8 +81,7 @@ public class ItemSourceViewAttribute extends ViewAttribute<AdapterView<Adapter>,
 
 	@Override
 	public Object get() {
-		// Set only attribute
-		return null;
+		return mValue;
 	}
 
 	@Override

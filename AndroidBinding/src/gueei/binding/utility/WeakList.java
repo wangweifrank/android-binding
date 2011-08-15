@@ -26,7 +26,7 @@ import java.util.Iterator;
  */
 public class WeakList<E> extends AbstractList<E> {
     
-    private ArrayList<WeakReference<E>> items;
+    private volatile ArrayList<WeakReference<E>> items;
 
     /** Creates new WeakList */
     public WeakList() {
@@ -44,52 +44,80 @@ public class WeakList<E> extends AbstractList<E> {
 
     
     public void add(int index, E element) {
-        items.add(index, new WeakReference<E>(element));
+    	synchronized(this){
+    		items.add(index, new WeakReference<E>(element));
+    	}
     }
     
     public Iterator<E> iterator() {
-        return new WeakListIterator();
+    	throw new UnsupportedOperationException();
+//    	synchronized(this){
+//    		return new WeakListIterator();
+//    	}
     }
     
     public int size() {
-        removeReleased();
-        return items.size();
+    	synchronized(this){
+	        removeReleased();
+	        return items.size();
+    	}
     }    
     
     public E get(int index) {
-        return ((WeakReference<E>) items.get(index)).get();
+    	synchronized(this){
+    		return ((WeakReference<E>) items.get(index)).get();
+    	}
     }
     
     private void removeReleased() {
-        for (Iterator<WeakReference<E>> it = items.iterator(); it.hasNext(); ) {
-            WeakReference<E> ref = (WeakReference<E>) it.next();
-            if (ref.get() == null) items.remove(ref);
-        }
+    	synchronized(this){
+    		ArrayList<WeakReference<E>> removeList = new ArrayList<WeakReference<E>>();
+	        for (Iterator<WeakReference<E>> it = items.iterator(); it.hasNext(); ) {
+	            WeakReference<E> ref = (WeakReference<E>) it.next();
+	            if (ref.get() == null) removeList.add(ref);
+	        }
+	        for(int i=0; i<removeList.size(); i++){
+	        	items.remove(removeList.get(i));
+	        }
+    	}
     }
     
-    private class WeakListIterator implements Iterator<E> {
-        
-        private int n;
-        private int i;
-        
-        public WeakListIterator() {
-            n = size();
-            i = 0;
-        }
-        
-        public boolean hasNext() {
-            return i < n;
-        }
-        
-        public E next() {
-            return get(i++);
-        }
-        
-        public void remove() {
-        	if (i-1 >= 0)
-        		items.remove(i-1);
-        }
-        
-    }
+	public Object[] toArray() {
+		synchronized(this){
+	    	removeReleased();
+	    	@SuppressWarnings("unchecked")
+			WeakReference<E>[] itemArray = items.toArray(new WeakReference[0]);
+	    	int len = itemArray.length;
+	    	Object[] eArray = new Object[len];
+	    	for(int i=0; i<len; i++){
+	    		eArray[i] = itemArray[i].get();
+	    	}
+	    	return eArray;
+		}
+	}
 
+	@Override
+	public boolean remove(Object object) {
+		synchronized(this){
+			int len = items.size();
+			for(int i=0; i<len; i++){
+				if (items.get(i).get() == null){
+					items.remove(i);
+					return remove(object);
+				}
+				if (items.get(i).get().equals(object)){
+					items.remove(i);
+					return true;
+				}
+			}
+			return false;
+		}
+	}
+
+	@Override
+	public boolean add(E object) {
+		synchronized(this){
+			return items.add(new WeakReference<E>(object));
+		}
+	}
 }

@@ -28,6 +28,7 @@ public class BindingSyntaxResolver {
 			final Context context,
 			final String bindingStatement, 
 			final Object model){
+		if(bindingStatement == null)return null;
 		IObservable<?> result;
 		String statement = bindingStatement.trim();
 		result = getConverterFromStatement(context, statement, model);
@@ -175,7 +176,8 @@ public class BindingSyntaxResolver {
 			return new ConstantObservable(rawField.getClass(), rawField);
 		}
 		
-		return new ConstantObservable<String>(String.class, fieldName);
+		// No more fall back
+		return null; // new ConstantObservable<String>(String.class, fieldName);
 	}
 	
 	private static IObservable<?> matchString(String fieldName){
@@ -212,7 +214,7 @@ public class BindingSyntaxResolver {
 		// No idea why id will return TYPE_INT_BOOLEAN instead of TYPE_INT. 
 		if ("id".equals(typeName))
 			return new ConstantObservable<Integer>(Integer.class, outValue.data);
-		if (typeName.startsWith("drawable"))
+		if (typeName.startsWith("drawable")||typeName.startsWith("anim")||typeName.startsWith("menu"))
 			return new ConstantObservable<Integer>(Integer.class, id);
 		
 		switch(outValue.type){

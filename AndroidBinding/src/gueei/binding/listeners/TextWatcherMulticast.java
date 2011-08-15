@@ -6,7 +6,7 @@ import android.view.View;
 import android.widget.TextView;
 
 public class TextWatcherMulticast
-	extends MulticastListener<TextWatcher>
+	extends ViewMulticastListener<TextWatcher>
 	implements TextWatcher{
 
 	@Override

@@ -3,7 +3,7 @@ package gueei.binding;
 import android.util.Log;
 
 public class BindingLog {
-	public static final String tag = "Binder";
+	public static final String tag = "BinderV30";
 	
 	public static void warning(String occuredAt, String message){
 		Log.w(tag, occuredAt + " : " + message);

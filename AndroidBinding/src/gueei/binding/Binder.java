@@ -1,7 +1,9 @@
 package gueei.binding;
 
+import gueei.binding.bindingProviders.AbsSpinnerViewProvider;
 import gueei.binding.bindingProviders.AdapterViewProvider;
 import gueei.binding.bindingProviders.CompoundButtonProvider;
+import gueei.binding.bindingProviders.ExpandableListViewProvider;
 import gueei.binding.bindingProviders.ImageViewProvider;
 import gueei.binding.bindingProviders.ListViewProvider;
 import gueei.binding.bindingProviders.ProgressBarProvider;
@@ -12,10 +14,10 @@ import gueei.binding.bindingProviders.TextViewProvider;
 import gueei.binding.bindingProviders.ViewAnimatorProvider;
 import gueei.binding.bindingProviders.ViewProvider;
 import gueei.binding.exception.AttributeNotDefinedException;
-import gueei.binding.listeners.MulticastListener;
+import gueei.binding.listeners.ViewMulticastListener;
+import gueei.binding.listeners.MulticastListenerCollection;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import android.app.Activity;
 import android.app.Application;
@@ -23,11 +25,12 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import gueei.binding.R;
 
 
 public class Binder {
-	public static final String BindingNamespace = "http://www.gueei.com/android-binding/";
+	public static final String BINDING_NAMESPACE = "http://www.gueei.com/android-binding/";
+	public static final String ANDROID_NAMESPACE = "http://schemas.android.com/apk/res/android";
+	
 	private static Application mApplication;
 	
 	/**
@@ -50,17 +53,9 @@ public class Binder {
 				return viewAttribute;
 		}
 		
-		Object attributes = view.getTag(R.id.tag_attributes);
-		AttributeCollection collection;
-		if ((attributes!=null) && (attributes instanceof AttributeCollection)){
-			collection = (AttributeCollection)attributes;
-			if (collection.containsAttribute(attributeId))
-				return collection.getAttribute(attributeId);
-		}
-		else{
-			collection = new AttributeCollection();
-			view.setTag(R.id.tag_attributes, collection);
-		}
+		AttributeCollection collection = getAttributeCollectionOfView(view);
+		if (collection.containsAttribute(attributeId))
+			return collection.getAttribute(attributeId);
 		
 		viewAttribute = AttributeBinder.getInstance().createAttributeForView(view, attributeId);
 		
@@ -72,14 +67,38 @@ public class Binder {
 		return viewAttribute;
 	}
 	
+	/**
+	 * Get the associated View Tag of a view, if view tag is not existed or the
+	 * existing tag is not view tag, a new viewTag will be created and return.
+	 * @param view
+	 * @return
+	 */
+	public static ViewTag getViewTag(View view){
+		Object tag = view.getTag();
+		if (tag instanceof ViewTag){
+			return (ViewTag)tag;
+		}
+		ViewTag vtag = new ViewTag();
+		view.setTag(vtag);
+		return vtag;
+	}
+	
+	public static AttributeCollection getAttributeCollectionOfView(View view){
+		ViewTag vt = getViewTag(view);
+		AttributeCollection collection = vt.get(AttributeCollection.class);
+		if (collection!=null)
+			return collection;
+		collection = new AttributeCollection();
+		vt.put(AttributeCollection.class, collection);
+		return collection;
+	}
+	
  	static void putBindingMapToView(View view, BindingMap map){
-		view.setTag(R.id.tag_bindingmap, map);
+ 		getViewTag(view).put(BindingMap.class, map);
 	}
 	
 	public static BindingMap getBindingMapForView(View view){
-		Object map = view.getTag(R.id.tag_bindingmap);
-		if(map instanceof BindingMap) return (BindingMap)map;
-		return null;
+		return getViewTag(view).get(BindingMap.class);
 	}
 	
 	public static void setAndBindContentView(Activity context, int layoutId, Object model){
@@ -122,14 +141,14 @@ public class Binder {
 		return inflatedView.rootView;
 	}
 	
-	static void attachProcessedViewsToRootView(View rootView, ArrayList<View> processedViews){
-		rootView.setTag(R.id.tag_processedViews, processedViews);
+	private static void attachProcessedViewsToRootView(View rootView, ArrayList<View> processedViews){
+		//rootView.setTag(R.id.tag_processedViews, processedViews);
 	}
 	
 	@SuppressWarnings("unchecked")
 	public static ArrayList<View> getProcessedViewsFromRootView(View rootView){
-		Object objCollection = rootView.getTag(R.id.tag_processedViews);
-		if (objCollection instanceof ArrayList<?>) return (ArrayList<View>)objCollection;
+		//Object objCollection = rootView.getTag(R.id.tag_processedViews);
+		//if (objCollection instanceof ArrayList<?>) return (ArrayList<View>)objCollection;
 		return null;
 	}
 	
@@ -141,6 +160,8 @@ public class Binder {
 		AttributeBinder.getInstance().registerProvider(new ViewAnimatorProvider());
 		AttributeBinder.getInstance().registerProvider(new CompoundButtonProvider());
 		AttributeBinder.getInstance().registerProvider(new ImageViewProvider());
+		AttributeBinder.getInstance().registerProvider(new ExpandableListViewProvider());
+		AttributeBinder.getInstance().registerProvider(new AbsSpinnerViewProvider());
 		AttributeBinder.getInstance().registerProvider(new ListViewProvider());
 		AttributeBinder.getInstance().registerProvider(new AdapterViewProvider());
 		AttributeBinder.getInstance().registerProvider(new TextViewProvider());
@@ -151,18 +172,15 @@ public class Binder {
 	public static Application getApplication(){
 		return mApplication;
 	}
-	
-	@SuppressWarnings("unchecked")
-	public static <T extends MulticastListener<?>> T getMulticastListenerForView(View view, Class<T> listenerType){
-		Object tag = view.getTag(R.id.tag_multicastListeners);
-		HashMap<Class<T>, T> collection;
-		if ((tag==null)||(!(tag instanceof HashMap))){
-			collection = new HashMap<Class<T>, T>();
-			view.setTag(R.id.tag_multicastListeners, collection);
+
+	public static <T extends ViewMulticastListener<?>> T getMulticastListenerForView(View view, Class<T> listenerType){
+		
+		MulticastListenerCollection collection = getViewTag(view).get(MulticastListenerCollection.class);
+		if (collection==null){
+			collection = new MulticastListenerCollection();
+			getViewTag(view).put(MulticastListenerCollection.class, collection);
 		}
-		else{
-			collection = (HashMap<Class<T>, T>)tag;
-		}
+
 		if (collection.containsKey(listenerType)){
 			return collection.get(listenerType);
 		}
@@ -172,7 +190,7 @@ public class Binder {
 			collection.put(listenerType, listener);
 			return listener;
 		} catch (Exception e){
-			BindingLog.exception("Binder", e);
+			BindingLog.exception("BinderV30", e);
 			return null;
 		}		
 	}
@@ -183,6 +201,6 @@ public class Binder {
 	}
 	
 	public static String currentVersion(){
-		return "0.31";
+		return "0.4";
 	}
 }

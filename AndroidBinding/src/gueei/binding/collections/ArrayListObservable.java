@@ -14,7 +14,7 @@ public class ArrayListObservable<T>
 	implements List<T>, Parcelable, LazyLoadCollection{
 	
 	private final Class<T> mType;
-	private ArrayList<T> mArray;
+	protected ArrayList<T> mArray;
 	
 	public ArrayListObservable(Class<T> type){
 		this(type, null);

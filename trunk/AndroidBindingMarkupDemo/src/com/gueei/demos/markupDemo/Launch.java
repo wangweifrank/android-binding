@@ -33,15 +33,19 @@ public class Launch extends Activity {
 						new Demo("RatingBar"),
 						new Demo("CompoundButton"), 
 						new Demo("CustomView", true)));
+
 		DemoGroups.add(new DemoGroup("Menu", 
 				new Demo("OptionsMenu", true, OptionsMenu.class),
-				new Demo("ContextMenu", true),
-				new Demo("Custom Action Bar", true, ActCustomAB.class)));
+				new Demo("ContextMenu", true)));
+
+		DemoGroups.add(new DemoGroup("Tabs and ActionBar",
+				new Demo("Custom Action Bar", true, ActCustomAB.class),
+				new Demo("Tabs", true, TabDemoActivity.class)));
 
 		DemoGroups.add(new DemoGroup("Application related", 
 				new Demo("ResourceLinking", true),
-				new Demo("Parceling", true, Parceling.class)
-		));
+				new Demo("Parceling", true, Parceling.class)));
+
 		DemoGroups.add(new DemoGroup("Simple Lists", 
 				new Demo("ArrayListAsListViewSource"),
 				new Demo("SpinnerWithArraySource"),
@@ -56,10 +60,11 @@ public class Launch extends Activity {
 				.add(new DemoGroup("Compound/Nested Lists", new Demo("MasterDetailListView"),
 								   new Demo("NestedCursor"),
 								   new Demo("CursorContentUpdate", true), new Demo("MultipleAdapters")));
+
 		DemoGroups.add(new DemoGroup("Dynamic Lists", 
 				new Demo("LazyLoadArrayList", true),
-				new Demo("DynamicLoadingArrayList", true)
-				));
+				new Demo("DynamicLoadingArrayList", true)));
+
 		DemoGroups.add(new DemoGroup("Animation", new Demo("AnimationTrigger", true)));
 		Binder.setAndBindContentView(this, R.layout.select_demo, this);
 	}

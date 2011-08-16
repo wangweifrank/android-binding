@@ -3,18 +3,42 @@ package gueei.binding.viewAttributes.tabHost;
 import android.app.TabActivity;
 import android.content.Context;
 import android.content.Intent;
+import android.view.View;
 import android.widget.TabHost;
 import android.widget.TabHost.TabSpec;
-import gueei.binding.BindingType;
-import gueei.binding.IObservable;
-import gueei.binding.ViewAttribute;
+import android.widget.TabWidget;
+import gueei.binding.*;
 import gueei.binding.collections.ArrayListObservable;
+import gueei.binding.viewAttributes.templates.Layout;
+
+import java.util.Collection;
 
 @SuppressWarnings("rawtypes")
 public class TabsViewAttribute extends ViewAttribute<TabHost, ArrayListObservable> {
 
+	ViewAttribute<?, Layout>  mTabTemplateAttr;
+	ViewAttribute<?, Integer> mTabWidth;
+	ViewAttribute<?, Integer> mTabSelectedPosition;
+	private Observer mTabWidthObserver = new Observer() {
+		public void onPropertyChanged(IObservable<?> prop, Collection<Object> initiators) {
+			resetTabsWidth();
+		}
+	};
+
+	//
+
 	public TabsViewAttribute(TabHost view) {
 		super(ArrayListObservable.class, view, "tabs");
+		try {
+			mTabSelectedPosition =(ViewAttribute<?, Integer>) Binder.getAttributeForView(getView(), "selectedPosition");
+			mTabTemplateAttr = (ViewAttribute<?, Layout>) Binder.getAttributeForView(getView(), "tabTemplate");
+			mTabWidth = (ViewAttribute<?, Integer>) Binder.getAttributeForView(getView(), "tabWidth");
+			mTabWidth.subscribe(mTabWidthObserver);
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+			return;
+		}
 	}
 
 	private ArrayListObservable<Tab> mTabs;
@@ -32,15 +56,26 @@ public class TabsViewAttribute extends ViewAttribute<TabHost, ArrayListObservabl
 		for (Tab t : mTabs) {
 			mTabHost.addTab(constructTabSpec(t));
 		}
+		resetTabsWidth();
+		mTabHost.setCurrentTab(mTabSelectedPosition.get());
 	}
 
 	private TabSpec constructTabSpec(Tab tab) {
 		TabSpec spec = mTabHost.newTabSpec(tab.Tag.get());
-		if (tab.Icon.get() != null) {
-			spec.setIndicator(tab.Label.get(), tab.Icon.get());
+		if (null != mTabTemplateAttr.get()) {
+			// not sure about this...
+			Context context = mTabHost.getContext();
+			Binder.InflateResult inflateResult = Binder.inflateView(context, mTabTemplateAttr.get().getDefaultLayoutId(), null, false);
+			final View tabView = Binder.bindView(context, inflateResult, tab);
+			spec.setIndicator(tabView);
 		}
 		else {
-			spec.setIndicator(tab.Label.get());
+			if (tab.Icon.get() != null) {
+				spec.setIndicator(tab.Label.get(), tab.Icon.get());
+			}
+			else {
+				spec.setIndicator(tab.Label.get());
+			}
 		}
 		if (tab.Activity.get() != null) {
 			Intent intent;
@@ -77,5 +112,15 @@ public class TabsViewAttribute extends ViewAttribute<TabHost, ArrayListObservabl
 	@Override
 	protected BindingType AcceptThisTypeAs(Class<?> type) {
 		return BindingType.OneWay;
+	}
+
+	private void resetTabsWidth() {
+		int tabWidth = mTabWidth.get();
+		if (tabWidth > 0) {
+			TabWidget tabWidget = mTabHost.getTabWidget();
+			for (int i = 0; i < tabWidget.getChildCount(); ++i) {
+				tabWidget.getChildAt(i).getLayoutParams().width = tabWidth;
+			}
+		}
 	}
 }

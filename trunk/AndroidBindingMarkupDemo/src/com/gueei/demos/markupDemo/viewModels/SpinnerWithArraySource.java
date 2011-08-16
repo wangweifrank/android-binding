@@ -19,7 +19,7 @@ public class SpinnerWithArraySource {
 	public final IntegerObservable                  AbsSpinnerSelectedPositionDef = new IntegerObservable(2);
 	public final Command                            ToastContinent                = new Command() {
 		public void Invoke(View view, Object... args) {
-			Toast.makeText(view.getContext(), AbsSpinnerSelectedItemDef.get().toString(), Toast.LENGTH_SHORT).show();
+	//		Toast.makeText(view.getContext(), AbsSpinnerSelectedItemDef.get().toString(), Toast.LENGTH_SHORT).show();
 		}
 	};
 

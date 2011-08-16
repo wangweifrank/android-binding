@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="custom_ab_actionbar_height">45dip</dimen>
+    <dimen name="custom_ab_actionbar_item_height">45dip</dimen>
+    <dimen name="custom_ab_actionbar_item_width">45dip</dimen>
+</resources>

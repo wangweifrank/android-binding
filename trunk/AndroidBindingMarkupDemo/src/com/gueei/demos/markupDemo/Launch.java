@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.webkit.WebView;
+import com.gueei.demos.markupDemo.custom_actionbar.ActCustomAB;
 import gueei.binding.Binder;
 import gueei.binding.Command;
 import gueei.binding.Observable;
@@ -34,7 +35,9 @@ public class Launch extends Activity {
 						new Demo("CustomView", true)));
 		DemoGroups.add(new DemoGroup("Menu", 
 				new Demo("OptionsMenu", true, OptionsMenu.class),
-				new Demo("ContextMenu", true)));
+				new Demo("ContextMenu", true),
+				new Demo("Custom Action Bar", true, ActCustomAB.class)));
+
 		DemoGroups.add(new DemoGroup("Application related", 
 				new Demo("ResourceLinking", true),
 				new Demo("Parceling", true, Parceling.class)

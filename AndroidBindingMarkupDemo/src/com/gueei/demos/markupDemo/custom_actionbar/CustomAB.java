@@ -82,7 +82,7 @@ public class CustomAB {
 		SourceNotifications.add(new NotificationItemDataModel(random.nextInt(), "Notification 1 ", true, R.drawable.stat_sys_vp_phone_call_on_hold));
 		SourceNotifications.add(new NotificationItemDataModel(random.nextInt(), "Notification 2 ", false, R.drawable.stat_sys_warning));
 		SourceNotifications.add(new NotificationItemDataModel(random.nextInt(), "Notification 3 ", false, R.drawable.stat_sys_vp_phone_call));
-		SourceNotifications.add(new NotificationItemDataModel(random.nextInt(), "Notification 4 ", false, R.drawable.stat_sys_vp_phone_call_on_hold));
+		SourceNotifications.add(new NotificationItemDataModel(random.nextInt(), "Notification 4 ", false, R.drawable.stat_notify_chat));
 		SourceNotifications.add(new NotificationItemDataModel(random.nextInt(), "Notification 5 ", true, R.drawable.stat_sys_phone_call));
 		SourceNotifications.add(new NotificationItemDataModel(random.nextInt(), "Notification 6 ", false, R.drawable.stat_sys_phone_call_forward));
 		SourceNotifications.add(new NotificationItemDataModel(random.nextInt(), "Notification 7 ", true, R.drawable.stat_notify_missed_call));

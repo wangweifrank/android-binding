@@ -19,6 +19,7 @@
 		<activity android:name=".Parceling"></activity>
 		<activity android:name=".OptionsMenu"></activity>
 		<activity android:name=".custom_actionbar.ActCustomAB"></activity>
+		<activity android:name=".TabDemoActivity"></activity>
 
 
     </application>

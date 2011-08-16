@@ -18,6 +18,8 @@
 		<activity android:name=".ViewDemoActivity"/>
 		<activity android:name=".Parceling"></activity>
 		<activity android:name=".OptionsMenu"></activity>
+		<activity android:name=".custom_actionbar.ActCustomAB"></activity>
+
 
     </application>
 </manifest>

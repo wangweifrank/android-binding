@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="ActionBar">
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">@dimen/custom_ab_actionbar_height</item>
+        <item name="android:orientation">horizontal</item>
+        <item name="android:background">@drawable/custom_ab_actionbar_background</item>
+    </style>
+    <style name="ActionBarItem">
+        <item name="android:layout_width">@dimen/custom_ab_actionbar_item_width</item>
+        <item name="android:layout_height">@dimen/custom_ab_actionbar_height</item>
+        <item name="android:padding">5dp</item>
+        <item name="android:layout_marginLeft">1px</item>
+    </style>
+
+    <style name="Animations"/>
+    <style name="Animations.PopDownMenu">
+        <item name="@android:windowEnterAnimation">@anim/custom_ab_grow_from_top</item>
+        <item name="@android:windowExitAnimation">@anim/custom_ab_shrink_from_bottom</item>
+    </style>
+    <style name="Animations.PopUpMenu">
+        <item name="@android:windowEnterAnimation">@anim/custom_ab_grow_from_bottom</item>
+        <item name="@android:windowExitAnimation">@anim/custom_ab_shrink_from_top</item>
+    </style>
+</resources>

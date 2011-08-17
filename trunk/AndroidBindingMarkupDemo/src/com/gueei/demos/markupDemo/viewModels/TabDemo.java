@@ -9,6 +9,7 @@ import com.gueei.demos.markupDemo.Parceling;
 import com.gueei.demos.markupDemo.R;
 import com.gueei.demos.markupDemo.custom_actionbar.ActCustomAB;
 import gueei.binding.Command;
+import gueei.binding.DependentObservable;
 import gueei.binding.collections.ArrayListObservable;
 import gueei.binding.observables.IntegerObservable;
 import gueei.binding.viewAttributes.tabHost.Tab;
@@ -23,14 +24,14 @@ public class TabDemo {
 	public ArrayListObservable<Tab> TabsArray        = new ArrayListObservable<Tab>(Tab.class);
 	public IntegerObservable        TabWidth         = new IntegerObservable(160);
 	public IntegerObservable        SelectedPosition = new IntegerObservable(2);
+	public IntegerObservable        ScrollPosition   = new IntegerObservable(320);
 	public Command                  TabChanged       = new Command() {
 		@Override public void Invoke(View view, Object... args) {
+			ScrollPosition.set(TabWidth.get() * SelectedPosition.get());
 			Toast.makeText(view.getContext(), "Selected tab with tag: " + (String) args[0] + " selected position=" + SelectedPosition.get(),
-						   Toast.LENGTH_SHORT)
-				 .show();
+						   Toast.LENGTH_SHORT).show();
 		}
 	};
-	//
 	private Context mContext;
 
 	public TabDemo(Context context) {
@@ -41,19 +42,19 @@ public class TabDemo {
 	private void initTabs() {
 		Drawable drawable = mContext.getResources().getDrawable(R.drawable.icon);
 		//--
-		Tab tab = new Tab();
+		Tab tab = new Tab("tab0");
 		tab.Activity.set(ActCustomAB.class.getName());
 		tab.Label.set("Custom View ActionBar");
 		tab.Icon.set(drawable);
 		TabsArray.add(tab);
 		// --
-		tab = new Tab();
+		tab = new Tab("tab1");
 		tab.Activity.set(Parceling.class.getName());
 		tab.Label.set("Parceling");
 		tab.Icon.set(drawable);
 		TabsArray.add(tab);
 		//--
-		tab = new Tab();
+		tab = new Tab("tab2");
 		tab.Activity.set(OptionsMenu.class.getName());
 		tab.Label.set("Options Menu");
 		tab.Icon.set(drawable);

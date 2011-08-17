@@ -19,14 +19,14 @@ public class TabSelectedPositionViewAttribute extends ViewAttribute<View, Intege
 		Binder.getMulticastListenerForView(view, OnTabChangedListener.class).register(this);
 	}
 
-	private int mOldValue = -1;
-	private int mValue    = -1;
-
 	public void onTabChanged(String tabId) {
-		mOldValue = ((TabHost) getView()).getCurrentTab();
-		if (mOldValue != mValue) {
-			mValue = mOldValue;
-			notifyChanged(TabSelectedPositionViewAttribute.this);
+		int mChangedValue = ((TabHost) getView()).getCurrentTab();
+		if (mChangedValue == mValue && mValueSet) {
+			mValueSet = false;
+		}
+		else if (!mValueSet) {
+			mValue = mChangedValue;
+			notifyChanged(this);
 		}
 	}
 
@@ -35,6 +35,7 @@ public class TabSelectedPositionViewAttribute extends ViewAttribute<View, Intege
 			return;
 		}
 		mValue = (Integer) newValue;
+		mValueSet = true;
 		((TabHost) getView()).setCurrentTab(mValue);
 	}
 
@@ -45,4 +46,7 @@ public class TabSelectedPositionViewAttribute extends ViewAttribute<View, Intege
 	@Override protected BindingType AcceptThisTypeAs(Class<?> type) {
 		return BindingType.TwoWay;
 	}
+
+	private boolean mValueSet;
+	private int     mValue;
 }

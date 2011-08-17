@@ -32,9 +32,7 @@ public class OnTabChangedListener extends ViewMulticastListener<TabHost.OnTabCha
 
 	public void onTabChanged(String tabId) {
 			for (TabHost.OnTabChangeListener l : listeners) {
-				if (l instanceof TabSelectedPositionViewAttribute) {
-					mHandler.post(new ListenerRunnable(l, tabId));
-				}
+				l.onTabChanged(tabId);
 			}
 			for (TabHost.OnTabChangeListener l : listeners) {
 				if (l instanceof OnTabChangedViewEvent) {

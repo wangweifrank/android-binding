@@ -8,6 +8,7 @@
          binding:tabTemplate="@layout/tab_item"
          binding:tabWidth="TabWidth"
          binding:selectedPosition="SelectedPosition"
+         binding:onTabChanged="TabChanged"
         >
     <LinearLayout android:orientation="vertical"
                   android:layout_width="fill_parent"

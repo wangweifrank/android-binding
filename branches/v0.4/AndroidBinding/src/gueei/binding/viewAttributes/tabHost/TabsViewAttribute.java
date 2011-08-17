@@ -30,10 +30,11 @@ public class TabsViewAttribute extends ViewAttribute<TabHost, ArrayListObservabl
 	public TabsViewAttribute(TabHost view) {
 		super(ArrayListObservable.class, view, "tabs");
 		try {
-			mTabSelectedPosition =(ViewAttribute<?, Integer>) Binder.getAttributeForView(getView(), "selectedPosition");
+
 			mTabTemplateAttr = (ViewAttribute<?, Layout>) Binder.getAttributeForView(getView(), "tabTemplate");
 			mTabWidth = (ViewAttribute<?, Integer>) Binder.getAttributeForView(getView(), "tabWidth");
 			mTabWidth.subscribe(mTabWidthObserver);
+			mTabSelectedPosition =(ViewAttribute<?, Integer>) Binder.getAttributeForView(getView(), "selectedPosition");
 		}
 		catch (Exception e) {
 			e.printStackTrace();
@@ -58,6 +59,7 @@ public class TabsViewAttribute extends ViewAttribute<TabHost, ArrayListObservabl
 		}
 		resetTabsWidth();
 		mTabHost.setCurrentTab(mTabSelectedPosition.get());
+
 	}
 
 	private TabSpec constructTabSpec(Tab tab) {

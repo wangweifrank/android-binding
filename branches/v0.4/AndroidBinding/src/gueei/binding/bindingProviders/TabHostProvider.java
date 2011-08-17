@@ -3,10 +3,7 @@ package gueei.binding.bindingProviders;
 import android.view.View;
 import android.widget.TabHost;
 import gueei.binding.ViewAttribute;
-import gueei.binding.viewAttributes.tabHost.TabSelectedPositionViewAttribute;
-import gueei.binding.viewAttributes.tabHost.TabTemplateViewAttribute;
-import gueei.binding.viewAttributes.tabHost.TabWidthViewAttribute;
-import gueei.binding.viewAttributes.tabHost.TabsViewAttribute;
+import gueei.binding.viewAttributes.tabHost.*;
 
 public class TabHostProvider extends BindingProvider {
 
@@ -27,6 +24,9 @@ public class TabHostProvider extends BindingProvider {
 		}
 		else if (attributeId.equals("tabs")) {
 			return (ViewAttribute<Tv, ?>) new TabsViewAttribute((TabHost) view);
+		}
+		else if (attributeId.equals("onTabChanged")) {
+			return (ViewAttribute<Tv, ?>) new OnTabChangedViewEvent((TabHost) view);
 		}
 		return null;
 	}

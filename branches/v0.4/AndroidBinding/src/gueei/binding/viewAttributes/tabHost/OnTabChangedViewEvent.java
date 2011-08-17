@@ -17,12 +17,14 @@ public class OnTabChangedViewEvent extends ViewEventAttribute<View> implements T
 		super(view, "onTabChanged");
 	}
 
-	String mTabTag;
+	private String mTabTag;
 
 	public void onTabChanged(String tabId) {
-		if (mTabTag != tabId) {
-			mTabTag = tabId;
+		if (tabId.equals(mTabTag)) {
 			this.invokeCommand(getView(), tabId);
+		}
+		else {
+			mTabTag = tabId;
 		}
 	}
 

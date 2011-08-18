@@ -1,13 +1,13 @@
 package com.gueei.tutorials.calculator;
 
+import gueei.binding.Command;
+import gueei.binding.DependentObservable;
+import gueei.binding.Observable;
+
 import java.text.DecimalFormat;
 import java.util.Stack;
 
 import android.view.View;
-
-import com.gueei.android.binding.Command;
-import com.gueei.android.binding.DependentObservable;
-import com.gueei.android.binding.Observable;
 
 public class CalculatorViewModel {
 	public String current = "0";
@@ -74,6 +74,28 @@ public class CalculatorViewModel {
 			onBack();
 		}		
 	};
+	// Advanced Functions
+	public OperatorCommand Sine = new OperatorCommand(new Operator(3, "sin", true){
+		@Override
+		public double calculate(double operandA, double operandB) {
+			return Math.sin(operandA);
+		}});
+	public OperatorCommand Cosine = new OperatorCommand(new Operator(3, "cos", true){
+		@Override
+		public double calculate(double operandA, double operandB) {
+			return Math.cos(operandA);
+		}});
+	public OperatorCommand Tangent = new OperatorCommand(new Operator(3, "tan", true){
+		@Override
+		public double calculate(double operandA, double operandB) {
+			return Math.tan(operandA);
+		}});
+	public OperatorCommand Log = new OperatorCommand(new Operator(3, "log", true){
+		@Override
+		public double calculate(double operandA, double operandB) {
+			return Math.log10(operandA);
+		}});
+	
 	private Stack<Double> operands = new Stack<Double>();
 	private Stack<Operator> operators = new Stack<Operator>();
 	
@@ -132,35 +154,38 @@ public class CalculatorViewModel {
 				operators.pop();
 		}
 		
-		Operator lastOperator = null;
-		while (!operators.empty()){
-			lastOperator = operators.peek();
-			if (lastOperator.getLevel()>=operator.getLevel()){
-				// Calculate
-				double result;
-				if (lastOperator.isUnary())
-					result = lastOperator.calculate(operands.pop(), 0d);
-				else{
+		if (operator.isUnary() && operator.getLevel()>0){
+			double res= operator.calculate(operands.pop(), 0d);
+			// operands.push(res);
+			Display.set(res);
+			lastCommandIsOperator = false;
+			current = String.valueOf(res);
+		}else{
+			Operator lastOperator = null;
+			while (!operators.empty()){
+				lastOperator = operators.peek();
+				if (lastOperator.getLevel()>=operator.getLevel()){
+					// Calculate
+					double result;
 					double b = operands.pop();
 					double a = operands.pop();
 					result = lastOperator.calculate(a, b);
+					Display.set(result);
+					operands.push(result);
+					operators.pop();
 				}
-				Display.set(result);
-				operands.push(result);
-				operators.pop();
+				else{
+					break;
+				}
 			}
-			else{
-				break;
-			}
-		}
-		// Special case for level 0 (=)
-		if (operator.getLevel()>0)
-			operators.push(operator);
-		
-		current = "0";
+			// Special case for level 0 (=)
+			if (operator.getLevel()>0)
+				operators.push(operator);					
+			current = "0";
+		}		
 	}
 	
-	private class NumberCommand implements Command{
+	private class NumberCommand extends Command{
 		private int mNumber;
 		public NumberCommand(int number){
 			mNumber = number;
@@ -170,7 +195,7 @@ public class CalculatorViewModel {
 		}
 	}
 	
-	private class OperatorCommand implements Command{
+	private class OperatorCommand extends Command{
 		private final Operator mOperator;
 		public OperatorCommand(Operator operator){
 			mOperator = operator;

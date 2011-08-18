@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:binding="http://www.gueei.com/android-binding/"
+>
+	<item
+		android:id="@+id/options1"
+		binding:title="IF(AdvancedMode, 'switch to simple mode', 'to advanced mode')"
+		binding:onClick="ToggleMode"/>
+</menu>

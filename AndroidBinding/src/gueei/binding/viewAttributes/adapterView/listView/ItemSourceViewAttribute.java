@@ -29,6 +29,7 @@ public class ItemSourceViewAttribute extends ViewAttribute<ListView, Object> {
 				Collection<Object> initiators) {
 			template = itemTemplateAttr.get();
 			spinnerTemplate = spinnerTemplateAttr.get();
+			doSetAttributeValue(mValue);
 		}
 	};
 	
@@ -54,6 +55,8 @@ public class ItemSourceViewAttribute extends ViewAttribute<ListView, Object> {
 	@Override
 	@SuppressWarnings("unchecked")
 	protected void doSetAttributeValue(Object newValue) {
+		mValue = newValue;
+
 		if (newValue == null)
 			return;
 		
@@ -76,7 +79,6 @@ public class ItemSourceViewAttribute extends ViewAttribute<ListView, Object> {
 			((ViewAttribute<?, Adapter>)Binder.getAttributeForView(getView(), "adapter")).set(adapter);
 			ViewAttribute<?,Integer> SelectedPosition = (ViewAttribute<?,Integer>)Binder.getAttributeForView(getView(), "selectedPosition");
 			getView().setSelection(SelectedPosition.get());
-			mValue = newValue;
 			return;
 		} catch (Exception e) {
 			e.printStackTrace();

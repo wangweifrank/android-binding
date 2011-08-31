@@ -53,6 +53,7 @@ public abstract class Attribute<Th, T> extends Observable<T> {
 	public void _setObject(final Object newValue, Collection<Object> initiators){
 		if (readonly) return;
 		doSetAttributeValue(newValue);
+		initiators.add(this);
 	}
 	
 	@Override
@@ -111,11 +112,14 @@ public abstract class Attribute<Th, T> extends Observable<T> {
 		
 		public void onPropertyChanged(IObservable<?> prop,
 				Collection<Object> initiators) {
+			if (initiators.contains(this)) return;
 			if (prop==mAttribute){
 				mBindedObservable._setObject(prop.get(), initiators);
 			}
 			else if (prop==mBindedObservable){
 				mAttribute._setObject(prop.get(), initiators);
+				initiators.add(this);
+				notifyChanged(initiators);
 			}
 		}
 	}

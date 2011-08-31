@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.webkit.WebView;
-import com.gueei.demos.markupDemo.custom_actionbar.ActCustomAB;
 import gueei.binding.Binder;
 import gueei.binding.Command;
 import gueei.binding.Observable;
@@ -38,10 +37,6 @@ public class Launch extends Activity {
 				new Demo("OptionsMenu", true, OptionsMenu.class),
 				new Demo("ContextMenu", true)));
 
-		DemoGroups.add(new DemoGroup("Tabs and ActionBar",
-				new Demo("Custom Action Bar", true, ActCustomAB.class),
-				new Demo("Tabs", true, TabDemoActivity.class)));
-
 		DemoGroups.add(new DemoGroup("Application related", 
 				new Demo("ResourceLinking", true),
 				new Demo("Parceling", true, Parceling.class)));
@@ -54,7 +49,7 @@ public class Launch extends Activity {
 				new Demo("SingleChoiceList"), 
 				new Demo("MultipleChoiceList"),
 				new Demo("FilterArrayList", true),
-				new Demo("FilterCursorList", true)
+				new Demo("SwitchableItemTemplate", true)
 				));
 		DemoGroups
 				.add(new DemoGroup("Compound/Nested Lists", new Demo("MasterDetailListView"),

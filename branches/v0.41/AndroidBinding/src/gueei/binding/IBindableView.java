@@ -16,7 +16,10 @@ import android.view.View;
  */
 public interface IBindableView<T extends View & IBindableView<T>> {
 	/**
-	 * The view class is recommended to create their View Attributes
+	 * The View are required to create and manage the life cycle of the view Attribute.
+	 * Every time the Binder.getViewAttribute() is called, it will look for the View Attribute in this,
+	 * so it is the responsibility for the custom class to return the same instance of the View Attribute
+	 * every time it is called.
 	 * If you want to override the default behavior of other ViewAttributes, you can return it here
 	 * or else, returning null will pass the control to super classes' implementation
 	 * @param attributeName

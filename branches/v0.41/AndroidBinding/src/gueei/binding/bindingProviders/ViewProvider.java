@@ -7,7 +7,9 @@ import gueei.binding.viewAttributes.view.BackgroundViewAttribute;
 import gueei.binding.viewAttributes.view.ContextMenuViewAttribute;
 import gueei.binding.viewAttributes.view.EnabledViewAttribute;
 import gueei.binding.viewAttributes.view.OnClickViewEvent;
+import gueei.binding.viewAttributes.view.OnGainFocusViewEvent;
 import gueei.binding.viewAttributes.view.OnLongClickViewEvent;
+import gueei.binding.viewAttributes.view.OnLostFocusViewEvent;
 import gueei.binding.viewAttributes.view.SelectedViewAttribute;
 import gueei.binding.viewAttributes.view.VisibilityViewAttribute;
 import android.view.View;
@@ -44,6 +46,10 @@ public class ViewProvider extends BindingProvider {
 			return new AnimationViewAttribute(view);
 		}else if (attributeId.equals("selected")){
 			return new SelectedViewAttribute(view);
+		}else if (attributeId.equals("onGainFocus")){
+			return new OnGainFocusViewEvent(view);
+		}else if (attributeId.equals("onLostFocus")){
+			return new OnLostFocusViewEvent(view);
 		}
 		return null;
 	}

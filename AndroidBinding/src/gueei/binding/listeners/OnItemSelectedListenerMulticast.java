@@ -4,7 +4,7 @@ import android.view.View;
 import android.widget.AdapterView;
 
 public class OnItemSelectedListenerMulticast 
-	extends MulticastListener<AdapterView.OnItemSelectedListener> 
+	extends ViewMulticastListener<AdapterView.OnItemSelectedListener> 
 	implements AdapterView.OnItemSelectedListener {
 
 	@Override

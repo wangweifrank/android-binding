@@ -2,7 +2,7 @@ package gueei.binding.listeners;
 
 import android.view.View;
 
-public class OnLongClickListenerMulticast extends MulticastListener<View.OnLongClickListener> 
+public class OnLongClickListenerMulticast extends ViewMulticastListener<View.OnLongClickListener> 
 	implements View.OnLongClickListener {
 
 	@Override

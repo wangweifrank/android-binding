@@ -1,6 +1,7 @@
 package gueei.binding.app;
 
 import gueei.binding.Binder;
+import gueei.binding.Binder.InflateResult;
 import gueei.binding.menu.OptionsMenuBinder;
 import android.app.Activity;
 import android.os.Bundle;
@@ -19,12 +20,15 @@ public class BindingActivity extends Activity {
 		super.onCreate(savedInstanceState);
 	}
 	
-	protected View setAndBindRootView(int layoutId, Object contentViewModel){
+	protected View setAndBindRootView(int layoutId, Object... contentViewModel){
 		if (mRootView!=null){
 			throw new IllegalStateException("Root view is already created");
 		}
-		mRootView = 
-				Binder.bindView(this, Binder.inflateView(this, layoutId, null, false), contentViewModel);
+		InflateResult result = Binder.inflateView(this, layoutId, null, false);
+		mRootView = result.rootView;
+		for(int i=0; i<contentViewModel.length; i++){
+			Binder.bindView(this, result, contentViewModel[i]);
+		}
 		setContentView(mRootView);
 		return mRootView;
 	}

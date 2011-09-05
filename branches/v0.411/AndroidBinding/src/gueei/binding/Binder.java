@@ -44,20 +44,20 @@ public class Binder {
 	public static ViewAttribute<?, ?> getAttributeForView(View view, String attributeId)
 		throws AttributeNotDefinedException	{
 		
-		//  Check if it is custom view, if so, try to look for the attribute in custom view first
-		ViewAttribute<?, ?> viewAttribute = null;
 		
-		if (view instanceof IBindableView){
-			viewAttribute = ((IBindableView<?>)view).getViewAttribute(attributeId);
-			if (viewAttribute != null)
-				return viewAttribute;
-		}
+		ViewAttribute<?, ?> viewAttribute = null;
 		
 		AttributeCollection collection = getAttributeCollectionOfView(view);
 		if (collection.containsAttribute(attributeId))
 			return collection.getAttribute(attributeId);
 		
-		viewAttribute = AttributeBinder.getInstance().createAttributeForView(view, attributeId);
+		//  Check if it is custom view, if so, try to look for the attribute in custom view first
+		if (view instanceof IBindableView){
+			viewAttribute = ((IBindableView<?>)view).createViewAttribute(attributeId);
+		}
+		
+		if (viewAttribute==null)
+			viewAttribute = AttributeBinder.getInstance().createAttributeForView(view, attributeId);
 		
 		if (viewAttribute == null) 
 			throw new AttributeNotDefinedException

@@ -144,14 +144,15 @@ public final class R {
         public static final int simple_list_item_single_choice=0x7f030037;
         public static final int simple_spinner_dropdown_item=0x7f030038;
         public static final int simple_spinner_item=0x7f030039;
-        public static final int singlechoicelist=0x7f03003a;
-        public static final int spinnerwitharraysource=0x7f03003b;
-        public static final int switchableitemtemplate=0x7f03003c;
-        public static final int tab_item=0x7f03003d;
-        public static final int tabdemo=0x7f03003e;
-        public static final int textview=0x7f03003f;
-        public static final int view=0x7f030040;
-        public static final int view_demo=0x7f030041;
+        public static final int simple_spinner_item2=0x7f03003a;
+        public static final int singlechoicelist=0x7f03003b;
+        public static final int spinnerwitharraysource=0x7f03003c;
+        public static final int switchableitemtemplate=0x7f03003d;
+        public static final int tab_item=0x7f03003e;
+        public static final int tabdemo=0x7f03003f;
+        public static final int textview=0x7f030040;
+        public static final int view=0x7f030041;
+        public static final int view_demo=0x7f030042;
     }
     public static final class menu {
         public static final int contextmenu=0x7f0c0000;

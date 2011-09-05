@@ -1,21 +1,15 @@
 package com.gueei.demos.markupDemo.viewModels;
 
-import java.util.Collection;
-
-import com.gueei.demos.markupDemo.R;
-
 import gueei.binding.Command;
 import gueei.binding.DependentObservable;
-import gueei.binding.IObservable;
-import gueei.binding.Observer;
 import gueei.binding.collections.ArrayListObservable;
 import gueei.binding.observables.IntegerObservable;
 import gueei.binding.observables.ObjectObservable;
 import gueei.binding.viewAttributes.templates.Layout;
 import gueei.binding.viewAttributes.templates.SingleTemplateLayout;
-import android.util.Log;
 import android.view.View;
-import android.widget.Toast;
+
+import com.gueei.demos.markupDemo.R;
 
 public class SwitchableItemTemplate {
 	public final ArrayListObservable<ArrayListItem> Items = 
@@ -40,9 +34,19 @@ public class SwitchableItemTemplate {
 				@Override
 				public Layout calculateValue(Object... args) throws Exception {
 					if (SelectedTemplate.get() == null) return null;
-					if (SelectedTemplate.get().equals("Template1")) return new SingleTemplateLayout(R.layout.arraylist_item);
+					if (SelectedTemplate.get().equals("Template1")) return new SingleTemplateLayout(R.layout.arraylist_item2);
 					return new SingleTemplateLayout(R.layout.arraylist_item1);
 				}		
+	};
+	
+	public final DependentObservable<Layout> SpinnerTemplate = new
+			DependentObservable<Layout>(Layout.class, SelectedTemplate){
+				@Override
+				public Layout calculateValue(Object... args) throws Exception {
+					if (SelectedTemplate.get() == null) return null;
+					if (SelectedTemplate.get().equals("Template1")) return new SingleTemplateLayout(R.layout.simple_spinner_item);
+					return new SingleTemplateLayout(R.layout.simple_spinner_item2);
+				}
 	};
 	
 	public class ArrayListItem{

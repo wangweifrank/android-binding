@@ -39,7 +39,7 @@ public class ExpandableCollectionAdapter extends BaseExpandableListAdapter{
 */
 	
 	private Adapter getChildAdapter(int groupPosition){
-		Log.d("Binder", "Get Child Adapter " + groupPosition);
+		Log.d("BinderV30", "Get Child Adapter " + groupPosition);
 		try{
 			if (!mChildAdapters.containsKey(groupPosition)){
 				Object item = mGroupAdapter.getItem(groupPosition);
@@ -49,7 +49,7 @@ public class ExpandableCollectionAdapter extends BaseExpandableListAdapter{
 				IObservable<?> child = 
 					gueei.binding.Utility.getObservableForModel(mContext, mChildName, item);
 				mChildAdapters.put(groupPosition, 
-					Utility.getSimpleAdapter(mContext, child.get(), mChildLayout, mChildLayout));
+					Utility.getSimpleAdapter(mContext, child.get(), mChildLayout, mChildLayout, null));
 			}
 			return mChildAdapters.get(groupPosition);
 		}catch(Exception e){

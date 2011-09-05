@@ -5,10 +5,11 @@ import java.util.ArrayList;
 import android.database.DataSetObserver;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.Adapter;
 import android.widget.BaseAdapter;
 
-public class CombinedAdapter extends BaseAdapter{
+public class CombinedAdapter extends BaseAdapter implements LazyLoadAdapter{
 	private ArrayList<TranslatedAdapter> mTranslated = new ArrayList<TranslatedAdapter>();
 
 	private DataSetObserver observer = new DataSetObserver(){
@@ -113,6 +114,9 @@ public class CombinedAdapter extends BaseAdapter{
 
 	public View getView(int position, View convertView, ViewGroup parent) {
 		TranslatedAdapter adapter = getAdapterAt(position);
+		if (mHelper!=null){
+			mHelper.onGetView(position);
+		}
 		if (adapter!=null)
 			return adapter.adapter.getView(position - adapter.offset, convertView, parent);
 		return null;
@@ -136,6 +140,42 @@ public class CombinedAdapter extends BaseAdapter{
 		public final Adapter adapter;
 		public TranslatedAdapter(Adapter adapter){
 			this.adapter =adapter;
+		}
+	}
+
+	private Mode mMode = Mode.LoadWhenStopped;
+	private LazyLoadRootAdapterHelper mHelper;
+	
+	public void setRoot(AbsListView view) {
+		mHelper = new LazyLoadRootAdapterHelper(view, this, mMode);
+	}
+
+	public void setMode(Mode mode) {
+		if (mHelper!=null)
+		{
+			mHelper.setMode(mode);
+		}
+		mMode = mode;
+	}
+
+	public void onVisibleChildrenChanged(int first, int total) {
+		visibleChildrenChanged(first, total);
+	}
+	
+	private void visibleChildrenChanged(int first, int total){
+		TranslatedAdapter adapter = getAdapterAt(first);
+		if (adapter==null) return;
+		int afirst = first - adapter.offset;
+		if (adapter.adapter.getCount() - afirst < total){
+			int atotal = adapter.adapter.getCount() - afirst;
+			if (adapter.adapter instanceof LazyLoadAdapter){
+				((LazyLoadAdapter)adapter.adapter).onVisibleChildrenChanged(afirst, atotal);
+			}
+			visibleChildrenChanged(first+atotal, total-atotal);
+		}else{
+			if (adapter.adapter instanceof LazyLoadAdapter){
+				((LazyLoadAdapter)adapter.adapter).onVisibleChildrenChanged(afirst, total);
+			}
 		}
 	}
 }

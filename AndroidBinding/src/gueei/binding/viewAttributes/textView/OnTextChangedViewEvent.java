@@ -21,11 +21,12 @@ public class OnTextChangedViewEvent extends ViewEventAttribute<EditText> impleme
 	}
 
 	public void onTextChanged(CharSequence s, int start, int before, int count) {
-		this.invokeCommand(mView, s, start, before, count);
+		this.invokeCommand(mHost, s, start, before, count);
 	}
 
 	@Override
 	protected void registerToListener(EditText view) {
-		Binder.getMulticastListenerForView(view, TextWatcherMulticast.class).register(this);
+		Binder.getMulticastListenerForView(view, TextWatcherMulticast.class)
+			.register(this);
 	}
 }

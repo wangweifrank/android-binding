@@ -5,14 +5,31 @@ import java.util.ArrayList;
 
 public abstract class DependentObservable<T> extends Observable<T> implements Observer{
 
-	protected IObservable<?>[] dependents;
+	protected IObservable<?>[] mDependents;
 	
 	public DependentObservable(Class<T> type, IObservable<?>... dependents) {
 		super(type);
 		for(IObservable<?> o : dependents){
 			o.subscribe(this);
 		}
-		this.dependents = dependents;
+		this.mDependents = dependents;
+		this.onPropertyChanged(null, new ArrayList<Object>());
+	}
+	
+	// This is provided in case the constructor can't be used. 
+	// Not intended for normal usage
+	public void addDependents(IObservable<?>... dependents){
+		IObservable<?>[] temp = mDependents;
+		mDependents = new IObservable<?>[temp.length + dependents.length];
+		int len = temp.length;
+		for(int i=0; i<len; i++){
+			mDependents[i] = temp[i];
+		}
+		int len2 = dependents.length;
+		for(int i=0; i<len2; i++){
+			mDependents[i+len] = dependents[i];
+			dependents[i].subscribe(this);
+		}
 		this.onPropertyChanged(null, new ArrayList<Object>());
 	}
 
@@ -30,10 +47,10 @@ public abstract class DependentObservable<T> extends Observable<T> implements Ob
 	@Override
 	public T get() {
 		if (dirty){
-			int len = dependents.length;
+			int len = mDependents.length;
 			Object[] values = new Object[len];
 			for(int i=0; i<len; i++){
-				values[i] = dependents[i].get();
+				values[i] = mDependents[i].get();
 			}
 			try{
 				T value = this.calculateValue(values);

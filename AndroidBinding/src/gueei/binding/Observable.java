@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 public class Observable<T> implements IObservable<T> {
-	private WeakList<Observer> observers = new WeakList<Observer>(1);
+	private WeakList<Observer> observers = new WeakList<Observer>();
 	private T mValue;
 	private final Class<T> mType;
 	
@@ -47,9 +47,9 @@ public class Observable<T> implements IObservable<T> {
 	 */
 	public final void notifyChanged(Collection<Object> initiators){
 		initiators.add(this);
-		for(Observer o: observers){
+		for(Object o: observers.toArray()){
 			if (initiators.contains(o)) continue;
-			o.onPropertyChanged(this, initiators);
+			((Observer)o).onPropertyChanged(this, initiators);
 		}
 	}
 	

@@ -14,7 +14,7 @@ import android.widget.TextView;
 public class TextViewAttribute extends ViewAttribute<TextView, CharSequence>
 	implements TextWatcher{
 
-	private CharSequence mValue = "";
+	private CharSequence mValue = null;
 	
 	public TextViewAttribute(TextView view, String attributeName) {
 		super(CharSequence.class, view, attributeName);

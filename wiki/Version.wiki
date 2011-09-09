@@ -3,6 +3,12 @@
 
 = Release History =
 
+== 0.4(coming soon) ==
+
+ * [Referencing] to other widget's view attribute
+ * Refined [CustomView] API. Not compatible to previous versions. 
+ * [OptionsMenu] and [ContextMenu] binding
+
 == 0.3a ==
 
  * [CustomView Custom View API]

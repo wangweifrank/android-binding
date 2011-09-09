@@ -23,22 +23,51 @@ public class BindingSyntaxResolver {
 	private static final Pattern stringPattern = Pattern.compile("^'(([^']|\\\\')*)'$");
 	private static final Pattern numberPattern = Pattern.compile("^(\\+|\\-)?[0-9]*(\\.[0-9]+)?$");
 	private static final Pattern resourcePattern = Pattern.compile("^@(([\\w\\.]+:)?(\\w+)/\\w+)$");
+	private static final Pattern referencePattern = Pattern.compile("^=@?((\\w+:)?(\\w+)/\\w+).(\\w+)$");
+	
+	public static IObservable<?> constructObservableFromStatement(
+			final Context context,
+			final String bindingStatement, 
+			final Object model,
+			final IReferenceObservableProvider refProvider){
+		if(bindingStatement == null)return null;
+		IObservable<?> result;
+		String statement = bindingStatement.trim();
+		
+		result = getReferenceObservable(context, statement, refProvider);
+		if (result!=null) return result;
+		
+		result = getConverterFromStatement(context, statement, model, refProvider);
+		if (result!=null) return result;
+		result = getDynamicObjectFromStatement(context, statement, model, refProvider);
+		if (result!=null) return result;
+		return getObservableForModel(statement, model);
+	}
 	
 	public static IObservable<?> constructObservableFromStatement(
 			final Context context,
 			final String bindingStatement, 
 			final Object model){
-		if(bindingStatement == null)return null;
-		IObservable<?> result;
-		String statement = bindingStatement.trim();
-		result = getConverterFromStatement(context, statement, model);
-		if (result!=null) return result;
-		result = getDynamicObjectFromStatement(context, statement, model);
-		if (result!=null) return result;
-		return getObservableForModel(statement, model);
+		return constructObservableFromStatement(context, bindingStatement, model, null);
 	}
 
-	private static Converter<?> getConverterFromStatement(final Context context, String statement, Object model){
+	private static IObservable<?> getReferenceObservable(
+			final Context context, String statement, 
+			IReferenceObservableProvider refProvider){
+		if (!statement.startsWith("=")) return null;
+		if (refProvider==null) return null;
+		
+		Matcher m = referencePattern.matcher(statement);
+		if ((!m.matches()) || (m.groupCount()<4))
+			return null;
+		int id = Utility.resolveResourceId(m.group(1), context, m.group(3));
+		if (id<=0) return null;
+		return refProvider.getReferenceObservable(id, m.group(4));
+	}
+	
+	private static Converter<?> getConverterFromStatement(
+			final Context context, String statement, Object model,
+			final IReferenceObservableProvider refProvider){
 		Matcher m = converterPattern.matcher(statement);
 		if ((!m.matches()) || (m.groupCount()<3))
 			return null;
@@ -52,7 +81,7 @@ public class BindingSyntaxResolver {
 			int argumentCount = arguments.length;
 			IObservable<?>[] obs = new IObservable[argumentCount];
 			for (int i=0; i<argumentCount; i++){
-				obs[i] = constructObservableFromStatement(context, arguments[i], model);
+				obs[i] = constructObservableFromStatement(context, arguments[i], model, refProvider);
 				if (obs[i] == null){
 					return null;
 				}
@@ -69,7 +98,8 @@ public class BindingSyntaxResolver {
 	}
 
 	private static IObservable<?> getDynamicObjectFromStatement
-		(final Context context, final String statement, final Object model) {
+		(final Context context, final String statement, final Object model,
+		final IReferenceObservableProvider refProvider) {
 		Matcher m = dynamicObjectPattern.matcher(statement);
 		if (!m.matches()) return null;
 		
@@ -81,7 +111,7 @@ public class BindingSyntaxResolver {
 			if (indexOfEqual <=0 ) return null;
 			String name = arguments[i].substring(0, indexOfEqual).trim();
 			String obsStatement = arguments[i].substring(indexOfEqual+1).trim();
-			IObservable<?> obs = constructObservableFromStatement(context, obsStatement, model);
+			IObservable<?> obs = constructObservableFromStatement(context, obsStatement, model, refProvider);
 			if (obs == null){
 				return null;
 			}

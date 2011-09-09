@@ -13,7 +13,7 @@ public abstract class ViewEventAttribute<T extends View> extends ViewAttribute<T
 	/**
 	 * Child should implement this and register itself to the respective 
 	 * Multicast listener by calling:
-	 *     Binder.getMulticastListener(view, listenerType).register(this);
+	 *     BinderV30.getMulticastListener(view, listenerType).register(this);
 	 * @param view
 	 */
 	protected abstract void registerToListener(T view);
@@ -34,6 +34,6 @@ public abstract class ViewEventAttribute<T extends View> extends ViewAttribute<T
 	
 	public void invokeCommand(View view, Object...args){
 		if (mCommand!=null)
-			mCommand.Invoke(view, args);
+			mCommand.InvokeCommand(view, args);
 	}
 }

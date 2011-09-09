@@ -14,13 +14,13 @@ import android.widget.TextView;
 public class TextViewAttribute extends ViewAttribute<TextView, CharSequence>
 	implements TextWatcher{
 
-	private CharSequence mValue = "";
+	private CharSequence mValue = null;
 	
 	public TextViewAttribute(TextView view, String attributeName) {
 		super(CharSequence.class, view, attributeName);
 		if (view instanceof EditText){
 			Binder.getMulticastListenerForView(view, TextWatcherMulticast.class)
-				.register(this);
+				.registerWithHighPriority(this);
 		}
 	}
 
@@ -74,7 +74,7 @@ public class TextViewAttribute extends ViewAttribute<TextView, CharSequence>
 	
 	public void onTextChanged(CharSequence arg0, int arg1, int arg2, int arg3) {
 		synchronized(this){
-			Log.i("Binder", "onTextChagnged, mV=" + mValue + "\t arg0=" + arg0);
+			Log.i("BinderV30", "onTextChagnged, mV=" + mValue + "\t arg0=" + arg0);
 			if (compareCharSequence(mValue, arg0)) return;
 			if (!suppressChange){
 				mValue = cloneCharSequence(arg0);

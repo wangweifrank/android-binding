@@ -42,8 +42,9 @@ public class Utility {
 	}
 	
 	public static int resolveResourceId(String attrValue, Context context, String type){
-		if (!attrValue.startsWith("@")) return -1;
-		String name = attrValue.substring(1); // remove the @ sign
+		String name = attrValue; // remove the @ sign
+		if (attrValue.startsWith("@"))
+			name = attrValue.substring(1); // remove the @ sign
 		return context.getResources().getIdentifier(name, type, context.getPackageName());
 	}
 }

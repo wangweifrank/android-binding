@@ -4,7 +4,6 @@ import gueei.binding.bindingProviders.BindingProvider;
 import gueei.binding.exception.AttributeNotDefinedException;
 
 import java.util.ArrayList;
-import java.util.Hashtable;
 import java.util.Map.Entry;
 
 import android.content.Context;
@@ -12,8 +11,7 @@ import android.view.View;
 
 public class AttributeBinder {
 	private static AttributeBinder _attributeFactory;
-	private Hashtable<Class<?>, BindingProvider> providers = new Hashtable<Class<?>, BindingProvider>(
-			10);
+	private ArrayList<BindingProvider> providers = new ArrayList<BindingProvider>(10);
 
 	private AttributeBinder() {
 	}
@@ -31,7 +29,7 @@ public class AttributeBinder {
 
 	public ViewAttribute<?, ?> createAttributeForView(View view,
 			String attributeId) {
-		for (BindingProvider p : providers.values()) {
+		for (BindingProvider p : providers) {
 			ViewAttribute<?, ?> a = p.createAttributeForView(view, attributeId);
 			if (a != null)
 				return a;
@@ -40,9 +38,7 @@ public class AttributeBinder {
 	}
 
 	public void registerProvider(BindingProvider provider) {
-		if (providers.containsKey(provider.getClass()))
-			return;
-		providers.put(provider.getClass(), provider);
+		providers.add(provider);
 	}
 
 	public void bindView(Context context, View view, Object model) {
@@ -55,8 +51,12 @@ public class AttributeBinder {
 	protected final boolean bindAttributeWithObservable(Context context, 
 			View view, String viewAttributeName, String statement, Object model) {
 		IObservable<?> property;
-		property = Utility.getObservableForModel(view.getContext(), statement,
-				model);
+		
+		// Set the reference context to the current binding view
+		refViewAttributeProvider.viewContext = view;
+		
+		property = BindingSyntaxResolver
+				.constructObservableFromStatement(context, statement, model, refViewAttributeProvider);
 		if (property != null) {
 			try {
 				ViewAttribute<?, ?> attr = Binder.getAttributeForView(view,
@@ -71,18 +71,27 @@ public class AttributeBinder {
 				e.printStackTrace();
 				return false;
 			}
-		} else {
-			// Bind just the value
-			Object value = Utility.getFieldForModel(statement, model);
+		} 
+		return false;
+	}
+	
+	private RefViewAttributeProvider refViewAttributeProvider = 
+			new RefViewAttributeProvider();
+	
+	private static class RefViewAttributeProvider implements IReferenceObservableProvider{
+		public View viewContext;
+		
+		public IObservable<?> getReferenceObservable(int referenceId,
+				String field) {
+			if (viewContext==null) return null;
+			
+			View reference = viewContext.getRootView().findViewById(referenceId);
+			if (reference==null) return null;
 			try {
-				ViewAttribute<?, ?> attr = Binder.getAttributeForView(view,
-						viewAttributeName);
-				attr._setObject(value, new ArrayList<Object>());
-				return true;
+				return Binder.getAttributeForView(reference, field);
 			} catch (AttributeNotDefinedException e) {
-				e.printStackTrace();
-				return false;
+				return null;
 			}
-		}
+		} 
 	}
 }

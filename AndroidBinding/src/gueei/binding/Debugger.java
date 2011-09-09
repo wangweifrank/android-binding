@@ -13,12 +13,7 @@ public class Debugger {
 		
 		printer.println("view: " + view.toString(), level);
 		
-		Object attributes = view.getTag(R.id.tag_attributes);
-		if ((attributes==null) || !(attributes instanceof AttributeCollection)){
-			printer.println("No attribute at the moment", level);
-			return;
-		}
-		AttributeCollection collection = (AttributeCollection)attributes;
+		AttributeCollection collection = Binder.getAttributeCollectionOfView(view);
 		for (ViewAttribute<?,?> attr : collection.getAllAttributes()){
 			if (attr == caller) continue;
 			graphAttribute(attr, level-1, printer, view);
@@ -61,10 +56,6 @@ public class Debugger {
 		if (object == null)return;
 		if (printer==null) printer = new Printer(level);
 		if (level <=0) return;
-		if (object instanceof ViewAttribute.Bridge){
-			graphAttribute(((ViewAttribute<?,?>.Bridge)object).mAttribute, level, printer, caller);
-			return;
-		}
 		if (object instanceof IObservable){
 			graphObservable((IObservable<?>)object, level, printer, caller);
 			return;
@@ -95,7 +86,7 @@ public class Debugger {
 			for(int i=mTotalLevel; i>level; i--){
 				output += "\t";
 			}
-			Log.v("Binder", output + message);
+			Log.v("BinderV30", output + message);
 		}
 		public void printSeparator(int level){
 			println("-----------------------", level);

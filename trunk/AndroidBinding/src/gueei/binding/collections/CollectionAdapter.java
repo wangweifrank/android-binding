@@ -4,7 +4,6 @@ import gueei.binding.AttributeBinder;
 import gueei.binding.Binder;
 import gueei.binding.CollectionObserver;
 import gueei.binding.IObservableCollection;
-import gueei.binding.R;
 import gueei.binding.utility.CachedModelReflector;
 import gueei.binding.utility.IModelReflector;
 import gueei.binding.viewAttributes.templates.Layout;
@@ -12,10 +11,13 @@ import android.content.Context;
 import android.os.Handler;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.BaseAdapter;
+import android.widget.Filter;
+import android.widget.Filterable;
 
 public class CollectionAdapter extends BaseAdapter
-	implements CollectionObserver{
+	implements CollectionObserver, Filterable, LazyLoadAdapter{
 	@Override
 	public int getViewTypeCount() {
 		return mLayout.getTemplateCount();
@@ -29,20 +31,32 @@ public class CollectionAdapter extends BaseAdapter
 	protected final Handler mHandler;
 	protected final Context mContext;
 	protected final Layout mLayout, mDropDownLayout;
-	//protected final int mLayoutId;
-	//protected final int mDropDownLayoutId;
 	protected final IObservableCollection<?> mCollection;
 	protected final IModelReflector mReflector;
-		
+	protected final Filter mFilter;
+
 	public CollectionAdapter(Context context, IModelReflector reflector,
-			IObservableCollection<?> collection, Layout layout, Layout dropDownLayout) throws Exception{
+			IObservableCollection<?> collection, Layout layout, Layout dropDownLayout, Filter filter) throws Exception{
 		mHandler = new Handler();
 		mContext = context;
 		mLayout = layout;
 		mDropDownLayout = dropDownLayout;
 		mCollection = collection;
 		mReflector = reflector;
+		mFilter = filter;
 		collection.subscribe(this);
+	}
+	
+	public CollectionAdapter(Context context, IModelReflector reflector,
+			IObservableCollection<?> collection, Layout layout, Layout dropDownLayout) throws Exception{
+		this(context, reflector, collection, layout, dropDownLayout, null);
+	}
+	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public CollectionAdapter(Context context, IObservableCollection<?> collection, 
+			Layout layout, Layout dropDownLayout, Filter filter) throws Exception{
+		this(context, 
+				new CachedModelReflector(collection.getComponentType()), collection, layout, dropDownLayout, filter);
 	}
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
@@ -69,6 +83,12 @@ public class CollectionAdapter extends BaseAdapter
 		if (position>=mCollection.size()) return returnView;
 		try {
 			ObservableMapper mapper;
+			
+			mCollection.onLoad(position);
+			if (mHelper!=null && !mHelper.isBusy())	{
+				((LazyLoadCollection)mCollection).onDisplay(position);
+			}
+			
 			if ((convertView == null) || 
 					((mapper = getAttachedMapper(convertView))==null)) {
 				
@@ -76,7 +96,6 @@ public class CollectionAdapter extends BaseAdapter
 						layoutId, parent, false);
 				mapper = new ObservableMapper();
 				Object model = mCollection.getItem(position);
-				mCollection.onLoad(position);
 				mapper.startCreateMapping(mReflector, model);
 				for(View view: result.processedViews){
 					AttributeBinder.getInstance().bindView(mContext, view, mapper);
@@ -84,8 +103,6 @@ public class CollectionAdapter extends BaseAdapter
 				mapper.endCreateMapping();
 				returnView = result.rootView;
 				this.putAttachedMapper(returnView, mapper);
-			}else{
-				mCollection.onLoad(position);
 			}
 			mapper.changeMapping(mReflector, mCollection.getItem(position));
 			return returnView;
@@ -105,15 +122,11 @@ public class CollectionAdapter extends BaseAdapter
 	}
 	
 	private ObservableMapper getAttachedMapper(View convertView){
-		Object mappers = convertView.getTag(R.id.tag_observableCollection_attachedObservable);
-		if (mappers==null){
-			return null;
-		}
-		return (ObservableMapper)mappers;
+		return Binder.getViewTag(convertView).get(ObservableMapper.class);
 	}
 	
 	private void putAttachedMapper(View convertView, ObservableMapper mapper){
-		convertView.setTag(R.id.tag_observableCollection_attachedObservable, mapper);
+		Binder.getViewTag(convertView).put(ObservableMapper.class, mapper);
 	}
 		
 	public void onCollectionChanged(IObservableCollection<?> collection) {
@@ -122,5 +135,59 @@ public class CollectionAdapter extends BaseAdapter
 				notifyDataSetChanged();
 			}
 		});
+	}
+
+	public Filter getFilter() {
+		return mFilter;
+	}
+
+	private Mode mMode = Mode.LoadWhenStopped;
+	private LazyLoadRootAdapterHelper mHelper;
+	
+	public void setRoot(AbsListView view) {
+		if (mCollection instanceof LazyLoadCollection)
+			mHelper = new LazyLoadRootAdapterHelper(view, this, mMode);
+	}
+
+	public void setMode(Mode mode) {
+		if (mHelper!=null)
+		{
+			mHelper.setMode(mode);
+		}
+		mMode = mode;
+	}
+
+	private int lastDisplayingFirst = 0, lastTotal = 0;
+	
+	public void onVisibleChildrenChanged(int first, int total) {
+		if (total<=0) return;
+		if (lastDisplayingFirst == first){
+			if (total==lastTotal) return;
+			if (lastTotal<total){
+				for(int i=first+lastTotal; i<first+total; i++){
+					((LazyLoadCollection)mCollection).onDisplay(i);
+				}
+			}
+		}else{
+			if (lastDisplayingFirst < first){
+				int offCount = first - lastDisplayingFirst;
+				for(int i=first+total-offCount; i<first+total; i++){
+					((LazyLoadCollection)mCollection).onDisplay(i);
+				}
+				for(int i=lastDisplayingFirst; i<lastDisplayingFirst + offCount; i++){
+					((LazyLoadCollection)mCollection).onHide(i);
+				}
+			}else{
+				int offCount = lastDisplayingFirst - first;
+				for(int i=first; i<first+offCount; i++){
+					((LazyLoadCollection)mCollection).onDisplay(i);
+				}
+				for(int i=first+total; i<lastDisplayingFirst+total; i++){
+					((LazyLoadCollection)mCollection).onHide(i);
+				}
+			}
+		}
+		lastTotal = total;
+		lastDisplayingFirst = first;
 	}
 }

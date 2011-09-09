@@ -3,7 +3,7 @@ package gueei.binding.listeners;
 import android.view.KeyEvent;
 import android.view.View;
 
-public class OnKeyListenerMulticast extends MulticastListener<View.OnKeyListener> implements View.OnKeyListener {
+public class OnKeyListenerMulticast extends ViewMulticastListener<View.OnKeyListener> implements View.OnKeyListener {
 	@Override
 	public void registerToView(View v) {
 		v.setOnKeyListener(this);

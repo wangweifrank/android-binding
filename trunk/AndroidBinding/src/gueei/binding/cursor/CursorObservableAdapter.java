@@ -88,31 +88,47 @@ public class CursorObservableAdapter<T extends CursorRowModel> extends BaseAdapt
 			return returnView;
 		}
 	}
-		
+	
+	private static class ObservableCollectionWrapper<T>{
+		public T observableCollection;
+	}
+	
 	@SuppressWarnings("unchecked")
 	private T getAttachedObservableCollection(View convertView){
-		Object collections = convertView.getTag(R.id.tag_observableCollection_attachedObservable);
-		if (collections==null){
-			return null;
-		}
-		return (T)collections;
+		ObservableCollectionWrapper<?> wrapper = 
+				Binder.getViewTag(convertView).get(ObservableCollectionWrapper.class);
+		if (wrapper!=null)
+			return (T)wrapper.observableCollection;
+		return null;
 	}
 	
 	private void putAttachedObservableCollection(View convertView, T collection){
-		convertView.setTag(R.id.tag_observableCollection_attachedObservable, collection);
+		ObservableCollectionWrapper<T> wrapper = 
+				new ObservableCollectionWrapper<T>();
+		
+		wrapper.observableCollection = collection;
+		
+		Binder.getViewTag(convertView).put(ObservableCollectionWrapper.class, wrapper);
+	}
+	
+	private static class ViewTypeIdWrapper{
+		public int viewTypeId;
 	}
 	
 	private int getAttachedViewTypeId(View convertView){
-		Object objId = convertView.getTag(R.id.tag_observableCollection_viewTypeId);
-		if ((objId==null)|| (!(objId instanceof Integer))){
-			return -1;
+		ViewTypeIdWrapper wrapper = Binder.getViewTag(convertView).get(ViewTypeIdWrapper.class);
+		if (wrapper!=null){
+			return wrapper.viewTypeId;
 		}
-		return (Integer)objId;
+		return -1;
 	}
 	
 	
 	private void putAttachedViewTypeId(View convertView, int layoutId){
-		convertView.setTag(R.id.tag_observableCollection_viewTypeId, layoutId);
+		ViewTypeIdWrapper wrapper = 
+				new ViewTypeIdWrapper();
+		wrapper.viewTypeId = layoutId;
+		Binder.getViewTag(convertView).put(ViewTypeIdWrapper.class, wrapper);
 	}
 
 	private void bindView(View view, Cursor cursor) {
@@ -185,7 +201,7 @@ public class CursorObservableAdapter<T extends CursorRowModel> extends BaseAdapt
 	
 	private View newView(Context context, Cursor cursor, ViewGroup parent, int layoutId){
 		try {
-			Binder.InflateResult result = Binder.inflateView(context, layoutId, parent, false);
+			BinderV30.InflateResult result = BinderV30.inflateView(context, layoutId, parent, false);
 			View returnView = result.rootView;
 			T row = constructRow(context);
 			for(View view: result.processedViews){

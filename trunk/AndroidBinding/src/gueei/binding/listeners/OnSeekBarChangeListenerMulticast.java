@@ -4,7 +4,7 @@ import android.view.View;
 import android.widget.SeekBar;
 
 public class OnSeekBarChangeListenerMulticast
-	extends MulticastListener<SeekBar.OnSeekBarChangeListener>
+	extends ViewMulticastListener<SeekBar.OnSeekBarChangeListener>
 	implements SeekBar.OnSeekBarChangeListener{
 
 	@Override

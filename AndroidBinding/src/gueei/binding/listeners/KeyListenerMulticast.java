@@ -6,7 +6,7 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.widget.TextView;
 
-public class KeyListenerMulticast extends MulticastListener<KeyListener>
+public class KeyListenerMulticast extends ViewMulticastListener<KeyListener>
 	implements KeyListener{
 
 	private KeyListener originalListener;

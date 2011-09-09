@@ -3,10 +3,18 @@ package gueei.binding.collections;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.List;
+import java.util.ListIterator;
 
-public class ArrayListObservable<T> extends ObservableCollection<T> implements Collection<T> {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class ArrayListObservable<T> 
+	extends ObservableCollection<T> 
+	implements List<T>, Parcelable, LazyLoadCollection{
+	
 	private final Class<T> mType;
-	private ArrayList<T> mArray;
+	protected ArrayList<T> mArray;
 	
 	public ArrayListObservable(Class<T> type){
 		this(type, null);
@@ -50,7 +58,7 @@ public class ArrayListObservable<T> extends ObservableCollection<T> implements C
 		this.notifyCollectionChanged();
 	}
 	
-	public int indexOf(T item){
+	public int indexOf(Object item){
 		return mArray.indexOf(item);
 	}
 
@@ -130,5 +138,79 @@ public class ArrayListObservable<T> extends ObservableCollection<T> implements C
 			this.notifyCollectionChanged();
 		}
 		return result;
+	}
+
+	public int describeContents() {
+		return 0;
+	}
+
+	public void writeToParcel(Parcel dest, int flags) {
+		try{
+			dest.writeArray(this.toArray());
+		}catch(Exception e){
+			// The array is not parcelable.. ok?
+		}
+	}
+	
+	@Override
+	@SuppressWarnings({ "unchecked"})
+	public void _setObject(Object newValue, Collection<Object> initiators) {
+		if (newValue instanceof ArrayListObservable){
+			this.clear();
+			this.setArray(
+					(T[])((ArrayListObservable<T>)newValue).toArray());
+		}
+	}
+
+	public static final Parcelable.Creator<ArrayListObservable<?>> CREATOR =
+			new Parcelable.Creator<ArrayListObservable<?>>() {
+				@SuppressWarnings({ "rawtypes", "unchecked" })
+				public ArrayListObservable<?> createFromParcel(Parcel source) {
+					Object[] arr = source.readArray(this.getClass().getClassLoader());
+					return new ArrayListObservable(arr.getClass().getComponentType(), arr);
+				}
+
+				public ArrayListObservable<?>[] newArray(int size) {
+					return new ArrayListObservable[size];
+				}
+			};
+
+	public void add(int location, T object) {
+	}
+
+	public boolean addAll(int arg0, Collection<? extends T> arg1) {
+		return false;
+	}
+
+	public T get(int location) {
+		return mArray.get(location);
+	}
+
+	public int lastIndexOf(Object object) {
+		return mArray.lastIndexOf(object);
+	}
+
+	public ListIterator<T> listIterator() {
+		return mArray.listIterator();
+	}
+
+	public ListIterator<T> listIterator(int location) {
+		return mArray.listIterator(location);
+	}
+
+	public T set(int location, T object) {
+		T temp = mArray.set(location, object);
+		notifyCollectionChanged();
+		return temp; 
+	}
+
+	public List<T> subList(int start, int end) {
+		return mArray.subList(start, end);
+	}
+
+	public void onDisplay(int position) {
+	}
+
+	public void onHide(int position) {
 	}
 }

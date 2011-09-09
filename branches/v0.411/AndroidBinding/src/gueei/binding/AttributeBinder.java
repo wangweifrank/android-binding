@@ -4,7 +4,6 @@ import gueei.binding.bindingProviders.BindingProvider;
 import gueei.binding.exception.AttributeNotDefinedException;
 
 import java.util.ArrayList;
-import java.util.Hashtable;
 import java.util.Map.Entry;
 
 import android.content.Context;
@@ -52,8 +51,12 @@ public class AttributeBinder {
 	protected final boolean bindAttributeWithObservable(Context context, 
 			View view, String viewAttributeName, String statement, Object model) {
 		IObservable<?> property;
-		property = Utility.getObservableForModel(view.getContext(), statement,
-				model);
+		
+		// Set the reference context to the current binding view
+		refViewAttributeProvider.viewContext = view;
+		
+		property = BindingSyntaxResolver
+				.constructObservableFromStatement(context, statement, model, refViewAttributeProvider);
 		if (property != null) {
 			try {
 				ViewAttribute<?, ?> attr = Binder.getAttributeForView(view,
@@ -70,21 +73,25 @@ public class AttributeBinder {
 			}
 		} 
 		return false;
-		/*
-		 else {
-		 
-			// Bind just the value
-			Object value = Utility.getFieldForModel(statement, model);
+	}
+	
+	private RefViewAttributeProvider refViewAttributeProvider = 
+			new RefViewAttributeProvider();
+	
+	private static class RefViewAttributeProvider implements IReferenceObservableProvider{
+		public View viewContext;
+		
+		public IObservable<?> getReferenceObservable(int referenceId,
+				String field) {
+			if (viewContext==null) return null;
+			
+			View reference = viewContext.getRootView().findViewById(referenceId);
+			if (reference==null) return null;
 			try {
-				ViewAttribute<?, ?> attr = Binder.getAttributeForView(view,
-						viewAttributeName);
-				attr._setObject(value, new ArrayList<Object>());
-				return true;
+				return Binder.getAttributeForView(reference, field);
 			} catch (AttributeNotDefinedException e) {
-				e.printStackTrace();
-				return false;
+				return null;
 			}
-		}
-		*/
+		} 
 	}
 }

@@ -38,7 +38,7 @@ Not all attribute of Views will support all binding modes. For example, the `cli
 || com.example.package.CustomConverter || || Custom converter must use full path of package || depends || 0.17 ||
 || _Converter_('String') || binding:text="CONCAT('abc', _Observable_)"  || _results_ abc_ValueOfObservable_ ||  || 0.17 ||
 || {_argName1_=_argVal1_, _argName2_=_argVal2_ ... } || {template=@layout/main, source=Demos} || [DynamicObject Dynamic Object] || one-shot || v0.2 ||
-
+|| =ID.ViewAttribute || =id/edtext.text || [Referencing] || One/two-way || 0.4 ||
 = Built in Converters = 
 
 [Converters In separation Section]

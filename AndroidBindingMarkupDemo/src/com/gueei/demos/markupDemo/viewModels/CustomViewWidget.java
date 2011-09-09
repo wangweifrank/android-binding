@@ -62,7 +62,7 @@ public class CustomViewWidget extends TextView implements IBindableView<CustomVi
 				}
 	};
 	
-	public ViewAttribute<CustomViewWidget, ?> getViewAttribute(
+	public ViewAttribute<CustomViewWidget, ?> createViewAttribute(
 			String attributeName) {
 		if (attributeName.equals("mask")) return PasswordMaskViewAttribute;
 		return null;

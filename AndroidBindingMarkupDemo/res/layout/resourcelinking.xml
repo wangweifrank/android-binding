@@ -99,6 +99,7 @@
 	    <TextView
 	    	android:layout_width="fill_parent"
 		    android:layout_height="wrap_content"
+		    android:id="@+id/tvInteger"
 		    android:padding="5dip"
 		    binding:text="@integer/max_speed" />
     </TableRow>
@@ -137,6 +138,18 @@
 		    android:layout_height="wrap_content"
 		    android:padding="5dip"
 		    binding:text="@android:layout/simple_expandable_list_item_1" />
+    </TableRow>
+    <TableRow>
+	    <TextView
+	    	android:layout_width="fill_parent"
+		    android:layout_height="wrap_content"
+		    android:padding="5dip"
+		    android:text="Link with other Widget's Attribute" />
+	    <TextView
+	    	android:layout_width="fill_parent"
+		    android:layout_height="wrap_content"
+		    android:padding="5dip"
+		    binding:text="CONCAT('tvInteger:text=', =id/tvInteger.text)" />
     </TableRow>
 </TableLayout>
 </ScrollView>

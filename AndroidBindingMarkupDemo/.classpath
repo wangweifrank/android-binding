@@ -3,7 +3,7 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="gen"/>
 	<classpathentry kind="con" path="com.android.ide.eclipse.adt.ANDROID_FRAMEWORK"/>
-	<classpathentry kind="lib" path="D:/Documents/workspace/AndroidBindingMarkupDemo/library/jhighlight-1.0.jar"/>
+	<classpathentry kind="lib" path="C:/Users/andy/workspace/AndroidBindingMarkupDemo/library/jhighlight-1.0.jar"/>
 	<classpathentry kind="src" path="AndroidBinding_src"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

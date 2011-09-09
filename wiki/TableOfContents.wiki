@@ -11,6 +11,7 @@
  * [BindableAttributes Supported Views and Attributes]
  * [OptionsMenu Binding to Options menu]
  * [BindingSyntax Binding Syntax]
+  * [Referencing Reference to Other Widget]
   * [Converters]
   * [ResourceLinking]
   * [DynamicObject Dynamic Object]

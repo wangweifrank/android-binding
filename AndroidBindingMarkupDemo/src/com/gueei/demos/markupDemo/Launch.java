@@ -37,6 +37,10 @@ public class Launch extends Activity {
 				new Demo("OptionsMenu", true, OptionsMenu.class),
 				new Demo("ContextMenu", true)));
 
+		DemoGroups.add(new DemoGroup("Binding Syntaxes", 
+				new Demo("Referencing", true)
+				));
+
 		DemoGroups.add(new DemoGroup("Application related", 
 				new Demo("ResourceLinking", true),
 				new Demo("Parceling", true, Parceling.class)));
@@ -44,7 +48,6 @@ public class Launch extends Activity {
 		DemoGroups.add(new DemoGroup("Simple Lists", 
 				new Demo("ArrayListAsListViewSource"),
 				new Demo("SpinnerWithArraySource"),
-				new Demo("DependantSpinnersWithCursorSource", true),
 				new Demo("ListViewWithCursorSource", true),
 				new Demo("SingleChoiceList"), 
 				new Demo("MultipleChoiceList"),
@@ -54,7 +57,7 @@ public class Launch extends Activity {
 		DemoGroups
 				.add(new DemoGroup("Compound/Nested Lists", new Demo("MasterDetailListView"),
 								   new Demo("NestedCursor"),
-								   new Demo("CursorContentUpdate", true), new Demo("MultipleAdapters")));
+								   new Demo("MultipleAdapters")));
 
 		DemoGroups.add(new DemoGroup("Dynamic Lists", 
 				new Demo("LazyLoadArrayList", true),

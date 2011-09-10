@@ -34,7 +34,7 @@ public class FilterCursorList {
 	public final Observable<Filter> CursorFilter = new Observable<Filter>(Filter.class, new Filter() {
 		private Cursor filteredCursor;
 		private static final char S_QUOTES = '\'';
-		private static final char S_PERC_SIGN = '#'; //!! view model fails on percentage sign
+		private static final char S_PERC_SIGN = '%'; //!! view model fails on percentage sign
 
 		@Override
 		protected FilterResults performFiltering(CharSequence constraint) {

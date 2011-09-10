@@ -2,6 +2,7 @@ package gueei.binding.cursor;
 
 import android.database.Cursor;
 
+@SuppressWarnings({"UnusedDeclaration"})
 public class StringField extends CursorField<String> {
 
 	public StringField(int columnIndex) {

@@ -44,7 +44,7 @@ public class CollectionAdapter extends BaseAdapter
 		mCollection = collection;
 		mReflector = reflector;
 		mFilter = filter;
-		collection.subscribe(this);
+		mCollection.subscribe(this);
 	}
 	
 	public CollectionAdapter(Context context, IModelReflector reflector,
@@ -66,6 +66,14 @@ public class CollectionAdapter extends BaseAdapter
 				new CachedModelReflector(collection.getComponentType()), collection, layout, dropDownLayout);		
 	}
 	
+	public void subscribeCollectionObserver(CollectionObserver observer) {
+		mCollection.subscribe(observer);
+	}
+
+	public void unsubscribeCollectionObserver(CollectionObserver observer) {
+		mCollection.unsubscribe(observer);
+	}
+
 	public int getCount() {
 		return mCollection.size();
 	}
@@ -75,7 +83,7 @@ public class CollectionAdapter extends BaseAdapter
 	}
 
 	public long getItemId(int position) {
-		return position;
+		return mCollection.getItemId(position);
 	}
 
 	private View getView(int position, View convertView, ViewGroup parent, int layoutId) {

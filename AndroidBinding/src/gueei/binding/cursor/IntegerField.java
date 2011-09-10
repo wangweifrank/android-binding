@@ -2,6 +2,7 @@ package gueei.binding.cursor;
 
 import android.database.Cursor;
 
+@SuppressWarnings({"UnusedDeclaration"})
 public class IntegerField extends CursorField<Integer> {
 
 	public IntegerField(int columnIndex) {

@@ -6,26 +6,34 @@ import gueei.binding.viewAttributes.templates.Layout;
 import java.util.WeakHashMap;
 
 import android.content.Context;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Adapter;
 import android.widget.BaseExpandableListAdapter;
+import gueei.binding.CollectionObserver;
+import gueei.binding.IObservable;
+import gueei.binding.IObservableCollection;
 
+public class ExpandableCollectionAdapter extends BaseExpandableListAdapter implements CollectionObserver {
 
-public class ExpandableCollectionAdapter extends BaseExpandableListAdapter{
 	private final String mChildName;
 	private final Layout mChildLayout;
-	private final WeakHashMap<Integer, Adapter> mChildAdapters =
-		new WeakHashMap<Integer, Adapter>();
+	private final WeakHashMap<Integer, Adapter> mChildAdapters = new WeakHashMap<Integer, Adapter>();
 	private final Adapter mGroupAdapter;
 	private final Context mContext;
+	protected final Handler mHandler;
 
 	public ExpandableCollectionAdapter(Context context, Adapter groupAdapter, String childName, Layout childLayout){
+		mHandler = new Handler();
 		mChildName = childName;
 		mChildLayout = childLayout;
 		mContext = context;
 		mGroupAdapter = groupAdapter;
+		if (mGroupAdapter instanceof CollectionAdapter) {
+			((CollectionAdapter) mGroupAdapter).subscribeCollectionObserver(this);
+		}
 	}
 	/*
 	public ExpandableCollectionAdapter(Context context,
@@ -46,10 +54,12 @@ public class ExpandableCollectionAdapter extends BaseExpandableListAdapter{
 				if (item instanceof LazyLoadParent){
 					((LazyLoadParent)item).onLoadChildren();
 				}
-				IObservable<?> child = 
-					gueei.binding.Utility.getObservableForModel(mContext, mChildName, item);
-				mChildAdapters.put(groupPosition, 
-					Utility.getSimpleAdapter(mContext, child.get(), mChildLayout, mChildLayout, null));
+				IObservable<?> child = gueei.binding.Utility.getObservableForModel(mContext, mChildName, item);
+				Object childCollection = child.get();
+				mChildAdapters.put(groupPosition, Utility.getSimpleAdapter(mContext, child.get(), mChildLayout, mChildLayout, null));
+				if (childCollection instanceof IObservableCollection) {
+					((IObservableCollection) childCollection).subscribe(this);
+				}
 			}
 			return mChildAdapters.get(groupPosition);
 		}catch(Exception e){
@@ -66,8 +76,7 @@ public class ExpandableCollectionAdapter extends BaseExpandableListAdapter{
 		return getChildAdapter(groupPosition).getItemId(childPosition);
 	}
 
-	public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView,
-			ViewGroup parent) {
+	public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
 		return getChildAdapter(groupPosition).getView(childPosition, convertView, parent);
 	}
 
@@ -87,8 +96,7 @@ public class ExpandableCollectionAdapter extends BaseExpandableListAdapter{
 		return mGroupAdapter.getItemId(groupPosition);
 	}
 
-	public View getGroupView(int groupPosition, boolean isExpanded,
-			View convertView, ViewGroup parent) {
+	public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
 		return mGroupAdapter.getView(groupPosition, convertView, parent);
 	}
 
@@ -105,5 +113,13 @@ public class ExpandableCollectionAdapter extends BaseExpandableListAdapter{
 
 	public boolean hasStableIds() {
 		return true;
+	}
+
+	public void onCollectionChanged(IObservableCollection<?> collection) {
+		mHandler.post(new Runnable() {
+			public void run() {
+				notifyDataSetChanged();
+			}
+		});
 	}
 }

@@ -48,16 +48,20 @@ public class Launch extends Activity {
 		DemoGroups.add(new DemoGroup("Simple Lists", 
 				new Demo("ArrayListAsListViewSource"),
 				new Demo("SpinnerWithArraySource"),
+				new Demo("DependantSpinnersWithCursorSource", true),
 				new Demo("ListViewWithCursorSource", true),
 				new Demo("SingleChoiceList"), 
 				new Demo("MultipleChoiceList"),
 				new Demo("FilterArrayList", true),
+				new Demo("FilterCursorList", true),
 				new Demo("SwitchableItemTemplate", true)
 				));
 		DemoGroups
-				.add(new DemoGroup("Compound/Nested Lists", new Demo("MasterDetailListView"),
-								   new Demo("NestedCursor"),
-								   new Demo("MultipleAdapters")));
+				.add(new DemoGroup("Compound/Nested Lists",
+				new Demo("MasterDetailListView"),
+				new Demo("NestedCursor"),
+				new Demo("CursorContentUpdate", true),
+				new Demo("MultipleAdapters")));
 
 		DemoGroups.add(new DemoGroup("Dynamic Lists", 
 				new Demo("LazyLoadArrayList", true),

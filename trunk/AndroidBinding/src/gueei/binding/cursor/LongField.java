@@ -2,6 +2,7 @@ package gueei.binding.cursor;
 
 import android.database.Cursor;
 
+@SuppressWarnings({"UnusedDeclaration"})
 public class LongField extends CursorField<Long> {
 
 	public LongField(int columnIndex) {

@@ -17,25 +17,17 @@ import android.view.View;
 
 public class ViewProvider extends BindingProvider {
 
+	@SuppressWarnings({"unchecked"})
 	@Override
 	public ViewAttribute<View, ?> createAttributeForView(View view, String attributeId) {
 		if (attributeId.equals("enabled")){
 			return new EnabledViewAttribute(view, "enabled");
-		}
-		else if (attributeId.equals("visibility")){
-			ViewAttribute<View, Integer> attr = 
-				new VisibilityViewAttribute(view, "visibility");
-			return attr;
-		}
-		else if (attributeId.equals("background")){
-			ViewAttribute<View, Object> attr = 
-				new BackgroundViewAttribute(view);
-			return attr;
-		}
-		else if (attributeId.equals("backgroundColor")){
-			ViewAttribute<View, Integer> attr = 
-				new BackgroundColorViewAttribute(view);
-			return attr;
+		}else if (attributeId.equals("visibility")){
+			return new VisibilityViewAttribute(view, "visibility");
+		}else if (attributeId.equals("background")){
+			return new BackgroundViewAttribute(view);
+		}else if (attributeId.equals("backgroundColor")){
+			return new BackgroundColorViewAttribute(view);
 		}else if (attributeId.equals("contextMenu")){
 			return new ContextMenuViewAttribute(view);
 		}else if (attributeId.equals("onClick")){

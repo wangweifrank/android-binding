@@ -17,31 +17,32 @@ import android.widget.Adapter;
 import android.widget.BaseExpandableListAdapter;
 
 
+@SuppressWarnings({"UnusedDeclaration"})
 public class ExpandableCursorAdapter<T extends CursorRowModel> extends BaseExpandableListAdapter{
 	
 	private final String mChildName;
 	private final Layout mChildLayout;
 	private final CursorObservableAdapter<T> mCursorAdapter; 
 	private volatile Hashtable<Integer, Adapter> mChildAdapters;
-	private final Cursor mCursor;
 	private final Context mContext;
-	
-	private final DataSetObserver CursorObserver = new DataSetObserver(){
-		@Override
-		public void onChanged() {
-			super.onChanged();
-			mChildAdapters.clear();
-		}
-	};
-	
+
+	@SuppressWarnings({"UnusedDeclaration"})
 	public ExpandableCursorAdapter(Context context,
 			CursorObservable<T> cursorObservable, Layout layout, Layout ddLayout,
 			String childName, Layout childLayout) {
 		mChildName = childName;
 		mChildLayout = childLayout;
 		mChildAdapters = new Hashtable<Integer, Adapter>();
-		mCursor = cursorObservable.getCursor();
-		mCursor.registerDataSetObserver(CursorObserver);
+		Cursor cursor = cursorObservable.getCursor();
+		DataSetObserver cursorObserver;
+		cursorObserver = new DataSetObserver() {
+				@Override
+				public void onChanged() {
+					super.onChanged();
+					mChildAdapters.clear();
+				}
+			};
+		cursor.registerDataSetObserver(cursorObserver);
 		mCursorAdapter = new CursorObservableAdapter<T>
 			(context, cursorObservable, layout, ddLayout);
 		mContext = context;
@@ -59,8 +60,8 @@ public class ExpandableCursorAdapter<T extends CursorRowModel> extends BaseExpan
 				}
 				IObservable<?> child = gueei.binding.Utility
 					.getObservableForModel(mContext, mChildName, item);
-				
-				mChildAdapters.put(groupPosition,   
+				//noinspection NullableProblems
+				mChildAdapters.put(groupPosition,
 					Utility.getSimpleAdapter(mContext, child.get(), mChildLayout, mChildLayout, null));
 
 				return mChildAdapters.get(groupPosition);

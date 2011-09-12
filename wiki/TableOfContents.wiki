@@ -3,6 +3,7 @@
 
  * Getting Started
   * [Motivation Why Android Binding?]
+  * [Installation]
  * Tutorials
   * [ModelValidation Model Validation]
  * [BindingListOfObjects Binding To List of Objects]

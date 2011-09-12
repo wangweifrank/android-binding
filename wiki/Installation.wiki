@@ -1,0 +1,7 @@
+#summary Simple Steps to enable your project in Android Binding
+
+Just a few simple steps to install Android Binding!
+
+ # Create an Android Project, just like normal one
+ # Download the latest release of Android Binding (jar file)
+ # Reference the jar file in the project build path

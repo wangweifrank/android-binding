@@ -11,6 +11,10 @@ public abstract class CursorRowModel {
 	private Context context;
 	private Cursor cursor;
 
+	// rowId or something unique for cursors row set
+	public long getId(long defaultId) {
+		return defaultId;
+	}
 	public Cursor getCursor() {
 		return cursor;
 	}

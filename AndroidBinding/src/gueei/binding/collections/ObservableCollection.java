@@ -68,4 +68,8 @@ public abstract class ObservableCollection<T> implements IObservableCollection<T
 			((CollectionObserver)c).onCollectionChanged(this);
 		}
 	}
+
+	public long getItemId(int position) {
+		return position;
+	}
 }

@@ -14,6 +14,7 @@ import android.view.View;
  * associated with that tag. In this case, Attribute BinderV30 will stop looking for any 
  * other "parent" to create this attribute. 
  */
+@SuppressWarnings({"UnusedDeclaration"})
 public interface IBindableView<T extends View & IBindableView<T>> {
 	/**
 	 * Each View Attribute should be created once only. 
@@ -23,7 +24,7 @@ public interface IBindableView<T extends View & IBindableView<T>> {
 	 * or else, returning null will pass the control to super classes' implementation.
 	 * To access the view Attribute, you can either maintain a reference to the attribute, or use
 	 * Binder.getAttributeForView(View, AttributeId);
-	 * @param attributeName
+	 * @param attributeId : Attribute Id
 	 * @return the ViewAttribute, or null if don't want to handle
 	 */
 	public ViewAttribute<? extends View, ?> createViewAttribute(String attributeId);

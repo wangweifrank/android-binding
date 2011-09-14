@@ -11,9 +11,6 @@ public class ArrayListAsListViewSource {
 		new ArrayListObservable<ArrayListItem>(ArrayListItem.class);
 	
 	public ArrayListAsListViewSource(){
-		for (int i=0; i<1; i++){
-			Items.add(new ArrayListItem());
-		}
 	}
 	
 	public final Command AddItem = new Command(){

@@ -45,6 +45,8 @@ public class AdapterViewProvider extends BindingProvider {
 				return (ViewAttribute<Tv, ?>) attr;
 			} else if (attributeId.equals("itemTemplate")){
 				return (ViewAttribute<Tv, ?>)new ItemTemplateViewAttribute(view, "itemTemplate");
+			} else if (attributeId.equals("itemCount")){
+				return (ViewAttribute<Tv, ?>)new ItemCountViewAttribute((AdapterView)view);
 			} else if (attributeId.equals("spinnerTemplate")){
 				return (ViewAttribute<Tv, ?>)new ItemTemplateViewAttribute(view, "spinnerTemplate");
 			} else if (attributeId.equals("onItemSelected")){

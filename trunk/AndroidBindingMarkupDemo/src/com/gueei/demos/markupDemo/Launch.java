@@ -46,7 +46,7 @@ public class Launch extends Activity {
 				new Demo("Parceling", true, Parceling.class)));
 
 		DemoGroups.add(new DemoGroup("Simple Lists", 
-				new Demo("ArrayListAsListViewSource"),
+				new Demo("ArrayListAsListViewSource", true),
 				new Demo("SpinnerWithArraySource"),
 				new Demo("DependantSpinnersWithCursorSource", true),
 				new Demo("ListViewWithCursorSource", true),

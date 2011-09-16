@@ -6,8 +6,6 @@
 
 = Introduction =
 
-<img src="http://android-binding.googlecode.com/svn/wiki/img/c.png" />
-
 Getting started to Android Binding. This is the introduction guide on how to use the Android Binding Library. 
 
 = Demo Project =

@@ -40,6 +40,8 @@ public class CursorObservableAdapter<T extends CursorRowModel> extends BaseAdapt
 	}
 	
 	public int getCount() {
+		if (mCursorObservable.getCursor()==null)
+			return 0;
 		return mCursorObservable.getCursor().getCount();
 	}
 

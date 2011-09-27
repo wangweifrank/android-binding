@@ -149,8 +149,8 @@ public class CollectionAdapter extends BaseAdapter
 		return mFilter;
 	}
 
-	private Mode mMode = Mode.LoadWhenStopped;
-	private LazyLoadRootAdapterHelper mHelper;
+	protected Mode mMode = Mode.LoadWhenStopped;
+	protected LazyLoadRootAdapterHelper mHelper;
 	
 	public void setRoot(AbsListView view) {
 		if (mCollection instanceof LazyLoadCollection)

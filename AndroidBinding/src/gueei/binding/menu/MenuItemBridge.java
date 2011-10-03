@@ -83,7 +83,7 @@ public class MenuItemBridge extends AbsMenuBridge{
 	public boolean onOptionsItemSelected(MenuItem item) {
 		boolean output = false;
 		if (onClickCommand!=null){
-			onClickCommand.Invoke(null, item);
+			onClickCommand.InvokeCommand(null, item);
 			output = true;
 		}
 

@@ -11,7 +11,7 @@ import android.view.ViewGroup;
 public class BinderV30 extends gueei.binding.Binder {
 	public static void init(Application application){
 		// Put v30 providers first
-		AttributeBinder.getInstance().registerProvider(new ViewProviderV30());
+		//AttributeBinder.getInstance().registerProvider(new ViewProviderV30());
 		Binder.init(application);
 	}
 	

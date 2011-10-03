@@ -8,12 +8,14 @@
 <!--         android:showAsAction="ifRoom" -->
 <!--         binding:onClick="ToggleSystemUi" -->
 <!--         /> -->
+<!-- 
     <item android:id="@+id/toggleTitles"
         android:icon="?attr/menuIconToggle"
         binding:title="IF(TitleVisible, 'Hide Titles', 'Show Titles')"
         android:showAsAction="ifRoom|withText"
         binding:onClick="ToggleTitles"
         />
+ -->
     <!-- Example of items in the overflow menu -->
     <item android:id="@+id/toggleTheme"
         android:title="Day/Night"

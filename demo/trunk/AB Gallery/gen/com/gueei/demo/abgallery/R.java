@@ -8,8 +8,12 @@
 package com.gueei.demo.abgallery;
 
 public final class R {
+    public static final class anim {
+        public static final int cycle_7=0x7f040000;
+        public static final int shake=0x7f040001;
+    }
     public static final class animator {
-        public static final int hide_title=0x7f040000;
+        public static final int hide_title=0x7f050000;
     }
     public static final class attr {
         /** <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
@@ -30,12 +34,12 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int menuIconToggle=0x7f010002;
     }
     public static final class color {
-        public static final int actionbar_background_dark=0x7f070001;
-        public static final int actionbar_background_light=0x7f070000;
-        public static final int drag_active_color=0x7f070002;
+        public static final int actionbar_background_dark=0x7f080001;
+        public static final int actionbar_background_light=0x7f080000;
+        public static final int drag_active_color=0x7f080002;
     }
     public static final class dimen {
-        public static final int titles_size=0x7f080000;
+        public static final int titles_size=0x7f090000;
     }
     public static final class drawable {
         public static final int big_droid=0x7f020000;
@@ -70,19 +74,18 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int stargazer_droid=0x7f02001d;
     }
     public static final class id {
-        public static final int camera_frag=0x7f0b0000;
-        public static final int frag_content=0x7f0b0004;
-        public static final int frag_title=0x7f0b0003;
-        public static final int frags=0x7f0b0002;
-        public static final int image=0x7f0b0001;
-        public static final int notification_button=0x7f0b0008;
-        public static final int notification_subtitle=0x7f0b0007;
-        public static final int notification_title=0x7f0b0006;
-        public static final int notificationbg=0x7f0b0005;
-        public static final int share=0x7f0b000c;
-        public static final int switch_cam=0x7f0b0009;
-        public static final int toggleTheme=0x7f0b000b;
-        public static final int toggleTitles=0x7f0b000a;
+        public static final int camera_frag=0x7f0c0000;
+        public static final int frag_content=0x7f0c0004;
+        public static final int frag_title=0x7f0c0003;
+        public static final int frags=0x7f0c0002;
+        public static final int image=0x7f0c0001;
+        public static final int notification_button=0x7f0c0008;
+        public static final int notification_subtitle=0x7f0c0007;
+        public static final int notification_title=0x7f0c0006;
+        public static final int notificationbg=0x7f0c0005;
+        public static final int share=0x7f0c000b;
+        public static final int switch_cam=0x7f0c0009;
+        public static final int toggleTheme=0x7f0c000a;
     }
     public static final class layout {
         public static final int action_bar_custom=0x7f030000;
@@ -94,29 +97,29 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int title_list_item=0x7f030006;
     }
     public static final class menu {
-        public static final int camera_menu=0x7f0a0000;
-        public static final int main_menu=0x7f0a0001;
-        public static final int photo_context_menu=0x7f0a0002;
+        public static final int camera_menu=0x7f0b0000;
+        public static final int main_menu=0x7f0b0001;
+        public static final int photo_context_menu=0x7f0b0002;
     }
     public static final class string {
-        public static final int app_name=0x7f060001;
-        public static final int app_widget_name=0x7f060004;
-        public static final int camera_sample=0x7f060002;
-        public static final int clip_label=0x7f060003;
-        public static final int notification_text=0x7f060006;
-        public static final int photo_selection_cab_title=0x7f060007;
-        public static final int validation_required_message=0x7f060000;
-        public static final int widget_empty_view_text=0x7f060005;
+        public static final int app_name=0x7f070001;
+        public static final int app_widget_name=0x7f070004;
+        public static final int camera_sample=0x7f070002;
+        public static final int clip_label=0x7f070003;
+        public static final int notification_text=0x7f070006;
+        public static final int photo_selection_cab_title=0x7f070007;
+        public static final int validation_required_message=0x7f070000;
+        public static final int widget_empty_view_text=0x7f070005;
     }
     public static final class style {
-        public static final int ActionBar=0x7f090000;
-        public static final int ActionBar_Dark=0x7f090002;
-        public static final int ActionBar_Light=0x7f090001;
-        public static final int AppTheme_Dark=0x7f090004;
-        public static final int AppTheme_Light=0x7f090003;
+        public static final int ActionBar=0x7f0a0000;
+        public static final int ActionBar_Dark=0x7f0a0002;
+        public static final int ActionBar_Light=0x7f0a0001;
+        public static final int AppTheme_Dark=0x7f0a0004;
+        public static final int AppTheme_Light=0x7f0a0003;
     }
     public static final class xml {
-        public static final int main_metadata=0x7f050000;
+        public static final int main_metadata=0x7f060000;
     }
     public static final class styleable {
         /** Attributes that can be used with a AppTheme.

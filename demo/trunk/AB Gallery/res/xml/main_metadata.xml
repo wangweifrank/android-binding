@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<activity>
+	<optionsItem>
+		<option id="@android:id/home" action="FirstClick"/>
+	</optionsItem>
+	<actionbar
+		view="@layout/action_bar_custom"
+		displayOptions=""
+		navigationMode="">
+		<tabs>
+			<tab onSelected="ARG(TitleSelected, 'Balloons')" text="'Balloons'"></tab>
+			<tab onSelected="ARG(TitleSelected, 'Bikes')" text="'Bikes'"></tab>
+			<tab onSelected="ARG(TitleSelected, 'Androids')" text="'Androids'"></tab>
+			<tab onSelected="ARG(TitleSelected, 'Pastries')" text="'Pastries'"></tab>
+		</tabs>
+	</actionbar>
+</activity>

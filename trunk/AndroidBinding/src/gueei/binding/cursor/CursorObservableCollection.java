@@ -17,8 +17,12 @@ import java.util.ArrayList;
 /**
  * Recommend to use instead of CursorObservable only after(!) affirmation by Andy Tsui  (=ra=)
  */
+/*
+ * Started to work on Adding Caching of Row Models
+ */
 @SuppressWarnings({"UnusedDeclaration"})
-public class CursorObservableCollection<T extends CursorRowModel> extends ObservableCollection<T> {
+public class CursorObservableCollection<T extends CursorRowModel> 
+	extends ObservableCollection<T> {
 
 	private final Class<T>                  mRowModelType;
 	private final CursorRowModel.Factory<T> mFactory;
@@ -26,7 +30,15 @@ public class CursorObservableCollection<T extends CursorRowModel> extends Observ
 	private         int     mCursorRowsCount;
 	protected final Context mContext;
 	protected       Cursor  mCursor;
+	
+	private int mCacheSize = 50;
 
+	// Caching the row models and probably could reuse it. 
+	public CursorObservableCollection(Context context, Class<T> rowModelType, int cacheSize){
+		this(context, rowModelType, new DefaultFactory<T>(rowModelType), null);
+		mCacheSize = cacheSize;
+	}
+	
 	public CursorObservableCollection(Context context, Class<T> rowModelType) {
 		//noinspection NullableProblems
 		this(context, rowModelType, new DefaultFactory<T>(rowModelType), null);

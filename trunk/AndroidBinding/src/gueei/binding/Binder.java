@@ -93,7 +93,7 @@ public class Binder {
 		return collection;
 	}
 	
- 	static void putBindingMapToView(View view, BindingMap map){
+ 	public static void putBindingMapToView(View view, BindingMap map){
  		getViewTag(view).put(BindingMap.class, map);
 	}
 	
@@ -101,6 +101,14 @@ public class Binder {
 		return getViewTag(view).get(BindingMap.class);
 	}
 	
+	/**
+	 * Short hand operation for binding content View
+	 * @param context
+	 * @param layoutId
+	 * @param model
+	 * @deprecated Use BindingActivity's methods for shorthand operations.
+	 */
+	@Deprecated
 	public static void setAndBindContentView(Activity context, int layoutId, Object model){
 		InflateResult result = inflateView(context, layoutId, null, false);
 		context.setContentView(result.rootView);
@@ -146,6 +154,7 @@ public class Binder {
 	}
 	
 	@SuppressWarnings("unchecked")
+	@Deprecated
 	public static ArrayList<View> getProcessedViewsFromRootView(View rootView){
 		//Object objCollection = rootView.getTag(R.id.tag_processedViews);
 		//if (objCollection instanceof ArrayList<?>) return (ArrayList<View>)objCollection;
@@ -169,6 +178,13 @@ public class Binder {
 		mApplication = application;
 	}
 
+	/**
+	 * 
+	 * @return Application Context
+	 * @deprecated Since it is possible to leak the application context, 
+	 * We try not to hold any context in the Binder anymore in later release. 
+	 */
+	@Deprecated
 	public static Application getApplication(){
 		return mApplication;
 	}
@@ -195,6 +211,11 @@ public class Binder {
 		}		
 	}
 	
+	/**
+	 * The class holding inflated result from Android Binding.
+	 * @author andy
+	 *
+	 */
 	public static class InflateResult{
 		public ArrayList<View> processedViews = new ArrayList<View>();
 		public View rootView;

@@ -13,7 +13,7 @@ public class BindingActivity extends Activity {
 
 	OptionsMenuBinder menuBinder;
 	Object mMenuViewModel;
-	View mRootView;
+	private View mRootView;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -58,7 +58,17 @@ public class BindingActivity extends Activity {
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		super.onOptionsItemSelected(item);
-		return menuBinder.onOptionsItemSelected(this, item);
+		if (menuBinder!=null)
+			return menuBinder.onOptionsItemSelected(this, item);
+		return super.onOptionsItemSelected(item);
 	}
+
+	public View getRootView() {
+		return mRootView;
+	}
+
+	public void setRootView(View rootView) {
+		mRootView = rootView;
+	}
+
 }

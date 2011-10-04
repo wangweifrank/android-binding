@@ -63,4 +63,12 @@ public abstract class DependentObservable<T> extends Observable<T> implements Ob
 		}
 		return super.get();
 	}
+
+	public boolean isDirty() {
+		return dirty;
+	}
+
+	public void setDirty(boolean dirty) {
+		this.dirty = dirty;
+	}
 }

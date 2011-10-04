@@ -41,7 +41,7 @@ public class BindingSyntaxResolver {
 		if (result!=null) return result;
 		result = getDynamicObjectFromStatement(context, statement, model, refProvider);
 		if (result!=null) return result;
-		return getObservableForModel(statement, model);
+		return getObservableForModel(context, statement, model);
 	}
 	
 	public static IObservable<?> constructObservableFromStatement(
@@ -179,12 +179,13 @@ public class BindingSyntaxResolver {
 	 */
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	private static IObservable<?> getObservableForModel(
+			Context context, 
 			String fieldName, Object model){
 		IObservable<?> result = matchString(fieldName);
 		if (result!=null) return result;
 		result = matchInteger(fieldName);
 		if (result!=null) return result;
-		result = matchResource(fieldName);
+		result = matchResource(context, fieldName);
 		if (result!=null) return result;
 		
 		if (model instanceof IPropertyContainer){
@@ -228,18 +229,18 @@ public class BindingSyntaxResolver {
 		return new IntegerObservable(value);
 	}
 	
-	private static IObservable<?> matchResource(String fieldName){
+	private static IObservable<?> matchResource(Context context, String fieldName){
 		Matcher m = resourcePattern.matcher(fieldName);
 		if ((!m.matches())||(m.groupCount()<2)) return null;
 		String typeName = m.group(3);
 
-		int id = Utility.resolveResourceId(fieldName, Binder.getApplication(), typeName);
+		int id = Utility.resolveResourceId(fieldName, context, typeName);
 		
 		if ("layout".equals(typeName))
 			return new ConstantObservable<Layout>(Layout.class, new SingleTemplateLayout(id));
 		
 		TypedValue outValue = new TypedValue();
-		Binder.getApplication().getResources().getValue(id, outValue, true);
+		context.getResources().getValue(id, outValue, true);
 
 		// No idea why id will return TYPE_INT_BOOLEAN instead of TYPE_INT. 
 		if ("id".equals(typeName))

@@ -25,7 +25,7 @@ public class ViewFactory implements Factory {
 			AttributeSet attrs) {
 		try {
 			String viewFullName = "android.widget." + name;
-			if (name.equals("View") || name.equals("ViewGroup"))
+			if ((name=="View") || (name=="ViewGroup"))
 				viewFullName = "android.view." + name;
 			else if (name.startsWith("binding.")){
 				viewFullName = "gueei.binding.widgets." + name.substring(name.indexOf('.') + 1);
@@ -42,9 +42,13 @@ public class ViewFactory implements Factory {
 	}
 	
 	public View onCreateView(String name, Context context, AttributeSet attrs) {
-		View view = this.CreateViewByInflater(name, context, attrs);
+		View view = CreateViewByInflater(name, context, attrs);
 		if (view==null) return null;
-		
+		createBindingMapForView(view, attrs);
+		return view;
+	}
+	
+	protected void createBindingMapForView(View view, AttributeSet attrs){
 		BindingMap map = new BindingMap();
 		int count = attrs.getAttributeCount();
 		for(int i=0; i<count; i++){
@@ -60,8 +64,6 @@ public class ViewFactory implements Factory {
 			Binder.putBindingMapToView(view, map);
 			processedViews.add(view);
 		}
-		
-		return view;
 	}
 	
 	public ArrayList<View> getProcessedViews(){

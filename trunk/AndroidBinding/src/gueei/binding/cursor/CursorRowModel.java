@@ -33,5 +33,10 @@ public abstract class CursorRowModel {
 		this.context = context;
 	}
 	
+	@Deprecated
 	public void onLoad(int position){}
+	
+	public void onDisplay(){}
+	
+	public void onHide(){}
 }

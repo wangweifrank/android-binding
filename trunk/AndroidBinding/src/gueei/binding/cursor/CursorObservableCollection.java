@@ -8,8 +8,11 @@ package gueei.binding.cursor;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.DataSetObserver;
+import android.util.Log;
 import gueei.binding.BindingLog;
+import gueei.binding.collections.LazyLoadCollection;
 import gueei.binding.collections.ObservableCollection;
+import gueei.binding.utility.CacheHashMap;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -22,8 +25,12 @@ import java.util.ArrayList;
  */
 @SuppressWarnings({"UnusedDeclaration"})
 public class CursorObservableCollection<T extends CursorRowModel> 
-	extends ObservableCollection<T> {
+	extends ObservableCollection<T> 
+	implements LazyLoadCollection{
 
+	// Temp, can change if needed
+	private static final int cacheSize = 50;
+	
 	private final Class<T>                  mRowModelType;
 	private final CursorRowModel.Factory<T> mFactory;
 	private final ArrayList<Field> mCursorFields = new ArrayList<Field>();
@@ -31,13 +38,10 @@ public class CursorObservableCollection<T extends CursorRowModel>
 	protected final Context mContext;
 	protected       Cursor  mCursor;
 	
-	private int mCacheSize = 50;
+	// Hold the cached row models
+	protected CacheHashMap<Integer, T> mCachedRowModels;
+	
 
-	// Caching the row models and probably could reuse it. 
-	public CursorObservableCollection(Context context, Class<T> rowModelType, int cacheSize){
-		this(context, rowModelType, new DefaultFactory<T>(rowModelType), null);
-		mCacheSize = cacheSize;
-	}
 	
 	public CursorObservableCollection(Context context, Class<T> rowModelType) {
 		//noinspection NullableProblems
@@ -62,6 +66,8 @@ public class CursorObservableCollection<T extends CursorRowModel>
 			mCursor.registerDataSetObserver(mCursorDataSetObserver);
 		}
 		cacheCursorRowCount();
+		
+		mCachedRowModels = new CacheHashMap<Integer, T>(cacheSize);
 		init();
 	}
 
@@ -82,10 +88,17 @@ public class CursorObservableCollection<T extends CursorRowModel>
 	}
 
 	public T getItem(int position) {
-		mCursor.moveToPosition(position);
-		T row = newRowModel(mContext);
-		fillData(row, mCursor);
-		return row;
+		// Check the cache first
+		if (mCachedRowModels.containsKey(position))
+			return mCachedRowModels.get(position);
+		
+		else{
+			mCursor.moveToPosition(position);
+			T row = newRowModel(mContext);
+			fillData(row, mCursor);
+			mCachedRowModels.put(position, row);
+			return row;
+		}
 	}
 
 	protected void requery() {
@@ -193,6 +206,18 @@ public class CursorObservableCollection<T extends CursorRowModel>
 		}
 		finally {
 			super.finalize();
+		}
+	}
+
+	@Override
+	public void onDisplay(int position) {
+		getItem(position).onDisplay();
+	}
+
+	@Override
+	public void onHide(int position) {
+		if (mCachedRowModels.containsKey(position)){
+			getItem(position).onHide();
 		}
 	}
 }

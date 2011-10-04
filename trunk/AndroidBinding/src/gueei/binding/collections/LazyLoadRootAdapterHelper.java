@@ -4,6 +4,9 @@ import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
 
 public class LazyLoadRootAdapterHelper implements OnScrollListener {
+	// Allow a few items which is close to the viewport to stay
+	private int extraItems = 2;
+	
 	private final AbsListView mView;
 	private final LazyLoadAdapter mAdapter;
 	private LazyLoadAdapter.Mode mMode;
@@ -25,8 +28,12 @@ public class LazyLoadRootAdapterHelper implements OnScrollListener {
 	public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
 		lastFirstVisibleItem = firstVisibleItem;
 		lastVisibleItemCount = visibleItemCount;
+		
+		int extraFirst = firstVisibleItem - extraItems < 0 ?
+				0: firstVisibleItem - extraItems;
+		
 		if (!busy)
-			mAdapter.onVisibleChildrenChanged(firstVisibleItem, visibleItemCount);
+			mAdapter.onVisibleChildrenChanged(extraFirst, visibleItemCount + extraItems + extraItems);
 	}
 
 	public boolean isBusy(){

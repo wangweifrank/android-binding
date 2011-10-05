@@ -3,8 +3,13 @@
 	xmlns:binding="http://www.gueei.com/android-binding/"
 >
 	<item android:id="@+id/button1"
-		android:title="Enabled=BrowserVisible"
+		android:title="Enabled Binding"
 		binding:enabled="BrowserVisible"
+	/>
+	<item android:id="@+id/button2"
+		android:title="Icon Binding"
+		binding:onClick="ARG(SubMenuClick,'icon binding clicked')"
+		binding:icon="IF(BrowserVisible,@drawable/ic_menu_happy,@drawable/ic_menu_sad)"
 	/>
 	<item android:id="@+id/browser_visibility"
         binding:title="IF(BrowserVisible, 'Hide group', 'Show group')"
@@ -17,7 +22,7 @@
         <item android:id="@+id/bookmark"
             android:title="Bookmark" />
     </group>
-   <item android:id="@+id/submenu" android:title="Emotions">
+   <item android:id="@+id/submenu" android:title="Submenu">
         <menu>        
             <item android:id="@+id/happy" 
                 android:title="Happy"

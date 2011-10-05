@@ -8,6 +8,7 @@
  * [Referencing] to other widget's view attribute
  * Refined [CustomView] API. Not compatible to previous versions. 
  * [OptionsMenu] and [ContextMenu] binding
+ * Deprecated CursorObservable, use CursorObservableCollection instead or TrackedCursorObservableCollection for automatic uri tracking. 
 
 == 0.3a ==
 

@@ -12,6 +12,7 @@ import android.database.DataSetObserver;
 
 
 @SuppressWarnings("rawtypes")
+@Deprecated
 public class CursorObservable<T extends CursorRowModel> extends Observable<CursorObservable>{
 	private Cursor mCursor;
 	private final Class<T> mRowModelType;

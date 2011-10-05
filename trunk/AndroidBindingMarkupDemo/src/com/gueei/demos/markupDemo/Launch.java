@@ -33,6 +33,9 @@ public class Launch extends Activity {
 						new Demo("CompoundButton"), 
 						new Demo("CustomView", true)));
 
+		DemoGroups.add(new DemoGroup("Tab", 
+				new Demo("TabHost", true, Tab.class)));
+		
 		DemoGroups.add(new DemoGroup("Menu", 
 				new Demo("OptionsMenu", true, OptionsMenu.class),
 				new Demo("ContextMenu", true)));

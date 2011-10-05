@@ -48,29 +48,32 @@ public final class R {
         public static final int custom_ab_quickaction_slider_btn_on=0x7f020007;
         public static final int custom_ab_quickaction_slider_btn_pressed=0x7f020008;
         public static final int custom_ab_quickaction_slider_btn_selected=0x7f020009;
-        public static final int icon=0x7f02000a;
-        public static final int tab_background_selector=0x7f02000b;
-        public static final int tab_focused=0x7f02000c;
-        public static final int tab_normal=0x7f02000d;
-        public static final int tab_selected=0x7f02000e;
-        public static final int tab_text_selector=0x7f02000f;
+        public static final int ic_menu_happy=0x7f02000a;
+        public static final int ic_menu_sad=0x7f02000b;
+        public static final int icon=0x7f02000c;
+        public static final int tab_background_selector=0x7f02000d;
+        public static final int tab_focused=0x7f02000e;
+        public static final int tab_normal=0x7f02000f;
+        public static final int tab_selected=0x7f020010;
+        public static final int tab_text_selector=0x7f020011;
     }
     public static final class id {
-        public static final int bookmark=0x7f0d000c;
-        public static final int browser=0x7f0d000a;
-        public static final int browser_visibility=0x7f0d0009;
+        public static final int bookmark=0x7f0d000d;
+        public static final int browser=0x7f0d000b;
+        public static final int browser_visibility=0x7f0d000a;
         public static final int button1=0x7f0d0008;
+        public static final int button2=0x7f0d0009;
         public static final int chkbox=0x7f0d0002;
-        public static final int happy=0x7f0d000e;
+        public static final int happy=0x7f0d000f;
         public static final int icon=0x7f0d0006;
         public static final int label=0x7f0d0007;
         public static final int list=0x7f0d0001;
         public static final int lvItems=0x7f0d0000;
-        public static final int neutral=0x7f0d000f;
-        public static final int refresh=0x7f0d000b;
-        public static final int sad=0x7f0d0010;
+        public static final int neutral=0x7f0d0010;
+        public static final int refresh=0x7f0d000c;
+        public static final int sad=0x7f0d0011;
         public static final int spinner1=0x7f0d0005;
-        public static final int submenu=0x7f0d000d;
+        public static final int submenu=0x7f0d000e;
         public static final int tableLayout=0x7f0d0003;
         public static final int tvInteger=0x7f0d0004;
     }

@@ -4,7 +4,6 @@ import gueei.binding.ConstantObservable;
 import gueei.binding.Observable;
 import gueei.binding.observables.IntegerObservable;
 import gueei.binding.observables.StringObservable;
-import android.content.Intent;
 import android.graphics.drawable.Drawable;
 
 public class Tab {

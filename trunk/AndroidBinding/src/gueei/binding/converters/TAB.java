@@ -40,7 +40,13 @@ public class TAB extends Converter<ArrayListObservable> {
 				
 				tab.Label.set((String)t.getObservableByName("label").get());
 				if (t.observableExists("icon")){
-					tab.Icon.set((Drawable)t.getObservableByName("icon").get());
+					Object iconObj = t.getObservableByName("icon").get();
+					if (iconObj instanceof Integer){
+						Drawable d = getContext().getResources().getDrawable((Integer)iconObj);
+						tab.Icon.set(d);
+					}else if (iconObj instanceof Drawable){
+						tab.Icon.set((Drawable)t.getObservableByName("icon").get());
+					}
 				}
 				tabs.add(tab);
 			}catch(Exception e){

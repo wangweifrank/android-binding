@@ -1,6 +1,7 @@
 package gueei.binding.menu;
 
 import android.app.Activity;
+import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.Menu;
@@ -20,14 +21,14 @@ public class MenuItemBridge extends AbsMenuBridge{
 
 	private Command onClickCommand;
 	
-	private IObservable<?> title, visible, enabled, checked;
+	private IObservable<?> title, visible, enabled, checked, icon;
 	
 	public MenuItemBridge(int id){
 		super(id);
 	}
 	
 	public void onCreateOptionItem(Menu menu){
-		MenuItem item = menu.findItem(mId);
+		
 	}
 	
 	public void onPrepareOptionItem(Menu menu){
@@ -35,10 +36,13 @@ public class MenuItemBridge extends AbsMenuBridge{
 		if (item==null) return;
 		if (title!=null){
 			Object titleObj = title.get();
-			if(titleObj==null) return;
-			if (titleObj instanceof CharSequence) item.setTitle((CharSequence)titleObj);
-			else
-				item.setTitle(titleObj.toString());
+			if(titleObj!=null){
+				if (titleObj instanceof CharSequence) item.setTitle((CharSequence)titleObj);
+				else
+					item.setTitle(titleObj.toString());
+			}else{
+				item.setTitle("");
+			}
 		}
 		if (visible!=null){
 			item.setVisible(Boolean.TRUE.equals(visible.get()));
@@ -47,8 +51,18 @@ public class MenuItemBridge extends AbsMenuBridge{
 			item.setEnabled(Boolean.TRUE.equals(enabled.get()));
 		}
 		if (checked!=null){
-			Log.d("Binder", "prepare: " + Boolean.TRUE.equals(checked.get()));
 			item.setChecked(Boolean.TRUE.equals(checked.get()));
+		}
+		if (icon!=null){
+			Object iconObj = icon.get();
+			if (iconObj!=null){
+				if (iconObj instanceof Integer)
+					item.setIcon((Integer)iconObj);
+				else if (iconObj instanceof Drawable)
+					item.setIcon((Drawable)iconObj);
+			}else{
+				item.setIcon(null);
+			}
 		}
 	}
 	
@@ -74,7 +88,11 @@ public class MenuItemBridge extends AbsMenuBridge{
 		temp = getObservableFromAttribute(activity, attributes, "checked", model);
 		if ((temp!=null)){
 			bridge.checked = temp;
-		}		
+		}
+		temp = getObservableFromAttribute(activity, attributes, "icon", model);
+		if ((temp!=null)){
+			bridge.icon = temp;
+		}
 		return bridge;
 	}
 

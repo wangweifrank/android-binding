@@ -24,25 +24,25 @@ import java.util.ArrayList;
  * Started to work on Adding Caching of Row Models
  */
 @SuppressWarnings({"UnusedDeclaration"})
-public class CursorObservableCollection<T extends CursorRowModel> 
-	extends ObservableCollection<T> 
+public class CursorObservableCollection<T extends CursorRowModel>
+	extends ObservableCollection<T>
 	implements LazyLoadCollection{
 
 	// Temp, can change if needed
 	private static final int cacheSize = 50;
-	
+
 	private final Class<T>                  mRowModelType;
 	private final CursorRowModel.Factory<T> mFactory;
 	private final ArrayList<Field> mCursorFields = new ArrayList<Field>();
 	private         int     mCursorRowsCount;
 	protected final Context mContext;
 	protected       Cursor  mCursor;
-	
+
 	// Hold the cached row models
 	protected CacheHashMap<Integer, T> mCachedRowModels;
-	
 
-	
+
+
 	public CursorObservableCollection(Context context, Class<T> rowModelType) {
 		//noinspection NullableProblems
 		this(context, rowModelType, new DefaultFactory<T>(rowModelType), null);
@@ -66,7 +66,6 @@ public class CursorObservableCollection<T extends CursorRowModel>
 			mCursor.registerDataSetObserver(mCursorDataSetObserver);
 		}
 		cacheCursorRowCount();
-		
 		mCachedRowModels = new CacheHashMap<Integer, T>(cacheSize);
 		init();
 	}
@@ -80,6 +79,7 @@ public class CursorObservableCollection<T extends CursorRowModel>
 			mCursor.registerDataSetObserver(mCursorDataSetObserver);
 		}
 		cacheCursorRowCount();
+		mCachedRowModels.clear(); // 2 be sure data is correct
 		this.notifyCollectionChanged();
 	}
 
@@ -91,7 +91,7 @@ public class CursorObservableCollection<T extends CursorRowModel>
 		// Check the cache first
 		if (mCachedRowModels.containsKey(position))
 			return mCachedRowModels.get(position);
-		
+
 		else{
 			mCursor.moveToPosition(position);
 			T row = newRowModel(mContext);
@@ -187,6 +187,7 @@ public class CursorObservableCollection<T extends CursorRowModel>
 		@Override
 		public void onChanged() {
 			cacheCursorRowCount();
+			mCachedRowModels.clear(); // 2 be sure data is correct
 			notifyCollectionChanged();
 		}
 	};

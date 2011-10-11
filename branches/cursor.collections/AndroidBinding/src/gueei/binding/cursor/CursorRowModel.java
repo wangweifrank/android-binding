@@ -3,40 +3,53 @@ package gueei.binding.cursor;
 import android.content.Context;
 import android.database.Cursor;
 
-public abstract class CursorRowModel {
-	public interface Factory<T extends CursorRowModel>{
+@Deprecated
+public abstract class CursorRowModel implements IRowModel {
+	@Deprecated
+	public interface Factory<T extends CursorRowModel> {
 		public T createRowModel(Context context);
 	}
-	
-	private Context context;
-	private Cursor cursor;
 
-	// rowId or something unique for cursors row set
-	public long getId(long defaultId) {
-		return defaultId;
-	}
+	private Context context;
+	private Cursor  cursor;
+
 	public Cursor getCursor() {
 		return cursor;
 	}
 
+	@Deprecated
 	void setCursor(Cursor cursor) {
 		this.cursor = cursor;
 	}
 
-	public CursorRowModel(){}
+	@Deprecated
+	public CursorRowModel() {}
 
+	@Deprecated
 	public Context getContext() {
 		return context;
 	}
 
+	@Deprecated
 	public void setContext(Context context) {
 		this.context = context;
 	}
-	
+
 	@Deprecated
-	public void onLoad(int position){}
-	
-	public void onDisplay(){}
-	
-	public void onHide(){}
+	public void onLoad(int position) {}
+
+	// rowId or something unique for cursors row set
+	@Override
+	public long getId(int proposedId) {
+		return proposedId;
+	}
+
+	@Override
+	public void onDisplay() {}
+
+	@Override
+	public void onHide() {}
+
+	@Override
+	public void onInitializeFromDS() {}
 }

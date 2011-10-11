@@ -1,5 +1,6 @@
 package gueei.binding.test;
 
+import gueei.binding.BindingSyntaxResolver;
 import gueei.binding.IObservable;
 import gueei.binding.InnerFieldObservable;
 import gueei.binding.Observable;
@@ -8,6 +9,8 @@ import gueei.binding.observables.StringObservable;
 
 import java.util.ArrayList;
 import java.util.Collection;
+
+import junit.framework.Assert;
 
 import android.test.AndroidTestCase;
 
@@ -91,6 +94,15 @@ public class InnerFieldObservableTest extends AndroidTestCase {
 		assertEquals("hello", ifo.get());
 	}
 	
+	public void testSyntaxResolver(){
+		IObservable obs = BindingSyntaxResolver
+				.constructObservableFromStatement(
+						getContext(), "TestObservable.TESTB.TESTC.STRINGC", this);
+		assertNotNull(obs);
+		assertEquals(String.class, obs.getType());
+		obs.set("hello");
+		assertEquals("hello", obs.get());
+	}
 	
 	public final Observable<TestClassA> TestObservable =
 			new Observable<TestClassA>(TestClassA.class, new TestClassA());

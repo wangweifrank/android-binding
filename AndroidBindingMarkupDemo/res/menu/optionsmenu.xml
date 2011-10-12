@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:binding="http://www.gueei.com/android-binding/"
+>
+	<item android:id="@+id/button1"
+		android:title="Enabled Binding"
+		binding:enabled="BrowserVisible"
+	/>
+	<item android:id="@+id/button2"
+		android:title="Icon Binding"
+		binding:onClick="ARG(SubMenuClick,'icon binding clicked')"
+		binding:icon="IF(BrowserVisible,@drawable/ic_menu_happy,@drawable/ic_menu_sad)"
+	/>
+	<item android:id="@+id/browser_visibility"
+        binding:title="IF(BrowserVisible, 'Hide group', 'Show group')"
+        binding:onClick="ToggleBrowser"
+        />
+    <group android:id="@+id/browser"
+    	binding:visible="BrowserVisible">
+        <item android:id="@+id/refresh"
+            android:title="Refresh" />
+        <item android:id="@+id/bookmark"
+            android:title="Bookmark" />
+    </group>
+   <item android:id="@+id/submenu" android:title="Submenu">
+        <menu>        
+            <item android:id="@+id/happy" 
+                android:title="Happy"
+                binding:onClick="ARG(SubMenuClick,'happy')"
+                />
+            <item android:id="@+id/neutral"
+                android:title="Neutral"
+                binding:onClick="ARG(SubMenuClick,'netural')"
+                />
+            <item android:id="@+id/sad"
+                android:title="Sad"
+                binding:onClick="ARG(SubMenuClick,'sad')"
+                />
+        </menu>
+    </item>
+</menu>

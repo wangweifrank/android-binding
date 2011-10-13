@@ -202,8 +202,10 @@ public class BindingSyntaxResolver {
 
 		if (fieldName.contains(".")){
 			InnerFieldObservable ifo = new InnerFieldObservable(fieldName);
-			ifo.createNodes(model);
-			return ifo;
+			if (ifo.createNodes(model))
+				return ifo;
+			
+			return null;
 		}
 		
 		Object rawField = getFieldForModel(fieldName, model);

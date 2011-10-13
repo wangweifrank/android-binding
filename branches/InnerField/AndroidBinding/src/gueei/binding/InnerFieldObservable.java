@@ -53,8 +53,14 @@ public class InnerFieldObservable<T> implements IObservable<T> {
 		mFieldPath = fieldPath;
 	}
 
+	/**
+	 * Initialize the IFO with the provided view model
+	 * 
+	 * @param viewModel
+	 * @return true if successful, false if cannot associate with the view model
+	 */
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public void createNodes(Object viewModel){
+	public boolean createNodes(Object viewModel){
 		if(mObservable!=null)
 			mObservable.unsubscribe(valueObserver);
 		
@@ -71,6 +77,8 @@ public class InnerFieldObservable<T> implements IObservable<T> {
 		}
 		
 		Object field = BindingSyntaxResolver.getFieldForModel(fieldName, viewModel);
+		if (field==null) return false;
+		
 		if (field instanceof IObservable){
 			mObservable = (IObservable)field;
 		}else{
@@ -81,6 +89,8 @@ public class InnerFieldObservable<T> implements IObservable<T> {
 		
 		if(dot>0)
 			createChildNodes(mObservable.get());
+		
+		return true;
 	}
 	
 	public void createChildNodes(Object value){

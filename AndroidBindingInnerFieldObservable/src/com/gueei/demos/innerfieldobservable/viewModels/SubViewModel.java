@@ -6,7 +6,7 @@ import gueei.binding.observables.StringObservable;
 import android.view.View;
 
 public class SubViewModel {	
-	private static int i=0;
+	private int i=0;
 	public final StringObservable SubViewModelString = new StringObservable("SubViewModelString");
 	public final Observable<SubSubViewModel> SubSubViewModel = new Observable<SubSubViewModel>(SubSubViewModel.class, new SubSubViewModel());
 	

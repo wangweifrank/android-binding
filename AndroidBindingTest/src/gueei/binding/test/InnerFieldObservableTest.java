@@ -72,7 +72,26 @@ public class InnerFieldObservableTest extends AndroidTestCase {
 		TestObservable.set(new TestClassA());
 		assertEquals("test", ifo.get());
 	}
+	
+	// This is getting complicated
+	public void testInnerField_OA_OB_OC_OD_setB_UpdateC_And_D(){
+		InnerFieldObservable<?> ifo = new InnerFieldObservable("TestObservable.TESTB.TESTC.STRINGC");
+		ifo.createNodes(this);
+		assertEquals("test", ifo.get());
+		ifo._setObject("hello", new ArrayList<Object>());
+		assertEquals("hello", ifo.get());
 		
+		// Now modify B to see if it works
+		TestObservable.get().TESTB.set(new TestClassB());
+		assertEquals("test", ifo.get());
+		ifo._setObject("hello", new ArrayList<Object>());
+		assertEquals("hello", ifo.get());
+		
+		// Now modify A to see
+		TestObservable.set(new TestClassA());
+		assertEquals("test", ifo.get());
+	}	
+	
 	public void testInnerField_Notification_OA_OB_OC(){
 		InnerFieldObservable<String> ifo = new InnerFieldObservable("TestObservable.TESTB.STRINGB");
 		ifo.createNodes(this);

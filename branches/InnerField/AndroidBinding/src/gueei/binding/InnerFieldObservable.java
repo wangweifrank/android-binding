@@ -31,7 +31,7 @@ public class InnerFieldObservable<T> implements IObservable<T> {
 				Collection<Object> initiators) {
 			if (initiators.contains(InnerFieldObservable.this)) return;
 			// Has child nodes
-			if (mChild!=null){
+			if (mFieldPath.indexOf(".")>0){
 				createChildNodes(prop.get());
 			}
 			notifyChanged(initiators);

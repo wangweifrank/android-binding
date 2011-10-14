@@ -33,10 +33,8 @@ public class InnerFieldObservable<T> implements IObservable<T> {
 			// Has child nodes
 			if (mChild!=null){
 				createChildNodes(prop.get());
-			// No child nodes
-			}else{
-				notifyChanged(initiators);
 			}
+			notifyChanged(initiators);
 		}
 	};
 	
@@ -64,10 +62,6 @@ public class InnerFieldObservable<T> implements IObservable<T> {
 		if(mObservable!=null)
 			mObservable.unsubscribe(valueObserver);
 		
-		if(mChild!=null)
-			mChild.unsubscribe(childObserver);
-		mChild = null;
-		
 		int dot = mFieldPath.indexOf(".");
 		
 		String fieldName = mFieldPath;
@@ -94,6 +88,10 @@ public class InnerFieldObservable<T> implements IObservable<T> {
 	}
 	
 	public void createChildNodes(Object value){
+		if(mChild!=null)
+			mChild.unsubscribe(childObserver);
+		mChild = null;
+
 		if (value==null) return;
 		
 		String subPath = 

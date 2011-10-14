@@ -47,7 +47,9 @@ public class CursorCollection<T extends IRowModel> extends ObservableCollection 
 		initFieldDataFromModel();
 		if (null != cursor) {
 			cursor.registerDataSetObserver(mCursorDataSetObserver);
+			mCursorDataSetObserver.onChanged();
 		}
+
 	}
 
 	public void setCursor(Cursor cursor) {

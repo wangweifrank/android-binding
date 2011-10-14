@@ -52,8 +52,8 @@ public class DependantSpinnersWithCursorSource {
 					"content://com.gueei.demos/details/master/" + ((ItemRowModel) MasterSelected.get()).Id.get());
 			Cursor cursor = mContext.getContentResolver().query(uri, sProjection, null, null, null);
 			((Activity) mContext).startManagingCursor(cursor);
-			DetCursor.setCursor(cursor);
 			DetPosition.set(0);
+			DetCursor.setCursor(cursor);
 		}
 	};
 	public TrackedCursorCollection<GroupRowModel> Groups;
@@ -68,7 +68,6 @@ public class DependantSpinnersWithCursorSource {
 		MasterCursor.setCursor(masterCursor);
 		activity.startManagingCursor(masterCursor);
 		DetCursor = new TrackedCursorCollection<ItemRowModel>(ItemRowModel.class);
-		DetCursor.setCursor(null);
 		DetEnabled = new DependentObservable<Boolean>(Boolean.class, MasterPosition) {
 			@Override
 			public Boolean calculateValue(Object... args) throws Exception {

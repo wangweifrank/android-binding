@@ -6,7 +6,7 @@ package gueei.binding.cursor;
  * Time: 21:05
  */
 public class RowModel implements IRowModel {
-	@Override public void onInitializeFromDS() {}
+	@Override public void onInitialize() {}
 
 	@Override public long getId(int proposedId) {
 		return proposedId;

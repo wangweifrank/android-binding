@@ -68,7 +68,6 @@ public class DependantSpinnersWithCursorSource {
 		MasterCursor.setCursor(masterCursor);
 		activity.startManagingCursor(masterCursor);
 		DetCursor = new TrackedCursorCollection<ItemRowModel>(ItemRowModel.class);
-		DetCursor.setCursor(null);
 		DetEnabled = new DependentObservable<Boolean>(Boolean.class, MasterPosition) {
 			@Override
 			public Boolean calculateValue(Object... args) throws Exception {

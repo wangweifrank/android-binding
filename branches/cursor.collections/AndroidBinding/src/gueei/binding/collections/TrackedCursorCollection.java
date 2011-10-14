@@ -33,16 +33,22 @@ public class TrackedCursorCollection<T extends IRowModel> extends CursorCollecti
 
 	@Override
 	public void setCursor(Cursor cursor) {
-		Cursor oldCursor = mDataSource.getCursor();
-		if (null != oldCursor) {
+		if (mCursor == cursor) {
+			// cursor is the same, nothing to do
+			return;
+		}
+		if (null != mCursor) {
+			// unregister content observer related to previous cursor
 			mCursorContentObserver.unregisterUri();
-			oldCursor.unregisterDataSetObserver(mCursorDataSetObserver);
+			// unregister previous cursor listener
+			mCursor.unregisterDataSetObserver(mCursorDataSetObserver);
 		}
-		mDataSource.setCursor(cursor);
-		if (null != cursor) {
-			cursor.registerDataSetObserver(mCursorDataSetObserver);
+		mCursor = cursor;
+		if (null != mCursor) {
+			// register listener to new cursor
+			mCursor.registerDataSetObserver(mCursorDataSetObserver);
 		}
-		this.notifyCollectionChanged();
+		mCursorDataSetObserver.onChanged(); // imitate changes
 	}
 
 	/**
@@ -51,21 +57,25 @@ public class TrackedCursorCollection<T extends IRowModel> extends CursorCollecti
 	 * sometimes we need to know about data changes
 	 * Not sure if we have to track more than one uri (!!!)
 	 *
-	 * @param context			  Context to register for data changes
-	 * @param uri				  The URI to watch for changes. This can be a specific row URI, or a base URI
+	 * @param context              Context to register for data changes
+	 * @param uri                  The URI to watch for changes. This can be a specific row URI, or a base URI
 	 *                             for a whole class of content.
-	 * @param notifyForDescendents If <code>true</code> changes to URIs beginning with <code>uri</code>
+	 * @param notifyForDescendants If <code>true</code> changes to URIs beginning with <code>uri</code>
 	 *                             will also cause notifications to be sent. If <code>false</code> only changes to
 	 *                             the exact URI
 	 *                             specified by <em>uri</em> will cause notifications to be sent. If true,
 	 *                             than any URI values
 	 *                             at or below the specified URI will also trigger a match.
 	 */
-	public void setContentObserverTrackingUri(Context context, Uri uri, boolean notifyForDescendents) {
+	public void setContentObserverTrackingUri(Context context, Uri uri, boolean notifyForDescendants) {
 		mCursorContentObserver.unregisterUri();
 		if (null != uri) {
-			mCursorContentObserver.registerUri(context, uri, notifyForDescendents);
+			mCursorContentObserver.registerUri(context, uri, notifyForDescendants);
 		}
+	}
+
+	public void setContentObserverTrackingUri(Context context, Uri uri) {
+		setContentObserverTrackingUri(context, uri, false);
 	}
 
 	protected class CollectionContentObserver extends ContentObserver {
@@ -75,13 +85,15 @@ public class TrackedCursorCollection<T extends IRowModel> extends CursorCollecti
 
 		@Override
 		public void onChange(boolean selfChange) {
-			mDataSource.requery();
+			if (mCursor != null) {
+				mCursor.requery(); // notifyCollectionChanged will be fired by super.mCursorDataSetObserver.onChange
+			}
 		}
 
-		public void registerUri(Context context, Uri uri, boolean notifyForDescendents) {
+		public void registerUri(Context context, Uri uri, boolean notifyForDescendants) {
 			unregisterUri();
 			if (null != (mContext = context)) {
-				mContext.getContentResolver().registerContentObserver(uri, notifyForDescendents, this);
+				mContext.getContentResolver().registerContentObserver(uri, notifyForDescendants, this);
 			}
 		}
 
@@ -99,10 +111,8 @@ public class TrackedCursorCollection<T extends IRowModel> extends CursorCollecti
 	protected void finalize() throws Throwable {
 		try {
 			mCursorContentObserver.unregisterUri();
-		}
-		catch (Exception ignored) {
-		}
-		finally {
+		} catch (Exception ignored) {
+		} finally {
 			super.finalize();
 		}
 	}

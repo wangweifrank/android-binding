@@ -51,5 +51,5 @@ public abstract class CursorRowModel implements IRowModel {
 	public void onHide() {}
 
 	@Override
-	public void onInitializeFromDS() {}
+	public void onInitialize() {}
 }

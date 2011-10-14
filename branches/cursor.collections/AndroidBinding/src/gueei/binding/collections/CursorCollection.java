@@ -2,9 +2,14 @@ package gueei.binding.collections;
 
 import android.database.Cursor;
 import android.database.DataSetObserver;
+import gueei.binding.cursor.CursorField;
 import gueei.binding.cursor.IRowModel;
 import gueei.binding.cursor.IRowModelFactory;
 import gueei.binding.cursor.RowModelFactory;
+import gueei.binding.utility.CacheHashMap;
+
+import java.lang.reflect.Field;
+import java.util.ArrayList;
 
 /**
  * User: =ra=
@@ -12,7 +17,15 @@ import gueei.binding.cursor.RowModelFactory;
  * Time: 11:58
  */
 public class CursorCollection<T extends IRowModel> extends ObservableCollection implements LazyLoadCollection {
-	protected IRowModelFactory mDataSource = null;
+	//
+	public static interface ICollectionCache<ElType> {
+		public static final int DEFAULT_SIZE = 50;
+		public void clear(); // remove all items from cache
+		public void put(int key, ElType value);
+		public ElType get(int key);
+		public int size();
+		public void reSize(int newSize);
+	}
 
 	public CursorCollection(Class<T> rowModelType) {
 		this(rowModelType, new RowModelFactory(rowModelType), null);
@@ -27,47 +40,60 @@ public class CursorCollection<T extends IRowModel> extends ObservableCollection 
 	}
 
 	public CursorCollection(Class<T> rowModelType, IRowModelFactory factory, Cursor cursor) {
-		mDataSource = factory;
-		mDataSource.setCursor(cursor);
+		mRowModelType = rowModelType;
+		mFactory = factory;
+		mCursor = cursor;
+		mCollectionCache = new DefaultCache();
+		initFieldDataFromModel();
 		if (null != cursor) {
 			cursor.registerDataSetObserver(mCursorDataSetObserver);
 		}
 	}
 
 	public void setCursor(Cursor cursor) {
-		Cursor oldCursor = mDataSource.getCursor();
-		if (null != oldCursor) {
-			oldCursor.unregisterDataSetObserver(mCursorDataSetObserver);
+		if (mCursor == cursor) {
+			// cursor is the same, nothing to do
+			return;
 		}
-		mDataSource.setCursor(cursor);
-		if (null != cursor) {
-			cursor.registerDataSetObserver(mCursorDataSetObserver);
+		if (null != mCursor) {
+			// unregister previous cursor listener
+			mCursor.unregisterDataSetObserver(mCursorDataSetObserver);
 		}
-		this.notifyCollectionChanged();
+		mCursor = cursor;
+		if (null != mCursor) {
+			// register listener to new cursor
+			mCursor.registerDataSetObserver(mCursorDataSetObserver);
+		}
+		mCursorDataSetObserver.onChanged(); // imitate changes
 	}
 
 	public Cursor getCursor() {
-		return mDataSource.getCursor();
+		return mCursor;
 	}
 
 	public T getItem(int position) {
-		return mDataSource.get(position);
+		// Check the cache first
+		T row = mCollectionCache.get(position);
+		if (null == row) { // no such position row cached
+			mCursor.moveToPosition(position);
+			row = createRowModel();
+			mCollectionCache.put(position, row);
+		}
+		return row;
 	}
 
-	@SuppressWarnings({"unchecked"})
 	public Class<T> getComponentType() {
-		return mDataSource.getModelType();
+		return mRowModelType;
 	}
 
 	public int size() {
-		// TODO cache size ...
-		return mDataSource.size();
+		return mCursorRowsCount;
 	}
 
 	@Override
 	public long getItemId(int position) {
-		if (position < size()) {
-			return mDataSource.get(position).getId(position);
+		if (0 < mCursorRowsCount) {
+			return getItem(position).getId(position);
 		}
 		return position;
 	}
@@ -75,46 +101,120 @@ public class CursorCollection<T extends IRowModel> extends ObservableCollection 
 	public void onLoad(int position) {
 	}
 
-	/**
-	 * Really I don't believe someone cache open cursors in content provider and than
-	 * notifies them (cursors) if data changes
-	 * but, if cursor is a SQLite cursor directly obtained from a db ...
-	 */
-	protected DataSetObserver mCursorDataSetObserver = new DataSetObserver() {
-		@Override
-		public void onChanged() {
-			notifyCollectionChanged();
+	protected void requery() {
+		// to be sure data is correct
+		if (null != mCursor) {
+			mCursor.requery(); // fires mCursorDataSetObserver.onChanged()
 		}
-	};
+		else {
+			mCursorDataSetObserver.onChanged();// fire manually
+		}
+	}
 
-	protected void finalize() throws Throwable {
-		try {
-			Cursor oldCursor = mDataSource.getCursor();
-			if (null != oldCursor) {
-				oldCursor.unregisterDataSetObserver(mCursorDataSetObserver);
-				if (!oldCursor.isClosed()) {
-					oldCursor.close();
-				}
+	protected void reInitCacheCursorRowCount() {
+		mCollectionCache.clear();
+		mCursorRowsCount = (null == mCursor) ? 0 : mCursor.getCount();
+	}
+
+	protected void initFieldDataFromModel() {
+		for (Field f : mRowModelType.getFields()) {
+			if (!CursorField.class.isAssignableFrom(f.getType())) {
+				continue;
+			}
+			mCursorFields.add(f);
+		}
+	}
+
+	protected T createRowModel() {
+		T rowModel = mFactory.createInstance();
+		for (Field f : mCursorFields) {
+			try {
+				((CursorField<?>) f.get(rowModel)).fillValue(mCursor);
+			} catch (Exception ignored) {
 			}
 		}
-		catch (Exception ignored) {
-		}
-		finally {
-			super.finalize();
-		}
+		rowModel.onInitialize();
+		return rowModel;
 	}
 
 	@Override
 	public void onDisplay(int position) {
-		if (position < size()) {
-			mDataSource.get(position).onDisplay();
-		}
+		getItem(position).onDisplay();
 	}
 
 	@Override
 	public void onHide(int position) {
-		if (position < size() && mDataSource.isModelCached(position)) {
-			mDataSource.get(position).onHide();
+		T row = mCollectionCache.get(position);
+		if (null != row) {
+			row.onHide();
+		}
+	}
+
+	protected void finalize() throws Throwable {
+		try {
+			mCursorRowsCount = 0;
+			if (null != mCursor) {
+				mCursor.unregisterDataSetObserver(mCursorDataSetObserver);
+				if (!mCursor.isClosed()) {
+					mCursor.close();
+				}
+				mCursor = null;
+			}
+		} catch (Exception ignored) {
+		} finally {
+			super.finalize();
+		}
+	}
+
+	protected final Class<T>         mRowModelType;
+	protected final IRowModelFactory mFactory;
+	protected final ArrayList<Field> mCursorFields = new ArrayList<Field>();
+	protected int                 mCursorRowsCount;
+	protected Cursor              mCursor;
+	// Hold the cached row models
+	protected ICollectionCache<T> mCollectionCache;
+	protected final DataSetObserver mCursorDataSetObserver = new DataSetObserver() {
+		@Override
+		public void onChanged() {
+			reInitCacheCursorRowCount();
+			notifyCollectionChanged();
+		}
+	};
+
+	private class DefaultCache implements ICollectionCache<T> {
+		private CacheHashMap<Integer, T> mCache;
+
+		public DefaultCache() {
+			mCache = new CacheHashMap<Integer, T>(DEFAULT_SIZE);
+		}
+
+		public DefaultCache(int cacheSize) {
+			mCache = new CacheHashMap<Integer, T>(cacheSize);
+		}
+
+		@Override
+		public void clear() {
+			mCache.clear();
+		}
+
+		@Override
+		public void put(int key, T value) {
+			mCache.put((Integer) key, value);
+		}
+
+		@Override
+		public T get(int key) {
+			return mCache.get((Integer) key);
+		}
+
+		@Override
+		public int size() {
+			return mCache.size();
+		}
+
+		@Override
+		public void reSize(int newSize) {
+			mCache.reSize(newSize);
 		}
 	}
 }

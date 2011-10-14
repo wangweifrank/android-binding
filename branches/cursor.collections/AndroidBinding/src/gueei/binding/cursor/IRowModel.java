@@ -7,9 +7,9 @@ package gueei.binding.cursor;
  */
 public interface IRowModel {
 	/**
-	 * The main purpose of onInitializeFromDS is to perform initialization after data is read from source Data Set
+	 * The main purpose of onInitialize is to perform initialization after data is read from source Data Set
 	 */
-	void onInitializeFromDS();
+	void onInitialize();
 	/**
 	 * Returns unique record identifier in source Data Set
 	 *

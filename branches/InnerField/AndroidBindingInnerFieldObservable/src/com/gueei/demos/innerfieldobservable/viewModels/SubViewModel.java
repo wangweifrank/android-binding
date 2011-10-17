@@ -3,6 +3,7 @@ package com.gueei.demos.innerfieldobservable.viewModels;
 import gueei.binding.Command;
 import gueei.binding.Observable;
 import gueei.binding.observables.StringObservable;
+import android.util.Log;
 import android.view.View;
 
 public class SubViewModel {	
@@ -15,4 +16,8 @@ public class SubViewModel {
 			SubViewModelString.set(SubViewModelString.get() + (++i));
 		}
 	};
+	
+	protected void finalize() {
+		Log.v("innerField", "SubViewModel.finalize");
+	}
 }

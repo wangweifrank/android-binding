@@ -18,4 +18,5 @@ public class AndroidBindingInnerFieldObservableActivity extends BindingActivity 
     }
     
 	public final StringObservable HelloWorld = new StringObservable("hello world");
+	public final StringObservable NullString = new StringObservable(null);
 }

@@ -13,6 +13,8 @@ public class AndroidBindingInnerFieldObservableActivity extends BindingActivity 
         super.onCreate(savedInstanceState);
 		Binder.init(this.getApplication());
 		this.setAndBindRootView(R.layout.main, this, new RootViewModel());
+		
+		System.gc();
     }
     
 	public final StringObservable HelloWorld = new StringObservable("hello world");

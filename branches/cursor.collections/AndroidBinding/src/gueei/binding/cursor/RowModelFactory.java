@@ -7,7 +7,7 @@ import gueei.binding.BindingLog;
  * Date: 08.10.11
  * Time: 12:12
  */
-public class RowModelFactory<T extends IRowModel> implements IRowModelFactory {
+public class RowModelFactory<T extends IRowModel> implements IRowModelFactory<T> {
 	private final Class<T> mRowModelType;
 
 	public RowModelFactory(Class<T> rowModelType) {

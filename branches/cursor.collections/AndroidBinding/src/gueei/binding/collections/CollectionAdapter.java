@@ -195,6 +195,10 @@ public class CollectionAdapter extends BaseAdapter
 				}
 			}
 		}
+		
+		if (total!=lastTotal){
+			((LazyLoadCollection)mCollection).setVisibleChildrenCount(this, total);
+		}
 		lastTotal = total;
 		lastDisplayingFirst = first;
 	}

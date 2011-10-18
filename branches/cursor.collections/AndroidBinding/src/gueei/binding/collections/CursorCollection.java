@@ -10,40 +10,56 @@ import gueei.binding.utility.CacheHashMap;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.WeakHashMap;
 
 /**
  * User: =ra=
  * Date: 08.10.11
  * Time: 11:58
  */
-public class CursorCollection<T extends IRowModel> extends ObservableCollection implements LazyLoadCollection {
+public class CursorCollection<T extends IRowModel> extends ObservableCollection<T> implements LazyLoadCollection {
 	//
-	public static interface ICollectionCache<ElType> {
-		public static final int DEFAULT_SIZE = 50;
+	public static interface ICursorCacheManager<ElType> {
 		public void clear(); // remove all items from cache
 		public void put(int key, ElType value);
 		public ElType get(int key);
-		public int size();
-		public void reSize(int newSize);
+		public int getSize();
+		
+		/**
+		 * Hint the Cache Manager the desire cache size needed, 
+		 * Size is not compulsory and implementations can choose it's own strategy to use this
+		 * Most probably this size is the total visible item on screen
+		 * @param originator
+		 * @param total
+		 */
+		public void hintCacheSize(Object originator, int total);
 	}
 
 	public CursorCollection(Class<T> rowModelType) {
-		this(rowModelType, new RowModelFactory(rowModelType), null);
+		this(rowModelType, null, null, null);
 	}
 
 	public CursorCollection(Class<T> rowModelType, Cursor cursor) {
-		this(rowModelType, new RowModelFactory(rowModelType), cursor);
+		this(rowModelType, null, null, cursor);
 	}
 
-	public CursorCollection(Class<T> rowModelType, IRowModelFactory factory) {
-		this(rowModelType, factory, null);
+	public CursorCollection(Class<T> rowModelType, IRowModelFactory<T> factory) {
+		this(rowModelType, factory, null, null);
 	}
 
-	public CursorCollection(Class<T> rowModelType, IRowModelFactory factory, Cursor cursor) {
+	public CursorCollection(Class<T> rowModelType, IRowModelFactory<T> factory, 
+			ICursorCacheManager<T> cacheManager) {
+		this(rowModelType, factory, cacheManager, null);
+	}
+	
+	public CursorCollection(Class<T> rowModelType, IRowModelFactory<T> factory, 
+			ICursorCacheManager<T> cacheManager, Cursor cursor) {
 		mRowModelType = rowModelType;
-		mFactory = factory;
+		mFactory = factory == null ?
+				new RowModelFactory<T>(rowModelType) : factory;
 		mCursor = cursor;
-		mCollectionCache = new DefaultCache();
+		mCacheManager = cacheManager == null ? 
+				new DefaultCursorCacheManager<T>() : cacheManager;
 		initFieldDataFromModel();
 		if (null != cursor) {
 			cursor.registerDataSetObserver(mCursorDataSetObserver);
@@ -75,11 +91,11 @@ public class CursorCollection<T extends IRowModel> extends ObservableCollection 
 
 	public T getItem(int position) {
 		// Check the cache first
-		T row = mCollectionCache.get(position);
+		T row = mCacheManager.get(position);
 		if (null == row) { // no such position row cached
 			mCursor.moveToPosition(position);
 			row = createRowModel();
-			mCollectionCache.put(position, row);
+			mCacheManager.put(position, row);
 		}
 		return row;
 	}
@@ -114,7 +130,7 @@ public class CursorCollection<T extends IRowModel> extends ObservableCollection 
 	}
 
 	protected void reInitCacheCursorRowCount() {
-		mCollectionCache.clear();
+		mCacheManager.clear();
 		mCursorRowsCount = (null == mCursor) ? 0 : mCursor.getCount();
 	}
 
@@ -146,7 +162,7 @@ public class CursorCollection<T extends IRowModel> extends ObservableCollection 
 
 	@Override
 	public void onHide(int position) {
-		T row = mCollectionCache.get(position);
+		T row = mCacheManager.get(position);
 		if (null != row) {
 			row.onHide();
 		}
@@ -169,12 +185,12 @@ public class CursorCollection<T extends IRowModel> extends ObservableCollection 
 	}
 
 	protected final Class<T>         mRowModelType;
-	protected final IRowModelFactory mFactory;
+	protected final IRowModelFactory<T> mFactory;
 	protected final ArrayList<Field> mCursorFields = new ArrayList<Field>();
 	protected int                 mCursorRowsCount;
 	protected Cursor              mCursor;
 	// Hold the cached row models
-	protected ICollectionCache<T> mCollectionCache;
+	protected ICursorCacheManager<T> mCacheManager;
 	protected final DataSetObserver mCursorDataSetObserver = new DataSetObserver() {
 		@Override
 		public void onChanged() {
@@ -183,15 +199,32 @@ public class CursorCollection<T extends IRowModel> extends ObservableCollection 
 		}
 	};
 
-	private class DefaultCache implements ICollectionCache<T> {
+	/**
+	 * Default Implementation of CursorCacheManager.
+	 * This will grow according to the number of widget accessing it, where
+	 * 		size = (Sum of Visible Item on Each widget) * Extra Percentage
+	 * and size is always larger than 10
+	 * @author andy
+	 *
+	 * @param <T>
+	 */
+	public static class DefaultCursorCacheManager<T> implements ICursorCacheManager<T> {
 		private CacheHashMap<Integer, T> mCache;
+		
+		private WeakHashMap<Object, Integer> cachingOriginators = 
+				new WeakHashMap<Object, Integer>();
 
-		public DefaultCache() {
-			mCache = new CacheHashMap<Integer, T>(DEFAULT_SIZE);
+		private int mMinSize = 10;
+		private float mExtra = 1.2f; 
+
+		public DefaultCursorCacheManager() {
+			mCache = new CacheHashMap<Integer, T>(10);
 		}
 
-		public DefaultCache(int cacheSize) {
-			mCache = new CacheHashMap<Integer, T>(cacheSize);
+		public DefaultCursorCacheManager(int minSize, float extra) {
+			mCache = new CacheHashMap<Integer, T>((int)(minSize * extra));
+			mMinSize = minSize > 0 ? minSize : mMinSize;
+			mExtra = extra > 1.0 ? extra: mExtra;
 		}
 
 		@Override
@@ -210,13 +243,26 @@ public class CursorCollection<T extends IRowModel> extends ObservableCollection 
 		}
 
 		@Override
-		public int size() {
+		public int getSize() {
 			return mCache.size();
 		}
 
 		@Override
-		public void reSize(int newSize) {
-			mCache.reSize(newSize);
+		public void hintCacheSize(Object originator, int total) {
+			cachingOriginators.put(originator, total);
+			int size = 0;
+			for(Integer t: cachingOriginators.values()){
+				size += t;
+			}
+			if (size>mMinSize){
+				mMinSize = size;
+			}
+			mCache.reSize((int)(mMinSize * mExtra));
 		}
+	}
+
+	@Override
+	public void setVisibleChildrenCount(Object setter, int total) {
+		mCacheManager.hintCacheSize(setter, total);
 	}
 }

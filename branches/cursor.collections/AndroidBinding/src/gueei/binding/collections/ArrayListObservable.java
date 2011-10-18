@@ -213,4 +213,7 @@ public class ArrayListObservable<T>
 
 	public void onHide(int position) {
 	}
+
+	public void setVisibleChildrenCount(Object setter, int total) {
+	}
 }

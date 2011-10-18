@@ -1,13 +1,12 @@
 package gueei.binding.collections;
 
+import gueei.binding.cursor.IRowModel;
+import gueei.binding.cursor.IRowModelFactory;
 import android.content.Context;
 import android.database.ContentObserver;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Handler;
-import gueei.binding.cursor.IRowModel;
-import gueei.binding.cursor.IRowModelFactory;
-import gueei.binding.cursor.RowModelFactory;
 
 /**
  * User: =ra=
@@ -15,20 +14,32 @@ import gueei.binding.cursor.RowModelFactory;
  * Time: 12:05
  */
 public class TrackedCursorCollection<T extends IRowModel> extends CursorCollection<T> {
-	public TrackedCursorCollection(Class<T> rowModelType) {
-		this(rowModelType, new RowModelFactory(rowModelType), null);
+	public TrackedCursorCollection(
+			Class<T> rowModelType,
+			IRowModelFactory<T> factory,
+			gueei.binding.collections.CursorCollection.ICursorCacheManager<T> cacheManager,
+			Cursor cursor) {
+		super(rowModelType, factory, cacheManager, cursor);
+	}
+
+	public TrackedCursorCollection(
+			Class<T> rowModelType,
+			IRowModelFactory<T> factory,
+			gueei.binding.collections.CursorCollection.ICursorCacheManager<T> cacheManager) {
+		super(rowModelType, factory, cacheManager);
 	}
 
 	public TrackedCursorCollection(Class<T> rowModelType, Cursor cursor) {
-		this(rowModelType, new RowModelFactory(rowModelType), cursor);
+		super(rowModelType, cursor);
 	}
 
-	public TrackedCursorCollection(Class<T> rowModelType, IRowModelFactory factory) {
-		this(rowModelType, factory, null);
+	public TrackedCursorCollection(Class<T> rowModelType,
+			IRowModelFactory<T> factory) {
+		super(rowModelType, factory);
 	}
 
-	public TrackedCursorCollection(Class<T> rowModelType, IRowModelFactory factory, Cursor cursor) {
-		super(rowModelType, factory, cursor);
+	public TrackedCursorCollection(Class<T> rowModelType) {
+		super(rowModelType);
 	}
 
 	@Override

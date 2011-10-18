@@ -13,6 +13,7 @@ import java.util.HashMap;
  */
 public class CacheHashMap<K, V> extends HashMap<K, V> {
 	private static final long         serialVersionUID = 1L;
+	
 	private              ArrayList<K> keyList          = new ArrayList<K>();
 	private              int          mCacheSize       = 50;
 

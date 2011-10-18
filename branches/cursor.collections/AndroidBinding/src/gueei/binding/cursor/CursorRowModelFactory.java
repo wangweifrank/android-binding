@@ -9,17 +9,17 @@ import gueei.binding.BindingLog;
  * Time: 23:23
  */
 @Deprecated // Backward compatibility
-public class CursorRowModelFactory implements IRowModelFactory {
+public class CursorRowModelFactory<T extends CursorRowModel> implements IRowModelFactory<T> {
 	private final Context                         mContext;
-	private final Class<? extends CursorRowModel> mRowModelType;
+	private final Class<T> mRowModelType;
 
-	public CursorRowModelFactory(Class<? extends CursorRowModel> rowModelType, Context context) {
+	public CursorRowModelFactory(Class<T> rowModelType, Context context) {
 		mRowModelType = rowModelType;
 		mContext = context;
 	}
 
 	@Override
-	public <T extends IRowModel> T createInstance() {
+	public T createInstance() {
 		try {
 			//noinspection unchecked
 			CursorRowModel model = mRowModelType.newInstance();

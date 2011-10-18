@@ -1,19 +1,19 @@
 package com.gueei.demos.markupDemo.viewModels;
 
+import gueei.binding.Command;
+import gueei.binding.DependentObservable;
+import gueei.binding.Observable;
+import gueei.binding.collections.TrackedCursorCollection;
+import gueei.binding.cursor.IdField;
+import gueei.binding.cursor.IntegerField;
+import gueei.binding.cursor.RowModel;
+import gueei.binding.cursor.StringField;
+import gueei.binding.observables.IntegerObservable;
 import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
-import gueei.binding.Command;
-import gueei.binding.DependentObservable;
-import gueei.binding.Observable;
-import gueei.binding.collections.TrackedCursorCollection;
-import gueei.binding.cursor.CursorRowModel;
-import gueei.binding.cursor.IdField;
-import gueei.binding.cursor.IntegerField;
-import gueei.binding.cursor.StringField;
-import gueei.binding.observables.IntegerObservable;
 
 /**
  * User: =ra=
@@ -86,7 +86,7 @@ public class DependantSpinnersWithCursorSource {
 	private final Context mContext;
 	private static final String[] sProjection = new String[]{"_ID", "Name"};
 
-	public static class ItemRowModel extends CursorRowModel {
+	public static class ItemRowModel extends RowModel {
 		public IdField     Id   = new IdField("_ID");
 		public StringField Name = new StringField("Name");
 
@@ -95,7 +95,7 @@ public class DependantSpinnersWithCursorSource {
 		}
 	}
 
-	public static class GroupRowModel extends CursorRowModel {
+	public static class GroupRowModel extends RowModel {
 		public IdField      Id            = new IdField("_ID");
 		public StringField  Name          = new StringField("Name");
 		public IntegerField SubItemsCount = new IntegerField("detailsCount");

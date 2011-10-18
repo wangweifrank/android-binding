@@ -9,13 +9,13 @@ import gueei.extensions.ILayoutLoadEvent;
 import android.os.Bundle;
 import android.view.View;
 
-public class AndroidBindingBindableFrameLayoutDemoActivity extends BindingActivity {
+public class SimpleDemoActivity extends BindingActivity {
     /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Binder.init(this.getApplication());
-		this.setAndBindRootView(R.layout.main, this);		
+		this.setAndBindRootView(R.layout.simple, this);		
     }
     
 	public final StringObservable HelloWorld = new StringObservable("hello world");	

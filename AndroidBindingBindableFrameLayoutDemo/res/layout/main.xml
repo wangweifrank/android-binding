@@ -3,61 +3,16 @@
 	xmlns:binding="http://www.gueei.com/android-binding/"
     android:orientation="vertical"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
+    android:layout_height="fill_parent"    
+    android:id="@+id/my_parent_id"
     >
-	<TextView  
-    	android:layout_width="fill_parent" 
-    	android:layout_height="wrap_content" 
-    	binding:text="HelloWorld"    	    
-    />
-    
-	<gueei.extensions.BindableFrameLayout
-		android:layout_width="fill_parent"
-	    android:layout_height="wrap_content"
-	    binding:backgroundColor="ARGB(80,80,80)"
-	    binding:layoutId="@layout/frame1"
-    />   
-    
-	<gueei.extensions.BindableFrameLayout
-		android:layout_width="fill_parent"
-	    android:layout_height="wrap_content"
-	    binding:backgroundColor="ARGB(80,80,80)"
-	    binding:layoutId="@layout/frame2"
-    />   
-    
-    <gueei.extensions.BindableFrameLayout
-		android:layout_width="fill_parent"
-	    android:layout_height="wrap_content"
-	    binding:backgroundColor="ARGB(80,80,80)"
-	    binding:layoutId="@layout/frame3"
-    />  
-    
-    <gueei.extensions.BindableFrameLayout
-		android:layout_width="fill_parent"
-	    android:layout_height="wrap_content"
-	    binding:backgroundColor="ARGB(80,80,80)"
-	    binding:onLoad="OnLoad"
-    /> 
-    
-	<TextView  
-    	android:layout_width="fill_parent" 
-    	android:layout_height="wrap_content" 
-    	android:text="This Layout can be toggled:"    	    
-    />
-    
-	<gueei.extensions.BindableFrameLayout
-		android:layout_width="fill_parent"
-	    android:layout_height="wrap_content"
-	    android:layout_margin="5dip"
-	    binding:backgroundColor="ARGB(80,80,80)"
-	    binding:layoutId="LayoutID"
-    />  
-    
+
     <Button
+    	android:layout_margin="20dip"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
-		android:text="Toggle Layout"
-		binding:onClick="ToggleLayout"
+		android:text="Simple Demo"
+		binding:onClick="SimpleDemo"
 	/>
      
 </LinearLayout>

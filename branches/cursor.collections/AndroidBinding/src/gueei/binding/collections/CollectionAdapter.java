@@ -1,5 +1,7 @@
 package gueei.binding.collections;
 
+import java.util.ArrayList;
+
 import gueei.binding.AttributeBinder;
 import gueei.binding.Binder;
 import gueei.binding.CollectionObserver;
@@ -9,6 +11,7 @@ import gueei.binding.utility.IModelReflector;
 import gueei.binding.viewAttributes.templates.Layout;
 import android.content.Context;
 import android.os.Handler;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
@@ -168,38 +171,28 @@ public class CollectionAdapter extends BaseAdapter
 	private int lastDisplayingFirst = 0, lastTotal = 0;
 	
 	public void onVisibleChildrenChanged(int first, int total) {
-		if (total<=0) return;
-		if (lastDisplayingFirst == first){
-			if (total==lastTotal) return;
-			if (lastTotal<total){
-				for(int i=first+lastTotal; i<first+total; i++){
-					((LazyLoadCollection)mCollection).onDisplay(i);
-				}
-			}
-		}else{
-			if (lastDisplayingFirst < first){
-				int offCount = first - lastDisplayingFirst;
-				for(int i=first+total-offCount; i<first+total; i++){
-					((LazyLoadCollection)mCollection).onDisplay(i);
-				}
-				for(int i=lastDisplayingFirst; i<lastDisplayingFirst + offCount; i++){
-					((LazyLoadCollection)mCollection).onHide(i);
-				}
+		if (lastTotal != total)
+			((LazyLoadCollection)mCollection).setVisibleChildrenCount(this, total);
+		
+		ArrayList<Integer> lastDisplaying = new ArrayList<Integer>();
+		for(int i=lastDisplayingFirst; i<lastDisplayingFirst+lastTotal; i++){
+			lastDisplaying.add(i);
+		}
+		
+		for(int i=first; i<first + total; i++){
+			int idx = lastDisplaying.indexOf(i);
+			if (idx>=0){
+				lastDisplaying.remove(idx);
 			}else{
-				int offCount = lastDisplayingFirst - first;
-				for(int i=first; i<first+offCount; i++){
-					((LazyLoadCollection)mCollection).onDisplay(i);
-				}
-				for(int i=first+total; i<lastDisplayingFirst+total; i++){
-					((LazyLoadCollection)mCollection).onHide(i);
-				}
+				((LazyLoadCollection)mCollection).onDisplay(i);
 			}
 		}
 		
-		if (total!=lastTotal){
-			((LazyLoadCollection)mCollection).setVisibleChildrenCount(this, total);
+		for(Integer i: lastDisplaying){
+			((LazyLoadCollection)mCollection).onHide(i);
 		}
-		lastTotal = total;
+		
 		lastDisplayingFirst = first;
+		lastTotal = total;
 	}
 }

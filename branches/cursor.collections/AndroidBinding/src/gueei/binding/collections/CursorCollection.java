@@ -2,6 +2,7 @@ package gueei.binding.collections;
 
 import android.database.Cursor;
 import android.database.DataSetObserver;
+import android.util.Log;
 import gueei.binding.cursor.CursorField;
 import gueei.binding.cursor.IRowModel;
 import gueei.binding.cursor.IRowModelFactory;
@@ -90,6 +91,9 @@ public class CursorCollection<T extends IRowModel> extends ObservableCollection<
 	}
 
 	public T getItem(int position) {
+		if (mCursor==null) return null;
+		Log.d("Binder", "Get Row model at: " + position + " cache: " + mCacheManager.getSize());
+
 		// Check the cache first
 		T row = mCacheManager.get(position);
 		if (null == row) { // no such position row cached
@@ -157,7 +161,9 @@ public class CursorCollection<T extends IRowModel> extends ObservableCollection<
 
 	@Override
 	public void onDisplay(int position) {
-		getItem(position).onDisplay();
+		T row = getItem(position);
+		if (row!=null)
+			row.onDisplay();
 	}
 
 	@Override
@@ -215,10 +221,10 @@ public class CursorCollection<T extends IRowModel> extends ObservableCollection<
 				new WeakHashMap<Object, Integer>();
 
 		private int mMinSize = 10;
-		private float mExtra = 1.2f; 
+		private float mExtra = 2.0f;
 
 		public DefaultCursorCacheManager() {
-			mCache = new CacheHashMap<Integer, T>(10);
+			mCache = new CacheHashMap<Integer, T>(mMinSize);
 		}
 
 		public DefaultCursorCacheManager(int minSize, float extra) {
@@ -254,10 +260,10 @@ public class CursorCollection<T extends IRowModel> extends ObservableCollection<
 			for(Integer t: cachingOriginators.values()){
 				size += t;
 			}
-			if (size>mMinSize){
-				mMinSize = size;
+			if (size<mMinSize){
+				size = mMinSize;
 			}
-			mCache.reSize((int)(mMinSize * mExtra));
+			mCache.reSize((int)(size * mExtra));
 		}
 	}
 

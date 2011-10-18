@@ -23,4 +23,11 @@ public class MainActivity extends BindingActivity {
 			MainActivity.this.startActivity(intent);
 		}
 	};
+	
+	public final Command WizardDemo = new Command(){
+		public void Invoke(View view, Object... args) {		
+			Intent intent = new Intent(MainActivity.this,WizardDemoActivity.class);
+			MainActivity.this.startActivity(intent);
+		}
+	};	
 }

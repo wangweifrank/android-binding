@@ -128,6 +128,9 @@ public class BindableFrameLayout extends FrameLayout implements IBindableView<Bi
 		refreshDrawableState();		
 	}
 
+	// TODO: add layout caching
+	// TODO: add a binding:useLayoutCaching="true" attribute
+	// TODO: add a transition manager
 	protected void setLayoutId(int layoutId) {
 		boolean needInitialBinding = false;
 		if( LayoutId == 0 || layoutId != 0)

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:binding="http://www.gueei.com/android-binding/"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"        
+    android:layout_height="wrap_content" 
+    android:gravity="center"
+	binding:backgroundColor="ARGB(0,30,30)"
+	android:layout_margin="15dip"
+    >
+    
+	<TextView  		 
+    	android:layout_width="fill_parent" 
+    	android:layout_height="wrap_content" 
+    	android:text="I am the parent"
+    />
+      
+	<gueei.extensions.BindableFrameLayout
+		android:layout_width="fill_parent"
+	    android:layout_height="wrap_content"
+	    binding:backgroundColor="ARGB(80,80,80)"
+	    binding:layoutId="@layout/frame_child"
+    />      
+      
+</LinearLayout>

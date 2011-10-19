@@ -96,8 +96,12 @@ public class CollectionAdapter extends BaseAdapter
 			ObservableMapper mapper;
 			
 			mCollection.onLoad(position);
-			if (mHelper!=null && !mHelper.isBusy())	{
-				((LazyLoadCollection)mCollection).onDisplay(position);
+
+			Object item = mCollection.getItem(position);
+			
+			if (mHelper!=null && !mHelper.isBusy()){
+				if (item instanceof LazyLoadRowModel) 
+					((LazyLoadRowModel)item).display(mCollection, position);
 			}
 			
 			if ((convertView == null) || 
@@ -115,7 +119,7 @@ public class CollectionAdapter extends BaseAdapter
 				returnView = result.rootView;
 				this.putAttachedMapper(returnView, mapper);
 			}
-			mapper.changeMapping(mReflector, mCollection.getItem(position));
+			mapper.changeMapping(mReflector, item);
 			return returnView;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -156,7 +160,7 @@ public class CollectionAdapter extends BaseAdapter
 	protected LazyLoadRootAdapterHelper mHelper;
 	
 	public void setRoot(AbsListView view) {
-		if (mCollection instanceof LazyLoadCollection)
+		if(LazyLoadRowModel.class.isAssignableFrom(mCollection.getComponentType()))
 			mHelper = new LazyLoadRootAdapterHelper(view, this, mMode);
 	}
 
@@ -168,31 +172,40 @@ public class CollectionAdapter extends BaseAdapter
 		mMode = mode;
 	}
 
-	private int lastDisplayingFirst = 0, lastTotal = 0;
+	private int lastDisplayingFirst = -1, lastTotal = 0;
 	
 	public void onVisibleChildrenChanged(int first, int total) {
 		if (lastTotal != total)
-			((LazyLoadCollection)mCollection).setVisibleChildrenCount(this, total);
+			mCollection.setVisibleChildrenCount(this, total);
+		
+		int nTotal = total; // > total ? lastTotal : total;
 		
 		ArrayList<Integer> lastDisplaying = new ArrayList<Integer>();
 		for(int i=lastDisplayingFirst; i<lastDisplayingFirst+lastTotal; i++){
 			lastDisplaying.add(i);
 		}
 		
-		for(int i=first; i<first + total; i++){
+		for(int i=first; i<first + nTotal; i++){
 			int idx = lastDisplaying.indexOf(i);
 			if (idx>=0){
 				lastDisplaying.remove(idx);
 			}else{
-				((LazyLoadCollection)mCollection).onDisplay(i);
+				Object item = mCollection.getItem(i);
+				if (item instanceof LazyLoadRowModel)
+					((LazyLoadRowModel)item).display(mCollection, i);
 			}
 		}
-		
+
 		for(Integer i: lastDisplaying){
-			((LazyLoadCollection)mCollection).onHide(i);
+			Object item = mCollection.getItem(i);
+			if (item instanceof LazyLoadRowModel)
+				((LazyLoadRowModel)item).hide(mCollection, i);
 		}
 		
 		lastDisplayingFirst = first;
-		lastTotal = total;
+		
+		// Don't want to frequently grow and shrink the total size 
+//		if (lastTotal < total)
+	//		lastTotal = total;
 	}
 }

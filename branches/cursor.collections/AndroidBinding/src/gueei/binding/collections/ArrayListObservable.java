@@ -11,7 +11,7 @@ import android.os.Parcelable;
 
 public class ArrayListObservable<T> 
 	extends ObservableCollection<T> 
-	implements List<T>, Parcelable, LazyLoadCollection{
+	implements List<T>, Parcelable{
 	
 	private final Class<T> mType;
 	protected ArrayList<T> mArray;
@@ -206,12 +206,6 @@ public class ArrayListObservable<T>
 
 	public List<T> subList(int start, int end) {
 		return mArray.subList(start, end);
-	}
-
-	public void onDisplay(int position) {
-	}
-
-	public void onHide(int position) {
 	}
 
 	public void setVisibleChildrenCount(Object setter, int total) {

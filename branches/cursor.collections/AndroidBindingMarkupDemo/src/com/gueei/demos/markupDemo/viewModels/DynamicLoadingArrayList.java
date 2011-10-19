@@ -1,6 +1,8 @@
 package com.gueei.demos.markupDemo.viewModels;
 
+import gueei.binding.IObservableCollection;
 import gueei.binding.collections.ArrayListObservable;
+import gueei.binding.collections.LazyLoadRowModel;
 import gueei.binding.observables.BooleanObservable;
 import gueei.binding.observables.StringObservable;
 import android.app.Activity;
@@ -16,25 +18,7 @@ public class DynamicLoadingArrayList {
 	// Items will be added dynamically to this list
 	// when the last item is seen
 	public final ArrayListObservable<Item> DynamicLazyList = 
-			new ArrayListObservable<Item>(Item.class){
-				@Override
-				public void onDisplay(int position) {
-					super.onDisplay(position);
-					this.get(position).Title.set(this.get(position).Batch.get() + position);
-					// We reach the end of the list, 
-					// try to load more
-					if (position>=this.size() - 1){
-						loadMore();
-					}					
-				}
-
-				@Override
-				public void onHide(int position) {
-					super.onHide(position);
-					if (position< this.size()-1)
-						this.get(position).Title.set("loading...");
-				}
-	};
+			new ArrayListObservable<Item>(Item.class);
 	
 	int currentBatch = 0, batchItems = 10;
 	public void loadMore(){
@@ -79,11 +63,26 @@ public class DynamicLoadingArrayList {
 	public final BooleanObservable HasMore = new BooleanObservable(true);
 	public final BooleanObservable IsLoading = new BooleanObservable(false);
 	
-	public static class Item{
+	public class Item implements LazyLoadRowModel{
 		public Item(String batch){
 			Batch.set(batch);
 		}
 		public final StringObservable Title = new StringObservable("loading...");
 		public final StringObservable Batch = new StringObservable();
+		
+		@Override
+		public void display(IObservableCollection<?> collection, int index) {
+			this.Title.set(this.Batch.get() + index);
+			// We reach the end of the list, 
+			// try to load more
+			if (index>=collection.size() - 1){
+				loadMore();
+			}				
+		}
+		@Override
+		public void hide(IObservableCollection<?> collection, int index) {
+			if (index< collection.size()-1)
+				this.Title.set("loading...");
+		}
 	}
 }

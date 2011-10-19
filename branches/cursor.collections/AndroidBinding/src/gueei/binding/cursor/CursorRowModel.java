@@ -1,5 +1,6 @@
 package gueei.binding.cursor;
 
+import gueei.binding.IObservableCollection;
 import android.content.Context;
 import android.database.Cursor;
 
@@ -45,11 +46,13 @@ public abstract class CursorRowModel implements IRowModel {
 	}
 
 	@Override
-	public void onDisplay() {}
-
-	@Override
-	public void onHide() {}
-
-	@Override
 	public void onInitialize() {}
+
+	@Override
+	public void display(IObservableCollection<?> collection, int index) {
+	}
+
+	@Override
+	public void hide(IObservableCollection<?> collection, int index) {
+	}
 }

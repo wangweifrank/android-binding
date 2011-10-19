@@ -18,7 +18,7 @@ import java.util.WeakHashMap;
  * Date: 08.10.11
  * Time: 11:58
  */
-public class CursorCollection<T extends IRowModel> extends ObservableCollection<T> implements LazyLoadCollection {
+public class CursorCollection<T extends IRowModel> extends ObservableCollection<T>{
 	//
 	public static interface ICursorCacheManager<ElType> {
 		public void clear(); // remove all items from cache
@@ -36,6 +36,10 @@ public class CursorCollection<T extends IRowModel> extends ObservableCollection<
 		public void hintCacheSize(Object originator, int total);
 	}
 
+	public CursorCollection(Class<T> rowModelType, ICursorCacheManager<T> cacheManager) {
+		this(rowModelType, null, cacheManager, null);
+	}
+	
 	public CursorCollection(Class<T> rowModelType) {
 		this(rowModelType, null, null, null);
 	}
@@ -92,8 +96,6 @@ public class CursorCollection<T extends IRowModel> extends ObservableCollection<
 
 	public T getItem(int position) {
 		if (mCursor==null) return null;
-		Log.d("Binder", "Get Row model at: " + position + " cache: " + mCacheManager.getSize());
-
 		// Check the cache first
 		T row = mCacheManager.get(position);
 		if (null == row) { // no such position row cached
@@ -157,21 +159,6 @@ public class CursorCollection<T extends IRowModel> extends ObservableCollection<
 		}
 		rowModel.onInitialize();
 		return rowModel;
-	}
-
-	@Override
-	public void onDisplay(int position) {
-		T row = getItem(position);
-		if (row!=null)
-			row.onDisplay();
-	}
-
-	@Override
-	public void onHide(int position) {
-		T row = mCacheManager.get(position);
-		if (null != row) {
-			row.onHide();
-		}
 	}
 
 	protected void finalize() throws Throwable {

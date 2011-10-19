@@ -1,11 +1,13 @@
 package gueei.binding.cursor;
 
+import gueei.binding.collections.LazyLoadRowModel;
+
 /**
  * User: =ra=
  * Date: 08.10.11
  * Time: 12:01
  */
-public interface IRowModel {
+public interface IRowModel extends LazyLoadRowModel {
 	/**
 	 * The main purpose of onInitialize is to perform initialization after data is read from source Data Set
 	 */
@@ -18,12 +20,4 @@ public interface IRowModel {
 	 * @return unique record identifier in source Data Set
 	 */
 	public long getId(int proposedId);
-	/**
-	 * Provides interaction with LazyLoadCollection container collection
-	 */
-	public void onDisplay();
-	/**
-	 * Provides interaction with LazyLoadCollection container collection
-	 */
-	public void onHide();
 }

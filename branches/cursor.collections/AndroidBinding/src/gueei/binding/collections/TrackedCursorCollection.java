@@ -16,6 +16,12 @@ import android.os.Handler;
 public class TrackedCursorCollection<T extends IRowModel> extends CursorCollection<T> {
 	public TrackedCursorCollection(
 			Class<T> rowModelType,
+			gueei.binding.collections.CursorCollection.ICursorCacheManager<T> cacheManager) {
+		super(rowModelType, cacheManager);
+	}
+
+	public TrackedCursorCollection(
+			Class<T> rowModelType,
 			IRowModelFactory<T> factory,
 			gueei.binding.collections.CursorCollection.ICursorCacheManager<T> cacheManager,
 			Cursor cursor) {

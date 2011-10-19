@@ -1,5 +1,7 @@
 package gueei.binding.cursor;
 
+import gueei.binding.IObservableCollection;
+
 /**
  * User: =ra=
  * Date: 11.10.11
@@ -12,7 +14,23 @@ public class RowModel implements IRowModel {
 		return proposedId;
 	}
 
-	@Override public void onDisplay() {}
+	private boolean displaying = false;
+	
+	@Override public final void display(IObservableCollection<?> collection, int index) {
+		if (displaying) return;
+		displaying = true;
+		onDisplay();
+	}
 
-	@Override public void onHide() {}
+	@Override public final void hide(IObservableCollection<?> collection, int index) {
+		if (!displaying) return;
+		displaying = false;
+		onHide();
+	}
+
+	public void onDisplay() {
+	}
+
+	public void onHide() {
+	}
 }

@@ -14,6 +14,10 @@
             </intent-filter>
         </activity>
 		<activity android:name=".SimpleDemoActivity"/>
-		<activity android:name=".WizardDemoActivity"/>		
+		<activity android:name=".WizardDemoActivity"/>
+		<activity android:name=".ConfigChangeDemoActivity"
+			android:configChanges="orientation|keyboard"
+		/>			
+		<!-- android:configChanges="screenSize|orientation|keyboard" for 3.x -->
     </application>
 </manifest>

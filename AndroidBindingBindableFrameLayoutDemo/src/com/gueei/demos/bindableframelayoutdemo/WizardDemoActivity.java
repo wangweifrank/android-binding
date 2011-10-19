@@ -1,11 +1,7 @@
 package com.gueei.demos.bindableframelayoutdemo;
 
-import com.gueei.demos.bindableframelayoutdemo.viewmodels.Step1;
-import com.gueei.demos.bindableframelayoutdemo.viewmodels.Step2;
-import com.gueei.demos.bindableframelayoutdemo.viewmodels.Step3;
-
-import gueei.binding.Binder;
 import gueei.binding.Command;
+import gueei.binding.Debugger;
 import gueei.binding.Observable;
 import gueei.binding.app.BindingActivity;
 import gueei.binding.observables.IntegerObservable;
@@ -13,12 +9,15 @@ import gueei.binding.observables.StringObservable;
 import android.os.Bundle;
 import android.view.View;
 
+import com.gueei.demos.bindableframelayoutdemo.viewmodels.Step1;
+import com.gueei.demos.bindableframelayoutdemo.viewmodels.Step2;
+import com.gueei.demos.bindableframelayoutdemo.viewmodels.Step3;
+
 public class WizardDemoActivity extends BindingActivity {
     /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Binder.init(this.getApplication());
         stepLayout();
 		this.setAndBindRootView(R.layout.wizard, this);		
     }
@@ -34,6 +33,7 @@ public class WizardDemoActivity extends BindingActivity {
 	};
 	
 	void stepLayout() {
+		Debugger.graphObject(DataSource.get(), 10, null, null);
 		if( LayoutID.get() == null || LayoutID.get() == 0 || LayoutID.get() == R.layout.step_static ) {
 			LayoutID.set(R.layout.step1);
 			DataSource.set(new Step1());

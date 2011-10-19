@@ -27,5 +27,12 @@ public class MainActivity extends BindingActivity {
 			Intent intent = new Intent(MainActivity.this,WizardDemoActivity.class);
 			MainActivity.this.startActivity(intent);
 		}
-	};	
+	};
+	
+	public final Command ConfigChangeDemo = new Command(){
+		public void Invoke(View view, Object... args) {		
+			Intent intent = new Intent(MainActivity.this,ConfigChangeDemoActivity.class);
+			MainActivity.this.startActivity(intent);
+		}
+	};
 }

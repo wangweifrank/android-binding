@@ -125,7 +125,7 @@ public class CursorCollection<T extends IRowModel> extends ObservableCollection<
 	public void onLoad(int position) {
 	}
 
-	protected void requery() {
+	public void requery() {
 		// to be sure data is correct
 		if (null != mCursor) {
 			mCursor.requery(); // fires mCursorDataSetObserver.onChanged()

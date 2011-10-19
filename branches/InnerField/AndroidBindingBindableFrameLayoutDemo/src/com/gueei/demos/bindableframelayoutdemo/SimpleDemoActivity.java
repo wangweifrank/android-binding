@@ -1,6 +1,5 @@
 package com.gueei.demos.bindableframelayoutdemo;
 
-import gueei.binding.Binder;
 import gueei.binding.Command;
 import gueei.binding.app.BindingActivity;
 import gueei.binding.observables.IntegerObservable;
@@ -14,7 +13,6 @@ public class SimpleDemoActivity extends BindingActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Binder.init(this.getApplication());
 		this.setAndBindRootView(R.layout.simple, this);		
     }
     

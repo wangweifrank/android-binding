@@ -11,7 +11,7 @@
 	<TextView  
     	android:layout_width="fill_parent" 
     	android:layout_height="wrap_content" 
-    	binding:text="Step1Text"
+    	binding:text="StepText"
     />    
       
 </LinearLayout>

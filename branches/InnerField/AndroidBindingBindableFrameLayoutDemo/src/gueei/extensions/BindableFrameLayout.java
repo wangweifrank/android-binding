@@ -104,51 +104,38 @@ public class BindableFrameLayout extends FrameLayout implements IBindableView<Bi
 		return null;
 	}
 
-	private void dataSourceBinding() {
-		if( inflateResult == null ) return;		
-		if( dataSource == null ) {	
-			// we need a null binding that all expressions will be evaluated
-			Binder.bindView(BindableFrameLayout.this.getContext(), inflateResult, null );
-		} else {
-			if( dataSource instanceof Object []) {
-				Object [] sources = (Object [])dataSource;
-				for(int i=0; i<sources.length; i++){
-					Binder.bindView(BindableFrameLayout.this.getContext(), inflateResult, sources[i]);
-				}						
-				
-			} else {
-				Binder.bindView(BindableFrameLayout.this.getContext(), inflateResult, dataSource);	
-			}
-		}
-	}
-	
 	protected void setDatasource(Object... newValue) {
-		dataSource = newValue;			
-		dataSourceBinding();
-		refreshDrawableState();		
+		dataSource = newValue;
+		rebind();
+		refreshDrawableState();
 	}
 
 	// TODO: add layout caching
 	// TODO: add a binding:useLayoutCaching="true" attribute
 	// TODO: add a transition manager
 	protected void setLayoutId(int layoutId) {
-		boolean needInitialBinding = false;
-		if( LayoutId == 0 || layoutId != 0)
-			needInitialBinding = true;					
-		
 		if( LayoutId != layoutId ) {
-			LayoutId = layoutId;						
-			BindableFrameLayout.this.removeAllViews();	
-			if( LayoutId > 0) {
-				inflateResult= Binder.inflateView(BindableFrameLayout.this.getContext(), LayoutId, BindableFrameLayout.this, false);							
-				BindableFrameLayout.this.addView(inflateResult.rootView);
-				if( needInitialBinding )
-					dataSourceBinding();
-			} else {
-				inflateResult = null;
-			}
+			LayoutId = layoutId;
+			rebind();
 			refreshDrawableState();
 		}		
+	}
+	
+	protected void rebind(){
+		BindableFrameLayout.this.removeAllViews();
+		if (LayoutId<=0) return;
+		inflateResult= Binder.inflateView(BindableFrameLayout.this.getContext(), LayoutId, BindableFrameLayout.this, false);							
+		BindableFrameLayout.this.addView(inflateResult.rootView);
+		if (dataSource==null){
+			Binder.bindView(BindableFrameLayout.this.getContext(), inflateResult, null);
+		}else if (dataSource.getClass().isArray()){
+			Object[] sources = (Object[])dataSource;
+			for(int i=0; i<sources.length; i++){
+				Binder.bindView(BindableFrameLayout.this.getContext(), inflateResult, sources[i]);
+			}
+		}else{
+			Binder.bindView(BindableFrameLayout.this.getContext(), inflateResult, dataSource);
+		}
 	}
 }
 

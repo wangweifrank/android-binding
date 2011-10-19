@@ -14,8 +14,10 @@ package gueei.binding.utility;
  */
 
 import java.lang.ref.WeakReference;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.AbstractList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
 
@@ -82,6 +84,7 @@ public class WeakList<E> extends AbstractList<E> {
     	}
     }
     
+    
 	public Object[] toArray() {
 		synchronized(this){
 	    	removeReleased();
@@ -119,5 +122,16 @@ public class WeakList<E> extends AbstractList<E> {
 		synchronized(this){
 			return items.add(new WeakReference<E>(object));
 		}
+	}
+
+	@SuppressWarnings("unchecked")
+	public E[] toItemArray(E[] arr) {
+		int size = this.size();
+		E[] copy = (E[]) Array.newInstance(arr.getClass().getComponentType(), size);
+		WeakReference<E>[] itemArray = items.toArray(new WeakReference[0]);
+    	for(int i=0; i<size; i++){
+    		copy[i] = itemArray[i].get();
+    	}
+		return copy;
 	}
 }

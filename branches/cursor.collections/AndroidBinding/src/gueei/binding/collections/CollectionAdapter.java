@@ -175,6 +175,9 @@ public class CollectionAdapter extends BaseAdapter
 	private int lastDisplayingFirst = -1, lastTotal = 0;
 	
 	public void onVisibleChildrenChanged(int first, int total) {
+		int collectionSizeLocalCache = mCollection.size();
+		total = (collectionSizeLocalCache < total) ? collectionSizeLocalCache : total;
+
 		if (lastTotal != total)
 			mCollection.setVisibleChildrenCount(this, total);
 		

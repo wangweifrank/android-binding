@@ -15,7 +15,7 @@ public class ClickedItemViewAttribute extends ViewAttribute<AdapterView<?>, Obje
 	
 	public ClickedItemViewAttribute(AdapterView<?> view, String attributeName) {
 		super(Object.class, view, attributeName);
-		this.setReadonly(true);
+		//this.setReadonly(true);
 		Binder.getMulticastListenerForView(view, OnItemClickListenerMulticast.class)
 			.registerWithHighPriority(this);
 	}
@@ -23,6 +23,7 @@ public class ClickedItemViewAttribute extends ViewAttribute<AdapterView<?>, Obje
 	@Override
 	protected void doSetAttributeValue(Object newValue) {
 		// do nothing. this is a readonly attribute
+		value = newValue;
 	}
 
 	@Override

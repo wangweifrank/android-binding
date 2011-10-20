@@ -12,7 +12,8 @@ public @interface Required{
 	public Class<?> Validator() default RequiredValidator.class;
 
 	public String ErrorMessage() default "";
-	public int ErrorMessagRes() default R.string.validation_required_message;
+	// http://tools.android.com/tips/non-constant-fields
+	public int ErrorMessagRes() default 0; // R.string.validation_required_message;
 	
 	public class RequiredValidator extends ValidatorBase<Required> {
 

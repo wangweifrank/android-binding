@@ -18,6 +18,10 @@ public class EQUAL extends Converter<Boolean> {
 	@Override
 	public Boolean calculateValue(Object... args) throws Exception {
 		if (args.length<2) return false;
+		if (args[0]==null && args[1]==null) return true;
+		if (args[0]==null || args[1]==null)
+			return false;
+
 		return args[0].equals(args[1]);
 	}
 }

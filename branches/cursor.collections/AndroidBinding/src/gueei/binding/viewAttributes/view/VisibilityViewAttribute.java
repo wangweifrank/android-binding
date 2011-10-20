@@ -3,6 +3,7 @@ package gueei.binding.viewAttributes.view;
 
 import gueei.binding.BindingType;
 import gueei.binding.ViewAttribute;
+import android.util.Log;
 import android.view.View;
 
 

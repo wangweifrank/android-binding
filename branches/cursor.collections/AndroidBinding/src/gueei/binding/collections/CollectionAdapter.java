@@ -184,25 +184,35 @@ public class CollectionAdapter extends BaseAdapter
 		for(int i=lastDisplayingFirst; i<lastDisplayingFirst+lastTotal; i++){
 			lastDisplaying.add(i);
 		}
+//		String hide = lastDisplayingFirst + ", " + total + " show: ";
 		
 		for(int i=first; i<first + nTotal; i++){
 			int idx = lastDisplaying.indexOf(i);
 			if (idx>=0){
 				lastDisplaying.remove(idx);
 			}else{
+//				hide += i + ", ";
 				Object item = mCollection.getItem(i);
 				if (item instanceof LazyLoadRowModel)
 					((LazyLoadRowModel)item).display(mCollection, i);
 			}
 		}
 
+		
+//		hide += " hide: ";
+		
 		for(Integer i: lastDisplaying){
 			Object item = mCollection.getItem(i);
+//			hide += i + ", ";
 			if (item instanceof LazyLoadRowModel)
 				((LazyLoadRowModel)item).hide(mCollection, i);
 		}
 		
+//		Log.d("Binder", hide);
+		
+		
 		lastDisplayingFirst = first;
+		lastTotal = total;
 		
 		// Don't want to frequently grow and shrink the total size 
 //		if (lastTotal < total)

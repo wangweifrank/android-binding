@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout 
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:binding="http://www.gueei.com/android-binding/"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    >
+
+	<TextView  
+		android:layout_width="wrap_content" 
+		android:layout_height="wrap_content" 
+		binding:text="ActivityInfotext"
+	/>	
+    
+    <Button
+    	android:layout_margin="20dip"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:text="Simple Demo"
+		binding:onClick="SimpleDemo"
+	/>
+    
+    <Button
+    	android:layout_margin="20dip"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:text="Managed Buttons Demo"
+		binding:onClick="ManagedButtonsDemo"
+	/>
+    
+	<TextView  
+		android:layout_width="wrap_content" 
+		android:layout_height="wrap_content" 
+		binding:text="CONCAT( 'last Managed result: ', ManagedButtonsViewmodel.DialogButtonInfotext )"
+	/>	
+	
+	<Button
+    	android:layout_margin="20dip"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:text="Custom Dialog Handling Demo"
+		binding:onClick="CustomDialogHandlingDemo"
+	/>
+	
+	<Button
+    	android:layout_margin="20dip"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:text="Messagebox"
+		binding:onClick="ShowMessagebox"
+	/>
+
+</LinearLayout>

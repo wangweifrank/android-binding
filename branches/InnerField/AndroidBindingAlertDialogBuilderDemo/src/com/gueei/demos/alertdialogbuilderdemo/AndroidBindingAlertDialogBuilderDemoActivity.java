@@ -37,7 +37,10 @@ public class AndroidBindingAlertDialogBuilderDemoActivity extends BindingActivit
 		= new Observable<CustomDialogHandlingViewmodel>(CustomDialogHandlingViewmodel.class, new CustomDialogHandlingViewmodel());		
     
 	public final Command SimpleDemo = new Command(){
-		public void Invoke(View view, Object... args) {						
+		public void Invoke(View view, Object... args) {			
+			
+			// build by alert dialog builder - or use the  BindingAlertDialogBuilderHelper.bindAndShowDialog
+			
 			AlertDialog.Builder builder = new AlertDialog.Builder(AndroidBindingAlertDialogBuilderDemoActivity.this);					
 			BindingAlertDialogBuilderHelper helper = new BindingAlertDialogBuilderHelper();
 			helper.inflateDialogView( AndroidBindingAlertDialogBuilderDemoActivity.this, R.layout.dialog_simple );
@@ -53,47 +56,31 @@ public class AndroidBindingAlertDialogBuilderDemoActivity extends BindingActivit
 	public final Command ManagedButtonsDemo = new Command(){
 		public void Invoke(View view, Object... args) {
 			ManagedButtonsViewmodel.get().DialogButtonInfotext.set("");
-
-			AlertDialog.Builder builder = new AlertDialog.Builder(AndroidBindingAlertDialogBuilderDemoActivity.this);					
-			BindingAlertDialogBuilderHelper helper = new BindingAlertDialogBuilderHelper();
-			helper.inflateDialogView( AndroidBindingAlertDialogBuilderDemoActivity.this, R.layout.dialog_managed_buttons );
 						
-			AlertDialog alertDialog = helper.createAndBind(AndroidBindingAlertDialogBuilderDemoActivity.this, builder, 
-							AndroidBindingAlertDialogBuilderDemoActivity.this,
-							AndroidBindingAlertDialogBuilderDemoActivity.this.ManagedButtonsViewmodel.get());
-			
-			alertDialog.show();					
+			BindingAlertDialogBuilderHelper.bindAndShowDialog(
+					AndroidBindingAlertDialogBuilderDemoActivity.this, R.layout.dialog_managed_buttons, 
+					AndroidBindingAlertDialogBuilderDemoActivity.this,
+					ManagedButtonsViewmodel.get() );							
 		}
 	};	
 	
 	public final Command CustomDialogHandlingDemo = new Command(){
 		public void Invoke(View view, Object... args) {
 			ManagedButtonsViewmodel.get().DialogButtonInfotext.set("");
-
-			AlertDialog.Builder  builder = new AlertDialog.Builder(AndroidBindingAlertDialogBuilderDemoActivity.this);					
-			BindingAlertDialogBuilderHelper helper = new BindingAlertDialogBuilderHelper();
-			helper.inflateDialogView( AndroidBindingAlertDialogBuilderDemoActivity.this, R.layout.dialog_custom );
-						
-			AlertDialog alertDialog = helper.createAndBind(AndroidBindingAlertDialogBuilderDemoActivity.this, builder, 
-							AndroidBindingAlertDialogBuilderDemoActivity.this,
-							AndroidBindingAlertDialogBuilderDemoActivity.this.CustomDialogHandlingViewmodel.get());
 			
-			alertDialog.show();					
+			BindingAlertDialogBuilderHelper.bindAndShowDialog(
+					AndroidBindingAlertDialogBuilderDemoActivity.this, R.layout.dialog_custom, 
+					AndroidBindingAlertDialogBuilderDemoActivity.this,
+					CustomDialogHandlingViewmodel.get() );								
 		}
 	};	
 	
 	
 	public final Command ShowMessagebox = new Command(){
-		public void Invoke(View view, Object... args) {
-			AlertDialog.Builder builder = new AlertDialog.Builder(AndroidBindingAlertDialogBuilderDemoActivity.this);					
-			BindingAlertDialogBuilderHelper helper = new BindingAlertDialogBuilderHelper();
-			helper.inflateDialogView( AndroidBindingAlertDialogBuilderDemoActivity.this, R.layout.dialog_messagebox );					
-			
-			AlertDialog alertDialog = helper.createAndBind(AndroidBindingAlertDialogBuilderDemoActivity.this, builder,
-							new MessageboxViewmodel());
-			
-			
-			alertDialog.show();					
+		public void Invoke(View view, Object... args) {			
+			BindingAlertDialogBuilderHelper.bindAndShowDialog(
+					AndroidBindingAlertDialogBuilderDemoActivity.this, R.layout.dialog_messagebox, 
+					new MessageboxViewmodel() );				
 		}
 	};
 	

@@ -134,4 +134,14 @@ public class BindingAlertDialogBuilderHelper {
 		inflateResult = null;		
 		return dialog;
 	}
+
+	public static void bindAndShowDialog(Activity activity, int layoutId, Object... viewModels) {		
+		if( activity == null )
+			return;
+		AlertDialog.Builder builder = new AlertDialog.Builder(activity);					
+		BindingAlertDialogBuilderHelper helper = new BindingAlertDialogBuilderHelper();
+		helper.inflateDialogView(activity, layoutId);							
+		AlertDialog alertDialog = helper.createAndBind(activity, builder, viewModels);		
+		alertDialog.show();	
+	}
 }

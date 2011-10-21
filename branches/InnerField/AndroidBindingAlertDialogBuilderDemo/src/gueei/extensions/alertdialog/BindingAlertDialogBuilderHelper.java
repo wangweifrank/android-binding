@@ -5,6 +5,7 @@ import gueei.binding.Binder.InflateResult;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.view.ContextThemeWrapper;
 
 
 public class BindingAlertDialogBuilderHelper {
@@ -144,4 +145,14 @@ public class BindingAlertDialogBuilderHelper {
 		AlertDialog alertDialog = helper.createAndBind(activity, builder, viewModels);		
 		alertDialog.show();	
 	}
+	
+	public static void bindAndShowDialog(Activity activity, int theme, int layoutId, Object... viewModels) {		
+		if( activity == null )
+			return;
+		AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(activity, theme));					
+		BindingAlertDialogBuilderHelper helper = new BindingAlertDialogBuilderHelper();
+		helper.inflateDialogView(activity, layoutId);							
+		AlertDialog alertDialog = helper.createAndBind(activity, builder, viewModels);		
+		alertDialog.show();	
+	}	
 }

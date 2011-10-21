@@ -25,4 +25,9 @@ public final class R {
         public static final int hello=0x7f040001;
         public static final int validation_required_message=0x7f040000;
     }
+    public static final class style {
+        /**  <style name="AlertDialogCustom" parent="@android:style/AlertDialog">  
+         */
+        public static final int AlertDialogCustom=0x7f050000;
+    }
 }

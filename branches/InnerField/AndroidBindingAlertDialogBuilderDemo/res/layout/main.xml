@@ -50,5 +50,13 @@
 		android:text="Messagebox"
 		binding:onClick="ShowMessagebox"
 	/>
+	
+	<Button
+    	android:layout_margin="20dip"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:text="Custom Style"
+		binding:onClick="ShowCustomStyle"
+	/>	
 
 </LinearLayout>

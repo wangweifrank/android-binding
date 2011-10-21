@@ -84,6 +84,14 @@ public class AndroidBindingAlertDialogBuilderDemoActivity extends BindingActivit
 		}
 	};
 	
+	public final Command ShowCustomStyle = new Command(){
+		public void Invoke(View view, Object... args) {			
+			BindingAlertDialogBuilderHelper.bindAndShowDialog(
+					AndroidBindingAlertDialogBuilderDemoActivity.this, 
+					R.style.AlertDialogCustom, R.layout.dialog_messagebox, 
+					new MessageboxViewmodel() );				
+		}
+	};
 	
 	
 }

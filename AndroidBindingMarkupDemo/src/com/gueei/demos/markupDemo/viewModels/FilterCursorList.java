@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.widget.Filter;
 import gueei.binding.Observable;
+import gueei.binding.collections.TrackedCursorCollection;
 import gueei.binding.cursor.*;
 import gueei.binding.observables.StringObservable;
 
@@ -22,15 +23,15 @@ public class FilterCursorList {
 
 	public FilterCursorList(Activity activity) {
 		mContext = activity;
-		CursorSrc = new TrackedCursorObservableCollection<FilteredCursorRowModel>(mContext, FilteredCursorRowModel.class);
+		CursorSrc = new TrackedCursorCollection<FilteredCursorRowModel>(FilteredCursorRowModel.class);
 		mCursorSrc = mContext.getContentResolver().query(mTrackingUri, new String[]{"_ID", "Name", "detailsCount"}, null, null, null);
 		activity.startManagingCursor(mCursorSrc);
 		CursorSrc.setCursor(mCursorSrc);
-		CursorSrc.setContentObserverTrackingUri(mTrackingUri);
+		CursorSrc.setContentObserverTrackingUri(mContext, mTrackingUri, false);
 	}
 
 	public final StringObservable FilterText = new StringObservable();
-	public final TrackedCursorObservableCollection<FilteredCursorRowModel> CursorSrc;
+	public final TrackedCursorCollection<FilteredCursorRowModel> CursorSrc;
 	public final Observable<Filter> CursorFilter = new Observable<Filter>(Filter.class, new Filter() {
 		private Cursor filteredCursor;
 		private static final char S_QUOTES = '\'';
@@ -56,12 +57,11 @@ public class FilterCursorList {
 		protected void publishResults(CharSequence constraint, FilterResults results) {
 			if (results == null) {
 				CursorSrc.setCursor(mCursorSrc);
-				CursorSrc.setContentObserverTrackingUri(mTrackingUri);
 			}
 			else {
 				CursorSrc.setCursor(filteredCursor);
-				CursorSrc.setContentObserverTrackingUri(mTrackingUri);
 			}
+			CursorSrc.setContentObserverTrackingUri(mContext, mTrackingUri, false);
 		}
 	});
 
@@ -71,7 +71,8 @@ public class FilterCursorList {
 		public StringField  Name          = new StringField("Name");
 		public IntegerField SubItemsCount = new IntegerField("detailsCount");
 
-		@Override public long getId(final long defaultId) {
+		@Override
+		public long getId(int defaultId) {
 			return Id.get();
 		}
 	}

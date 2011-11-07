@@ -31,6 +31,8 @@ public class BindingSyntaxResolver {
 			final Object model,
 			final IReferenceObservableProvider refProvider){
 		if(bindingStatement == null)return null;
+		if (model==null) return null;
+		
 		IObservable<?> result;
 		String statement = bindingStatement.trim();
 		

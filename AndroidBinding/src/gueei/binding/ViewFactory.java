@@ -25,7 +25,7 @@ public class ViewFactory implements Factory {
 			AttributeSet attrs) {
 		try {
 			String viewFullName = "android.widget." + name;
-			if ((name=="View") || (name=="ViewGroup"))
+			if (name.equals("View") || name.equals("ViewGroup"))
 				viewFullName = "android.view." + name;
 			else if (name.startsWith("binding.")){
 				viewFullName = "gueei.binding.widgets." + name.substring(name.indexOf('.') + 1);

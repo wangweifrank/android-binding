@@ -1,5 +1,7 @@
 package gueei.binding.collections;
 
+import java.util.ArrayList;
+
 import gueei.binding.AttributeBinder;
 import gueei.binding.Binder;
 import gueei.binding.CollectionObserver;
@@ -9,6 +11,7 @@ import gueei.binding.utility.IModelReflector;
 import gueei.binding.viewAttributes.templates.Layout;
 import android.content.Context;
 import android.os.Handler;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
@@ -93,8 +96,12 @@ public class CollectionAdapter extends BaseAdapter
 			ObservableMapper mapper;
 			
 			mCollection.onLoad(position);
-			if (mHelper!=null && !mHelper.isBusy())	{
-				((LazyLoadCollection)mCollection).onDisplay(position);
+
+			Object item = mCollection.getItem(position);
+			
+			if (mHelper!=null && !mHelper.isBusy()){
+				if (item instanceof LazyLoadRowModel) 
+					((LazyLoadRowModel)item).display(mCollection, position);
 			}
 			
 			if ((convertView == null) || 
@@ -112,7 +119,7 @@ public class CollectionAdapter extends BaseAdapter
 				returnView = result.rootView;
 				this.putAttachedMapper(returnView, mapper);
 			}
-			mapper.changeMapping(mReflector, mCollection.getItem(position));
+			mapper.changeMapping(mReflector, item);
 			return returnView;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -153,7 +160,7 @@ public class CollectionAdapter extends BaseAdapter
 	protected LazyLoadRootAdapterHelper mHelper;
 	
 	public void setRoot(AbsListView view) {
-		if (mCollection instanceof LazyLoadCollection)
+		if(LazyLoadRowModel.class.isAssignableFrom(mCollection.getComponentType()))
 			mHelper = new LazyLoadRootAdapterHelper(view, this, mMode);
 	}
 
@@ -165,37 +172,53 @@ public class CollectionAdapter extends BaseAdapter
 		mMode = mode;
 	}
 
-	private int lastDisplayingFirst = 0, lastTotal = 0;
+	private int lastDisplayingFirst = -1, lastTotal = 0;
 	
 	public void onVisibleChildrenChanged(int first, int total) {
-		if (total<=0) return;
-		if (lastDisplayingFirst == first){
-			if (total==lastTotal) return;
-			if (lastTotal<total){
-				for(int i=first+lastTotal; i<first+total; i++){
-					((LazyLoadCollection)mCollection).onDisplay(i);
-				}
-			}
-		}else{
-			if (lastDisplayingFirst < first){
-				int offCount = first - lastDisplayingFirst;
-				for(int i=first+total-offCount; i<first+total; i++){
-					((LazyLoadCollection)mCollection).onDisplay(i);
-				}
-				for(int i=lastDisplayingFirst; i<lastDisplayingFirst + offCount; i++){
-					((LazyLoadCollection)mCollection).onHide(i);
-				}
+		int collectionSizeLocalCache = mCollection.size();
+		total = (collectionSizeLocalCache < total) ? collectionSizeLocalCache : total;
+
+		if (lastTotal != total)
+			mCollection.setVisibleChildrenCount(this, total);
+		
+		int nTotal = total; // > total ? lastTotal : total;
+		
+		ArrayList<Integer> lastDisplaying = new ArrayList<Integer>();
+		for(int i=lastDisplayingFirst; i<lastDisplayingFirst+lastTotal; i++){
+			lastDisplaying.add(i);
+		}
+//		String hide = lastDisplayingFirst + ", " + total + " show: ";
+		
+		for(int i=first; i<first + nTotal; i++){
+			int idx = lastDisplaying.indexOf(i);
+			if (idx>=0){
+				lastDisplaying.remove(idx);
 			}else{
-				int offCount = lastDisplayingFirst - first;
-				for(int i=first; i<first+offCount; i++){
-					((LazyLoadCollection)mCollection).onDisplay(i);
-				}
-				for(int i=first+total; i<lastDisplayingFirst+total; i++){
-					((LazyLoadCollection)mCollection).onHide(i);
-				}
+//				hide += i + ", ";
+				Object item = mCollection.getItem(i);
+				if (item instanceof LazyLoadRowModel)
+					((LazyLoadRowModel)item).display(mCollection, i);
 			}
 		}
-		lastTotal = total;
+
+		
+//		hide += " hide: ";
+		
+		for(Integer i: lastDisplaying){
+			Object item = mCollection.getItem(i);
+//			hide += i + ", ";
+			if (item instanceof LazyLoadRowModel)
+				((LazyLoadRowModel)item).hide(mCollection, i);
+		}
+		
+//		Log.d("Binder", hide);
+		
+		
 		lastDisplayingFirst = first;
+		lastTotal = total;
+		
+		// Don't want to frequently grow and shrink the total size 
+//		if (lastTotal < total)
+	//		lastTotal = total;
 	}
 }

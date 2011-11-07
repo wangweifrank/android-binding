@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
+@Deprecated
 public class CursorObservableAdapter<T extends CursorRowModel> extends BaseAdapter {
 	
 	protected final CursorObservable<T> mCursorObservable;
@@ -38,7 +39,7 @@ public class CursorObservableAdapter<T extends CursorRowModel> extends BaseAdapt
 	public int getItemViewType(int position) {
 		return mLayout.getLayoutTypeId(position);
 	}
-	
+
 	public int getCount() {
 		if (mCursorObservable.getCursor()==null)
 			return 0;

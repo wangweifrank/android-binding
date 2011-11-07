@@ -17,7 +17,7 @@ import android.widget.Adapter;
 import android.widget.BaseExpandableListAdapter;
 
 
-@SuppressWarnings({"UnusedDeclaration"})
+@Deprecated
 public class ExpandableCursorAdapter<T extends CursorRowModel> extends BaseExpandableListAdapter{
 	
 	private final String mChildName;
@@ -26,7 +26,6 @@ public class ExpandableCursorAdapter<T extends CursorRowModel> extends BaseExpan
 	private volatile Hashtable<Integer, Adapter> mChildAdapters;
 	private final Context mContext;
 
-	@SuppressWarnings({"UnusedDeclaration"})
 	public ExpandableCursorAdapter(Context context,
 			CursorObservable<T> cursorObservable, Layout layout, Layout ddLayout,
 			String childName, Layout childLayout) {

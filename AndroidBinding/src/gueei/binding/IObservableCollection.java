@@ -12,4 +12,5 @@ public interface IObservableCollection<T> extends IObservable<IObservableCollect
 	void onLoad(int position);
 	Class<T> getComponentType();
 	int size();
+	void setVisibleChildrenCount(Object setter, int total);
 }

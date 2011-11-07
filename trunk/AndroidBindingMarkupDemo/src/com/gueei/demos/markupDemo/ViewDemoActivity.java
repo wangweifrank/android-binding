@@ -20,7 +20,9 @@ public class ViewDemoActivity extends Activity {
         	finish();
         }
         
-        Binder.setAndBindContentView(this, R.layout.view_demo, this);
+        Binder.InflateResult result = Binder.inflateView(this, R.layout.view_demo, null, false);
+		Binder.bindView(this, result, this);
+		setContentView(result.rootView);
         try{
         	loadDemo(demoName);
         }catch(Exception e){

@@ -71,7 +71,9 @@ public class Launch extends Activity {
 				new Demo("DynamicLoadingArrayList", true)));
 
 		DemoGroups.add(new DemoGroup("Animation", new Demo("AnimationTrigger", true)));
-		Binder.setAndBindContentView(this, R.layout.select_demo, this);
+		Binder.InflateResult result = Binder.inflateView(this, R.layout.select_demo, null, false);
+		Binder.bindView(this, result, this);
+		setContentView(result.rootView);
 	}
 
 	public final Command ViewDemo  = new Command() {

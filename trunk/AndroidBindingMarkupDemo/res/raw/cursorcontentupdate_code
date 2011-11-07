@@ -12,21 +12,23 @@ import android.database.Cursor;
 import android.net.Uri;
 import gueei.binding.Command;
 import gueei.binding.collections.LazyLoadParent;
+import gueei.binding.collections.TrackedCursorCollection;
 import gueei.binding.cursor.*;
 
-@SuppressWarnings({"UnusedDeclaration"})
 public class CursorContentUpdate {
-
-	public TrackedCursorObservableCollection<GroupsRowModel> Groups;
+	public TrackedCursorCollection<GroupsRowModel> Groups;
 
 	public CursorContentUpdate(Activity activity) {
 		mContext = activity;
-		Groups = new TrackedCursorObservableCollection<GroupsRowModel>(activity, GroupsRowModel.class);
+		Groups = new TrackedCursorCollection<GroupsRowModel>(GroupsRowModel.class,
+															 new CursorRowModelFactory(GroupsRowModel.class,
+																					   mContext));
 		Uri trackingUri = Uri.parse("content://com.gueei.demos/masters");
-		Cursor groups = mContext.getContentResolver().query(trackingUri, new String[]{"_ID", "Name", "detailsCount"}, null, null, null);
+		Cursor groups = mContext.getContentResolver()
+								.query(trackingUri, new String[]{"_ID", "Name", "detailsCount"}, null, null, null);
 		activity.startManagingCursor(groups);
 		Groups.setCursor(groups);
-		Groups.setContentObserverTrackingUri(trackingUri);
+		Groups.setContentObserverTrackingUri(activity, trackingUri, false);
 	}
 
 	public final Command AddSubItem    = new Command() {
@@ -42,7 +44,8 @@ public class CursorContentUpdate {
 		@Override
 		public void Invoke(android.view.View view, Object... args) {
 			mContext.getContentResolver().delete(Uri.parse("content://com.gueei.demos/details"),
-												 "detail._ID=(SELECT min(_ID) FROM detail WHERE" + " masterID=1)", null);
+												 "detail._ID=(SELECT min(_ID) FROM detail WHERE" + " masterID=1)",
+												 null);
 		}
 	};
 	public final Command RestoreData   = new Command() {
@@ -54,35 +57,33 @@ public class CursorContentUpdate {
 	private final Context mContext;
 
 	public static class GroupsRowModel extends CursorRowModel implements LazyLoadParent {
-
 		public StringField  Name          = new StringField("Name");
 		public IdField      Id            = new IdField("_ID");
 		public IntegerField SubItemsCount = new IntegerField("detailsCount");
-		public TrackedCursorObservableCollection<SubItemRowModel> SubItems;
+		public TrackedCursorCollection<SubItemRowModel> SubItems;
 
-		@Override public long getId(final long defaultId) {
+		@Override public long getId(int defaultId) {
 			return Id.get();
 		}
 
 		public void onLoadChildren() {
-			SubItems = new TrackedCursorObservableCollection<SubItemRowModel>(getContext(), SubItemRowModel.class);
+			SubItems = new TrackedCursorCollection<SubItemRowModel>(SubItemRowModel.class);
 			Uri trackingUri = Uri.parse("content://com.gueei.demos/details");
 			Cursor subItems = getContext().getContentResolver()
-					.query(trackingUri, new String[]{"_ID", "Name", "masterID"}, "detail.masterID=?", new String[]{Id.get().toString()},
-						   null);
+					.query(trackingUri, new String[]{"_ID", "Name", "masterID"}, "detail.masterID=?",
+						   new String[]{Id.get().toString()}, null);
 			((Activity) getContext()).startManagingCursor(subItems);
 			SubItems.setCursor(subItems);
-			SubItems.setContentObserverTrackingUri(trackingUri);
+			SubItems.setContentObserverTrackingUri(getContext(), trackingUri, false);
 		}
 	}
 
 	public static class SubItemRowModel extends CursorRowModel {
-
 		public IdField     Id    = new IdField("_ID");
 		public StringField Name  = new StringField("Name");
 		public LongField   Group = new LongField("MasterID");
 
-		@Override public long getId(final long defaultId) {
+		@Override public long getId(int defaultId) {
 			return Id.get();
 		}
 	}

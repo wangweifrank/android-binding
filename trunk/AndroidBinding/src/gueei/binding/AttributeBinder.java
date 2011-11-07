@@ -43,6 +43,16 @@ public class AttributeBinder {
 
 	public void bindView(Context context, View view, Object model) {
 		BindingMap map = Binder.getBindingMapForView(view);
+		
+		// TODO redesign this fix in future 
+		// Force to initialize filter attribute
+		String filterKey = "filter";
+		String filterValue = map.get(filterKey);
+		if (null != filterValue) {
+			BindingLog.debug("bindView", "Attribute filter shoud be bind before initialize itemSource. To be sure that filtering will be worked.");
+			bindAttributeWithObservable(context, view, filterKey, filterValue, model);
+		}
+		
 		for(Entry<String, String> entry: map.getMapTable().entrySet()){
 			bindAttributeWithObservable(context, view, entry.getKey(), entry.getValue(), model);
 		}

@@ -64,7 +64,17 @@ public abstract class Attribute<Th, T> extends Observable<T> {
 	
 	public BindingType BindTo(Context context, IObservable<?> prop) {
 		if (prop == null) return BindingType.NoBinding;
-		BindingType binding = AcceptThisTypeAs(prop.getType());
+		
+		BindingType binding;
+		
+		// Dirty fix
+		// Since for InnerFieldObservable, it may not know what type of it will be
+		// So, it assumes two way no matter what
+		if (prop instanceof InnerFieldObservable)
+			binding = BindingType.TwoWay;
+		else
+			binding = AcceptThisTypeAs(prop.getType());
+		
 		if (binding.equals(BindingType.NoBinding)) return binding;
 		
 		onBind(context, prop, binding);

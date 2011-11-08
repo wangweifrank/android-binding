@@ -175,9 +175,10 @@ public class BindingSyntaxResolver {
 	 * 1. String (defined in '')
 	 * 2. Integer
 	 * 3. Resource
+	 * 4. InnerField if containing dot (new)
 	 * 4. Observable
-	 * 5. Constant from field
-	 * 6. Fall back (for backward compatibility) to String
+	 * 6. Constant from field
+	 * 7. No more fall back
 	 */
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	private static IObservable<?> getObservableForModel(
@@ -201,6 +202,14 @@ public class BindingSyntaxResolver {
 			return new Observable(model.getClass(), model);
 		}
 
+		if (fieldName.contains(".")){
+			InnerFieldObservable ifo = new InnerFieldObservable(fieldName);
+			if (ifo.createNodes(model))
+				return ifo;
+			
+			return null;
+		}
+		
 		Object rawField = getFieldForModel(fieldName, model);
 		if (rawField instanceof IObservable<?>)
 			return (IObservable<?>)rawField;
@@ -264,8 +273,16 @@ public class BindingSyntaxResolver {
 			return new ConstantObservable<Integer>(Integer.class, outValue.data);
 		}
 	}
-		
-	private static Object getFieldForModel(String fieldName, Object model){
+	
+	/**
+	 * Utility method to get the field for model, 
+	 * it also accepts IPropertyContainer as model so the field is 
+	 * returned by it rather than reflection
+	 * @param fieldName
+	 * @param model
+	 * @return field object
+	 */
+	public static Object getFieldForModel(String fieldName, Object model){
 		try{
 			if (model instanceof IPropertyContainer){
 				return ((IPropertyContainer)model).getValueByName(fieldName);

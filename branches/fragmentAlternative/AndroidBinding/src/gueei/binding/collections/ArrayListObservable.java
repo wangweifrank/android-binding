@@ -155,8 +155,8 @@ public class ArrayListObservable<T>
 	@Override
 	@SuppressWarnings({ "unchecked"})
 	public void _setObject(Object newValue, Collection<Object> initiators) {
-		if (newValue instanceof ArrayListObservable){
-			this.clear();
+		if (newValue instanceof ArrayListObservable && this != newValue) { // HERE
+			this.clear(); // why to clear
 			this.setArray(
 					(T[])((ArrayListObservable<T>)newValue).toArray());
 		}

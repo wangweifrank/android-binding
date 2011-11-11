@@ -155,10 +155,15 @@ public class ArrayListObservable<T>
 	@Override
 	@SuppressWarnings({ "unchecked"})
 	public void _setObject(Object newValue, Collection<Object> initiators) {
-		if (newValue instanceof ArrayListObservable && this != newValue) { // HERE
-			this.clear(); // why to clear
-			this.setArray(
-					(T[])((ArrayListObservable<T>)newValue).toArray());
+		if (newValue instanceof ArrayListObservable && this != newValue) {
+			T[] arr = (T[])((ArrayListObservable<T>)newValue).toArray();
+			int size = arr.length;
+			mArray.clear();
+			for (int i=0; i<size; i++){
+				mArray.add(arr[i]);
+			}
+			initiators.add(this);
+			this.notifyChanged(initiators);
 		}
 	}
 

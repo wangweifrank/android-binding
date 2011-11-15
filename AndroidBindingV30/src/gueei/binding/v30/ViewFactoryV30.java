@@ -26,7 +26,6 @@ public class ViewFactoryV30 extends ViewFactory implements LayoutInflater.Factor
 		}
 	}
 
-	@Override
 	public View onCreateView(View parent, String name, Context context, AttributeSet attrs) {
 		View view = CreateViewByInflater(parent, name, context, attrs);
 		if (view==null) return null;
@@ -88,7 +87,6 @@ public class ViewFactoryV30 extends ViewFactory implements LayoutInflater.Factor
 			mFragment.setFragmentEventListener(this);
 		}
 		
-		@Override
 		public void onViewCreated(View view, Bundle savedInstanceState) {
 			final ViewParent viewParent = getParent();
 			if (viewParent != null && viewParent instanceof ViewGroup) {

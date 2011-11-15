@@ -75,17 +75,15 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
     }
     public static final class id {
         public static final int camera_frag=0x7f0c0000;
-        public static final int frag_content=0x7f0c0004;
-        public static final int frag_title=0x7f0c0003;
         public static final int frags=0x7f0c0002;
         public static final int image=0x7f0c0001;
-        public static final int notification_button=0x7f0c0008;
-        public static final int notification_subtitle=0x7f0c0007;
-        public static final int notification_title=0x7f0c0006;
-        public static final int notificationbg=0x7f0c0005;
-        public static final int share=0x7f0c000b;
-        public static final int switch_cam=0x7f0c0009;
-        public static final int toggleTheme=0x7f0c000a;
+        public static final int notification_button=0x7f0c0006;
+        public static final int notification_subtitle=0x7f0c0005;
+        public static final int notification_title=0x7f0c0004;
+        public static final int notificationbg=0x7f0c0003;
+        public static final int share=0x7f0c0009;
+        public static final int switch_cam=0x7f0c0007;
+        public static final int toggleTheme=0x7f0c0008;
     }
     public static final class layout {
         public static final int action_bar_custom=0x7f030000;

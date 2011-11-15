@@ -16,6 +16,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:duplicateParentState="true"
-        binding:source="PROP(DisplayingImage, 'ResId')"
+        binding:source="ResId"
+        binding:onClick="ToggleSystemUi"
         />
 </com.gueei.demo.abgallery.FitCenterFrameLayout>

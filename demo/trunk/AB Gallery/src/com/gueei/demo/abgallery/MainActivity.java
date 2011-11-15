@@ -1,10 +1,14 @@
 package com.gueei.demo.abgallery;
 
+import com.gueei.demo.abgallery.viewModels.GalleryVM;
+
 import gueei.binding.Command;
 import gueei.binding.DependentObservable;
 import gueei.binding.Observable;
+import gueei.binding.app.BindingActivity;
 import gueei.binding.observables.BooleanObservable;
 import gueei.binding.observables.IntegerObservable;
+import gueei.binding.serialization.ViewModelParceler;
 import gueei.binding.v30.actionbar.ActionBarBinder;
 import gueei.binding.v30.app.BindingActivityV30;
 import android.os.Bundle;
@@ -15,26 +19,25 @@ public class MainActivity extends BindingActivityV30 {
 	// no idea why this is implemented in View rather than other topper level stuff... 
 	private View rootView;
 
-	private int mThemeId = 0; 
+	GalleryVM vm;
 	
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         
+        vm = new GalleryVM(this);
+
         if (savedInstanceState!=null){
-	        mThemeId = savedInstanceState.getInt("THEME_ID");
-	        if (mThemeId>0){
-	        	setTheme(mThemeId);
+        	if (savedInstanceState.containsKey("VM")){
+        		ViewModelParceler.restoreViewModel(savedInstanceState.getBundle("VM"), vm);
 	        }
+        	setTheme(vm.ThemeId.get());
         }
+        rootView = this.setAndBindRootView(R.layout.main, vm);
+
+        this.setAndBindOptionsMenu(R.menu.main_menu, vm);
         
-        Directory.initializeDirectory();
-        rootView = this.getLayoutInflater().inflate(R.layout.main, null);
-        setContentView(rootView);
-        
-        this.setAndBindOptionsMenu(R.menu.main_menu, this);
-        
-        ActionBarBinder.BindActionBar(this, R.xml.main_metadata, this);
+        ActionBarBinder.BindActionBar(this, R.xml.main_metadata, vm);
     }
     
     
@@ -59,23 +62,11 @@ public class MainActivity extends BindingActivityV30 {
 		}
     };
 
-    public final Command ToggleTheme = new Command(){
-    	@Override
-    	public void Invoke(View view, Object... args) {
-			if (mThemeId==R.style.AppTheme_Light){
-				mThemeId = R.style.ActionBar_Dark;
-			}else{
-				mThemeId = R.style.AppTheme_Light;
-			}
-			recreate();
-		}
-    };
-    
 
 	@Override
 	protected void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
-		outState.putInt("THEME_ID", mThemeId);
+		outState.putBundle("VM", ViewModelParceler.parcelViewModel(vm));
 	}
 
 	public final Observable<DirectoryCategory> CurrentCategory = 

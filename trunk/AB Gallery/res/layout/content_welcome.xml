@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.gueei.demo.abgallery.FitCenterFrameLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:binding="http://www.gueei.com/android-binding/"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="24dp"
+    android:clickable="true"
+    binding:onClick="ToggleSystemUi"
+    binding:onLongClick="ToggleSelectionMode"
+    binding:selected="InSelectionMode"
+    >
+    <ImageView android:id="@+id/image"
+        android:background="@drawable/picture_frame"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:duplicateParentState="true"
+        binding:source="ResId"
+        binding:onClick="ToggleSystemUi"
+        />
+</com.gueei.demo.abgallery.FitCenterFrameLayout>

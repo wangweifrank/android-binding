@@ -29,7 +29,7 @@ public class BindableFrameLayout extends FrameLayout implements IBindableView<Bi
 		super(context);
 	}
 
-	private ViewAttribute<BindableFrameLayout, Object> LayoutIdViewAttribute =
+	private ViewAttribute<?, Object> LayoutIdViewAttribute =
 		new ViewAttribute<BindableFrameLayout, Object>(Object.class, BindableFrameLayout.this, "LayoutId"){
 			@Override				
 			protected void doSetAttributeValue(Object newValue) {
@@ -55,7 +55,7 @@ public class BindableFrameLayout extends FrameLayout implements IBindableView<Bi
 	};
 		
 	
-	private ViewAttribute<BindableFrameLayout, Object> DataSourceViewAttribute =
+	private ViewAttribute<?, Object> DataSourceViewAttribute =
 		new ViewAttribute<BindableFrameLayout, Object>( Object.class, BindableFrameLayout.this, "DataSource"){
 			@Override
 			protected void doSetAttributeValue(Object newValue) {					
@@ -68,7 +68,7 @@ public class BindableFrameLayout extends FrameLayout implements IBindableView<Bi
 			}
 	};
 	
-	private ViewAttribute<BindableFrameLayout, Command> OnLoadAttribute =
+	private ViewAttribute<?, Command> OnLoadAttribute =
 		new ViewAttribute<BindableFrameLayout, Command>( Command.class, BindableFrameLayout.this, "OnLoad"){
 	
 			@Override
@@ -95,7 +95,7 @@ public class BindableFrameLayout extends FrameLayout implements IBindableView<Bi
 	};	
 	
 	
-	public ViewAttribute<BindableFrameLayout, ?> createViewAttribute(
+	public ViewAttribute<?, ?> createViewAttribute(
 			String attributeName) {
 		if (attributeName.equals("layoutId")) return LayoutIdViewAttribute;
 		if (attributeName.equals("dataSource")) return DataSourceViewAttribute;		

@@ -37,17 +37,17 @@
     
     </LinearLayout>
 
-    <com.gueei.extension.BindableLinearLayout
+    <com.gueei.extension.BindableTableLayout
     	android:layout_width="fill_parent"
     	android:layout_height="fill_parent"
     	android:orientation="vertical"
     	binding:itemLayout="ITEM_LAYOUT('LayoutId')"    	
-    	binding:itemSource="Items"   	
+    	binding:itemSource="Rows"   	
 		/>
     
     <!-- it's also possible to use a static layout for an item -->
     <!-- 
-    	binding:itemPath="ITEM_LAYOUT(@layout/bindable_linear_layout_item)"  
+    	binding:itemPath="ITEM_LAYOUT('DataSource', @layout/bindable_linear_layout_item)"  
     -->			
     
 </LinearLayout>

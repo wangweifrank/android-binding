@@ -14,8 +14,9 @@ import gueei.binding.InnerFieldObservable;
 import gueei.binding.ViewAttribute;
 import gueei.binding.collections.ArrayListObservable;
 import gueei.binding.collections.DependentCollectionObservable;
-import gueei.binding.converters.ITEM_PATH;
+import gueei.binding.converters.ITEM_LAYOUT;
 import gueei.binding.utility.WeakList;
+import com.gueei.extension.ListIntersection;
 import android.content.Context;
 import android.graphics.Color;
 import android.util.AttributeSet;
@@ -84,7 +85,7 @@ public class BindableLinearLayout extends LinearLayout implements IBindableView<
 						return;
 					theList = (ArrayListObservable<Object>)newValue;
 					
-					if( path != null )
+					if( layout != null )
 						createItemSourceList(theList);
 				}
 
@@ -94,14 +95,14 @@ public class BindableLinearLayout extends LinearLayout implements IBindableView<
 				}				
 	};	
 			
-	private ITEM_PATH.ItemPath path = null;			
-	private ViewAttribute<BindableLinearLayout, Object> ItemPathAttribute =
-			new ViewAttribute<BindableLinearLayout, Object>(Object.class, BindableLinearLayout.this, "ItemPath"){
+	private ITEM_LAYOUT.ItemLayout layout = null;			
+	private ViewAttribute<BindableLinearLayout, Object> ItemLayoutAttribute =
+			new ViewAttribute<BindableLinearLayout, Object>(Object.class, BindableLinearLayout.this, "ItemLayout"){
 				@Override
 				protected void doSetAttributeValue(Object newValue) {	
-					path = null;
-					if( newValue instanceof ITEM_PATH.ItemPath ) {
-						path = (ITEM_PATH.ItemPath) newValue;
+					layout = null;
+					if( newValue instanceof ITEM_LAYOUT.ItemLayout ) {
+						layout = (ITEM_LAYOUT.ItemLayout) newValue;
 						if( theList != null )
 							createItemSourceList(theList);
 					}
@@ -124,7 +125,7 @@ public class BindableLinearLayout extends LinearLayout implements IBindableView<
 		// "selectedPosition"
 		
 		if (attributeId.equals("itemSource")) return ItemSourceAttribute;
-		if (attributeId.equals("itemPath")) return ItemPathAttribute;
+		if (attributeId.equals("itemLayout")) return ItemLayoutAttribute;
 		return null;
 	}
 	
@@ -178,17 +179,17 @@ public class BindableLinearLayout extends LinearLayout implements IBindableView<
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	private void newItem(int pos, Object item) {		
-		if( path == null )
+		if( layout == null )
 			return;
 		
-		int layoutId = path.staticLayoutId;		
-		if( layoutId < 1 && path.layoutIdName != null ) {									
+		int layoutId = layout.staticLayoutId;		
+		if( layoutId < 1 && layout.layoutIdName != null ) {									
 			IObservable<?> observable = null;			
-			InnerFieldObservable ifo = new InnerFieldObservable(path.layoutIdName);
+			InnerFieldObservable ifo = new InnerFieldObservable(layout.layoutIdName);
 			if (ifo.createNodes(item)) {
 				observable = ifo;
 			} else {			
-				Object rawField = BindingSyntaxResolver.getFieldForModel(path.layoutIdName, item);
+				Object rawField = BindingSyntaxResolver.getFieldForModel(layout.layoutIdName, item);
 				if (rawField instanceof IObservable<?>)
 					observable = (IObservable<?>)rawField;
 				else if (rawField!=null)

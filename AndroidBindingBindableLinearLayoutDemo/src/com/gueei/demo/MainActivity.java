@@ -23,6 +23,14 @@ public class MainActivity extends BindingActivity {
 			MainActivity.this.startActivity(intent);
 		}
 	};
+	
+
+	public final Command BindableTableLayoutDemo = new Command() {
+		public void Invoke(View view, Object... args) {
+			Intent intent = new Intent(MainActivity.this, BindableTableLayoutActivity.class);
+			MainActivity.this.startActivity(intent);
+		}
+	};	
 
 
 }

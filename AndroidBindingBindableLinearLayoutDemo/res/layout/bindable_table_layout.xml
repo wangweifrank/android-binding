@@ -40,9 +40,9 @@
     <com.gueei.extension.BindableTableLayout
     	android:layout_width="fill_parent"
     	android:layout_height="fill_parent"
-    	android:orientation="vertical"
-    	binding:itemLayout="ITEM_LAYOUT('LayoutId')"    	
-    	binding:itemSource="Rows"   	
+    	android:stretchColumns="1"	
+    	binding:rowChild="ROW_CHILD('Children','LayoutId')"    	
+    	binding:itemSource="Rows"       	
 		/>
     
     <!-- it's also possible to use a static layout for an item -->

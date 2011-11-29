@@ -40,13 +40,13 @@
     <com.gueei.extension.BindableLinearLayout
     	android:layout_width="fill_parent"
     	android:layout_height="fill_parent"
-    	android:orientation="vertical"
-    	binding:itemLayout="ITEM_LAYOUT('LayoutId')"    	
-    	binding:itemSource="Items"   	
-		/>
-    
+    	android:orientation="vertical" 
+    	binding:itemLayout="ITEM_LAYOUT('LayoutId')" 
+    	binding:itemSource="Items"
+    /> 
+    	    
     <!-- it's also possible to use a static layout for an item -->
-    <!-- 
+    <!--       
     	binding:itemPath="ITEM_LAYOUT(@layout/bindable_linear_layout_item)"  
     -->			
     

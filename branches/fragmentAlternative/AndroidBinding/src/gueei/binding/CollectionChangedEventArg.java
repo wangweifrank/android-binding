@@ -33,7 +33,7 @@ public class CollectionChangedEventArg {
 	
 	/**
 	 * single item changed
-	 * @param action must be Action.Reset, Action.Reset or Action.Remove
+	 * @param action must be Action.Add, Action.Reset or Action.Remove
 	 * @param item must be empty for Action.Reset
 	 */
 	public CollectionChangedEventArg(Action action, Object item) {
@@ -52,14 +52,14 @@ public class CollectionChangedEventArg {
 	
 	/**
 	 * multi item changed
-	 * @param action must be Action.Reset, Action.Reset or Action.Remove
+	 * @param action must be Action.Add, Action.Reset or Action.Remove
 	 * @param changes must be empty for Action.Reset
 	 */
 	public CollectionChangedEventArg(Action action, List<?> changes) {
 		if (action != Action.Add && action != Action.Remove && action != Action.Reset)
 			throw new IllegalArgumentException("ctor is for Action.Add or Action.Remove or Action.Reset only");
 		
-		if (action != Action.Reset) {
+		if (action == Action.Reset) {
 			if (changes != null)
 				throw new IllegalArgumentException("Action.Reset changes must be null");
 			this.initAdd(action, null, -1);
@@ -74,7 +74,7 @@ public class CollectionChangedEventArg {
 
 	/**
 	 * multi item changed
-	 * @param action must be Action.Reset, Action.Reset or Action.Remove
+	 * @param action must be Action.Add, Action.Reset or Action.Remove
 	 * @param changes must be empty for Action.Reset
 	 * @param startingIndex
 	 */
@@ -82,7 +82,7 @@ public class CollectionChangedEventArg {
 		if (action != Action.Add && action != Action.Remove && action != Action.Reset)
 			throw new IllegalArgumentException("ctor is for Action.Add or Action.Remove or Action.Reset only");
 		
-		if (action != Action.Reset) {
+		if (action == Action.Reset) {
 			if (changes != null)
 				throw new IllegalArgumentException("Action.Reset changes must be null");
 			if (startingIndex != -1)

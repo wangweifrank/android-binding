@@ -1,6 +1,7 @@
 package gueei.binding.collections;
 
 import gueei.binding.BindingLog;
+import gueei.binding.CollectionChangedEventArg;
 import gueei.binding.CollectionObserver;
 import gueei.binding.IObservableCollection;
 import gueei.binding.Observable;
@@ -16,7 +17,7 @@ public abstract class DependentCollectionObservable<T> extends Observable<T> imp
 			o.subscribe((CollectionObserver)this);
 		}
 		this.mDependents = dependents;
-		this.onCollectionChanged(new ArrayListObservable<Object>(null));
+		this.onCollectionChanged(new ArrayListObservable<Object>(null), null);
 	}
 	
 	// This is provided in case the constructor can't be used. 
@@ -33,18 +34,20 @@ public abstract class DependentCollectionObservable<T> extends Observable<T> imp
 			mDependents[i+len] = dependents[i];
 			dependents[i].subscribe((CollectionObserver)this);
 		}
-		this.onCollectionChanged(new ArrayListObservable<Object>(null));
+		this.onCollectionChanged(new ArrayListObservable<Object>(null), null);
 	}
 	
-	public abstract T calculateValue(Object... args) throws Exception;
+	public abstract T calculateValue(CollectionChangedEventArg e, Object... args) throws Exception;
 
 	@Override
-	public final void onCollectionChanged(IObservableCollection<?> collection) {
+	public final void onCollectionChanged(IObservableCollection<?> collection, CollectionChangedEventArg args) {
 		dirty = true;
+		changedArgs = args;
 		get();
 	}
 	
 	private boolean dirty = false;	
+	private CollectionChangedEventArg changedArgs = null;
 
 	@Override
 	public T get() {
@@ -55,13 +58,14 @@ public abstract class DependentCollectionObservable<T> extends Observable<T> imp
 				values[i] = mDependents[i].get();
 			}
 			try{
-				T value = this.calculateValue(values);
+				T value = this.calculateValue(changedArgs, values);
 				this.setWithoutNotify(value);
 			}catch(Exception e){
 				BindingLog.exception
 					("DependentCollectionObservable.CalculateValue()", e);
 			}
 			dirty = false;
+			changedArgs = null;
 		}
 		return super.get();
 	}

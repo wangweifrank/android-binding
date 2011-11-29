@@ -4,6 +4,7 @@ import gueei.binding.CollectionChangedEventArg;
 import gueei.binding.CollectionChangedEventArg.Action;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
@@ -42,7 +43,7 @@ public class ArrayListObservable<T>
 	}
 
 	public void clear(){
-		CollectionChangedEventArg e = new CollectionChangedEventArg(Action.Reset, mArray);
+		CollectionChangedEventArg e = new CollectionChangedEventArg(Action.Reset, (List<?>)null);
 		mArray.clear();
 		this.notifyCollectionChanged(e);
 	}
@@ -73,9 +74,10 @@ public class ArrayListObservable<T>
 	}
 
 	public boolean addAll(Collection<? extends T> arg0) {
-		CollectionChangedEventArg e = new CollectionChangedEventArg(Action.Add, arg0);
+		@SuppressWarnings("unchecked")
 		boolean result = mArray.addAll(arg0);
 		if (result){
+			CollectionChangedEventArg e = new CollectionChangedEventArg(Action.Add, Arrays.asList(arg0), mArray.size()-arg0.size()-1);
 			this.notifyCollectionChanged(e);
 		}
 		return result;
@@ -94,7 +96,7 @@ public class ArrayListObservable<T>
 	}
 
 	public boolean removeAll(Collection<?> arg0) {
-		CollectionChangedEventArg e = new CollectionChangedEventArg(Action.Remove, arg0);
+		CollectionChangedEventArg e = new CollectionChangedEventArg(Action.Remove, (List<?>)arg0);
 		boolean result = mArray.removeAll(arg0);
 		if (result){
 			this.notifyCollectionChanged(e);
@@ -103,7 +105,21 @@ public class ArrayListObservable<T>
 	}
 
 	public boolean retainAll(Collection<?> arg0) {
-		CollectionChangedEventArg e = new CollectionChangedEventArg(Action.Replace, arg0);
+		List<Object>inverseIntersect = new ArrayList<Object>();
+		if(arg0.size() > mArray.size()) {
+			for(Object o : arg0){
+				if(!mArray.contains(o))
+					inverseIntersect.add(o);
+			}
+			
+		} else {
+			for(Object o : mArray){
+				if(!arg0.contains(o))
+					inverseIntersect.add(o);
+			}
+		}
+						
+		CollectionChangedEventArg e = new CollectionChangedEventArg(Action.Remove, inverseIntersect);
 		boolean result = mArray.retainAll(arg0);
 		if (result){
 			this.notifyCollectionChanged(e);
@@ -112,7 +128,8 @@ public class ArrayListObservable<T>
 	}
 	
 	public T remove(int index){
-		CollectionChangedEventArg e = new CollectionChangedEventArg(Action.Remove, mArray.get(index), index);
+		CollectionChangedEventArg e = new CollectionChangedEventArg(Action.Remove, 
+											Arrays.asList(new Object[]{mArray.get(index)}), index);
 		T obj = mArray.remove(index);
 		this.notifyCollectionChanged(e);
 		return obj;
@@ -130,10 +147,10 @@ public class ArrayListObservable<T>
 		return mArray.toArray(array);
 	}
 
-	public boolean add(T object) {
-		CollectionChangedEventArg e = new CollectionChangedEventArg(Action.Add, object);
+	public boolean add(T object) {		
 		boolean result = mArray.add(object);
-		if (result){
+		if (result){	
+			CollectionChangedEventArg e = new CollectionChangedEventArg(Action.Add, Arrays.asList(new Object[]{object}), (int)mArray.size()-1);
 			this.notifyCollectionChanged(e);
 		}
 		return result;
@@ -144,9 +161,10 @@ public class ArrayListObservable<T>
 	}
 
 	public boolean remove(Object object) {
-		CollectionChangedEventArg e = new CollectionChangedEventArg(Action.Remove, object);
+		int index = mArray.indexOf(object);
 		boolean result = mArray.remove(object);
 		if (result){
+			CollectionChangedEventArg e = new CollectionChangedEventArg(Action.Remove, object, index);
 			this.notifyCollectionChanged(e);
 		}
 		return result;

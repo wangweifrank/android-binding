@@ -6,7 +6,7 @@ package gueei.binding;
 public interface IObservableCollection<T> extends IObservable<IObservableCollection>{
 	void subscribe(CollectionObserver c);
 	void unsubscribe(CollectionObserver c);
-	void notifyCollectionChanged();
+	void notifyCollectionChanged(CollectionChangedEventArg arg);
 	T getItem(int position);
 	long getItemId(int position);
 	void onLoad(int position);

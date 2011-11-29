@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Adapter;
 import android.widget.BaseExpandableListAdapter;
+import gueei.binding.CollectionChangedEventArg;
 import gueei.binding.CollectionObserver;
 import gueei.binding.IObservableCollection;
 
@@ -112,7 +113,7 @@ public class ExpandableCollectionAdapter extends BaseExpandableListAdapter imple
 		return true;
 	}
 
-	public void onCollectionChanged(IObservableCollection<?> collection) {
+	public void onCollectionChanged(IObservableCollection<?> collection, CollectionChangedEventArg args) {
 		mHandler.post(new Runnable() {
 			public void run() {
 				notifyDataSetChanged();

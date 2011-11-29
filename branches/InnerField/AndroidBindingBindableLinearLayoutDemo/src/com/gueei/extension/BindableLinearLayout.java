@@ -74,8 +74,7 @@ public class BindableLinearLayout extends LinearLayout implements IBindableView<
 		weakList = new WeakList<Object>(list);			
 	}	
 	
-	ArrayListObservable<Object> theList = null;
-	
+	ArrayListObservable<Object> theList = null;	
 	private ViewAttribute<BindableLinearLayout, Object> ItemSourceAttribute = 
 			new ViewAttribute<BindableLinearLayout, Object>(Object.class, BindableLinearLayout.this, "ItemSource") {		
 				@SuppressWarnings("unchecked")

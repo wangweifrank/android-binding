@@ -49,7 +49,7 @@ public class ArrayListObservable<T>
 	}
 	
 	public void setArray(T[] newArray){
-		CollectionChangedEventArg e = new CollectionChangedEventArg(Action.Replace, mArray);
+		CollectionChangedEventArg e = new CollectionChangedEventArg(Action.Replace, Arrays.asList(newArray), (List<?>)mArray);
 		mArray.clear();
 		int size = newArray.length;
 		for (int i=0; i<size; i++){

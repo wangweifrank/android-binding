@@ -241,10 +241,8 @@ public class BindableLinearLayout extends LinearLayout implements IBindableView<
 			
 			if( observable != null) {											
 				Object obj = observable.get();
-				if(obj instanceof Integer) {
-					// TODO: keep the observable and do a rebinding on layout id changed
+				if(obj instanceof Integer)
 					layoutId = (Integer)obj;
-				}
 			}
 		}
 		

@@ -15,6 +15,7 @@ public class TableLayoutViewmodel {
 		public class Child {
 			public final StringObservable Name = new StringObservable();
 			public final IntegerObservable LayoutId = new IntegerObservable(R.layout.bindable_table_layout_item);
+			public final IntegerObservable Span = new IntegerObservable(1);
 		}
 	}	
 	
@@ -23,15 +24,23 @@ public class TableLayoutViewmodel {
 	public TableLayoutViewmodel() {
 		for( int k=0; k<3; k++) {
 			Row row = new Row();			
-			for( int i=0; i<4; i++) {
+			for( int i=0; i<6; i++) {
 				Child child = row.new Child();
-				child.Name.set( "Child " + k + " / " + i);
+				child.Name.set( "Child " + i + " / " + k);
 				row.Children.add(child);
 			}
 			Rows.add(row);
 		}
 		
 		Rows.get(1).Children.get(1).LayoutId.set(R.layout.bindable_table_layout_item_1_1);
+		
+		Row row = new Row();
+		row.Children.add(null);
+		Child child = row.new Child();
+		child.Name.set("Child only pos 2");		
+		child.Span.set(2);
+		row.Children.add(child);
+		Rows.add(row);
 	}
     
 	public final Command AddNewItem = new Command(){

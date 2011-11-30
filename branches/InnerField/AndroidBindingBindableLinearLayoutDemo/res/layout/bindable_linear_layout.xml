@@ -10,6 +10,15 @@
 	    android:layout_height="wrap_content"
 	    android:orientation="horizontal" >
 	    
+	   <Button
+			android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:layout_marginLeft="20dip"
+		    android:layout_margin="30dip"
+		    android:text="ChangeLayoutPos2"
+		    binding:onClick="ChangeLayoutPos2"
+		/>	        
+	    
 	    <Button
 			android:layout_width="wrap_content"
 		    android:layout_height="wrap_content"
@@ -34,6 +43,25 @@
 		    android:text="RemovePos3"
 		    binding:onClick="RemovePos3"
 		/>
+	    
+	   <Button
+			android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:layout_marginLeft="20dip"
+		    android:layout_margin="30dip"
+		    android:text="RemoveAll"
+		    binding:onClick="RemoveAll"
+		/>
+	   
+	   <Button
+			android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:layout_marginLeft="20dip"
+		    android:layout_margin="30dip"
+		    android:text="Clear"
+		    binding:onClick="Clear"
+		/>	   
+		 	   
     
     </LinearLayout>
 

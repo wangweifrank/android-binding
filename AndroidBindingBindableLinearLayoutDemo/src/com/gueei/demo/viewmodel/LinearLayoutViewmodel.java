@@ -1,5 +1,8 @@
 package com.gueei.demo.viewmodel;
 
+import java.util.Arrays;
+import java.util.List;
+
 import com.gueei.demo.R;
 
 import android.view.View;
@@ -52,5 +55,36 @@ public class LinearLayoutViewmodel {
 			Items.remove(3);
 		}
 	};
+	
+	public final Command RemoveAll = new Command(){
+		@Override
+		public void Invoke(View view, Object... args) {
+			List<?> list = Arrays.asList(Items.toArray());
+			Items.removeAll(list);
+		}
+	};
+	
+	public final Command Clear = new Command(){
+		@Override
+		public void Invoke(View view, Object... args) {
+			Items.clear();
+		}
+	};
+	
+	public final Command ChangeLayoutPos2 = new Command(){
+		@Override
+		public void Invoke(View view, Object... args) {
+			if(Items.size() < 3)
+				return;		
+			
+			if(Items.get(2).LayoutId.get() == R.layout.bindable_linear_layout_item_blue) {
+				Items.get(2).LayoutId.set(R.layout.bindable_linear_layout_item);
+			} else {
+				Items.get(2).LayoutId.set(R.layout.bindable_linear_layout_item_blue);
+			}
+		}
+	};
+	
+	
 	
 }

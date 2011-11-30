@@ -7,6 +7,7 @@ import java.util.List;
 import gueei.binding.AttributeBinder;
 import gueei.binding.Binder;
 import gueei.binding.BindingSyntaxResolver;
+import gueei.binding.CollectionChangedEventArg;
 import gueei.binding.ConstantObservable;
 import gueei.binding.IBindableView;
 import gueei.binding.IObservable;
@@ -20,6 +21,8 @@ import android.content.Context;
 import android.graphics.Color;
 import android.util.AttributeSet;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -38,6 +41,7 @@ public class BindableTableLayout extends TableLayout implements IBindableView<Bi
 	
 	private void init() {
 	}
+	/*
 	
 	ArrayListObservable<Object> theList = null;	
 	private ViewAttribute<BindableTableLayout, Object> ItemSourceAttribute = 
@@ -99,7 +103,7 @@ public class BindableTableLayout extends TableLayout implements IBindableView<Bi
 					
 		listIsEmpty = new DependentCollectionObservable<Boolean>(Boolean.class, list) {
 			@Override
-			public Boolean calculateValue(Object... args) throws Exception {
+			public Boolean calculateValue(CollectionChangedEventArg e, Object... args) throws Exception {
 				if( args.length == 0) return false;
 				if( !(args[0] instanceof ArrayListObservable<?>))
 					return false;		
@@ -205,26 +209,84 @@ public class BindableTableLayout extends TableLayout implements IBindableView<Bi
 							}
 						}
 					}
-					
+										
 					View child = null;
 					
-					if( layoutId < 1 ) {
-						TextView textView = new TextView(getContext());
-						textView.setText("binding error - pos: " + pos + " has no layout - please check binding:itemPath or the layout id in viewmodel");
-						textView.setTextColor(Color.RED);
-						child = textView;
-					} else {		
-						Binder.InflateResult result = Binder.inflateView(getContext(), layoutId, row, false);
-						for(View view: result.processedViews){
-							AttributeBinder.getInstance().bindView(getContext(), view, childItem);
+					if( childItem == null ) {
+						// empty view - we do not support cols
+						child = new View(getContext());
+						child.setBackgroundColor(Color.TRANSPARENT);
+					} else {					
+						if( layoutId < 1 ) {
+							TextView textView = new TextView(getContext());
+							textView.setText("binding error - pos: " + pos + " has no layout - please check binding:itemPath or the layout id in viewmodel");
+							textView.setTextColor(Color.RED);
+							child = textView;
+						} else {		
+							Binder.InflateResult result = Binder.inflateView(getContext(), layoutId, row, false);
+							for(View view: result.processedViews){
+								AttributeBinder.getInstance().bindView(getContext(), view, childItem);
+							}
+							child = result.rootView;						
+						}						
+					}
+					TableRow.LayoutParams params = null;					
+					// colspan
+					if( rowChild.colspanName != null ) {									
+						IObservable<?> observable = null;			
+						ifo = new InnerFieldObservable(rowChild.colspanName);
+						if (ifo.createNodes(childItem)) {
+							observable = ifo;
+						} else {			
+							Object rawField = BindingSyntaxResolver.getFieldForModel(rowChild.colspanName, childItem);
+							if (rawField instanceof IObservable<?>)
+								observable = (IObservable<?>)rawField;
+							else if (rawField!=null)
+								observable= new ConstantObservable(rawField.getClass(), rawField);
 						}
-						child = result.rootView;						
-					}							
-					row.addView(child);
+						
+						if( observable != null) {											
+							Object obj = observable.get();
+							if(obj instanceof Integer) {
+								// TODO: keep the observable and do a rebinding on layout id changed
+								int colSpan = (Integer)obj;																	
+								if( colSpan > 1) {		
+									if( row.getLayoutParams() != null ) {
+										params = new TableRow.LayoutParams(row.getLayoutParams());
+									} else {
+										// ViewGroup.MarginLayoutParams ctor doesn't honor the margins
+										// so this is a workaround - we have to use the child - not the row
+										
+										TableRow.LayoutParams rowParams =  (TableRow.LayoutParams)child.getLayoutParams();										
+										ViewGroup.MarginLayoutParams margins = new ViewGroup.MarginLayoutParams(rowParams);
+										margins.setMargins(rowParams.leftMargin, rowParams.topMargin, 
+														   rowParams.rightMargin, rowParams.bottomMargin);
+
+										params = new TableRow.LayoutParams(margins);
+									}
+									params.span = colSpan;
+									row.setLayoutParams(params);									
+								}
+							}
+						}
+					}
+										
+					if( params != null )
+						row.addView(child, params);
+					else
+						row.addView(child);
 				}				
 			}						
 		}
 		 											
 		this.addView(row,pos);
 	}	
+	*/
+
+	@Override
+	public ViewAttribute<? extends View, ?> createViewAttribute(
+			String attributeId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

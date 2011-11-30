@@ -26,6 +26,11 @@ public class ROW_CHILD extends Converter<Object> {
 			rowChild.layoutIdName = args[1].toString();			
 		}
 		
+		// optional
+		if( args.length>2) {
+			rowChild.colspanName = args[2].toString();
+		}
+		
 		return rowChild;
 	}
 	
@@ -33,5 +38,6 @@ public class ROW_CHILD extends Converter<Object> {
 		public String childDataSource = null;
 		public String layoutIdName = null;
 		public int staticLayoutId = -1;
+		public String colspanName = null;
 	}
 }

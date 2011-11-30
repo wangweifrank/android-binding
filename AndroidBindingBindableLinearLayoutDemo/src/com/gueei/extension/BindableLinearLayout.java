@@ -2,21 +2,26 @@ package com.gueei.extension;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.Hashtable;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map.Entry;
 
 import gueei.binding.AttributeBinder;
 import gueei.binding.Binder;
 import gueei.binding.BindingSyntaxResolver;
+import gueei.binding.CollectionChangedEventArg;
 import gueei.binding.ConstantObservable;
 import gueei.binding.IBindableView;
 import gueei.binding.IObservable;
 import gueei.binding.InnerFieldObservable;
+import gueei.binding.Observer;
 import gueei.binding.ViewAttribute;
 import gueei.binding.collections.ArrayListObservable;
 import gueei.binding.collections.DependentCollectionObservable;
 import gueei.binding.converters.ITEM_LAYOUT;
 import gueei.binding.utility.WeakList;
-import com.gueei.extension.ListIntersection;
 import android.content.Context;
 import android.graphics.Color;
 import android.util.AttributeSet;
@@ -25,8 +30,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 public class BindableLinearLayout extends LinearLayout implements IBindableView<BindableLinearLayout> {
-
-
+	
 	public BindableLinearLayout(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		init();
@@ -48,30 +52,84 @@ public class BindableLinearLayout extends LinearLayout implements IBindableView<
 		if(list==null)
 			return;
 		
-		weakList = null;
-					
+		weakList = null;					
 		listIsEmpty = new DependentCollectionObservable<Boolean>(Boolean.class, list) {
 			@Override
-			public Boolean calculateValue(Object... args) throws Exception {
-				if( args.length == 0) return false;
-				if( !(args[0] instanceof ArrayListObservable<?>))
+			public Boolean calculateValue(CollectionChangedEventArg e, Object... args) throws Exception {
+				if(args.length == 0) return false;
+				if(!(args[0] instanceof ArrayListObservable<?>))
 					return false;		
 								
 				@SuppressWarnings("unchecked")
 				ArrayListObservable<Object> list = (ArrayListObservable<Object>)args[0];
 				
-				// the list has changed - do comparison with our saved weaklist
-				listChanged(list);				
+				if( e == null ) {
+					newList(list);
+				} else {
+					listChanged(e, list);
+				}
 				
 				if( list == null || list.size() == 0)
 					return true;
 				return false;
 			}
 		};
+	}	
+	
+	private void newList(List<Object> list) {
+		this.removeAllViews();		
 
-		// call list changed to update the layout
-		listChanged(list);			
-		weakList = new WeakList<Object>(list);			
+		for (Iterator<Entry<LayoutIdObserver, Object>> iter = htObservable.entrySet().iterator(); 
+			iter.hasNext();) {
+				Entry<LayoutIdObserver, Object> entry = iter.next();
+				LayoutIdObserver e = entry.getKey();
+				if( e.observable != null || e.observer != null)
+					e.observable.unsubscribe(e.observer);
+		}
+		
+		htObservable.clear();
+		
+		weakList = new WeakList<Object>();
+		if( list == null)
+			return;	
+		
+		int pos=0;
+		for(Object item : list) {
+			insertItem(pos, item);
+			pos++;
+		}
+		
+		weakList.addAll(list);
+	}
+	
+	private void listChanged(CollectionChangedEventArg e, ArrayListObservable<Object> list) {
+		if( e == null || list == null)
+			return;
+		
+		int pos=-1;
+		switch( e.getAction()) {
+			case Add:
+				pos = e.getNewStartingIndex();
+				for(Object item : e.getNewItems()) {
+					insertItem(pos, item);
+					pos++;
+				}
+				break;
+			case Move:
+				break;
+			case Remove:
+				removeItems(e.getOldItems());	
+				break;
+			case Replace:
+				break;
+			case Reset:
+				newList(list);
+				break;
+			default:
+				throw new IllegalArgumentException("unknown action " + e.getAction().toString());
+		}
+		
+		weakList = new WeakList<Object>(list);
 	}	
 	
 	ArrayListObservable<Object> theList = null;	
@@ -128,42 +186,7 @@ public class BindableLinearLayout extends LinearLayout implements IBindableView<
 		return null;
 	}
 	
-	private void listChanged(List<Object> currentList) {		
-		ArrayList<Object> intersectWeakList = null;
-		if( weakList != null )
-			intersectWeakList = new ArrayList<Object>(Arrays.asList(weakList.toArray()));		
-		ListIntersection<Object> inter = new ListIntersection<Object>();
-		
-		List<Object> intersect = inter.Intersection(intersectWeakList, currentList);	// equal in both
-		List<Object> deleteList = inter.NotIn(intersectWeakList, intersect);
-		List<Object> newList = inter.NotIn(currentList, intersect);
-		
-		if( intersectWeakList == null || intersectWeakList.size() == 0) {
-			// check if this is our start			
-			newList = currentList;
-		} else if( intersectWeakList != null && intersectWeakList.size() >0 && (currentList == null || currentList.size() == 0)) {
-			// check if this is the final remove
-			deleteList = intersectWeakList;
-		} else {		
-			intersectWeakList.clear();
-			intersect.clear();
-		}
-		
-		// delete old items
-		deleteOldItems(deleteList);
-		
-		// add new items
-		for(Object item : newList){
-			int pos = currentList.indexOf(item);
-			newItem(pos,item);			
-		}
-		
-		// keep the weak list of the current item
-		weakList = new WeakList<Object>(currentList);
-	}
-	
-
-	private void deleteOldItems(List<Object> deleteList) {
+	private void removeItems(List<?> deleteList) {
 		if( deleteList == null || deleteList.size() == 0 || weakList == null)
 			return;
 		
@@ -171,13 +194,33 @@ public class BindableLinearLayout extends LinearLayout implements IBindableView<
 		
 		for(Object item : deleteList){
 			int pos = currentPositionList.indexOf(item);
+
+			if (htObservable.containsValue(item)) {
+				for (Iterator<Entry<LayoutIdObserver, Object>> iter = htObservable.entrySet().iterator(); 
+					iter.hasNext();) {
+					Entry<LayoutIdObserver, Object> entry = iter.next();
+					if (item.equals(entry.getValue())) {
+						LayoutIdObserver e = entry.getKey();
+						if( e.observable != null || e.observer != null)
+							e.observable.unsubscribe(e.observer);
+						iter.remove();
+					}
+				}
+			}
 			currentPositionList.remove(item);
 			this.removeViewAt(pos);	
 		}
 	}
+	
+	private Hashtable<LayoutIdObserver,Object> htObservable = new Hashtable<LayoutIdObserver,Object>();
+	
+	private static class LayoutIdObserver {		
+		public Observer observer = null;
+		public IObservable<?> observable = null;	
+	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	private void newItem(int pos, Object item) {		
+	private void insertItem(int pos, Object item) {		
 		if( layout == null )
 			return;
 		
@@ -186,7 +229,8 @@ public class BindableLinearLayout extends LinearLayout implements IBindableView<
 			IObservable<?> observable = null;			
 			InnerFieldObservable ifo = new InnerFieldObservable(layout.layoutIdName);
 			if (ifo.createNodes(item)) {
-				observable = ifo;
+				observable = ifo;				
+				buildObserverForLayoutIdChanges(observable, item);											
 			} else {			
 				Object rawField = BindingSyntaxResolver.getFieldForModel(layout.layoutIdName, item);
 				if (rawField instanceof IObservable<?>)
@@ -220,6 +264,47 @@ public class BindableLinearLayout extends LinearLayout implements IBindableView<
 		}
 		 											
 		this.addView(child,pos);
+	}
+
+	private void buildObserverForLayoutIdChanges(IObservable<?> observable, Object item) {
+		if( observable == null || item == null )
+			return;
+		
+		Observer observer = new Observer() {					
+			@Override
+			public void onPropertyChanged(IObservable<?> prop, Collection<Object> initiators) {
+				if( htObservable == null )
+					return;
+				
+				Object obj = null;
+				
+				for (Iterator<Entry<LayoutIdObserver, Object>> iter = htObservable.entrySet().iterator(); 
+						iter.hasNext();) {
+						Entry<LayoutIdObserver, Object> entry = iter.next();
+						LayoutIdObserver e = entry.getKey();
+						if( e == null || !this.equals(e.observer))
+							continue;
+						obj = entry.getValue();
+						break;
+				}						
+
+				if( obj == null  || weakList == null )
+					return;											
+				
+				int pos = weakList.indexOf(obj);						
+				ArrayList<Object> list = new ArrayList<Object>();
+				list.add(obj);
+				removeItems(list);						
+				insertItem(pos, obj);
+			}
+		};
+		
+		observable.subscribe(observer);
+		LayoutIdObserver entry = new LayoutIdObserver();
+		entry.observable = observable;
+		entry.observer = observer;						
+		
+		htObservable.put(entry,item);		
 	}
 
 }

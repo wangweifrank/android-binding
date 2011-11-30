@@ -29,6 +29,14 @@
             android:label="@string/app_name"
             android:name=".BindableTableLayoutActivity" >
         </activity>                 
+        
+        <activity
+            android:label="@string/app_name"
+            android:name=".ListViewTestActivity" >
+        </activity>                 
+        
+            
+            
     </application>
 
 </manifest>

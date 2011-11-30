@@ -41,7 +41,7 @@
     	android:layout_width="fill_parent"
     	android:layout_height="fill_parent"
     	android:stretchColumns="1"	
-    	binding:rowChild="ROW_CHILD('Children','LayoutId')"    	
+    	binding:rowChild="ROW_CHILD('Children','LayoutId','Span')"    	
     	binding:itemSource="Rows"       	
 		/>
     

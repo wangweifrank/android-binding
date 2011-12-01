@@ -1,7 +1,6 @@
 package com.gueei.demo.contactmanager;
 
-import com.gueei.android.binding.Binder;
-
+import gueei.binding.Binder;
 import android.app.Application;
 
 public class ContactManagerApplication extends Application {

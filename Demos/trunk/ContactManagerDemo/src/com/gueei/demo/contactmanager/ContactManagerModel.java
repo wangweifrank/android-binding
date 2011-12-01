@@ -1,7 +1,13 @@
 package com.gueei.demo.contactmanager;
 
+import gueei.binding.Command;
+import gueei.binding.collections.CursorCollection;
+import gueei.binding.cursor.IRowModelFactory;
+import gueei.binding.cursor.IdField;
+import gueei.binding.cursor.RowModel;
+import gueei.binding.cursor.StringField;
+import gueei.binding.observables.BooleanObservable;
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
@@ -9,21 +15,17 @@ import android.provider.ContactsContract;
 import android.view.View;
 import android.widget.Toast;
 
-import com.gueei.android.binding.Command;
-import com.gueei.android.binding.Observable;
-import com.gueei.android.binding.cursor.CursorRowModel;
-import com.gueei.android.binding.cursor.CursorSource;
-import com.gueei.android.binding.cursor.IdField;
-import com.gueei.android.binding.cursor.StringField;
-import com.gueei.android.binding.observables.BooleanObservable;
-import com.gueei.android.binding.observables.LongObservable;
-
 public class ContactManagerModel {
 	private Activity mContext;
 	
-	public CursorSource<ContactRowModel> ContactList = 
-		new CursorSource<ContactRowModel>
-			(ContactRowModel.class, new Factory());
+	public CursorCollection<ContactRowModel> ContactList = 
+		new CursorCollection<ContactRowModel>
+			(ContactRowModel.class, new IRowModelFactory<ContactRowModel>(){
+				@Override
+				public ContactRowModel createInstance() {
+					return new ContactRowModel();
+				}
+			});
 	
 	public BooleanObservable ShowInvisible = new BooleanObservable(false);
 
@@ -91,13 +93,7 @@ public class ContactManagerModel {
         mContext.startActivity(i);
     }
     
-	public class Factory implements CursorRowModel.Factory<ContactRowModel>{
-		public ContactRowModel createRowModel(Context arg0) {
-			return new ContactRowModel();
-		}			
-	}
-    
-    public class ContactRowModel extends CursorRowModel {
+    public class ContactRowModel extends RowModel {
     	public IdField Id = new IdField(0);
     	public StringField Name = new StringField(1);
 
@@ -106,9 +102,5 @@ public class ContactManagerModel {
     			toastContact(Id.get().toString());
     		}
     	};
-    	
-		@Override
-		public void resetInternalState(int arg0) {
-		}
     }
 }

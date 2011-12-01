@@ -16,43 +16,16 @@
 
 package com.gueei.demo.contactmanager;
 
-import android.accounts.Account;
-import android.accounts.AccountManager;
-import android.accounts.AuthenticatorDescription;
-import android.accounts.OnAccountsUpdateListener;
-import android.app.Activity;
-import android.content.ContentProviderOperation;
-import android.content.Context;
-import android.content.pm.PackageManager;
-import android.graphics.drawable.Drawable;
+import gueei.binding.app.BindingActivity;
 import android.os.Bundle;
-import android.provider.ContactsContract;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.Spinner;
-import android.widget.TextView;
-import android.widget.Toast;
-import android.widget.AdapterView.OnItemSelectedListener;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-
-import com.gueei.android.binding.Binder;
-
-public final class ContactAdder extends Activity 
+public final class ContactAdder extends BindingActivity 
 {
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         ContactAdderModel model = new ContactAdderModel(this);
-        Binder.setAndBindContentView(this, R.layout.contact_adder, model);
+        this.setAndBindRootView(R.layout.contact_adder, model);
     }
 }

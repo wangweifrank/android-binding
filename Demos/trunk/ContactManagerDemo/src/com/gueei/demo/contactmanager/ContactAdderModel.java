@@ -1,18 +1,17 @@
 package com.gueei.demo.contactmanager;
 
+import gueei.binding.Command;
+import gueei.binding.Observable;
+import gueei.binding.collections.ArrayListObservable;
+import gueei.binding.observables.StringObservable;
+import gueei.binding.validation.ModelValidator;
+import gueei.binding.validation.ValidationResult;
+import gueei.binding.validation.validators.RegexMatch;
+import gueei.binding.validation.validators.Required;
 import android.app.Activity;
 import android.provider.ContactsContract;
 import android.view.View;
 import android.widget.Toast;
-
-import com.gueei.android.binding.Command;
-import com.gueei.android.binding.Observable;
-import com.gueei.android.binding.observables.ArraySource;
-import com.gueei.android.binding.observables.StringObservable;
-import com.gueei.android.binding.validation.ModelValidator;
-import com.gueei.android.binding.validation.ValidationResult;
-import com.gueei.android.binding.validation.validators.RegexMatch;
-import com.gueei.android.binding.validation.validators.Required;
 
 public class ContactAdderModel{
 	private Activity mContext;
@@ -28,8 +27,8 @@ public class ContactAdderModel{
 		 ErrorMessage="Invalid Email")
 	public StringObservable Email = new StringObservable();
 	
-	public ArraySource<PhoneLabelPair> PhoneTypeList = new ArraySource<PhoneLabelPair>(); 
-	public ArraySource<EmailLabelPair> EmailTypeList = new ArraySource<EmailLabelPair>();
+	public ArrayListObservable<PhoneLabelPair> PhoneTypeList = new ArrayListObservable<PhoneLabelPair>(PhoneLabelPair.class); 
+	public ArrayListObservable<EmailLabelPair> EmailTypeList = new ArrayListObservable<EmailLabelPair>(EmailLabelPair.class);
 	public Observable<PhoneLabelPair> SelectedPhoneType = new Observable<PhoneLabelPair>(PhoneLabelPair.class);
 	public Observable<EmailLabelPair> SelectedEmailType = new Observable<EmailLabelPair>(EmailLabelPair.class);
 

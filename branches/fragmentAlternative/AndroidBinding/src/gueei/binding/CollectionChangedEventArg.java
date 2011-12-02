@@ -1,7 +1,5 @@
 package gueei.binding;
 
-import gueei.binding.utility.WeakList;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;

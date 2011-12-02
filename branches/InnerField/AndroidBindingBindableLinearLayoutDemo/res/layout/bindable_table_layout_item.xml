@@ -10,5 +10,6 @@
     android:layout_margin="5dip"
     android:minHeight="?android:attr/listPreferredItemHeight"
     binding:text="Name"
+    binding:onClick="Clicked"
     android:background="#FF008000"
 />

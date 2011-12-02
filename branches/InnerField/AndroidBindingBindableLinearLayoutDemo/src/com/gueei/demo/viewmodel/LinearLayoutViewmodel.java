@@ -86,5 +86,27 @@ public class LinearLayoutViewmodel {
 	};
 	
 	
+	public final Command Replace3 = new Command(){
+		@Override
+		public void Invoke(View view, Object... args) {
+			if(Items.size() < 4)
+				return;	
+			
+			int pos = 3;
+			
+			Item item = new Item();
+			item.Name.set( "Entry: " + System.currentTimeMillis() );			
+			if(Items.get(pos).LayoutId.get() == R.layout.bindable_linear_layout_item_blue) {
+				item.LayoutId.set(R.layout.bindable_linear_layout_item);
+			} else {
+				item.LayoutId.set(R.layout.bindable_linear_layout_item_blue);
+			}
+			
+			Items.replaceItem(pos, item);
+		}
+	};
+	
+	
+	
 	
 }

@@ -31,13 +31,5 @@ public class MainActivity extends BindingActivity {
 			MainActivity.this.startActivity(intent);
 		}
 	};	
-	
-	public final Command ListViewTest = new Command() {
-		public void Invoke(View view, Object... args) {
-			Intent intent = new Intent(MainActivity.this, ListViewTestActivity.class);
-			MainActivity.this.startActivity(intent);
-		}
-	};		
-
 
 }

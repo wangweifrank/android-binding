@@ -3,25 +3,23 @@ package com.gueei.extension;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Hashtable;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map.Entry;
 
 import gueei.binding.AttributeBinder;
 import gueei.binding.Binder;
 import gueei.binding.BindingSyntaxResolver;
 import gueei.binding.CollectionChangedEventArg;
+import gueei.binding.CollectionObserver;
 import gueei.binding.ConstantObservable;
 import gueei.binding.IBindableView;
 import gueei.binding.IObservable;
+import gueei.binding.IObservableCollection;
 import gueei.binding.InnerFieldObservable;
-import gueei.binding.Observer;
 import gueei.binding.ViewAttribute;
 import gueei.binding.collections.ArrayListObservable;
-import gueei.binding.collections.DependentCollectionObservable;
 import gueei.binding.converters.ITEM_LAYOUT;
 import gueei.binding.utility.WeakList;
+import gueei.binding.Observer;
 import android.content.Context;
 import android.graphics.Color;
 import android.util.AttributeSet;
@@ -30,6 +28,25 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 public class BindableLinearLayout extends LinearLayout implements IBindableView<BindableLinearLayout> {
+	private WeakList<Object> currentList = null;
+	private CollectionObserver collectionObserver = null;
+	
+	private ArrayListObservable<Object> itemList = null;
+	private ITEM_LAYOUT.ItemLayout layout = null;	
+
+	private ObservableMultiplexer<Object> observableItemsLayoutID = new ObservableMultiplexer<Object>(new Observer() {
+		@Override
+		public void onPropertyChanged(IObservable<?> prop, Collection<Object> initiators) {
+			if( initiators == null || initiators.size() < 1)
+				return;
+			Object parent = initiators.toArray()[0];
+			int pos = currentList.indexOf(parent);						
+			ArrayList<Object> list = new ArrayList<Object>();
+			list.add(parent);
+			removeItems(list);						
+			insertItem(pos, parent);	 
+		}
+	});
 	
 	public BindableLinearLayout(Context context, AttributeSet attrs) {
 		super(context, attrs);
@@ -44,52 +61,35 @@ public class BindableLinearLayout extends LinearLayout implements IBindableView<
 	private void init() {
 	}
 	
-	@SuppressWarnings("unused")
-	private DependentCollectionObservable<Boolean> listIsEmpty = null;
-	private WeakList<Object> weakList = null;
+	private void createItemSourceList(ArrayListObservable<Object> newList) {		
+		if( itemList != null && collectionObserver != null)
+			itemList.unsubscribe(collectionObserver);
 		
-	private void createItemSourceList(ArrayListObservable<Object> list) {
-		if(list==null)
+		collectionObserver = null;
+		itemList = newList;
+		
+		if(newList==null)
 			return;
-		
-		weakList = null;					
-		listIsEmpty = new DependentCollectionObservable<Boolean>(Boolean.class, list) {
+
+		currentList = null;	
+		collectionObserver = new CollectionObserver() {			
+			@SuppressWarnings("unchecked")
 			@Override
-			public Boolean calculateValue(CollectionChangedEventArg e, Object... args) throws Exception {
-				if(args.length == 0) return false;
-				if(!(args[0] instanceof ArrayListObservable<?>))
-					return false;		
-								
-				@SuppressWarnings("unchecked")
-				ArrayListObservable<Object> list = (ArrayListObservable<Object>)args[0];
-				
-				if( e == null ) {
-					newList(list);
-				} else {
-					listChanged(e, list);
-				}
-				
-				if( list == null || list.size() == 0)
-					return true;
-				return false;
+			public void onCollectionChanged(IObservableCollection<?> collection, CollectionChangedEventArg args) {
+				listChanged(args, (List<Object>)collection);
 			}
 		};
+		
+		itemList.subscribe(collectionObserver);
+		newList(newList);
 	}	
 	
 	private void newList(List<Object> list) {
-		this.removeAllViews();		
-
-		for (Iterator<Entry<LayoutIdObserver, Object>> iter = htObservable.entrySet().iterator(); 
-			iter.hasNext();) {
-				Entry<LayoutIdObserver, Object> entry = iter.next();
-				LayoutIdObserver e = entry.getKey();
-				if( e.observable != null || e.observer != null)
-					e.observable.unsubscribe(e.observer);
-		}
+		this.removeAllViews();	
 		
-		htObservable.clear();
-		
-		weakList = new WeakList<Object>();
+		observableItemsLayoutID.clear();
+				
+		currentList = new WeakList<Object>();
 		if( list == null)
 			return;	
 		
@@ -99,10 +99,10 @@ public class BindableLinearLayout extends LinearLayout implements IBindableView<
 			pos++;
 		}
 		
-		weakList.addAll(list);
+		currentList.addAll(list);
 	}
-	
-	private void listChanged(CollectionChangedEventArg e, ArrayListObservable<Object> list) {
+
+	private void listChanged(CollectionChangedEventArg e, List<Object> list) {
 		if( e == null || list == null)
 			return;
 		
@@ -115,24 +115,30 @@ public class BindableLinearLayout extends LinearLayout implements IBindableView<
 					pos++;
 				}
 				break;
-			case Move:
-				break;
 			case Remove:
 				removeItems(e.getOldItems());	
 				break;
 			case Replace:
+				removeItems(e.getOldItems());	
+				pos = e.getNewStartingIndex();
+				for(Object item : e.getNewItems()) {
+					insertItem(pos, item);
+					pos++;
+				}
 				break;
 			case Reset:
 				newList(list);
 				break;
+			case Move:
+				// currently the observable array list doesn't create this action
+				throw new IllegalArgumentException("move not implemented");				
 			default:
 				throw new IllegalArgumentException("unknown action " + e.getAction().toString());
 		}
 		
-		weakList = new WeakList<Object>(list);
+		currentList = new WeakList<Object>(list);
 	}	
 	
-	ArrayListObservable<Object> theList = null;	
 	private ViewAttribute<BindableLinearLayout, Object> ItemSourceAttribute = 
 			new ViewAttribute<BindableLinearLayout, Object>(Object.class, BindableLinearLayout.this, "ItemSource") {		
 				@SuppressWarnings("unchecked")
@@ -140,19 +146,16 @@ public class BindableLinearLayout extends LinearLayout implements IBindableView<
 				protected void doSetAttributeValue(Object newValue) {
 					if( !(newValue instanceof ArrayListObservable<?> ))
 						return;
-					theList = (ArrayListObservable<Object>)newValue;
-					
 					if( layout != null )
-						createItemSourceList(theList);
+						createItemSourceList((ArrayListObservable<Object>)newValue);
 				}
 
 				@Override
 				public Object get() {
-					return null;
+					return itemList;
 				}				
 	};	
-			
-	private ITEM_LAYOUT.ItemLayout layout = null;			
+					
 	private ViewAttribute<BindableLinearLayout, Object> ItemLayoutAttribute =
 			new ViewAttribute<BindableLinearLayout, Object>(Object.class, BindableLinearLayout.this, "ItemLayout"){
 				@Override
@@ -160,64 +163,37 @@ public class BindableLinearLayout extends LinearLayout implements IBindableView<
 					layout = null;
 					if( newValue instanceof ITEM_LAYOUT.ItemLayout ) {
 						layout = (ITEM_LAYOUT.ItemLayout) newValue;
-						if( theList != null )
-							createItemSourceList(theList);
+						if( itemList != null )
+							createItemSourceList(itemList);
 					}
 				}
 
 				@Override
 				public Object get() {
-					return null;
+					return layout;
 				}
-
-			};				
+	};				
 
 	@Override
 	public ViewAttribute<BindableLinearLayout, ?> createViewAttribute(String attributeId) {	
-		
-		// should we support this?
-		
-		// "itemSource"
-		// "selectedItem"
-		// "selectedPosition"
-		
 		if (attributeId.equals("itemSource")) return ItemSourceAttribute;
 		if (attributeId.equals("itemLayout")) return ItemLayoutAttribute;
 		return null;
 	}
 	
 	private void removeItems(List<?> deleteList) {
-		if( deleteList == null || deleteList.size() == 0 || weakList == null)
+		if( deleteList == null || deleteList.size() == 0 || currentList == null)
 			return;
 		
-		ArrayList<Object> currentPositionList = new ArrayList<Object>(Arrays.asList(weakList.toArray()));
+		ArrayList<Object> currentPositionList = new ArrayList<Object>(Arrays.asList(currentList.toArray()));
 		
 		for(Object item : deleteList){
-			int pos = currentPositionList.indexOf(item);
-
-			if (htObservable.containsValue(item)) {
-				for (Iterator<Entry<LayoutIdObserver, Object>> iter = htObservable.entrySet().iterator(); 
-					iter.hasNext();) {
-					Entry<LayoutIdObserver, Object> entry = iter.next();
-					if (item.equals(entry.getValue())) {
-						LayoutIdObserver e = entry.getKey();
-						if( e.observable != null || e.observer != null)
-							e.observable.unsubscribe(e.observer);
-						iter.remove();
-					}
-				}
-			}
+			int pos = currentPositionList.indexOf(item);			
+			observableItemsLayoutID.removeParent(item);
 			currentPositionList.remove(item);
 			this.removeViewAt(pos);	
 		}
-	}
-	
-	private Hashtable<LayoutIdObserver,Object> htObservable = new Hashtable<LayoutIdObserver,Object>();
-	
-	private static class LayoutIdObserver {		
-		public Observer observer = null;
-		public IObservable<?> observable = null;	
-	}
+	}	
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	private void insertItem(int pos, Object item) {		
@@ -229,8 +205,7 @@ public class BindableLinearLayout extends LinearLayout implements IBindableView<
 			IObservable<?> observable = null;			
 			InnerFieldObservable ifo = new InnerFieldObservable(layout.layoutIdName);
 			if (ifo.createNodes(item)) {
-				observable = ifo;				
-				buildObserverForLayoutIdChanges(observable, item);											
+				observable = ifo;										
 			} else {			
 				Object rawField = BindingSyntaxResolver.getFieldForModel(layout.layoutIdName, item);
 				if (rawField instanceof IObservable<?>)
@@ -239,7 +214,8 @@ public class BindableLinearLayout extends LinearLayout implements IBindableView<
 					observable= new ConstantObservable(rawField.getClass(), rawField);
 			}
 			
-			if( observable != null) {											
+			if( observable != null) {	
+				observableItemsLayoutID.add(observable, item);	
 				Object obj = observable.get();
 				if(obj instanceof Integer)
 					layoutId = (Integer)obj;
@@ -263,46 +239,5 @@ public class BindableLinearLayout extends LinearLayout implements IBindableView<
 		 											
 		this.addView(child,pos);
 	}
-
-	private void buildObserverForLayoutIdChanges(IObservable<?> observable, Object item) {
-		if( observable == null || item == null )
-			return;
-		
-		Observer observer = new Observer() {					
-			@Override
-			public void onPropertyChanged(IObservable<?> prop, Collection<Object> initiators) {
-				if( htObservable == null )
-					return;
-				
-				Object obj = null;
-				
-				for (Iterator<Entry<LayoutIdObserver, Object>> iter = htObservable.entrySet().iterator(); 
-						iter.hasNext();) {
-						Entry<LayoutIdObserver, Object> entry = iter.next();
-						LayoutIdObserver e = entry.getKey();
-						if( e == null || !this.equals(e.observer))
-							continue;
-						obj = entry.getValue();
-						break;
-				}						
-
-				if( obj == null  || weakList == null )
-					return;											
-				
-				int pos = weakList.indexOf(obj);						
-				ArrayList<Object> list = new ArrayList<Object>();
-				list.add(obj);
-				removeItems(list);						
-				insertItem(pos, obj);
-			}
-		};
-		
-		observable.subscribe(observer);
-		LayoutIdObserver entry = new LayoutIdObserver();
-		entry.observable = observable;
-		entry.observer = observer;						
-		
-		htObservable.put(entry,item);		
-	}
-
+	
 }

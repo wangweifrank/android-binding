@@ -1,5 +1,8 @@
 package com.gueei.demo.viewmodel;
 
+import java.util.Arrays;
+import java.util.List;
+
 import com.gueei.demo.R;
 import com.gueei.demo.viewmodel.TableLayoutViewmodel.Row.Child;
 
@@ -33,7 +36,7 @@ public class TableLayoutViewmodel {
 	public final ArrayListObservable<Row> Rows = new ArrayListObservable<Row>(Row.class);
 		
 	public TableLayoutViewmodel() {
-		for( int k=0; k<3; k++) {
+		for( int k=0; k<4; k++) {
 			Row row = new Row();			
 			for( int i=0; i<6; i++) {
 				Child child = row.new Child();
@@ -86,5 +89,79 @@ public class TableLayoutViewmodel {
 			Rows.remove(3);
 		}
 	};
+	
+	public final Command RemoveAll = new Command(){
+		@Override
+		public void Invoke(View view, Object... args) {
+			List<?> list = Arrays.asList(Rows.toArray());
+			Rows.removeAll(list);
+		}
+	};
+	
+	public final Command Clear = new Command(){
+		@Override
+		public void Invoke(View view, Object... args) {
+			Rows.clear();
+		}
+	};
+	
+	public final Command ChangeLayoutPos2 = new Command(){
+		@Override
+		public void Invoke(View view, Object... args) {
+			if(Rows.size() < 3)
+				return;		
+			
+			if( Rows.get(2).Children == null || Rows.get(2).Children.size() < 3 )
+				return;
+			
+			if(Rows.get(2).Children.get(2).LayoutId.get() == R.layout.bindable_table_layout_item_blue) {
+				Rows.get(2).Children.get(2).LayoutId.set(R.layout.bindable_table_layout_item);
+			} else {
+				Rows.get(2).Children.get(2).LayoutId.set(R.layout.bindable_table_layout_item_blue);
+			}
+		}
+	};
+	
+	
+	public final Command Replace3 = new Command(){
+		@Override
+		public void Invoke(View view, Object... args) {
+			if(Rows.size() < 4)
+				return;	
+
+			int pos = 3;
+			
+			if( Rows.get(pos).Children == null || Rows.get(pos).Children.size() < 4 )
+				return;
+						
+			Child child = (Rows.get(3)).new Child();
+			child.Name.set( "Entry: " + System.currentTimeMillis() );			
+			if(Rows.get(pos).Children.get(pos).LayoutId.get() == R.layout.bindable_table_layout_item_blue) {
+				child.LayoutId.set(R.layout.bindable_table_layout_item);
+			} else {
+				child.LayoutId.set(R.layout.bindable_table_layout_item_blue);
+			}
+			
+			Rows.get(pos).Children.replaceItem(pos, child);
+		}
+	};
+	
+	
+	public final Command Colspan2 = new Command(){
+		@Override
+		public void Invoke(View view, Object... args) {
+			if(Rows.size() < 3)
+				return;		
+			
+			if( Rows.get(2).Children == null || Rows.get(2).Children.size() < 3 )
+				return;
+			
+			if(Rows.get(2).Children.get(2).Span.get() != 1 )
+				Rows.get(2).Children.get(2).Span.set(1);
+			else
+				Rows.get(2).Children.get(2).Span.set(3);
+		}
+	};
+	
 	
 }

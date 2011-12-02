@@ -48,11 +48,11 @@ public class BindableTableLayout extends TableLayout implements IBindableView<Bi
 			removeRows(list);						
 			insertRow(pos, parent);	 
 		}
-	};	
+	};
 	
 	private ObservableMultiplexer<Object> observableChildLayoutID = new ObservableMultiplexer<Object>(observer);
 	private ObservableMultiplexer<Object> observableChildSpan = new ObservableMultiplexer<Object>(observer);	
-	private ObservableMultiplexer<Object> observableCollectionRowChildren = new ObservableMultiplexer<Object>(observer);		
+	private ObservableCollectionMultiplexer<Object> observableCollectionRowChildren = new ObservableCollectionMultiplexer<Object>(observer);		
 	
 	public BindableTableLayout(Context context, AttributeSet attrs) {
 		super(context, attrs);

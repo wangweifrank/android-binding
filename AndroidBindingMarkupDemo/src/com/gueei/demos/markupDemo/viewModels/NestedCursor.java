@@ -7,6 +7,7 @@ import gueei.binding.cursor.IdField;
 import gueei.binding.cursor.IntegerField;
 import gueei.binding.cursor.StringField;
 import android.app.Activity;
+import android.content.Context;
 import android.database.Cursor;
 import android.provider.ContactsContract;
 
@@ -21,8 +22,8 @@ public class NestedCursor {
 		public void onLoad(int position) {
 		}
 
-		public void onLoadChildren() {
-			Cursor c = getContext().getContentResolver().query(
+		public void onLoadChildren(Context context) {
+			Cursor c = context.getContentResolver().query(
 					ContactsContract.CommonDataKinds.Email.CONTENT_URI, 
 					null,
 					ContactsContract.CommonDataKinds.Email.CONTACT_ID + " = ?", 

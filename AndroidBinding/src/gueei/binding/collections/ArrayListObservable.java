@@ -208,8 +208,8 @@ public class ArrayListObservable<T>
 	public void add(int location, T object) {
 		if( location < 0 )
 			location = 0;
-		if( location>mArray.size()-1)
-			location = mArray.size()-1;
+		if( location>mArray.size())
+			location = mArray.size();
 		
 		mArray.add(location, object);
 				

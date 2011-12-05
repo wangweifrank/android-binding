@@ -206,6 +206,15 @@ public class ArrayListObservable<T>
 			};
 
 	public void add(int location, T object) {
+		if( location < 0 )
+			location = 0;
+		if( location>mArray.size()-1)
+			location = mArray.size()-1;
+		
+		mArray.add(location, object);
+				
+		CollectionChangedEventArg e = new CollectionChangedEventArg(Action.Add, Arrays.asList(new Object[]{object}), location);
+		this.notifyCollectionChanged(e);	
 	}
 
 	public boolean addAll(int arg0, Collection<? extends T> arg1) {

@@ -2,6 +2,7 @@ package gueei.binding.collections;
 
 import gueei.binding.cursor.IRowModel;
 import gueei.binding.cursor.IRowModelFactory;
+import java.lang.ref.WeakReference;
 import android.content.Context;
 import android.database.ContentObserver;
 import android.database.Cursor;
@@ -14,23 +15,17 @@ import android.os.Handler;
  * Time: 12:05
  */
 public class TrackedCursorCollection<T extends IRowModel> extends CursorCollection<T> {
-	public TrackedCursorCollection(
-			Class<T> rowModelType,
-			gueei.binding.collections.CursorCollection.ICursorCacheManager<T> cacheManager) {
+
+	public TrackedCursorCollection(Class<T> rowModelType, gueei.binding.collections.CursorCollection.ICursorCacheManager<T> cacheManager) {
 		super(rowModelType, cacheManager);
 	}
 
-	public TrackedCursorCollection(
-			Class<T> rowModelType,
-			IRowModelFactory<T> factory,
-			gueei.binding.collections.CursorCollection.ICursorCacheManager<T> cacheManager,
-			Cursor cursor) {
+	public TrackedCursorCollection(Class<T> rowModelType, IRowModelFactory<T> factory,
+			gueei.binding.collections.CursorCollection.ICursorCacheManager<T> cacheManager, Cursor cursor) {
 		super(rowModelType, factory, cacheManager, cursor);
 	}
 
-	public TrackedCursorCollection(
-			Class<T> rowModelType,
-			IRowModelFactory<T> factory,
+	public TrackedCursorCollection(Class<T> rowModelType, IRowModelFactory<T> factory,
 			gueei.binding.collections.CursorCollection.ICursorCacheManager<T> cacheManager) {
 		super(rowModelType, factory, cacheManager);
 	}
@@ -39,8 +34,7 @@ public class TrackedCursorCollection<T extends IRowModel> extends CursorCollecti
 		super(rowModelType, cursor);
 	}
 
-	public TrackedCursorCollection(Class<T> rowModelType,
-			IRowModelFactory<T> factory) {
+	public TrackedCursorCollection(Class<T> rowModelType, IRowModelFactory<T> factory) {
 		super(rowModelType, factory);
 	}
 
@@ -96,6 +90,7 @@ public class TrackedCursorCollection<T extends IRowModel> extends CursorCollecti
 	}
 
 	protected class CollectionContentObserver extends ContentObserver {
+
 		public CollectionContentObserver(Handler handler) {
 			super(handler);
 		}
@@ -109,18 +104,21 @@ public class TrackedCursorCollection<T extends IRowModel> extends CursorCollecti
 
 		public void registerUri(Context context, Uri uri, boolean notifyForDescendants) {
 			unregisterUri();
-			if (null != (mContext = context)) {
-				mContext.getContentResolver().registerContentObserver(uri, notifyForDescendants, this);
+			mContextWeakReference = new WeakReference<Context>(context);
+			if (null != context) {
+				context.getContentResolver().registerContentObserver(uri, notifyForDescendants, this);
 			}
 		}
 
 		public void unregisterUri() {
-			if (null != mContext) {
-				mContext.getContentResolver().unregisterContentObserver(this);
+			Context context = (null != mContextWeakReference) ? mContextWeakReference.get() : null;
+			if (null != context) {
+				context.getContentResolver().unregisterContentObserver(this);
+				mContextWeakReference = null;
 			}
 		}
 
-		protected Context mContext = null;
+		protected WeakReference<Context> mContextWeakReference = null;
 	}
 
 	private final CollectionContentObserver mCursorContentObserver = new CollectionContentObserver(new Handler());

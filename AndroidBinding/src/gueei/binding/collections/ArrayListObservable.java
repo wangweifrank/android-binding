@@ -164,7 +164,7 @@ public class ArrayListObservable<T>
 		int index = mArray.indexOf(object);
 		boolean result = mArray.remove(object);
 		if (result){
-			CollectionChangedEventArg e = new CollectionChangedEventArg(Action.Remove, object, index);
+			CollectionChangedEventArg e = new CollectionChangedEventArg(Action.Remove, Arrays.asList(new Object[]{object}), index);
 			this.notifyCollectionChanged(e);
 		}
 		return result;

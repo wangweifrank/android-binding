@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"          
+	xmlns:binding="http://www.gueei.com/android-binding/"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
+
+    <gueei.binding.widgets.BindableTableLayout
+    	android:layout_width="fill_parent"
+    	android:layout_height="fill_parent"
+    	android:stretchColumns="1"	
+    	binding:rowChild="ROW_CHILD('Children','LayoutId','Span')"    	
+    	binding:itemSource="Rows"       	
+		/>
+    
+    <!-- it's also possible to use a static layout for an item -->
+    <!-- 
+    	binding:itemPath="ITEM_LAYOUT('DataSource', @layout/bindable_linear_layout_item)"  
+    -->			
+    
+</LinearLayout>

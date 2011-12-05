@@ -1,17 +1,15 @@
 package gueei.binding.collections;
 
-import android.database.Cursor;
-import android.database.DataSetObserver;
-import android.util.Log;
 import gueei.binding.cursor.CursorField;
 import gueei.binding.cursor.IRowModel;
 import gueei.binding.cursor.IRowModelFactory;
 import gueei.binding.cursor.RowModelFactory;
 import gueei.binding.utility.CacheHashMap;
-
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.WeakHashMap;
+import android.database.Cursor;
+import android.database.DataSetObserver;
 
 /**
  * User: =ra=

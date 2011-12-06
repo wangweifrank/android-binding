@@ -183,6 +183,14 @@ public class CollectionAdapter extends BaseAdapter
 		
 		int nTotal = total; // > total ? lastTotal : total;
 		
+		// keep in bounds
+		if (lastTotal > total) {
+			lastTotal = total;
+		}
+		if (lastDisplayingFirst > total) {
+			lastDisplayingFirst = 0;
+		}
+
 		ArrayList<Integer> lastDisplaying = new ArrayList<Integer>();
 		for(int i=lastDisplayingFirst; i<lastDisplayingFirst+lastTotal; i++){
 			lastDisplaying.add(i);

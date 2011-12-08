@@ -9,10 +9,10 @@ import gueei.binding.viewAttributes.templates.SingleTemplateLayout;
  * ROW_CHILD this adapter is used for bindable table layouts
  *
  */
-public class ROW_CHILD extends Converter<Object> {
+public class ROW_CHILD extends Converter<LayoutRowChild> {
 
 	public ROW_CHILD(IObservable<?>[] dependents) {
-		super(Object.class, dependents);
+		super(LayoutRowChild.class, dependents);
 	}
 
 	@Override

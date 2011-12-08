@@ -9,10 +9,10 @@ import gueei.binding.viewAttributes.templates.SingleTemplateLayout;
  * ITEM_LAYOUT this adapter is used for bindable linear layouts
  *
  */
-public class ITEM_LAYOUT extends Converter<Object> {
+public class ITEM_LAYOUT extends Converter<LayoutItem> {
 
 	public ITEM_LAYOUT(IObservable<?>[] dependents) {
-		super(Object.class, dependents);
+		super(LayoutItem.class, dependents);
 	}
 
 	@Override

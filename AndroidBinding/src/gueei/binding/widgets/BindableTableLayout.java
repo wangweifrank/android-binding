@@ -18,10 +18,10 @@ import gueei.binding.InnerFieldObservable;
 import gueei.binding.Observer;
 import gueei.binding.ViewAttribute;
 import gueei.binding.collections.ArrayListObservable;
-import gueei.binding.converters.ROW_CHILD;
 import gueei.binding.utility.ObservableCollectionMultiplexer;
 import gueei.binding.utility.ObservableMultiplexer;
 import gueei.binding.utility.WeakList;
+import gueei.binding.viewAttributes.templates.LayoutRowChild;
 import android.content.Context;
 import android.graphics.Color;
 import android.util.AttributeSet;
@@ -36,7 +36,7 @@ public class BindableTableLayout extends TableLayout implements IBindableView<Bi
 	private CollectionObserver collectionObserver = null;
 	
 	private ArrayListObservable<Object> rowList = null;	
-	private ROW_CHILD.RowChild rowChild = null;	
+	private LayoutRowChild rowChild = null;	
 	
 	private Observer observer = new Observer() {
 		@Override
@@ -174,8 +174,8 @@ public class BindableTableLayout extends TableLayout implements IBindableView<Bi
 				@Override
 				protected void doSetAttributeValue(Object newValue) {	
 					rowChild = null;
-					if( newValue instanceof ROW_CHILD.RowChild ) {
-						rowChild = (ROW_CHILD.RowChild) newValue;
+					if( newValue instanceof LayoutRowChild ) {
+						rowChild = (LayoutRowChild) newValue;
 						if( rowList != null )
 							createItemSourceList(rowList);
 					}
@@ -199,11 +199,11 @@ public class BindableTableLayout extends TableLayout implements IBindableView<Bi
 			return;
 		
 		IObservable<?> childDataSource = null;			
-		InnerFieldObservable<?> ifo = new InnerFieldObservable<Object>(rowChild.childDataSource);
+		InnerFieldObservable<?> ifo = new InnerFieldObservable<Object>(rowChild.getChildDataSource());
 		if (ifo.createNodes(row)) {
 			childDataSource = ifo;	
 		} else {			
-			Object rawField = BindingSyntaxResolver.getFieldForModel(rowChild.childDataSource, row);
+			Object rawField = BindingSyntaxResolver.getFieldForModel(rowChild.getChildDataSource(), row);
 			if (rawField instanceof IObservable<?>)
 				childDataSource = (IObservable<?>)rawField;
 		}				
@@ -235,14 +235,14 @@ public class BindableTableLayout extends TableLayout implements IBindableView<Bi
 				int col = 0;
 			    for( Object childItem : childItems) {					
 					int colSpan = 1;
-					int layoutId = rowChild.staticLayoutId;		
-					if( layoutId < 1 && rowChild.layoutIdName != null ) {									
+					int layoutId = rowChild.getLayoutId();		
+					if( layoutId < 1 && rowChild.getLayoutName() != null ) {									
 						IObservable<?> observable = null;
-						ifo = new InnerFieldObservable<Object>(rowChild.layoutIdName);
+						ifo = new InnerFieldObservable<Object>(rowChild.getLayoutName() );
 						if (ifo.createNodes(childItem)) {
 							observable = ifo;
 						} else {			
-							Object rawField = BindingSyntaxResolver.getFieldForModel(rowChild.layoutIdName, childItem);
+							Object rawField = BindingSyntaxResolver.getFieldForModel(rowChild.getLayoutName(), childItem);
 							if (rawField instanceof IObservable<?>)
 								observable = (IObservable<?>)rawField;
 							else if (rawField!=null)
@@ -278,13 +278,13 @@ public class BindableTableLayout extends TableLayout implements IBindableView<Bi
 					TableRow.LayoutParams params = null;
 					
 					// check if there is a colspan
-					if( rowChild.colspanName != null ) {									
+					if( rowChild.getColspanName() != null ) {									
 						IObservable<?> observable = null;			
-						ifo = new InnerFieldObservable(rowChild.colspanName);
+						ifo = new InnerFieldObservable(rowChild.getColspanName());
 						if (ifo.createNodes(childItem)) {
 							observable = ifo;
 						} else {			
-							Object rawField = BindingSyntaxResolver.getFieldForModel(rowChild.colspanName, childItem);
+							Object rawField = BindingSyntaxResolver.getFieldForModel(rowChild.getColspanName(), childItem);
 							if (rawField instanceof IObservable<?>)
 								observable = (IObservable<?>)rawField;
 							else if (rawField!=null)

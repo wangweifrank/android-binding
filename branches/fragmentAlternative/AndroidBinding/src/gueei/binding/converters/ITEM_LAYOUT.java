@@ -2,6 +2,7 @@ package gueei.binding.converters;
 
 import gueei.binding.Converter;
 import gueei.binding.IObservable;
+import gueei.binding.viewAttributes.templates.LayoutItem;
 import gueei.binding.viewAttributes.templates.SingleTemplateLayout;
 
 /**
@@ -15,21 +16,17 @@ public class ITEM_LAYOUT extends Converter<Object> {
 	}
 
 	@Override
-	public ItemLayout calculateValue(Object... args) throws Exception {		
+	public LayoutItem calculateValue(Object... args) throws Exception {		
 		if (args.length<1) return null;
 		
-		ItemLayout layout = new ItemLayout();		
+		LayoutItem layout = null;		
 		if( args[0] instanceof SingleTemplateLayout) {
-			layout.staticLayoutId = ((SingleTemplateLayout)args[0]).getDefaultLayoutId();
+			layout = new LayoutItem(((SingleTemplateLayout)args[0]).getDefaultLayoutId());
 		} else if (args[0] != null) {
-			layout.layoutIdName = args[0].toString();			
+			layout = new LayoutItem(args[0].toString());			
 		}
 		
 		return layout;
 	}
 	
-	public static class ItemLayout {
-		public String layoutIdName = null;
-		public int staticLayoutId = -1;
-	}
 }

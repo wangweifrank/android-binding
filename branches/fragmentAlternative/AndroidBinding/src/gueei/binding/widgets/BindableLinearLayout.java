@@ -17,9 +17,9 @@ import gueei.binding.IObservableCollection;
 import gueei.binding.InnerFieldObservable;
 import gueei.binding.ViewAttribute;
 import gueei.binding.collections.ArrayListObservable;
-import gueei.binding.converters.ITEM_LAYOUT;
 import gueei.binding.utility.ObservableMultiplexer;
 import gueei.binding.utility.WeakList;
+import gueei.binding.viewAttributes.templates.LayoutItem;
 import gueei.binding.Observer;
 import android.content.Context;
 import android.graphics.Color;
@@ -33,7 +33,7 @@ public class BindableLinearLayout extends LinearLayout implements IBindableView<
 	private CollectionObserver collectionObserver = null;
 	
 	private ArrayListObservable<Object> itemList = null;
-	private ITEM_LAYOUT.ItemLayout layout = null;	
+	private LayoutItem layout = null;	
 
 	private ObservableMultiplexer<Object> observableItemsLayoutID = new ObservableMultiplexer<Object>(new Observer() {
 		@Override
@@ -162,8 +162,8 @@ public class BindableLinearLayout extends LinearLayout implements IBindableView<
 				@Override
 				protected void doSetAttributeValue(Object newValue) {	
 					layout = null;
-					if( newValue instanceof ITEM_LAYOUT.ItemLayout ) {
-						layout = (ITEM_LAYOUT.ItemLayout) newValue;
+					if( newValue instanceof LayoutItem ) {
+						layout = (LayoutItem) newValue;
 						if( itemList != null )
 							createItemSourceList(itemList);
 					}
@@ -201,14 +201,14 @@ public class BindableLinearLayout extends LinearLayout implements IBindableView<
 		if( layout == null )
 			return;
 		
-		int layoutId = layout.staticLayoutId;		
-		if( layoutId < 1 && layout.layoutIdName != null ) {									
+		int layoutId = layout.getLayoutId();		
+		if( layoutId < 1 && layout.getLayoutName() != null ) {									
 			IObservable<?> observable = null;			
-			InnerFieldObservable ifo = new InnerFieldObservable(layout.layoutIdName);
+			InnerFieldObservable ifo = new InnerFieldObservable(layout.getLayoutName());
 			if (ifo.createNodes(item)) {
 				observable = ifo;										
 			} else {			
-				Object rawField = BindingSyntaxResolver.getFieldForModel(layout.layoutIdName, item);
+				Object rawField = BindingSyntaxResolver.getFieldForModel(layout.getLayoutName(), item);
 				if (rawField instanceof IObservable<?>)
 					observable = (IObservable<?>)rawField;
 				else if (rawField!=null)

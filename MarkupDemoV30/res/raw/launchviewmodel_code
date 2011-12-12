@@ -42,7 +42,7 @@ public class LaunchViewModel {
 		
 		DemoCategory source = new DemoCategory(mContext, "Source Code");
 		source.Entries.add(new DemoEntry("Markup of Launch", LaunchMarkupViewModel.class, R.layout.code_view));
-		source.Entries.add(new DemoEntry("Source Code of Launch View Model", LaunchCodeViewModel.class,  R.layout.code_view));
+		source.Entries.add(new DemoEntry("Source Code of Launch View Model", LaunchMarkupViewModel.class,  R.layout.code_view));
 		
 		Categories.add(source);
 		

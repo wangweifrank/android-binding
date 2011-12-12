@@ -5,18 +5,15 @@
     android:layout_height="fill_parent"
     android:orientation="horizontal" >
     <binding.BindableFrameLayout
-		android:layout_marginTop="?android:attr/actionBarSize"
 		android:layout_width="@dimen/titles_size"
 		android:layout_height="match_parent"
 		binding:dataSource="SelectedCategory"
 		binding:layoutId="@layout/demos"
     />
-    <gueei.binding.markupDemov30.widget.CodeView 
-		android:layout_marginTop="?android:attr/actionBarSize"
-		android:layout_height="400dip"
-		android:layout_width="400dip"
-		android:background="#FF0000"
-        binding:resourceId="@raw/main_metadata"
-        binding:text="@raw/main_metadata"
+    <binding.BindableFrameLayout
+		android:layout_height="match_parent"
+		android:layout_width="match_parent"
+		binding:dataSource="CurrentViewModel"
+		binding:layoutId="CurrentLayout"
     />
 </LinearLayout>

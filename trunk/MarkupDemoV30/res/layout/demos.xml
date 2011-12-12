@@ -12,6 +12,7 @@
     		binding:text="."
     		/>
     <ListView
+        	android:id="@+id/demo_listview"
         	android:layout_width="match_parent"
     		android:layout_height="match_parent"
     		android:layout_weight="1"
@@ -19,5 +20,6 @@
     		android:choiceMode="singleChoice"
     		binding:itemSource="Entries"
     		binding:itemTemplate="@layout/demos_list_item"
+    		binding:onItemClicked="ARG(ShowDemo, =id/demo_listview.clickedItem)"
     		/>
 </LinearLayout>

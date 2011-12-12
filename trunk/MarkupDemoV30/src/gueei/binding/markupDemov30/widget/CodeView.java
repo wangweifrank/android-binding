@@ -44,10 +44,10 @@ public class CodeView extends WebView implements IBindableView<CodeView> {
 	}
 
 	private final ResourceIdViewAttribute resId = 
-			new ResourceIdViewAttribute(Integer.class, this, "resourceId");
+			new ResourceIdViewAttribute(this, "resourceId");
 	
 	private final ResourceTypeViewAttribute resType = 
-			new ResourceTypeViewAttribute(Integer.class, this, "resourceType");
+			new ResourceTypeViewAttribute(this, "resourceType");
 	
 	
 	@Override
@@ -60,14 +60,13 @@ public class CodeView extends WebView implements IBindableView<CodeView> {
 		if (isDirty){
 			ByteArrayOutputStream bos = new ByteArrayOutputStream();
 	        try {
-	        	String type = resType.get() == 0 ? "xml" : "java";
-				XhtmlRendererFactory.getRenderer(type).highlight("title", 
+				XhtmlRendererFactory.getRenderer(resType.get()).highlight("title", 
 						getContext().getResources().openRawResource(resId.get()), 
 						bos, "UTF-8", false);
 		        isDirty = false;
 		        
-		        //this.loadData(bos.toString(), "text/html", "UTF-8");
-		        this.loadUrl("http://www.yahoo.com");
+		        this.loadData(bos.toString(), "text/html", "UTF-8");
+		        //this.loadUrl("http://www.yahoo.com");
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -77,9 +76,9 @@ public class CodeView extends WebView implements IBindableView<CodeView> {
 	private boolean isDirty = false;
 	
 	private class ResourceIdViewAttribute extends ViewAttribute<CodeView, Integer>{
-		public ResourceIdViewAttribute(Class<Integer> type, CodeView view,
+		public ResourceIdViewAttribute(CodeView view,
 				String attributeName) {
-			super(type, view, attributeName);
+			super(Integer.class, view, attributeName);
 		}
 
 		private int mValue = 0;
@@ -88,7 +87,7 @@ public class CodeView extends WebView implements IBindableView<CodeView> {
 		protected void doSetAttributeValue(Object newValue) {
 			mValue = Integer.parseInt(newValue.toString());
 			isDirty = true;
-			renderView();
+			invalidate();
 		}
 
 		@Override
@@ -97,22 +96,23 @@ public class CodeView extends WebView implements IBindableView<CodeView> {
 		}
 	}
 
-	private class ResourceTypeViewAttribute extends ViewAttribute<CodeView, Integer>{
-		public ResourceTypeViewAttribute(Class<Integer> type, CodeView view,
+	private class ResourceTypeViewAttribute extends ViewAttribute<CodeView, String>{
+		public ResourceTypeViewAttribute(CodeView view,
 				String attributeName) {
-			super(type, view, attributeName);
+			super(String.class, view, attributeName);
 		}
 
-		private int mValue = 0;
+		private String mValue = "xml";
 		
 		@Override
 		protected void doSetAttributeValue(Object newValue) {
-			mValue = Integer.parseInt(newValue.toString());
+			mValue = newValue.toString();
 			isDirty = true;
+			invalidate();
 		}
 
 		@Override
-		public Integer get() {
+		public String get() {
 			return mValue;
 		}
 	}

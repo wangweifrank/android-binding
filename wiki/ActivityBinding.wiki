@@ -1,7 +1,7 @@
 #summary [Draft] XML metadata file format defining Activity binding
 #labels Phase-Design
 
-= `<activity>` =
+= activity =
 
 {{{
 <activity>
@@ -11,7 +11,7 @@
 </activity>
 }}}
 
-= `<actionBar>` =
+= actionBar =
 
 Representing the Action Bar. Possibly can be replaced by custom actionbar widget for 3.0- devices.
 
@@ -27,7 +27,7 @@ Representing the Action Bar. Possibly can be replaced by custom actionbar widget
     </actionBar>
 }}}
 
-= '<optionsMenu>' =
+= optionsMenu =
 
 {{{
     <optionsMenu
@@ -36,7 +36,7 @@ Representing the Action Bar. Possibly can be replaced by custom actionbar widget
     />
 }}}
 
-= '<rootView>' =
+= rootView =
 
 {{{
     <rootView

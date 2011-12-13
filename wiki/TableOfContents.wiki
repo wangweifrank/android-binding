@@ -19,6 +19,7 @@
   * [DynamicObject Dynamic Object]
  * [CustomView Custom Bindable View]
  * Experimental Features
+  * [ActivityBinding]
   * [Animation]
   * [PojoViewModel]
  * [Development Developer and Contributor]

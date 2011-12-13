@@ -1,24 +1,46 @@
 #summary [Draft] XML metadata file format defining Activity binding
 #labels Phase-Design
 
-= <activity> =
+= `<activity>` =
 
 {{{
 <activity>
-    <appIcon
-
-    />
     <actionBar />
+    <optionsMenu />
+    <rootView />
 </activity>
 }}}
 
-= <actionBar> =
+= `<actionBar>` =
+
+Representing the Action Bar. Possibly can be replaced by custom actionbar widget for 3.0- devices.
 
 {{{
     <actionBar
+        dataSource="Object"
         display="Boolean"
+        onHomeClicked="Command"
+        displayHomeAsUpEnabled="Boolean"
     >
         <tabs>
         </tabs>
     </actionBar>
+}}}
+
+= '<optionsMenu>' =
+
+{{{
+    <optionsMenu
+        dataSource="Object"
+        menuId="Integer"
+    />
+}}}
+
+= '<rootView>' =
+
+{{{
+    <rootView
+        dataSource="Object"
+        layoutId-"Integer"
+    />
 }}}

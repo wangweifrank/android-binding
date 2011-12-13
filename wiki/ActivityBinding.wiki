@@ -1,0 +1,24 @@
+#summary [Draft] XML metadata file format defining Activity binding
+#labels Phase-Design
+
+= <activity> =
+
+{{{
+<activity>
+    <appIcon
+
+    />
+    <actionBar />
+</activity>
+}}}
+
+= <actionBar> =
+
+{{{
+    <actionBar
+        display="Boolean"
+    >
+        <tabs>
+        </tabs>
+    </actionBar>
+}}}

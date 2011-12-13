@@ -1,17 +1,28 @@
 package gueei.binding.labs;
 
-import gueei.binding.utility.WeakList;
-
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.WeakHashMap;
 
+import android.content.Context;
 import android.os.Bundle;
 
 public class EventAggregator {
-	private static HashMap<String, WeakList<EventSubscriber>>
-		EventNameSubscribersMap = new HashMap<String, WeakList<EventSubscriber>>();
+	private static WeakHashMap<Context, EventAggregator> instances = 
+			new WeakHashMap<Context, EventAggregator>();
 	
-	public static void publish(final String eventName, final Object publisher, final Bundle data){
-		WeakList<EventSubscriber> subscribers = EventNameSubscribersMap.get(eventName);
+	public static EventAggregator getInstance(Context context){
+		if (!instances.containsKey(context)){
+			instances.put(context, new EventAggregator());
+		}
+		return instances.get(context);
+	}
+	
+	private HashMap<String, ArrayList<EventSubscriber>>
+		EventNameSubscribersMap = new HashMap<String, ArrayList<EventSubscriber>>();
+	
+	public void publish(final String eventName, final Object publisher, final Bundle data){
+		ArrayList<EventSubscriber> subscribers = EventNameSubscribersMap.get(eventName);
 		
 		// Nobody subscribes this
 		if (subscribers==null) return;
@@ -30,10 +41,10 @@ public class EventAggregator {
 		}
 	}
 	
-	public static void subscribe(final String eventName, final EventSubscriber subscriber){
-		WeakList<EventSubscriber> subscribers = EventNameSubscribersMap.get(eventName);
+	public void subscribe(final String eventName, final EventSubscriber subscriber){
+		ArrayList<EventSubscriber> subscribers = EventNameSubscribersMap.get(eventName);
 		if (subscribers==null){
-			subscribers = new WeakList<EventSubscriber>();
+			subscribers = new ArrayList<EventSubscriber>();
 			EventNameSubscribersMap.put(eventName, subscribers);
 		}
 		

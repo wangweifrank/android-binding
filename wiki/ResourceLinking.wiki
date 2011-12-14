@@ -17,6 +17,7 @@ All following will be supported, and interpreted by Android Binding as `Constant
 || color || @color/red || Integer ||
 || dimension || @dimen/fontSize || TypedValue ||
 || Integer || @integer/speed || Integer ||
+|| Raw || @raw/data || Integer ||
 || LayoutId || @layout/adapter_view || Layout (Type defined in Android Binding) ||
 
 Also note that the syntax for getting from external package is also allowed, though the ? prefix is *not* supported:

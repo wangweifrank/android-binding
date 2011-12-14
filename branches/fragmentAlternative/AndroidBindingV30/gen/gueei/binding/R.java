@@ -11,6 +11,6 @@ public final class R {
     public static final class attr {
     }
     public static final class string {
-        public static final int validation_required_message=0x7f020000;
+        public static int validation_required_message=0x7f020000;
     }
 }

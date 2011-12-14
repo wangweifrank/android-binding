@@ -91,3 +91,12 @@ From 0.4, we also provide a helper class for managing options menu, context menu
 }}}
 
 More functions will be included in BindingActivity later on, for example the instantiation of everything through one single meta-data xml file. 
+
+= Additional Menu Item binding in ICS/HC =
+
+Android 3.0 introduces a new [http://developer.android.com/guide/topics/ui/actionbar.html#ActionView Action View] concept. In order to bind to Action View, you need to provide a layout file (with binding information) to it:
+
+{{{
+    <item android:id="..."
+        binding:actionView="@layout/action_view"/>
+}}}

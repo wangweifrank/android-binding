@@ -41,6 +41,10 @@ Representing the Action Bar. Possibly can be replaced by custom actionbar widget
 {{{
     <rootView
         dataSource="Object"
-        layoutId-"Integer"
+        layoutId="Integer"
     />
 }}}
+
+*NOTE*
+If `dataSource` is omitted, it is assume it is the same as the root View Model passed to it. (i.e. `dataSource="."`)
+Due to the design of Activity, layout Id is static and cannot be changed. 

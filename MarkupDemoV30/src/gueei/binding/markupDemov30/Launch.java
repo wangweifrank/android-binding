@@ -10,7 +10,7 @@ public class Launch extends BindingActivityV30 {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Object vm = new LaunchViewModel(this);
-        this.setAndBindRootView(R.layout.main, vm);
+        this.bind(R.xml.main_metadata, vm);
         ActionBarBinder.BindActionBar(this, R.xml.main_metadata, vm);
     }
 }

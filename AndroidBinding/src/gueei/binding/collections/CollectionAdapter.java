@@ -3,6 +3,7 @@ package gueei.binding.collections;
 import java.util.ArrayList;
 import gueei.binding.AttributeBinder;
 import gueei.binding.Binder;
+import gueei.binding.CollectionChangedEventArg;
 import gueei.binding.CollectionObserver;
 import gueei.binding.IObservableCollection;
 import gueei.binding.utility.CachedModelReflector;
@@ -138,7 +139,7 @@ public class CollectionAdapter extends BaseAdapter implements CollectionObserver
 		Binder.getViewTag(convertView).put(ObservableMapper.class, mapper);
 	}
 
-	public void onCollectionChanged(IObservableCollection<?> collection) {
+	public void onCollectionChanged(IObservableCollection<?> collection, CollectionChangedEventArg args) {
 		mHandler.post(new Runnable() {
 
 			public void run() {

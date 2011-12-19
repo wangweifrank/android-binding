@@ -66,15 +66,15 @@ public class CursorContentUpdate {
 			return Id.get();
 		}
 
-		public void onLoadChildren() {
+		public void onLoadChildren(Context context) {
 			SubItems = new TrackedCursorCollection<SubItemRowModel>(SubItemRowModel.class);
 			Uri trackingUri = Uri.parse("content://com.gueei.demos/details");
-			Cursor subItems = getContext().getContentResolver()
+			Cursor subItems = context.getContentResolver()
 					.query(trackingUri, new String[]{"_ID", "Name", "masterID"}, "detail.masterID=?",
 						   new String[]{Id.get().toString()}, null);
-			((Activity) getContext()).startManagingCursor(subItems);
+			((Activity) context).startManagingCursor(subItems);
 			SubItems.setCursor(subItems);
-			SubItems.setContentObserverTrackingUri(getContext(), trackingUri, false);
+			SubItems.setContentObserverTrackingUri(context, trackingUri, false);
 		}
 	}
 

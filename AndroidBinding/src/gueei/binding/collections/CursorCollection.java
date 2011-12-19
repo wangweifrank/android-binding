@@ -186,7 +186,7 @@ public class CursorCollection<T extends IRowModel> extends ObservableCollection<
 		@Override
 		public void onChanged() {
 			reInitCacheCursorRowCount();
-			notifyCollectionChanged();
+			notifyCollectionChanged(null);
 		}
 	};
 

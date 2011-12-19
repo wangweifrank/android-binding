@@ -3,6 +3,7 @@ package gueei.binding.bindingProviders;
 import gueei.binding.ViewAttribute;
 import gueei.binding.viewAttributes.textView.OnTextChangedViewEvent;
 import gueei.binding.viewAttributes.textView.TextColorViewAttribute;
+import gueei.binding.viewAttributes.textView.TextLinesViewAttribute;
 import gueei.binding.viewAttributes.textView.TextViewAttribute;
 import android.view.View;
 import android.widget.EditText;
@@ -17,6 +18,14 @@ public class TextViewProvider extends BindingProvider {
 		if (!(view instanceof TextView)) return null;
 		if (attributeId.equals("text")){
 			TextViewAttribute attr = new TextViewAttribute((TextView)view, "text");
+			return (ViewAttribute<Tv, ?>) attr;
+		}
+		if (attributeId.equals("minLines")){
+			TextLinesViewAttribute attr = new TextLinesViewAttribute((TextView)view, TextLinesViewAttribute.Mode.MinLines);
+			return (ViewAttribute<Tv, ?>) attr;
+		}
+		if (attributeId.equals("maxLines")){
+			TextLinesViewAttribute attr = new TextLinesViewAttribute((TextView)view, TextLinesViewAttribute.Mode.MaxLines);
 			return (ViewAttribute<Tv, ?>) attr;
 		}
 		if (attributeId.equals("textColor")){

@@ -14,6 +14,23 @@ import android.view.MenuItem;
  *
  */
 public abstract class AbsMenuBridge {
+	
+	// Factory method
+	public static AbsMenuBridge create
+		(String nodeName, int id, AttributeSet attrs, Activity activity, Object model){
+		AbsMenuBridge item;
+		
+		if ("item".equals(nodeName)){
+			item = MenuItemBridge.create(id, attrs, activity, model);
+		}else if ("group".equals(nodeName)){
+			item = MenuGroupBridge.create(id, attrs, activity, model);
+		}else{
+			item = null;
+		}
+		
+		return item;
+	}
+	
 	protected final int mId;
 	protected AbsMenuBridge(int id){
 		mId = id;

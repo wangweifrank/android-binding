@@ -4,6 +4,7 @@ import gueei.binding.Command;
 import gueei.binding.collections.ArrayListObservable;
 import gueei.binding.collections.LazyLoadParent;
 import gueei.binding.observables.StringObservable;
+import android.content.Context;
 import android.view.View;
 
 public class MasterDetailListView {
@@ -34,7 +35,7 @@ public class MasterDetailListView {
 		public ArrayListObservable<String> DetailItems = 
 			new ArrayListObservable<String>(String.class);
 		
-		public void onLoadChildren() {
+		public void onLoadChildren(Context context) {
 			String[] detail = new String[10];
 			for (int i=0; i<10; i++){
 				detail[i] = "Detail" + i + " of " + Title.get();

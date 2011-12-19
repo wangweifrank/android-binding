@@ -104,6 +104,6 @@ public class Observable<T> implements IObservable<T> {
 	}
 
 	public Observer[] getAllObservers() {
-		return observers.toArray(new Observer[0]);
+		return observers.toItemArray(new Observer[0]);
 	}
 }

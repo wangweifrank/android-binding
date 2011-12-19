@@ -7,13 +7,12 @@ import java.util.WeakHashMap;
 
 import android.content.Context;
 import android.os.Handler;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Adapter;
 import android.widget.BaseExpandableListAdapter;
+import gueei.binding.CollectionChangedEventArg;
 import gueei.binding.CollectionObserver;
-import gueei.binding.IObservable;
 import gueei.binding.IObservableCollection;
 
 public class ExpandableCollectionAdapter extends BaseExpandableListAdapter implements CollectionObserver {
@@ -47,12 +46,11 @@ public class ExpandableCollectionAdapter extends BaseExpandableListAdapter imple
 */
 	
 	private Adapter getChildAdapter(int groupPosition){
-		Log.d("BinderV30", "Get Child Adapter " + groupPosition);
 		try{
 			if (!mChildAdapters.containsKey(groupPosition)){
 				Object item = mGroupAdapter.getItem(groupPosition);
 				if (item instanceof LazyLoadParent){
-					((LazyLoadParent)item).onLoadChildren();
+					((LazyLoadParent)item).onLoadChildren(mContext);
 				}
 				IObservable<?> child = gueei.binding.Utility.getObservableForModel(mContext, mChildName, item);
 				Object childCollection = child.get();
@@ -115,7 +113,7 @@ public class ExpandableCollectionAdapter extends BaseExpandableListAdapter imple
 		return true;
 	}
 
-	public void onCollectionChanged(IObservableCollection<?> collection) {
+	public void onCollectionChanged(IObservableCollection<?> collection, CollectionChangedEventArg args) {
 		mHandler.post(new Runnable() {
 			public void run() {
 				notifyDataSetChanged();

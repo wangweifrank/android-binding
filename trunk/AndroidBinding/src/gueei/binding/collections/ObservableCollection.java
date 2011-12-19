@@ -1,5 +1,6 @@
 package gueei.binding.collections;
 
+import gueei.binding.CollectionChangedEventArg;
 import gueei.binding.CollectionObserver;
 import gueei.binding.IObservableCollection;
 import gueei.binding.Observer;
@@ -63,9 +64,9 @@ public abstract class ObservableCollection<T> implements IObservableCollection<T
 		mCollectionObservers.remove(c);
 	}
 
-	public void notifyCollectionChanged() {
+	public void notifyCollectionChanged(CollectionChangedEventArg args) {
 		for(Object c: mCollectionObservers.toArray()){
-			((CollectionObserver)c).onCollectionChanged(this);
+			((CollectionObserver)c).onCollectionChanged(this, args);
 		}
 	}
 

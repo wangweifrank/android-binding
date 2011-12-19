@@ -43,12 +43,8 @@ public class OptionsMenuBinder {
 						String nodeName = parser.getName();
 						if (id>0){
 							AttributeSet attrs = Xml.asAttributeSet(parser);
-							AbsMenuBridge item = null;
-							if ("item".equals(nodeName)){
-								item = MenuItemBridge.create(id, attrs, activity, model);
-							}else if ("group".equals(nodeName)){
-								item = MenuGroupBridge.create(id, attrs, activity, model);
-							}
+							AbsMenuBridge item = 
+									AbsMenuBridge.create(nodeName, id, attrs, activity, model);
 							if (item!=null){
 								items.put(id, item);
 							}

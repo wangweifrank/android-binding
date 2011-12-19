@@ -2,9 +2,9 @@ package com.gueei.demos.markupDemo.viewModels;
 
 import gueei.binding.Command;
 import gueei.binding.Observable;
-import gueei.binding.cursor.CursorObservable;
-import gueei.binding.cursor.CursorRowModel;
+import gueei.binding.collections.CursorCollection;
 import gueei.binding.cursor.IdField;
+import gueei.binding.cursor.RowModel;
 import gueei.binding.cursor.StringField;
 import android.app.Activity;
 import android.database.Cursor;
@@ -22,11 +22,11 @@ public class ListViewWithCursorSource {
 		MusicList.setCursor(c);
 	}
 	
-	public final CursorObservable<MusicItem> MusicList = 
-		new CursorObservable<MusicItem>(MusicItem.class);
+	public final CursorCollection<MusicItem> MusicList = 
+		new CursorCollection<MusicItem>(MusicItem.class);
 	
-	public final CursorObservable<MusicItem> MusicList2 = 
-		new CursorObservable<MusicItem>(MusicItem.class);
+	public final CursorCollection<MusicItem> MusicList2 = 
+		new CursorCollection<MusicItem>(MusicItem.class);
 	public final Observable<Object> ClickedItem = 
 		new Observable<Object>(Object.class);
 	
@@ -43,7 +43,7 @@ public class ListViewWithCursorSource {
 				.show();
 		}
 	};
-	public static class MusicItem extends CursorRowModel{
+	public static class MusicItem extends RowModel{
 		public final IdField Id = new IdField(MediaStore.Audio.Media._ID);
 		public final StringField Title = new StringField(MediaStore.Audio.Media.TITLE);
 	}

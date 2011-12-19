@@ -1,5 +1,8 @@
 package gueei.binding.collections;
 
+import gueei.binding.CollectionChangedEventArg;
+import gueei.binding.CollectionChangedEventArg.Action;
+
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -39,8 +42,9 @@ public class HashMapObservable<K, V> extends ObservableCollection<V>
 	}
 
 	public void clear() {
+		CollectionChangedEventArg e = new CollectionChangedEventArg(Action.Reset,mMap);
 		mMap.clear();
-		this.notifyCollectionChanged();
+		this.notifyCollectionChanged(e);
 	}
 
 	public boolean containsKey(Object key) {
@@ -69,18 +73,21 @@ public class HashMapObservable<K, V> extends ObservableCollection<V>
 
 	public V put(K key, V value) {
 		V result = mMap.put(key, value);
-		this.notifyCollectionChanged();
+		CollectionChangedEventArg e = new CollectionChangedEventArg(Action.Add,key);
+		this.notifyCollectionChanged(e);
 		return result;
 	}
 
 	public void putAll(Map<? extends K, ? extends V> arg0) {
 		mMap.putAll(arg0);
-		this.notifyCollectionChanged();
+		CollectionChangedEventArg e = new CollectionChangedEventArg(Action.Add,arg0);
+		this.notifyCollectionChanged(e);
 	}
 
 	public V remove(Object key) {
 		V result = mMap.remove(key);
-		this.notifyCollectionChanged();
+		CollectionChangedEventArg e = new CollectionChangedEventArg(Action.Remove,key);
+		this.notifyCollectionChanged(e);
 		return result;
 	}
 

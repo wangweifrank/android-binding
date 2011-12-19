@@ -15,7 +15,7 @@
     
     <!-- it's also possible to use a static layout for an item -->
     <!-- 
-    	binding:itemPath="ITEM_LAYOUT('DataSource', @layout/bindable_linear_layout_item)"  
+    	binding:itemPath="ITEM_LAYOUT(@layout/bindable_linear_layout_item)"  
     -->			
     
 </LinearLayout>

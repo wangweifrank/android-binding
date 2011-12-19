@@ -68,8 +68,11 @@ public class CollectionPagerAdapter extends PagerAdapter
 
 	@Override
 	public void destroyItem(View collection, int position, Object view) {
-		ViewPager viewPager = ((ViewPager) collection);
-		viewPager.removeView((View) view);			
+		if( position < 0 || position >= mCollection.size())
+			return;
+		
+	//	ViewPager viewPager = ((ViewPager) collection);
+	//	viewPager.removeView((View) view);			
 		mFrameLayouts.remove(position);		
 		removeAttachedMapper(collection);	
 		

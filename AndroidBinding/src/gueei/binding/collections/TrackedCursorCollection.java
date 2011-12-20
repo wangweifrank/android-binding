@@ -50,7 +50,9 @@ public class TrackedCursorCollection<T extends IRowModel> extends CursorCollecti
 		}
 		if (null != mCursor) {
 			// unregister content observer related to previous cursor
-			mCursorContentObserver.unregisterUri();
+			if (null != mCursorContentObserver) {
+				mCursorContentObserver.unregisterUri();
+			}
 			// unregister previous cursor listener
 			mCursor.unregisterDataSetObserver(mCursorDataSetObserver);
 		}
@@ -79,8 +81,12 @@ public class TrackedCursorCollection<T extends IRowModel> extends CursorCollecti
 	 *                             at or below the specified URI will also trigger a match.
 	 */
 	public void setContentObserverTrackingUri(Context context, Uri uri, boolean notifyForDescendants) {
-		mCursorContentObserver.unregisterUri();
+		if (null != mCursorContentObserver) {
+			mCursorContentObserver.unregisterUri();
+			mCursorContentObserver = null;
+		}
 		if (null != uri) {
+			mCursorContentObserver = new CollectionContentObserver(new Handler());
 			mCursorContentObserver.registerUri(context, uri, notifyForDescendants);
 		}
 	}
@@ -121,11 +127,12 @@ public class TrackedCursorCollection<T extends IRowModel> extends CursorCollecti
 		protected WeakReference<Context> mContextWeakReference = null;
 	}
 
-	private final CollectionContentObserver mCursorContentObserver = new CollectionContentObserver(new Handler());
+	private CollectionContentObserver mCursorContentObserver;
 
 	protected void finalize() throws Throwable {
 		try {
 			mCursorContentObserver.unregisterUri();
+			mCursorContentObserver = null;
 		} catch (Exception ignored) {
 		} finally {
 			super.finalize();

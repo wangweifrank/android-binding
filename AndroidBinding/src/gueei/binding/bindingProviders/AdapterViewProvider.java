@@ -64,6 +64,8 @@ public class AdapterViewProvider extends BindingProvider {
 			} else if (attributeId.equals("onChildClick")){
 				if (view instanceof ExpandableListView)
 					return (ViewAttribute<Tv, ?>)new ExpandableListView_OnChildClickViewEvent((ExpandableListView)view);
+			} else if (attributeId.equals("clickActionPosition")) {
+				return (ViewAttribute<Tv, ?>) new ClickActionPositionViewAttribute((AdapterView) view);
 			}
 		} catch (Exception e) {
 			// Actually it should never reach this statement

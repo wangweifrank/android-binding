@@ -5,7 +5,7 @@ import gueei.binding.validation.ValidatorBase;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
-import gueei.binding.R;
+
 
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Required{

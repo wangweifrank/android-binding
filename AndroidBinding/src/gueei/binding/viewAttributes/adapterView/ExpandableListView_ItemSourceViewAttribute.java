@@ -1,7 +1,5 @@
 package gueei.binding.viewAttributes.adapterView;
 
-import java.util.Collection;
-
 import gueei.binding.Binder;
 import gueei.binding.BindingLog;
 import gueei.binding.BindingType;
@@ -11,6 +9,7 @@ import gueei.binding.ViewAttribute;
 import gueei.binding.collections.ExpandableCollectionAdapter;
 import gueei.binding.cursor.CursorRowTypeMap;
 import gueei.binding.viewAttributes.templates.Layout;
+import java.util.Collection;
 import android.widget.Adapter;
 import android.widget.ExpandableListView;
 

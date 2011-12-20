@@ -3,7 +3,7 @@ package gueei.binding.cursor;
 import gueei.binding.AttributeBinder;
 import gueei.binding.Binder;
 import gueei.binding.BindingLog;
-import gueei.binding.R;
+
 import gueei.binding.viewAttributes.templates.Layout;
 
 import java.lang.reflect.Field;

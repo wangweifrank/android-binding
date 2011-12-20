@@ -1,17 +1,17 @@
 package gueei.binding.collections;
 
-import java.util.ArrayList;
 import gueei.binding.AttributeBinder;
 import gueei.binding.Binder;
 import gueei.binding.CollectionChangedEventArg;
 import gueei.binding.CollectionObserver;
 import gueei.binding.IObservableCollection;
 import gueei.binding.utility.CachedModelReflector;
+import gueei.binding.utility.EventMarkerHelper;
 import gueei.binding.utility.IModelReflector;
+import gueei.binding.viewAttributes.adapterView.listView.ItemViewEventMark;
 import gueei.binding.viewAttributes.templates.Layout;
 import android.content.Context;
 import android.os.Handler;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
@@ -100,10 +100,12 @@ public class CollectionAdapter extends BaseAdapter implements CollectionObserver
 				if (item instanceof LazyLoadRowModel)
 					((LazyLoadRowModel) item).display(mCollection, position);
 			}
+			
+			ItemViewEventMark mark = new ItemViewEventMark(parent, position, mCollection.getItemId(position));
 
-			if ((convertView == null) || ((mapper = getAttachedMapper(convertView)) == null)) {
-
+			if ((convertView == null) || ((mapper = getAttachedMapper(convertView)) == null) || (!mark.equals(EventMarkerHelper.getMark(convertView)))) {
 				Binder.InflateResult result = Binder.inflateView(mContext, layoutId, parent, false);
+				EventMarkerHelper.mark(result.rootView, mark);
 				mapper = new ObservableMapper();
 				Object model = mCollection.getItem(position);
 				mapper.startCreateMapping(mReflector, model);

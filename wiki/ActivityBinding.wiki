@@ -48,3 +48,10 @@ Representing the Action Bar. Possibly can be replaced by custom actionbar widget
 *NOTE*
 If `dataSource` is omitted, it is assume it is the same as the root View Model passed to it. (i.e. `dataSource="."`)
 Due to the design of Activity, layout Id is static and cannot be changed. 
+
+= Event = 
+
+Binding Activity should broadcast activity events through EventAggregator, including: 
+onPause, onDestroy etc. 
+
+Other activity events should also be bindable, for example: onBackKeyPressed, onKeyPressed etc. 

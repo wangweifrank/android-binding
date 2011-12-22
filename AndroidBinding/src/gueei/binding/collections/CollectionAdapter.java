@@ -1,9 +1,13 @@
 package gueei.binding.collections;
 
+import java.util.Hashtable;
+
 import gueei.binding.AttributeBinder;
 import gueei.binding.Binder;
+import gueei.binding.BindingSyntaxResolver;
 import gueei.binding.CollectionChangedEventArg;
 import gueei.binding.CollectionObserver;
+import gueei.binding.IObservable;
 import gueei.binding.IObservableCollection;
 import gueei.binding.utility.CachedModelReflector;
 import gueei.binding.utility.EventMarkerHelper;
@@ -39,7 +43,7 @@ public class CollectionAdapter extends BaseAdapter implements CollectionObserver
 	protected final Filter mFilter;
 
 	public CollectionAdapter(Context context, IModelReflector reflector, IObservableCollection<?> collection, Layout layout, Layout dropDownLayout,
-			Filter filter) throws Exception {
+			Filter filter, String enableItemStatement) throws Exception {
 		mHandler = new Handler();
 		mContext = context;
 		mLayout = layout;
@@ -47,22 +51,25 @@ public class CollectionAdapter extends BaseAdapter implements CollectionObserver
 		mCollection = collection;
 		mReflector = reflector;
 		mFilter = filter;
+		mEnableItemStatement = enableItemStatement;
 		mCollection.subscribe(this);
 	}
 
-	public CollectionAdapter(Context context, IModelReflector reflector, IObservableCollection<?> collection, Layout layout, Layout dropDownLayout)
+	public CollectionAdapter(Context context, IModelReflector reflector, 
+			IObservableCollection<?> collection, Layout layout, Layout dropDownLayout,
+			String enableItemStatement)
 			throws Exception {
-		this(context, reflector, collection, layout, dropDownLayout, null);
+		this(context, reflector, collection, layout, dropDownLayout, null, enableItemStatement);
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public CollectionAdapter(Context context, IObservableCollection<?> collection, Layout layout, Layout dropDownLayout, Filter filter) throws Exception {
-		this(context, new CachedModelReflector(collection.getComponentType()), collection, layout, dropDownLayout, filter);
+	public CollectionAdapter(Context context, IObservableCollection<?> collection, Layout layout, Layout dropDownLayout, Filter filter, String enableItemStatement) throws Exception {
+		this(context, new CachedModelReflector(collection.getComponentType()), collection, layout, dropDownLayout, filter, enableItemStatement);
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public CollectionAdapter(Context context, IObservableCollection<?> collection, Layout layout, Layout dropDownLayout) throws Exception {
-		this(context, new CachedModelReflector(collection.getComponentType()), collection, layout, dropDownLayout);
+	public CollectionAdapter(Context context, IObservableCollection<?> collection, Layout layout, Layout dropDownLayout, String enableItemStatement) throws Exception {
+		this(context, new CachedModelReflector(collection.getComponentType()), collection, layout, dropDownLayout, enableItemStatement);
 	}
 
 	public void subscribeCollectionObserver(CollectionObserver observer) {
@@ -117,6 +124,7 @@ public class CollectionAdapter extends BaseAdapter implements CollectionObserver
 				this.putAttachedMapper(returnView, mapper);
 			}
 			mapper.changeMapping(mReflector, item);
+
 			return returnView;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -208,28 +216,65 @@ public class CollectionAdapter extends BaseAdapter implements CollectionObserver
 		// normalize oldLastIndex, should be less or equal to actualCollectionSize
 		oldLastIndex = (oldLastIndex > actualCollectionSize) ? actualCollectionSize : oldLastIndex;
 
-		LazyLoadRowModel item;
+		Object rawItem;
 
 		for (int i = newFirstIndex; i < oldFirstIndex; ++i) {
-			item = (LazyLoadRowModel) mCollection.getItem(i);
-			item.display(mCollection, i);
+			rawItem = mCollection.getItem(i);
+			if (rawItem instanceof LazyLoadRowModel){
+				((LazyLoadRowModel)rawItem).display(mCollection, i);
+			}
 		}
 		for (int i = oldFirstIndex; i < newFirstIndex; ++i) {
-			item = (LazyLoadRowModel) mCollection.getItem(i);
-			item.hide(mCollection, i);
+			rawItem = mCollection.getItem(i);
+			if (rawItem instanceof LazyLoadRowModel){
+				((LazyLoadRowModel)rawItem).hide(mCollection, i);
+			}
 		}
 
 		for (int i = newLastIndex; i < oldLastIndex; ++i) {
-			item = (LazyLoadRowModel) mCollection.getItem(i);
-			item.hide(mCollection, i);
+			rawItem = mCollection.getItem(i);
+			if (rawItem instanceof LazyLoadRowModel){
+				((LazyLoadRowModel)rawItem).hide(mCollection, i);
+			}
 		}
 		for (int i = oldLastIndex; i < newLastIndex; ++i) {
-			item = (LazyLoadRowModel) mCollection.getItem(i);
-			item.display(mCollection, i);
+			rawItem = mCollection.getItem(i);
+			if (rawItem instanceof LazyLoadRowModel){
+				((LazyLoadRowModel)rawItem).display(mCollection, i);
+			}
 		}
 
 		// set lastDisplayingFirst and lastTotal;
 		lastDisplayingFirst = newFirstIndex;
 		lastTotal = newTotal;
+	}
+
+	/**
+	 * Statement that determines child item is enable/disable
+	 */
+	private String mEnableItemStatement = null;
+	
+	/**
+	 * If the statement is null (unset), all items are assumed to be enabled.
+	 */
+	@Override
+	public boolean areAllItemsEnabled() {
+		return mEnableItemStatement == null;
+	}
+
+	/**
+	 * Make individual item enable/disable possible. 
+	 * This is not possible to do in Item level, but only from ListView's level since
+	 * items are rendered by listView and listview seems to omit this value
+	 */
+	
+	@Override
+	public boolean isEnabled(int position) {
+		if (mEnableItemStatement == null) return true;
+		IObservable<?> obs = BindingSyntaxResolver
+			.constructObservableFromStatement(
+					mContext, mEnableItemStatement, mCollection.getItem(position));
+		// Even if the obs is null, or it's value is null, it is enabled by default 
+		return obs == null || !Boolean.FALSE.equals(obs.get());
 	}
 }

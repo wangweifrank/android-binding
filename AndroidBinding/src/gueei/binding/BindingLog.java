@@ -10,8 +10,7 @@ public class BindingLog {
 	}
 	
 	public static void exception(String occuredAt, Exception e){
-		//e.printStackTrace();
-		Log.e(tag, occuredAt + " : " + e.getMessage());
+		Log.e(tag, occuredAt + " : " + e.getMessage(), e);
 	}
 	
 	public static void debug(String occuredAt, String message){

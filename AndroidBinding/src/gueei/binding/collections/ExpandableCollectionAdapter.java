@@ -16,6 +16,13 @@ import gueei.binding.CollectionChangedEventArg;
 import gueei.binding.CollectionObserver;
 import gueei.binding.IObservableCollection;
 
+
+/**
+ * Provide a nested relation of adapters
+ * It is designed to use in ExpandableList
+ * @author andy
+ *
+ */
 public class ExpandableCollectionAdapter extends BaseExpandableListAdapter implements CollectionObserver {
 
 	private final String mChildName;

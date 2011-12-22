@@ -57,7 +57,8 @@ public class Launch extends Activity {
 				new Demo("MultipleChoiceList"),
 				new Demo("FilterArrayList", true),
 				new Demo("FilterCursorList", true),
-				new Demo("SwitchableItemTemplate", true)
+				new Demo("SwitchableItemTemplate", true),
+				new Demo("ListViewIndividualItemControl", true)
 				));
 		DemoGroups
 				.add(new DemoGroup("Compound/Nested Lists",

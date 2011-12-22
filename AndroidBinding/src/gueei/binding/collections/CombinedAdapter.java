@@ -8,7 +8,14 @@ import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.Adapter;
 import android.widget.BaseAdapter;
+import android.widget.ListAdapter;
 
+
+/**
+ * Provide a nested relationship between adapters
+ * @author andy
+ *
+ */
 public class CombinedAdapter extends BaseAdapter implements LazyLoadAdapter{
 	private ArrayList<TranslatedAdapter> mTranslated = new ArrayList<TranslatedAdapter>();
 
@@ -177,5 +184,25 @@ public class CombinedAdapter extends BaseAdapter implements LazyLoadAdapter{
 				((LazyLoadAdapter)adapter.adapter).onVisibleChildrenChanged(afirst, total);
 			}
 		}
+	}
+
+	@Override
+	public boolean areAllItemsEnabled() {
+		for(TranslatedAdapter ta: mTranslated){
+			Adapter adapter = ta.adapter;
+			if (adapter instanceof ListAdapter){
+				if (!((ListAdapter)adapter).areAllItemsEnabled())
+					return false;
+			}
+		}
+		return true;
+	}
+
+	@Override
+	public boolean isEnabled(int position) {
+		TranslatedAdapter ta = getAdapterAt(position);
+		if (ta.adapter instanceof ListAdapter)
+			return ((ListAdapter)ta.adapter).isEnabled(position - ta.offset);
+		return true;
 	}
 }

@@ -7,9 +7,10 @@ import gueei.binding.IObservable;
 import gueei.binding.Observer;
 import gueei.binding.ViewAttribute;
 import gueei.binding.collections.ExpandableCollectionAdapter;
-import gueei.binding.cursor.CursorRowTypeMap;
 import gueei.binding.viewAttributes.templates.Layout;
+
 import java.util.Collection;
+
 import android.widget.Adapter;
 import android.widget.ExpandableListView;
 
@@ -86,9 +87,6 @@ public class ExpandableListView_ItemSourceViewAttribute
 
 	@Override
 	protected BindingType AcceptThisTypeAs(Class<?> type) {
-		if (type.isArray()||CursorRowTypeMap.class.isAssignableFrom(type)){
-			return BindingType.OneWay;
-		}
 		return BindingType.OneWay;
 	}
 }

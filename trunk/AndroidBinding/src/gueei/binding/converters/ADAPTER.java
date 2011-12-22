@@ -14,6 +14,7 @@ import android.widget.Adapter;
  *   1. template (required, layout id)
  *   2. source (required, any observablecollection / cursorobservable)
  *   3. spinnerTemplate (optional, layout id)
+ *   4. enable (optional, string) child property that determines the enable state of the item
  * @author andy
  *
  */
@@ -37,7 +38,13 @@ public class ADAPTER extends Converter<Adapter> {
 			
 			IObservable<?> source = object.getObservableByName("source");
 			
-			return Utility.getSimpleAdapter(getContext(), source, template, spinnerTemplate, null);
+			String enableStatement = null;
+			if (object.observableExists("enable")){
+				try{
+					enableStatement = object.getObservableByName("enable").get().toString();
+				}catch(Exception e){}
+			}
+			return Utility.getSimpleAdapter(getContext(), source, template, spinnerTemplate, null, enableStatement);
 		}catch(Exception e){
 			return null;
 		}

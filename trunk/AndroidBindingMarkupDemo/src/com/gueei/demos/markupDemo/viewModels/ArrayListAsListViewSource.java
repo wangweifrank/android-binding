@@ -3,6 +3,7 @@ package com.gueei.demos.markupDemo.viewModels;
 import gueei.binding.Command;
 import gueei.binding.DependentObservable;
 import gueei.binding.collections.ArrayListObservable;
+import gueei.binding.observables.BooleanObservable;
 import gueei.binding.observables.IntegerObservable;
 import android.view.View;
 
@@ -30,6 +31,8 @@ public class ArrayListAsListViewSource {
 	
 	public class ArrayListItem{
 		private static final String Prefix = "Item: ClickCount=";
+		public final BooleanObservable Enabled = new BooleanObservable(false);
+		
 		public final Command ClickTitle = new Command(){
 			public void Invoke(View view, Object... args) {
 				ClickCount.set(ClickCount.get()+1);

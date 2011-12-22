@@ -14,13 +14,14 @@ import android.database.DataSetObserver;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Adapter;
+import android.widget.ListAdapter;
 import android.widget.SpinnerAdapter;
 
 /**
  * Singleton Adapter is a adapter contains one and only one object
  * @author andy
  */
-public class SingletonAdapter implements Adapter, SpinnerAdapter, Observer {
+public class SingletonAdapter implements Adapter, SpinnerAdapter, Observer, ListAdapter {
 	private final Object mObj;
 	private final Context mContext;
 	private View mView, mDropDownView;
@@ -100,5 +101,16 @@ public class SingletonAdapter implements Adapter, SpinnerAdapter, Observer {
 			Collection<Object> initiators) {
 		if (mDataSetObserver!=null)
 			mDataSetObserver.notify();
+	}
+
+	// This is supposed to be separator, so it is disabled
+	@Override
+	public boolean areAllItemsEnabled() {
+		return false;
+	}
+
+	@Override
+	public boolean isEnabled(int position) {
+		return false;
 	}
 }

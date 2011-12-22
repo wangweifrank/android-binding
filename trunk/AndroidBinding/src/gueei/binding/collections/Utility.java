@@ -13,7 +13,7 @@ public class Utility {
 	@SuppressWarnings({ "unchecked", "rawtypes", "deprecation" })
 	public static Adapter getSimpleAdapter(
 			Context context, Object collection, 
-			Layout layout, Layout dropDownLayout, Filter filter) throws Exception{
+			Layout layout, Layout dropDownLayout, Filter filter, String enableItemStatement) throws Exception{
 		if ((collection instanceof IObservableCollection)){
 			IObservableCollection obsCollection = (IObservableCollection)collection;
 			return new CollectionAdapter(
@@ -21,7 +21,7 @@ public class Utility {
 					obsCollection, 
 					layout, 
 					dropDownLayout,
-					filter);
+					filter, enableItemStatement);
 		}
 		if (collection instanceof CursorObservable){
 			CursorObservable cobs = (CursorObservable)collection;
@@ -41,5 +41,11 @@ public class Utility {
 		}
 		*/
 		return null;
+	}
+	
+	public static Adapter getSimpleAdapter(
+			Context context, Object collection, 
+			Layout layout, Layout dropDownLayout, Filter filter) throws Exception{
+		return getSimpleAdapter(context, collection, layout, dropDownLayout, filter, null);
 	}
 }

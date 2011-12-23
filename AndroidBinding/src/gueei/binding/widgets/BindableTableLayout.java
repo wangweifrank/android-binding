@@ -309,12 +309,16 @@ public class BindableTableLayout extends TableLayout implements IBindableView<Bi
 						// ViewGroup.MarginLayoutParams ctor doesn't honor the margins
 						// so this is a workaround - we have to use the child - not the row
 						
-						TableRow.LayoutParams rowParams =  (TableRow.LayoutParams)child.getLayoutParams();										
-						ViewGroup.MarginLayoutParams margins = new ViewGroup.MarginLayoutParams(rowParams);
-						margins.setMargins(rowParams.leftMargin, rowParams.topMargin, 
-										   rowParams.rightMargin, rowParams.bottomMargin);
-
-						params = new TableRow.LayoutParams(margins);
+						TableRow.LayoutParams rowParams =  (TableRow.LayoutParams)child.getLayoutParams();	
+						if( rowParams != null ) {
+							ViewGroup.MarginLayoutParams margins = new ViewGroup.MarginLayoutParams(rowParams);
+							margins.setMargins(rowParams.leftMargin, rowParams.topMargin, 
+											   rowParams.rightMargin, rowParams.bottomMargin);
+	
+							params = new TableRow.LayoutParams(margins);
+						} else {
+							params = new TableRow.LayoutParams(tableRow.getLayoutParams());
+						}
 					}
 														
 					if( child != null ) {

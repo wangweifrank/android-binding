@@ -316,17 +316,18 @@ public class BindableTableLayout extends TableLayout implements IBindableView<Bi
 											   rowParams.rightMargin, rowParams.bottomMargin);
 	
 							params = new TableRow.LayoutParams(margins);
-						} else {
-							params = new TableRow.LayoutParams(tableRow.getLayoutParams());
-						}
+						} 
 					}
 														
-					if( child != null ) {
-						params.span = colSpan;
-						params.column = col;
-						tableRow.setLayoutParams(params);									
-											
-						tableRow.addView(child, params);
+					if( child != null ) {						
+						if( params == null ) {
+							tableRow.addView(child);
+						} else {
+							params.span = colSpan;
+							params.column = col;
+							tableRow.setLayoutParams(params);											
+							tableRow.addView(child, params);
+						}
 					}
 
 					col = col + colSpan;

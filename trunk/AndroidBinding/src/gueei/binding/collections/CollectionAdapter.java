@@ -1,7 +1,6 @@
 package gueei.binding.collections;
 
 import java.util.Hashtable;
-
 import gueei.binding.AttributeBinder;
 import gueei.binding.Binder;
 import gueei.binding.BindingSyntaxResolver;
@@ -55,20 +54,20 @@ public class CollectionAdapter extends BaseAdapter implements CollectionObserver
 		mCollection.subscribe(this);
 	}
 
-	public CollectionAdapter(Context context, IModelReflector reflector, 
-			IObservableCollection<?> collection, Layout layout, Layout dropDownLayout,
-			String enableItemStatement)
-			throws Exception {
+	public CollectionAdapter(Context context, IModelReflector reflector, IObservableCollection<?> collection, Layout layout, Layout dropDownLayout,
+			String enableItemStatement) throws Exception {
 		this(context, reflector, collection, layout, dropDownLayout, null, enableItemStatement);
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public CollectionAdapter(Context context, IObservableCollection<?> collection, Layout layout, Layout dropDownLayout, Filter filter, String enableItemStatement) throws Exception {
+	public CollectionAdapter(Context context, IObservableCollection<?> collection, Layout layout, Layout dropDownLayout, Filter filter,
+			String enableItemStatement) throws Exception {
 		this(context, new CachedModelReflector(collection.getComponentType()), collection, layout, dropDownLayout, filter, enableItemStatement);
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public CollectionAdapter(Context context, IObservableCollection<?> collection, Layout layout, Layout dropDownLayout, String enableItemStatement) throws Exception {
+	public CollectionAdapter(Context context, IObservableCollection<?> collection, Layout layout, Layout dropDownLayout, String enableItemStatement)
+			throws Exception {
 		this(context, new CachedModelReflector(collection.getComponentType()), collection, layout, dropDownLayout, enableItemStatement);
 	}
 
@@ -107,12 +106,10 @@ public class CollectionAdapter extends BaseAdapter implements CollectionObserver
 				if (item instanceof LazyLoadRowModel)
 					((LazyLoadRowModel) item).display(mCollection, position);
 			}
-			
-			ItemViewEventMark mark = new ItemViewEventMark(parent, position, mCollection.getItemId(position));
 
-			if ((convertView == null) || ((mapper = getAttachedMapper(convertView)) == null) || (!mark.equals(EventMarkerHelper.getMark(convertView)))) {
+			if ((convertView == null) || ((mapper = getAttachedMapper(convertView)) == null)) {
 				Binder.InflateResult result = Binder.inflateView(mContext, layoutId, parent, false);
-				EventMarkerHelper.mark(result.rootView, mark);
+
 				mapper = new ObservableMapper();
 				Object model = mCollection.getItem(position);
 				mapper.startCreateMapping(mReflector, model);
@@ -122,6 +119,13 @@ public class CollectionAdapter extends BaseAdapter implements CollectionObserver
 				mapper.endCreateMapping();
 				returnView = result.rootView;
 				this.putAttachedMapper(returnView, mapper);
+			}
+			ItemViewEventMark mark = EventMarkerHelper.getMark(returnView);
+			if (null == mark) {
+				mark = new ItemViewEventMark(parent, position, mCollection.getItemId(position));
+				EventMarkerHelper.mark(returnView, mark);
+			} else {
+				mark.setIdAndPosition(position, mCollection.getItemId(position));
 			}
 			mapper.changeMapping(mReflector, item);
 
@@ -220,27 +224,27 @@ public class CollectionAdapter extends BaseAdapter implements CollectionObserver
 
 		for (int i = newFirstIndex; i < oldFirstIndex; ++i) {
 			rawItem = mCollection.getItem(i);
-			if (rawItem instanceof LazyLoadRowModel){
-				((LazyLoadRowModel)rawItem).display(mCollection, i);
+			if (rawItem instanceof LazyLoadRowModel) {
+				((LazyLoadRowModel) rawItem).display(mCollection, i);
 			}
 		}
 		for (int i = oldFirstIndex; i < newFirstIndex; ++i) {
 			rawItem = mCollection.getItem(i);
-			if (rawItem instanceof LazyLoadRowModel){
-				((LazyLoadRowModel)rawItem).hide(mCollection, i);
+			if (rawItem instanceof LazyLoadRowModel) {
+				((LazyLoadRowModel) rawItem).hide(mCollection, i);
 			}
 		}
 
 		for (int i = newLastIndex; i < oldLastIndex; ++i) {
 			rawItem = mCollection.getItem(i);
-			if (rawItem instanceof LazyLoadRowModel){
-				((LazyLoadRowModel)rawItem).hide(mCollection, i);
+			if (rawItem instanceof LazyLoadRowModel) {
+				((LazyLoadRowModel) rawItem).hide(mCollection, i);
 			}
 		}
 		for (int i = oldLastIndex; i < newLastIndex; ++i) {
 			rawItem = mCollection.getItem(i);
-			if (rawItem instanceof LazyLoadRowModel){
-				((LazyLoadRowModel)rawItem).display(mCollection, i);
+			if (rawItem instanceof LazyLoadRowModel) {
+				((LazyLoadRowModel) rawItem).display(mCollection, i);
 			}
 		}
 
@@ -253,7 +257,7 @@ public class CollectionAdapter extends BaseAdapter implements CollectionObserver
 	 * Statement that determines child item is enable/disable
 	 */
 	private String mEnableItemStatement = null;
-	
+
 	/**
 	 * If the statement is null (unset), all items are assumed to be enabled.
 	 */
@@ -267,13 +271,12 @@ public class CollectionAdapter extends BaseAdapter implements CollectionObserver
 	 * This is not possible to do in Item level, but only from ListView's level since
 	 * items are rendered by listView and listview seems to omit this value
 	 */
-	
+
 	@Override
 	public boolean isEnabled(int position) {
-		if (mEnableItemStatement == null) return true;
-		IObservable<?> obs = BindingSyntaxResolver
-			.constructObservableFromStatement(
-					mContext, mEnableItemStatement, mCollection.getItem(position));
+		if (mEnableItemStatement == null)
+			return true;
+		IObservable<?> obs = BindingSyntaxResolver.constructObservableFromStatement(mContext, mEnableItemStatement, mCollection.getItem(position));
 		// Even if the obs is null, or it's value is null, it is enabled by default 
 		return obs == null || !Boolean.FALSE.equals(obs.get());
 	}

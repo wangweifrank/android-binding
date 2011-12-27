@@ -70,6 +70,11 @@ public class ItemViewEventMark implements View.OnClickListener, View.OnLongClick
 		return null;
 	}
 
+	public void setIdAndPosition(int newPosition, long newId) {
+		mTargetListItemPosition = newPosition;
+		mTargetListItemId = newId;
+	}
+
 	private int mTargetListItemPosition;
 	private long mTargetListItemId;
 	private final WeakReference<View> mWRTargetView;

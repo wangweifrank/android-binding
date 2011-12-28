@@ -5,6 +5,7 @@ import gueei.binding.viewAttributes.textView.OnTextChangedViewEvent;
 import gueei.binding.viewAttributes.textView.TextColorViewAttribute;
 import gueei.binding.viewAttributes.textView.TextLinesViewAttribute;
 import gueei.binding.viewAttributes.textView.TextViewAttribute;
+import gueei.binding.viewAttributes.textView.TypefaceViewAttribute;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -37,6 +38,10 @@ public class TextViewProvider extends BindingProvider {
 				return (ViewAttribute<Tv, ?>) (new OnTextChangedViewEvent((EditText)view));
 			}
 		}
+		if (attributeId.equals("typeface")){
+			TypefaceViewAttribute attr = new TypefaceViewAttribute((TextView)view);
+			return (ViewAttribute<Tv, ?>) attr;
+		}		
 		return null;
 	}
 }

@@ -6,6 +6,7 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.AdapterView;
 import gueei.binding.Command;
 import gueei.binding.IObservable;
 
@@ -101,7 +102,14 @@ public class MenuItemBridge extends AbsMenuBridge{
 	public boolean onOptionsItemSelected(MenuItem item) {
 		boolean output = false;
 		if (onClickCommand!=null){
-			onClickCommand.InvokeCommand(null, item);
+			if(item.getMenuInfo() instanceof AdapterView.AdapterContextMenuInfo) {
+			    AdapterView.AdapterContextMenuInfo cmi = 
+				        (AdapterView.AdapterContextMenuInfo) item.getMenuInfo (); 
+			    int position = cmi.position;			
+			    onClickCommand.InvokeCommand(null, item, position);
+			} else {
+				onClickCommand.InvokeCommand(null, item);
+			}
 			output = true;
 		}
 

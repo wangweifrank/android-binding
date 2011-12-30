@@ -8,6 +8,7 @@ import gueei.binding.viewAttributes.view.ContextMenuViewAttribute;
 import gueei.binding.viewAttributes.view.EnabledViewAttribute;
 import gueei.binding.viewAttributes.view.OnClickViewEvent;
 import gueei.binding.viewAttributes.view.OnGainFocusViewEvent;
+import gueei.binding.viewAttributes.view.OnKeyViewEvent;
 import gueei.binding.viewAttributes.view.OnLongClickViewEvent;
 import gueei.binding.viewAttributes.view.OnLostFocusViewEvent;
 import gueei.binding.viewAttributes.view.SelectedViewAttribute;
@@ -42,6 +43,8 @@ public class ViewProvider extends BindingProvider {
 			return new OnGainFocusViewEvent(view);
 		}else if (attributeId.equals("onLostFocus")){
 			return new OnLostFocusViewEvent(view);
+		}else if (attributeId.equals("onKey")){
+			return new OnKeyViewEvent(view);
 		}
 		return null;
 	}

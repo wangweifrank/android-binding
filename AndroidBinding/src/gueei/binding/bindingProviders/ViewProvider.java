@@ -6,6 +6,8 @@ import gueei.binding.viewAttributes.view.BackgroundColorViewAttribute;
 import gueei.binding.viewAttributes.view.BackgroundViewAttribute;
 import gueei.binding.viewAttributes.view.ContextMenuViewAttribute;
 import gueei.binding.viewAttributes.view.EnabledViewAttribute;
+import gueei.binding.viewAttributes.view.Layout_HeightViewAttribute;
+import gueei.binding.viewAttributes.view.Layout_WidthViewAttribute;
 import gueei.binding.viewAttributes.view.OnClickViewEvent;
 import gueei.binding.viewAttributes.view.OnGainFocusViewEvent;
 import gueei.binding.viewAttributes.view.OnKeyViewEvent;
@@ -18,7 +20,6 @@ import android.view.View;
 
 public class ViewProvider extends BindingProvider {
 
-	@SuppressWarnings({"unchecked"})
 	@Override
 	public ViewAttribute<View, ?> createAttributeForView(View view, String attributeId) {
 		if (attributeId.equals("enabled")){
@@ -45,6 +46,10 @@ public class ViewProvider extends BindingProvider {
 			return new OnLostFocusViewEvent(view);
 		}else if (attributeId.equals("onKey")){
 			return new OnKeyViewEvent(view);
+		}else if (attributeId.equals("layout_height")){
+			return new Layout_HeightViewAttribute(view);
+		}else if (attributeId.equals("layout_width")){
+			return new Layout_WidthViewAttribute(view);
 		}
 		return null;
 	}

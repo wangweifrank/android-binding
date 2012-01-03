@@ -4,6 +4,7 @@ import android.view.View;
 import gueei.binding.ViewAttribute;
 import gueei.binding.bindingProviders.BindingProvider;
 import gueei.binding.v30.viewAttributes.AnimationViewAttributeV30;
+import gueei.binding.v30.viewAttributes.OnAttachStateChangeListenerAttributeV30;
 
 public class ViewProviderV30 extends BindingProvider{
 	@SuppressWarnings("unchecked")
@@ -12,6 +13,8 @@ public class ViewProviderV30 extends BindingProvider{
 			View view, String attributeId) {
 		if (attributeId.equals("animation"))
 			return (ViewAttribute<Tv, ?>) new AnimationViewAttributeV30(view);
+		if (attributeId.equals("onAttachStateChangeListener"))
+			return (ViewAttribute<Tv, ?>) new OnAttachStateChangeListenerAttributeV30(view);		
 		return null;
 	}
 }

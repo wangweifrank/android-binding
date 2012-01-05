@@ -4,8 +4,6 @@ import android.animation.Animator;
 import android.animation.AnimatorInflater;
 import android.content.res.Resources;
 import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import gueei.binding.BindingType;
 import gueei.binding.DynamicObject;
 import gueei.binding.ViewAttribute;

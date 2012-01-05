@@ -3,6 +3,7 @@ package gueei.binding.v30;
 import gueei.binding.AttributeBinder;
 import gueei.binding.Binder;
 import gueei.binding.BindingMap;
+import gueei.binding.v30.bindingProviders.ViewPagerViewProviderV30;
 import gueei.binding.v30.bindingProviders.ViewProviderV30;
 import android.app.Application;
 import android.content.Context;
@@ -14,6 +15,7 @@ public class BinderV30 extends gueei.binding.Binder {
 	public static void init(Application application){
 		// Put v30 providers first
 		AttributeBinder.getInstance().registerProvider(new ViewProviderV30());
+		AttributeBinder.getInstance().registerProvider(new ViewPagerViewProviderV30());
 		Binder.init(application);
 	}
 	

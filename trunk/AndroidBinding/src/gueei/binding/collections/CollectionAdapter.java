@@ -109,7 +109,8 @@ public class CollectionAdapter extends BaseAdapter implements CollectionObserver
 
 			if ((convertView == null) || ((mapper = getAttachedMapper(convertView)) == null)) {
 				Binder.InflateResult result = Binder.inflateView(mContext, layoutId, parent, false);
-
+				ItemViewEventMark mark = new ItemViewEventMark(parent, position, mCollection.getItemId(position));
+				EventMarkerHelper.mark(result.rootView, mark);
 				mapper = new ObservableMapper();
 				Object model = mCollection.getItem(position);
 				mapper.startCreateMapping(mReflector, model);
@@ -119,16 +120,14 @@ public class CollectionAdapter extends BaseAdapter implements CollectionObserver
 				mapper.endCreateMapping();
 				returnView = result.rootView;
 				this.putAttachedMapper(returnView, mapper);
-			}
-			ItemViewEventMark mark = EventMarkerHelper.getMark(returnView);
-			if (null == mark) {
-				mark = new ItemViewEventMark(parent, position, mCollection.getItemId(position));
-				EventMarkerHelper.mark(returnView, mark);
 			} else {
-				mark.setIdAndPosition(position, mCollection.getItemId(position));
+				ItemViewEventMark mark = EventMarkerHelper.getMark(returnView);
+				if (null != mark) {
+					mark.setIdAndPosition(position, mCollection.getItemId(position));
+				}
 			}
-			mapper.changeMapping(mReflector, item);
 
+			mapper.changeMapping(mReflector, item);
 			return returnView;
 		} catch (Exception e) {
 			e.printStackTrace();

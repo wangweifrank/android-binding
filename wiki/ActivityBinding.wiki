@@ -1,6 +1,8 @@
 #summary [Draft] XML metadata file format defining Activity binding
 #labels Phase-Design
 
+WARNING: all features in this document is in drafting phase and subject to change any time without notice
+
 = activity =
 
 {{{

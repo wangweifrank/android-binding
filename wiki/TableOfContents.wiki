@@ -22,6 +22,7 @@
   * [ActivityBinding]
   * [Animation]
   * [PojoViewModel]
+ * [RoboGuice Working with Robo Guice]
  * [Development Developer and Contributor]
   * [UnderTheHood Under the Hood]
  * [Version]

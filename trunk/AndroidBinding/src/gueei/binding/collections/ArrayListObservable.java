@@ -48,6 +48,11 @@ public class ArrayListObservable<T>
 		this.notifyCollectionChanged(e);
 	}
 	
+	/**
+	 * set from array and clear
+	 * 
+	 * @param newArray
+	 */
 	public void setArray(T[] newArray){
 		CollectionChangedEventArg e = new CollectionChangedEventArg(Action.Replace, Arrays.asList(newArray), (List<?>)mArray);
 		mArray.clear();
@@ -82,6 +87,20 @@ public class ArrayListObservable<T>
 		}
 		return result;
 	}
+	
+	/**
+	 * set from list and clear
+	 * 
+	 * @param arg0
+	 */
+	public void setAll(Collection<? extends T> arg0) {
+		@SuppressWarnings("unchecked")
+		List<?> oldList = Arrays.asList(mArray);
+		mArray.clear();
+		mArray.addAll(arg0);
+		CollectionChangedEventArg e = new CollectionChangedEventArg(Action.Replace, oldList, Arrays.asList(arg0));
+		this.notifyCollectionChanged(e);		
+	}	
 
 	public boolean containsAll(Collection<?> arg0) {
 		return mArray.containsAll(arg0);

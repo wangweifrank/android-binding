@@ -6,21 +6,17 @@ import gueei.binding.ViewAttribute;
 import gueei.binding.listeners.TextWatcherMulticast;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.widget.EditText;
 import android.widget.TextView;
 
-
-public class TextViewAttribute extends ViewAttribute<TextView, CharSequence>
-	implements TextWatcher{
+public class TextViewAttribute extends ViewAttribute<TextView, CharSequence> implements TextWatcher {
 
 	private CharSequence mValue = null;
-	
+
 	public TextViewAttribute(TextView view, String attributeName) {
 		super(CharSequence.class, view, attributeName);
-		if (view instanceof EditText){
-			Binder.getMulticastListenerForView(view, TextWatcherMulticast.class)
-				.registerWithHighPriority(this);
+		if (view instanceof EditText) {
+			Binder.getMulticastListenerForView(view, TextWatcherMulticast.class).registerWithHighPriority(this);
 		}
 	}
 
@@ -28,55 +24,52 @@ public class TextViewAttribute extends ViewAttribute<TextView, CharSequence>
 	public CharSequence get() {
 		return cloneCharSequence(getView().getText());
 	}
-	
-	private CharSequence cloneCharSequence(CharSequence o){
+
+	private CharSequence cloneCharSequence(CharSequence o) {
 		return o.subSequence(0, o.length());
 	}
-	
-	private boolean compareCharSequence(CharSequence a, CharSequence b){
-		if(a==null||b==null) return false;
-		if(a.length()!=b.length()) return false;
-		for(int i=0; i<a.length(); i++){
-			if (a.charAt(i)!= b.charAt(i)) return false;
+
+	private boolean compareCharSequence(CharSequence a, CharSequence b) {
+		boolean result = false;
+		if (a != null) {
+			result = a.equals(b);
 		}
-		return true;
+		return result;
 	}
 
 	@Override
 	protected void doSetAttributeValue(Object newValue) {
-		synchronized(this){
-			if (newValue == null){
-				if (getView().getText().length()==0) return;
-				suppressChange = true;
-				getView().setText("");
-				return;
+		synchronized (this) {
+			CharSequence nVal = "";
+			if (null != newValue) {
+				if (!(newValue instanceof CharSequence)) {
+					nVal = (CharSequence) newValue;
+				} else {
+					nVal = newValue.toString();
+				}
 			}
-			if (!(newValue instanceof CharSequence)){
+			if (!compareCharSequence(nVal, mValue)) {
 				suppressChange = true;
-				getView().setText(newValue.toString());
-				return;
+				mValue = cloneCharSequence(nVal);
+				getView().setText(cloneCharSequence(nVal));
 			}
-			if (compareCharSequence((CharSequence)newValue, get())) return;
-			suppressChange = true;
-			getView().setText(cloneCharSequence((CharSequence)newValue));
 		}
 	}
-	
+
 	private boolean suppressChange = false;
 
 	public void afterTextChanged(Editable arg0) {
 	}
 
-	public void beforeTextChanged(CharSequence arg0, int arg1, int arg2,
-			int arg3) {
-		//mValue = this.getView().getText().toString();
+	public void beforeTextChanged(CharSequence arg0, int arg1, int arg2, int arg3) {
 	}
-	
+
 	public void onTextChanged(CharSequence arg0, int arg1, int arg2, int arg3) {
-		synchronized(this){
-			Log.i("BinderV30", "onTextChagnged, mV=" + mValue + "\t arg0=" + arg0);
-			if (compareCharSequence(mValue, arg0)) return;
-			if (!suppressChange){
+		synchronized (this) {
+			//Log.i("BinderV30", "onTextChagnged, mV=" + mValue + "\t arg0=" + arg0);
+			if (compareCharSequence(mValue, arg0))
+				return;
+			if (!suppressChange) {
 				mValue = cloneCharSequence(arg0);
 				this.notifyChanged();
 			}

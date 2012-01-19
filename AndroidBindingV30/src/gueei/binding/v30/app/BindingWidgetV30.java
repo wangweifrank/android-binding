@@ -19,11 +19,11 @@ public class BindingWidgetV30 {
 		return popup;
 	}
 
-	public static Dialog createAndBindDialog(Context context, int layoutId, Object... contentViewModel) {
+	public static Dialog createAndBindDialog(Context context, int layoutId, Object contentViewModel) {
 		return createAndBindDialog(context, 0, layoutId, contentViewModel);
 	}
 	
-	public static Dialog createAndBindDialog(Context context, int theme, int layoutId, Object... contentViewModel) {
+	public static Dialog createAndBindDialog(Context context, int theme, int layoutId, Object contentViewModel) {
 		Dialog dialog = new Dialog(context, theme);
 		InflateResult result = BinderV30.inflateView(context, layoutId, null, false);
 		dialog.setContentView(result.rootView);

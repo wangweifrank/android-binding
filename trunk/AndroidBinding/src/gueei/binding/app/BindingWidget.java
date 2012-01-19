@@ -9,7 +9,7 @@ import android.view.View;
 
 public class BindingWidget {
 	
-	public static Dialog createAndBindDialog(Context context, int layoutId, Object... contentViewModel) {
+	public static Dialog createAndBindDialog(Context context, int layoutId, Object contentViewModel) {
 		Dialog dialog = new Dialog(context);
 		InflateResult result = Binder.inflateView(context, layoutId, null, false);
 		dialog.setContentView(result.rootView);

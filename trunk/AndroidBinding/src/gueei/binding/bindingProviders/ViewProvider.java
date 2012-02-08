@@ -13,6 +13,7 @@ import gueei.binding.viewAttributes.view.OnGainFocusViewEvent;
 import gueei.binding.viewAttributes.view.OnKeyViewEvent;
 import gueei.binding.viewAttributes.view.OnLongClickViewEvent;
 import gueei.binding.viewAttributes.view.OnLostFocusViewEvent;
+import gueei.binding.viewAttributes.view.OnTouchViewEvent;
 import gueei.binding.viewAttributes.view.SelectedViewAttribute;
 import gueei.binding.viewAttributes.view.VisibilityViewAttribute;
 import android.view.View;
@@ -46,6 +47,8 @@ public class ViewProvider extends BindingProvider {
 			return new OnLostFocusViewEvent(view);
 		}else if (attributeId.equals("onKey")){
 			return new OnKeyViewEvent(view);
+		}else if (attributeId.equals("onTouch")){
+			return new OnTouchViewEvent(view);			
 		}else if (attributeId.equals("layout_height")){
 			return new Layout_HeightViewAttribute(view);
 		}else if (attributeId.equals("layout_width")){

@@ -45,10 +45,12 @@
 	    android:layout_height="wrap_content"
 	    binding:text="CONCAT('Text box changed? ', Changed)"
 	/>
+	<!-- 
 	<EditText
 		android:layout_width="fill_parent"
 	    android:layout_height="wrap_content"
 	    android:textSize="40dip"
 	    binding:text="@android:layout/simple_list_item_1"
 	/>
+	 -->
 </LinearLayout>

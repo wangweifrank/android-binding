@@ -1,7 +1,8 @@
 package gueei.binding.bindingProviders;
 
 import gueei.binding.ViewAttribute;
-import gueei.binding.viewAttributes.textView.CheckedViewAttribute;
+import gueei.binding.viewAttributes.textView.CheckedClickableTextViewAttribute;
+import gueei.binding.viewAttributes.textView.CheckedTextViewAttribute;
 import gueei.binding.viewAttributes.textView.OnTextChangedViewEvent;
 import gueei.binding.viewAttributes.textView.TextColorViewAttribute;
 import gueei.binding.viewAttributes.textView.TextLinesViewAttribute;
@@ -20,9 +21,13 @@ public class TextViewProvider extends BindingProvider {
 	public <Tv extends View>ViewAttribute<Tv, ?> createAttributeForView(View view, String attributeId) {
 		if (view instanceof CheckedTextView) {
 			if (attributeId.equals("checked")){
-				CheckedViewAttribute attr = new CheckedViewAttribute((CheckedTextView)view);
+				CheckedTextViewAttribute attr = new CheckedTextViewAttribute((CheckedTextView)view);
 				return (ViewAttribute<Tv, ?>) attr;
 			}		
+			if (attributeId.equals("checkedClickable")){
+				CheckedClickableTextViewAttribute attr = new CheckedClickableTextViewAttribute((CheckedTextView)view);
+				return (ViewAttribute<Tv, ?>) attr;
+			}				
 		}		
 		if (!(view instanceof TextView)) return null;
 		if (attributeId.equals("text")){

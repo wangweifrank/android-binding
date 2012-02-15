@@ -8,13 +8,13 @@ import android.view.View;
 import android.widget.CheckedTextView;
 
 
-public class CheckedViewAttribute extends ViewAttribute<CheckedTextView, Boolean>
+public class CheckedClickableTextViewAttribute extends ViewAttribute<CheckedTextView, Boolean>
 	implements View.OnClickListener {
 
 	// we have to use the click handler here, because there is no Checked Listener for CheckedTextViews	
 	
-	public CheckedViewAttribute(CheckedTextView view) {
-		super(Boolean.class, view, "checked");
+	public CheckedClickableTextViewAttribute(CheckedTextView view) {
+		super(Boolean.class, view, "checkedClickable");
 		Binder.getMulticastListenerForView(view, OnClickListenerMulticast.class)
 			.register(this);
 	}
@@ -46,6 +46,8 @@ public class CheckedViewAttribute extends ViewAttribute<CheckedTextView, Boolean
 	public void onClick(View v) {
 		if( !getView().isEnabled() )
 			return;
+		boolean changeTo = getView().isChecked();
+		getView().setChecked(!changeTo);
 		this.notifyChanged();		
 	}
 }

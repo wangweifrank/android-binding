@@ -43,7 +43,7 @@ public class TextViewAttribute extends ViewAttribute<TextView, CharSequence> imp
 		synchronized (this) {
 			CharSequence nVal = "";
 			if (null != newValue) {
-				if (!(newValue instanceof CharSequence)) {
+				if (newValue instanceof CharSequence) {
 					nVal = (CharSequence) newValue;
 				} else {
 					nVal = newValue.toString();

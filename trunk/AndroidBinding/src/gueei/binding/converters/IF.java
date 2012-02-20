@@ -17,7 +17,8 @@ public class IF extends Converter<Object> {
 
 	@Override
 	public Object calculateValue(Object... args) throws Exception {
-		if (args.length<3) return null;
+		if (args.length<3) return null;		
+		if (args[0] == null) return null;		
 		if ((Boolean)args[0]){
 			return args[1];
 		}else{

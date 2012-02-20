@@ -2,6 +2,7 @@ package gueei.binding.utility;
 
 import gueei.binding.Command;
 import gueei.binding.IObservable;
+import gueei.binding.InnerFieldObservable;
 import gueei.binding.Observable;
 
 import java.lang.reflect.Field;
@@ -50,11 +51,17 @@ public class CachedModelReflector<T> implements ICachedModelReflector<T> {
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public IObservable<Object> getObservableByName(String name, Object object) throws Exception {
 		if (name.equals("."))
-			return new Observable(object.getClass(), object);
-		Field obs = observables.get(name);
-		if (obs==null) return null;
-		
-		return (IObservable) obs.get(object);
+			return new Observable(object.getClass(), object);		
+		if( name.contains(".")) {
+			InnerFieldObservable ifo = new InnerFieldObservable(name);
+			if (ifo.createNodes(object))
+				return ifo;
+			return null;
+		} else {		
+			Field obs = observables.get(name);
+			if (obs==null) return null;		
+			return (IObservable) obs.get(object);
+		}
 	}
 
 	public Object getValueByName(String name, Object object) throws Exception {

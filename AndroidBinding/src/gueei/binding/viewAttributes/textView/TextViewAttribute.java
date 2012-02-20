@@ -12,7 +12,7 @@ import android.widget.TextView;
 public class TextViewAttribute extends ViewAttribute<TextView, CharSequence> implements TextWatcher {
 
 	private CharSequence mValue = null;
-	private int selectionStart = -1;
+	private boolean suppressSet = false;
 
 	public TextViewAttribute(TextView view, String attributeName) {
 		super(CharSequence.class, view, attributeName);
@@ -49,15 +49,15 @@ public class TextViewAttribute extends ViewAttribute<TextView, CharSequence> imp
 					nVal = newValue.toString();
 				}
 			}
-			if (!compareCharSequence(nVal, mValue)) {
+			if (!compareCharSequence(nVal, mValue)) {				
 				suppressChange = true;
 				mValue = cloneCharSequence(nVal);
-				getView().setText(cloneCharSequence(nVal));
 				
-				if (getView() instanceof EditText && selectionStart > 0) {
-					((EditText)getView()).setSelection(selectionStart, selectionStart);
-					selectionStart = -1;
-				}
+				if (getView() instanceof EditText && suppressSet) {
+					suppressSet = false;
+					return;
+				}				
+				getView().setText(cloneCharSequence(nVal));
 			}
 		}
 	}
@@ -79,7 +79,7 @@ public class TextViewAttribute extends ViewAttribute<TextView, CharSequence> imp
 				mValue = cloneCharSequence(arg0);
 
 				if (getView() instanceof EditText)
-					selectionStart = ((EditText)getView()).getSelectionStart();
+					suppressSet = true;
 				
 				this.notifyChanged();
 			}

@@ -22,6 +22,8 @@ public class AdapterViewProvider extends BindingProvider {
 				return (ViewAttribute<Tv, ?>) new SelectedItemViewAttribute((AdapterView)view, "selectedItem");
 			} else if (attributeId.equals("selectedPosition")) {
 				return (ViewAttribute<Tv, ?>) new SelectedPositionViewAttribute((AdapterView)view);
+			} else if (attributeId.equals("selectedObject")) {
+				return (ViewAttribute<Tv, ?>) new SelectedObjectViewAttribute((AdapterView)view);								
 			} else if (attributeId.equals("clickedItem")){
 				ViewAttribute<AdapterView<?>, Object> attr = 
 					new ClickedItemViewAttribute((AdapterView)view, "clickedItem");

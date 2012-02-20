@@ -70,8 +70,25 @@ public class ItemSourceViewAttribute extends ViewAttribute<AdapterView<Adapter>,
 			Adapter adapter = gueei.binding.collections.Utility.getSimpleAdapter
 				(getView().getContext(), newValue, spinnerTemplate, template, null);
 			((ViewAttribute<?, Adapter>)Binder.getAttributeForView(getView(), "adapter")).set(adapter);
-			ViewAttribute<?,Integer> SelectedPosition = (ViewAttribute<?,Integer>)Binder.getAttributeForView(getView(), "selectedPosition");
-			getView().setSelection(SelectedPosition.get());
+			ViewAttribute<?,Object> SelectedObject = (ViewAttribute<?,Object>)Binder.getAttributeForView(getView(), "selectedObject");
+			if( SelectedObject != null && SelectedObject.get() != null ) {
+				int c = getView().getAdapter().getCount();
+				
+				int pos = -1;
+				for( int i=0; i<c; i++ ) {
+					Object o = getView().getAdapter().getItem(i);
+					if( o == null )
+						continue;
+					if( o.equals(SelectedObject.get())) {
+						pos = i;
+						break;
+					}
+				}
+				getView().setSelection(pos);
+			} else {				
+				ViewAttribute<?,Integer> SelectedPosition = (ViewAttribute<?,Integer>)Binder.getAttributeForView(getView(), "selectedPosition");
+				getView().setSelection(SelectedPosition.get());
+			}
 			return;
 		} catch (Exception e) {
 			e.printStackTrace();

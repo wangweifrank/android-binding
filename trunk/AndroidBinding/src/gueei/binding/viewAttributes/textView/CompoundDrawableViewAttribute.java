@@ -1,5 +1,6 @@
 package gueei.binding.viewAttributes.textView;
 
+import gueei.binding.BindingType;
 import gueei.binding.ViewAttribute;
 import android.graphics.drawable.Drawable;
 import android.widget.TextView;
@@ -50,4 +51,11 @@ public class CompoundDrawableViewAttribute extends ViewAttribute<TextView, Objec
 	public Object get() {
 		return mValue;
 	}
+	
+	@Override
+	protected BindingType AcceptThisTypeAs(Class<?> type) {
+		if (Drawable.class.isAssignableFrom(type))
+			return BindingType.TwoWay;
+		return BindingType.OneWay;
+	}	
 }

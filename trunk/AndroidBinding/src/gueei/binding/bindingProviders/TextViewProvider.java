@@ -3,6 +3,7 @@ package gueei.binding.bindingProviders;
 import gueei.binding.ViewAttribute;
 import gueei.binding.viewAttributes.textView.CheckedClickableTextViewAttribute;
 import gueei.binding.viewAttributes.textView.CheckedTextViewAttribute;
+import gueei.binding.viewAttributes.textView.CompoundDrawableViewAttribute;
 import gueei.binding.viewAttributes.textView.OnTextChangedViewEvent;
 import gueei.binding.viewAttributes.textView.TextColorViewAttribute;
 import gueei.binding.viewAttributes.textView.TextLinesViewAttribute;
@@ -55,8 +56,22 @@ public class TextViewProvider extends BindingProvider {
 			TypefaceViewAttribute attr = new TypefaceViewAttribute((TextView)view);
 			return (ViewAttribute<Tv, ?>) attr;
 		}
-				
-		
+		if (attributeId.equals("drawableLeft")){
+			CompoundDrawableViewAttribute attr = new CompoundDrawableViewAttribute((TextView)view, "drawableLeft");
+			return (ViewAttribute<Tv, ?>) attr;
+		}	
+		if (attributeId.equals("drawableTop")){
+			CompoundDrawableViewAttribute attr = new CompoundDrawableViewAttribute((TextView)view, "drawableTop");
+			return (ViewAttribute<Tv, ?>) attr;
+		}		
+		if (attributeId.equals("drawableRight")){
+			CompoundDrawableViewAttribute attr = new CompoundDrawableViewAttribute((TextView)view, "drawableRight");
+			return (ViewAttribute<Tv, ?>) attr;
+		}		
+		if (attributeId.equals("drawableBottom")){
+			CompoundDrawableViewAttribute attr = new CompoundDrawableViewAttribute((TextView)view, "drawableBottom");
+			return (ViewAttribute<Tv, ?>) attr;
+		}					
 		
 		return null;
 	}

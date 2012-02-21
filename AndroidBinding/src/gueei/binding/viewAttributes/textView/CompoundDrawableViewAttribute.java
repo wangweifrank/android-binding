@@ -16,9 +16,12 @@ public class CompoundDrawableViewAttribute extends ViewAttribute<TextView, Objec
 	
 	@Override
 	protected void doSetAttributeValue(Object newValue) {
-	
 		if (newValue instanceof Integer){
-			mValue = getView().getContext().getResources().getDrawable((Integer)newValue);
+			int value = (Integer)newValue;
+			if( value != 0 )
+				mValue = getView().getContext().getResources().getDrawable(value);
+			else
+				mValue = null;
 		} else if (newValue instanceof Drawable){
 			mValue = (Drawable)newValue;
 		} else {

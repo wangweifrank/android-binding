@@ -154,10 +154,11 @@ public class InnerFieldObservable<T> implements IObservable<T> {
 	public void set(T newValue, Collection<Object> initiators) {
 		if (mChild!=null){
 			mChild.set(newValue);
+			notifyChanged(initiators);
 		}else if (mObservable!=null){
 			mObservable.set(newValue);
+			notifyChanged(initiators);
 		}
-		notifyChanged(initiators);
 	}
 
 	@Override

@@ -178,7 +178,9 @@ public class InnerFieldObservable<T> implements IObservable<T> {
 	public T get() {
 		if (mChild!=null){
 			return mChild.get();
+		} else if( mObservable!= null) {
+			return mObservable.get();
 		}
-		return mObservable.get();
+		return null;
 	}
 }

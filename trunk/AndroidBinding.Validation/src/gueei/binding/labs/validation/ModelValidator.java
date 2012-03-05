@@ -102,6 +102,7 @@ public class ModelValidator {
 					}
 				}
 			} catch (Exception e) {
+				e.printStackTrace();
 			}
 		}
 		try{

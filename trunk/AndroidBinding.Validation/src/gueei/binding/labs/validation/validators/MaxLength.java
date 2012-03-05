@@ -29,7 +29,7 @@ public @interface MaxLength{
 				MaxLength parameters, String fieldName,
 				String errorMessageFormat) {
 			return 
-				parameters.ErrorMessage()
+				errorMessageFormat
 				.replace("%fieldname%", fieldName)
 				.replace("%length%", parameters.Length() + "");
 		}

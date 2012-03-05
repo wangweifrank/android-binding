@@ -12,7 +12,7 @@ public @interface Required{
 	public Class<?> Validator() default RequiredValidator.class;
 
 	public String ErrorMessage() default "%fieldname% is required";
-	public String ErrorMessagRes() default "validator_required_message";
+	public String ErrorMessagRes() default "";
 	
 	public class RequiredValidator extends ValidatorBase<Required> {
 

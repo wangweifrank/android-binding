@@ -15,7 +15,7 @@ public @interface EqualsTo{
 	public Class<?> Validator() default EqualsToValidator.class;
 	public String Observable();
 	public String ErrorMessage() default "%fieldname% must be the same as %observable%";
-	public String ErrorMessageRes() default "validator_equalsto_message";
+	public String ErrorMessageRes() default "";
 
 	public class EqualsToValidator extends ValidatorBase<EqualsTo> {
 		@Override

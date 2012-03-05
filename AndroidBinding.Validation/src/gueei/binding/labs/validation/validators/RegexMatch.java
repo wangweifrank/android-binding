@@ -28,7 +28,7 @@ public @interface RegexMatch{
 		protected String doFormatErrorMessage(Context context,
 				RegexMatch parameters, String fieldName,
 				String errorMessageFormat) {
-			return parameters.ErrorMessage()
+			return errorMessageFormat
 				.replace("%fieldname%", fieldName)
 				.replace("%pattern%", parameters.Pattern());
 		}

@@ -7,4 +7,5 @@
     If you click on the "validate" button, it will show you the validation result of the model. \n\n
     For more information, you may got to the project homepage: http://code.google.com/p/android-binding/
     </string>
+    <string name="validation_password_length" formatted="false">Password must contains at least %length% characters</string>
 </resources>

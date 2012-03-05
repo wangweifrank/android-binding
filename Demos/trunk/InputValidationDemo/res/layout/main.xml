@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-	xmlns:binding="http://schemas.android.com/apk/res/com.gueei.demo.inputvalidation"
+	xmlns:binding="http://www.gueei.com/android-binding/"
     android:orientation="vertical"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
@@ -18,13 +18,13 @@
 	<Button
 	    android:layout_width="fill_parent" 
 	    android:layout_height="wrap_content"
-	    binding:text="TextToggle"
-	    binding:click="ToggleCode"/>
+	    binding:text="IF(CodeVisibleBool, 'Hide', 'What is this?')"
+	    binding:onClick="ToggleCode"/>
     <LinearLayout
 	    android:layout_width="fill_parent" 
 	    android:layout_height="wrap_content"
 	    android:orientation="vertical"
-	    binding:visibility="CodeVisible">
+	    binding:visibility="CodeVisibleBool">
 	    <TextView  
 	    android:layout_width="fill_parent" 
 	    android:layout_height="wrap_content" 
@@ -77,7 +77,7 @@
 	    android:layout_width="fill_parent" 
 	    android:layout_height="wrap_content" 
 	    android:text="Validate"
-	    binding:click="Validate"
+	    binding:onClick="Validate"
 	    />	    
 </LinearLayout>
 </ScrollView>

@@ -15,7 +15,7 @@ public @interface MinLength{
 	public int Length();
 
 	public String ErrorMessage() default "%fieldname% needs have at least %length% characters";
-	public String ErrorMessageRes() default "validator_minlength_message";
+	public String ErrorMessageRes() default "";
 	
 	public class MinLengthValidator extends ValidatorBase<MinLength> {
 

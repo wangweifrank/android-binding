@@ -94,7 +94,7 @@ public class ModelValidator {
 				String resName = annotation.getClass()
 						.getMethod("ErrorMessageRes").invoke(annotation).toString();
 				
-				if (resName!=null){
+				if (resName.length()>0){
 					// We come a long way to achieve this.... since res id is no longer final... 
 					int resId = (Integer)mResClass.getField(resName).get(null);
 					if (resId>0){

@@ -15,7 +15,7 @@ public @interface MaxLength{
 	public int Length();
 
 	public String ErrorMessage() default "%fieldname% cannot have more than %length% characters";
-	public String ErrorMessageRes() default "validator_maxlength_message";
+	public String ErrorMessageRes() default "";
 	
 	public class MaxLengthValidator extends ValidatorBase<MaxLength> {
 

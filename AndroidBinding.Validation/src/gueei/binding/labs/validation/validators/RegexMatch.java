@@ -15,7 +15,7 @@ public @interface RegexMatch{
 
 	public String Pattern();
 	public String ErrorMessage() default "%fieldname% does not match the regext pattern: %pattern%";
-	public String ErrorMessageRes() default "validator_regexmatch_message";
+	public String ErrorMessageRes() default "";
 	
 	public class RegexMatchValidator extends ValidatorBase<RegexMatch> {
 

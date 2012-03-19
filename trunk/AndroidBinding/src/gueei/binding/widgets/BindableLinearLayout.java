@@ -16,12 +16,13 @@ import gueei.binding.IObservable;
 import gueei.binding.IObservableCollection;
 import gueei.binding.InnerFieldObservable;
 import gueei.binding.ViewAttribute;
-import gueei.binding.collections.ArrayListObservable;
+import gueei.binding.collections.ObservableCollection;
 import gueei.binding.utility.ObservableMultiplexer;
 import gueei.binding.utility.WeakList;
 import gueei.binding.viewAttributes.templates.LayoutItem;
 import gueei.binding.Observer;
 import android.content.Context;
+import android.graphics.Canvas;
 import android.graphics.Color;
 import android.util.AttributeSet;
 import android.view.View;
@@ -32,8 +33,9 @@ public class BindableLinearLayout extends LinearLayout implements IBindableView<
 	private WeakList<Object> currentList = null;
 	private CollectionObserver collectionObserver = null;
 	
-	private ArrayListObservable<Object> itemList = null;
-	private LayoutItem layout = null;	
+	private ObservableCollection<Object> itemList = null;
+	private LayoutItem layout = null;
+	private boolean updateEnabled = true;
 
 	private ObservableMultiplexer<Object> observableItemsLayoutID = new ObservableMultiplexer<Object>(new Observer() {
 		@Override
@@ -62,7 +64,7 @@ public class BindableLinearLayout extends LinearLayout implements IBindableView<
 	private void init() {
 	}
 	
-	private void createItemSourceList(ArrayListObservable<Object> newList) {		
+	private void createItemSourceList(ObservableCollection<Object> newList) {		
 		if( itemList != null && collectionObserver != null)
 			itemList.unsubscribe(collectionObserver);
 		
@@ -77,7 +79,7 @@ public class BindableLinearLayout extends LinearLayout implements IBindableView<
 			@SuppressWarnings("unchecked")
 			@Override
 			public void onCollectionChanged(IObservableCollection<?> collection, CollectionChangedEventArg args) {
-				listChanged(args, (List<Object>)collection);
+				listChanged(args, (ObservableCollection<Object>)collection);
 			}
 		};
 		
@@ -85,7 +87,7 @@ public class BindableLinearLayout extends LinearLayout implements IBindableView<
 		newList(newList);
 	}	
 	
-	private void newList(List<Object> list) {
+	private void newList(ObservableCollection<Object> list) {
 		this.removeAllViews();	
 		
 		observableItemsLayoutID.clear();
@@ -94,16 +96,18 @@ public class BindableLinearLayout extends LinearLayout implements IBindableView<
 		if( list == null)
 			return;	
 		
-		int pos=0;
-		for(Object item : list) {
+		for( int pos=0; pos < list.size(); pos ++ ) {
+			Object item = list.getItem(pos);
 			insertItem(pos, item);
-			pos++;
 		}
 		
-		currentList.addAll(list);
+		for( int pos=0; pos < list.size(); pos ++ ) {
+			Object item = list.getItem(pos);
+			currentList.add(item);
+		}
 	}
 
-	private void listChanged(CollectionChangedEventArg e, List<Object> list) {
+	private void listChanged(CollectionChangedEventArg e, ObservableCollection<Object> list) {
 		if( e == null || list == null)
 			return;
 		
@@ -137,7 +141,11 @@ public class BindableLinearLayout extends LinearLayout implements IBindableView<
 				throw new IllegalArgumentException("unknown action " + e.getAction().toString());
 		}
 		
-		currentList = new WeakList<Object>(list);
+		currentList = new WeakList<Object>();
+		for( pos=0; pos < list.size(); pos ++ ) {
+			Object item = list.getItem(pos);
+			currentList.add(item);
+		}		
 	}	
 	
 	private ViewAttribute<BindableLinearLayout, Object> ItemSourceAttribute = 
@@ -145,10 +153,10 @@ public class BindableLinearLayout extends LinearLayout implements IBindableView<
 				@SuppressWarnings("unchecked")
 				@Override
 				protected void doSetAttributeValue(Object newValue) {
-					if( !(newValue instanceof ArrayListObservable<?> ))
+					if( !(newValue instanceof ObservableCollection<?> ))
 						return;
 					if( layout != null )
-						createItemSourceList((ArrayListObservable<Object>)newValue);
+						createItemSourceList((ObservableCollection<Object>)newValue);
 				}
 
 				@Override
@@ -173,12 +181,50 @@ public class BindableLinearLayout extends LinearLayout implements IBindableView<
 				public Object get() {
 					return layout;
 				}
-	};				
+	};	
+	
+	private ViewAttribute<BindableLinearLayout, Boolean> ItemUpdateEnabledAttribute =
+			new ViewAttribute<BindableLinearLayout, Boolean>(Boolean.class, BindableLinearLayout.this, "UpdateEnabled"){
+				@Override
+				protected void doSetAttributeValue(Object newValue) {	
+					if( newValue == null ) {
+						updateEnabled = true;
+					}
+					else if( newValue instanceof Boolean ) {
+						Boolean value = (Boolean) newValue;
+						updateEnabled = value; 
+						if(updateEnabled) {
+							BindableLinearLayout.this.invalidate();
+						}
+					}
+				}
+
+				@Override
+				public Boolean get() {
+					return updateEnabled;
+				}
+	};	
+
+
+	@Override
+	protected void onDraw(Canvas canvas) {
+		if( !updateEnabled )
+			return;
+		super.onDraw(canvas);
+	}
+	
+	@Override
+	protected void onMeasure (int widthMeasureSpec, int heightMeasureSpec) {
+		if( !updateEnabled )
+			return;
+		super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+	}
 
 	@Override
 	public ViewAttribute<BindableLinearLayout, ?> createViewAttribute(String attributeId) {	
 		if (attributeId.equals("itemSource")) return ItemSourceAttribute;
 		if (attributeId.equals("itemLayout")) return ItemLayoutAttribute;
+		if (attributeId.equals("updateEnabled")) return ItemUpdateEnabledAttribute;
 		return null;
 	}
 	

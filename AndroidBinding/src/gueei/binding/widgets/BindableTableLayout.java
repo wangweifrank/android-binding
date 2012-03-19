@@ -18,11 +18,13 @@ import gueei.binding.InnerFieldObservable;
 import gueei.binding.Observer;
 import gueei.binding.ViewAttribute;
 import gueei.binding.collections.ArrayListObservable;
+import gueei.binding.collections.ObservableCollection;
 import gueei.binding.utility.ObservableCollectionMultiplexer;
 import gueei.binding.utility.ObservableMultiplexer;
 import gueei.binding.utility.WeakList;
 import gueei.binding.viewAttributes.templates.LayoutRowChild;
 import android.content.Context;
+import android.graphics.Canvas;
 import android.graphics.Color;
 import android.util.AttributeSet;
 import android.view.View;
@@ -35,8 +37,9 @@ public class BindableTableLayout extends TableLayout implements IBindableView<Bi
 	private WeakList<Object> currentRowList = null;
 	private CollectionObserver collectionObserver = null;
 	
-	private ArrayListObservable<Object> rowList = null;	
+	private ObservableCollection<Object> rowList = null;	
 	private LayoutRowChild rowChild = null;	
+	private boolean updateEnabled = true;	
 	
 	private Observer observer = new Observer() {
 		@Override
@@ -70,7 +73,7 @@ public class BindableTableLayout extends TableLayout implements IBindableView<Bi
 	}
 	
 	
-	private void createItemSourceList(ArrayListObservable<Object> newRowList) {		
+	private void createItemSourceList(ObservableCollection<Object> newRowList) {		
 		if( rowList != null && collectionObserver != null)
 			rowList.unsubscribe(collectionObserver);
 				
@@ -85,7 +88,7 @@ public class BindableTableLayout extends TableLayout implements IBindableView<Bi
 			@SuppressWarnings("unchecked")
 			@Override
 			public void onCollectionChanged(IObservableCollection<?> collection, CollectionChangedEventArg args) {
-				rowListChanged(args, (List<Object>)collection);
+				rowListChanged(args, (ObservableCollection<Object>)collection);
 			}
 		};
 		
@@ -93,7 +96,7 @@ public class BindableTableLayout extends TableLayout implements IBindableView<Bi
 		newRowList(rowList);
 	}	
 
-	private void newRowList(List<Object> rows) {
+	private void newRowList(ObservableCollection<Object> rows) {
 		this.removeAllViews();	
 		
 		observableChildLayoutID.clear();
@@ -103,17 +106,19 @@ public class BindableTableLayout extends TableLayout implements IBindableView<Bi
 		currentRowList = new WeakList<Object>();
 		if( rows == null)
 			return;	
-		
-		int pos=0;
-		for(Object row : rows) {
-			insertRow(pos, row);
-			pos++;
+				
+		for( int pos=0; pos < rows.size(); pos ++ ) {
+			Object item = rows.getItem(pos);
+			insertRow(pos, item);
 		}
 		
-		currentRowList.addAll(rows);
+		for( int pos=0; pos < rows.size(); pos ++ ) {
+			Object item = rows.getItem(pos);
+			currentRowList.add(item);
+		}			
 	}
 	
-	private void rowListChanged(CollectionChangedEventArg e, List<Object> rows) {
+	private void rowListChanged(CollectionChangedEventArg e, ObservableCollection<Object> rows) {
 		if( e == null || rows == null)
 			return;
 		
@@ -147,7 +152,11 @@ public class BindableTableLayout extends TableLayout implements IBindableView<Bi
 				throw new IllegalArgumentException("unknown action " + e.getAction().toString());
 		}
 		
-		currentRowList = new WeakList<Object>(rows);
+		for( pos=0; pos < rows.size(); pos ++ ) {
+			Object item = rows.getItem(pos);
+			currentRowList.add(item);
+		}			
+		
 	}			
 
 	private ViewAttribute<BindableTableLayout, Object> ItemSourceAttribute = 
@@ -185,12 +194,49 @@ public class BindableTableLayout extends TableLayout implements IBindableView<Bi
 				public Object get() {
 					return rowChild;
 				}
-	};				
+	};	
+	
+	private ViewAttribute<BindableTableLayout, Boolean> ItemUpdateEnabledAttribute =
+			new ViewAttribute<BindableTableLayout, Boolean>(Boolean.class, BindableTableLayout.this, "UpdateEnabled"){
+				@Override
+				protected void doSetAttributeValue(Object newValue) {	
+					if( newValue == null ) {
+						updateEnabled = true;
+					}
+					else if( newValue instanceof Boolean ) {
+						Boolean value = (Boolean) newValue;
+						updateEnabled = value; 
+						if(updateEnabled) {
+							BindableTableLayout.this.invalidate();
+						}
+					}
+				}
+
+				@Override
+				public Boolean get() {
+					return updateEnabled;
+				}
+	};
+	
+	@Override
+	protected void onDraw(Canvas canvas) {
+		if( !updateEnabled )
+			return;
+		super.onDraw(canvas);
+	}	
+	
+	@Override
+	protected void onMeasure (int widthMeasureSpec, int heightMeasureSpec) {
+		if( !updateEnabled )
+			return;
+		super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+	}	
 
 	@Override
 	public ViewAttribute<BindableTableLayout, ?> createViewAttribute(String attributeId) {	
 		if (attributeId.equals("itemSource")) return ItemSourceAttribute;
 		if (attributeId.equals("rowChild")) return RowChildAttribute;
+		if (attributeId.equals("updateEnabled")) return ItemUpdateEnabledAttribute;		
 		return null;
 	}	
 	

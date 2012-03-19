@@ -7,6 +7,7 @@ import gueei.binding.ViewAttribute;
 import gueei.binding.Binder.InflateResult;
 import gueei.binding.viewAttributes.templates.SingleTemplateLayout;
 import android.content.Context;
+import android.graphics.Canvas;
 import android.util.AttributeSet;
 import android.widget.FrameLayout;
 
@@ -15,6 +16,7 @@ public class BindableFrameLayout extends FrameLayout implements IBindableView<Bi
 	private int LayoutId = 0;
 	private InflateResult inflateResult = null;
 	private Object dataSource = null;
+	private boolean updateEnabled = true;		
 
 	public BindableFrameLayout(Context context, AttributeSet attrs,
 			int defStyle) {
@@ -94,12 +96,48 @@ public class BindableFrameLayout extends FrameLayout implements IBindableView<Bi
 			}				
 	};	
 	
+	private ViewAttribute<BindableFrameLayout, Boolean> ItemUpdateEnabledAttribute =
+			new ViewAttribute<BindableFrameLayout, Boolean>(Boolean.class, BindableFrameLayout.this, "UpdateEnabled"){
+				@Override
+				protected void doSetAttributeValue(Object newValue) {	
+					if( newValue == null ) {
+						updateEnabled = true;
+					}
+					else if( newValue instanceof Boolean ) {
+						Boolean value = (Boolean) newValue;
+						updateEnabled = value; 
+						if(updateEnabled) {
+							BindableFrameLayout.this.invalidate();
+						}
+					}
+				}
+
+				@Override
+				public Boolean get() {
+					return updateEnabled;
+				}
+	};
+	
+	@Override
+	protected void onDraw(Canvas canvas) {
+		if( !updateEnabled )
+			return;
+		super.onDraw(canvas);
+	}	
+	
+	@Override
+	protected void onMeasure (int widthMeasureSpec, int heightMeasureSpec) {
+		if( !updateEnabled )
+			return;
+		super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+	}		
 	
 	public ViewAttribute<?, ?> createViewAttribute(
 			String attributeName) {
 		if (attributeName.equals("layoutId")) return LayoutIdViewAttribute;
 		if (attributeName.equals("dataSource")) return DataSourceViewAttribute;		
 		if (attributeName.equals("onLoad")) return OnLoadAttribute;
+		if (attributeName.equals("updateEnabled")) return ItemUpdateEnabledAttribute;
 		
 		return null;
 	}

@@ -1,5 +1,7 @@
 package gueei.binding.collections;
 
+import java.util.ArrayList;
+
 import gueei.binding.BindingLog;
 import gueei.binding.CollectionChangedEventArg;
 import gueei.binding.CollectionObserver;
@@ -42,8 +44,10 @@ public abstract class DependentCollectionObservable<T> extends Observable<T> imp
 	@Override
 	public final void onCollectionChanged(IObservableCollection<?> collection, CollectionChangedEventArg args) {
 		dirty = true;
-		changedArgs = args;
-		get();
+		changedArgs = args;		
+		ArrayList<Object> initiators = new ArrayList<Object>();
+		initiators.add(collection);
+		this.notifyChanged(initiators);		
 	}
 	
 	private boolean dirty = false;	

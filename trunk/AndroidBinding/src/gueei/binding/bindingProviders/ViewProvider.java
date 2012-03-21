@@ -8,6 +8,7 @@ import gueei.binding.viewAttributes.view.ContextMenuViewAttribute;
 import gueei.binding.viewAttributes.view.EnabledViewAttribute;
 import gueei.binding.viewAttributes.view.Layout_HeightViewAttribute;
 import gueei.binding.viewAttributes.view.Layout_WidthViewAttribute;
+import gueei.binding.viewAttributes.view.OnBindViewAttribute;
 import gueei.binding.viewAttributes.view.OnClickViewEvent;
 import gueei.binding.viewAttributes.view.OnGainFocusViewEvent;
 import gueei.binding.viewAttributes.view.OnKeyViewEvent;
@@ -53,6 +54,8 @@ public class ViewProvider extends BindingProvider {
 			return new Layout_HeightViewAttribute(view);
 		}else if (attributeId.equals("layout_width")){
 			return new Layout_WidthViewAttribute(view);
+		}else if (attributeId.equals("onBind")){
+			return new OnBindViewAttribute(view);
 		}
 		return null;
 	}

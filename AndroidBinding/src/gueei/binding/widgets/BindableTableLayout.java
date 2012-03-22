@@ -119,7 +119,7 @@ public class BindableTableLayout extends TableLayout implements IBindableView<Bi
 	}
 	
 	private void rowListChanged(CollectionChangedEventArg e, ObservableCollection<Object> rows) {
-		if( e == null || rows == null)
+		if( e == null)
 			return;
 		
 		int pos=-1;
@@ -152,11 +152,13 @@ public class BindableTableLayout extends TableLayout implements IBindableView<Bi
 				throw new IllegalArgumentException("unknown action " + e.getAction().toString());
 		}
 		
+		if( rows == null)
+			return;	
+		
 		for( pos=0; pos < rows.size(); pos ++ ) {
 			Object item = rows.getItem(pos);
 			currentRowList.add(item);
-		}			
-		
+		}					
 	}			
 
 	private ViewAttribute<BindableTableLayout, Object> ItemSourceAttribute = 

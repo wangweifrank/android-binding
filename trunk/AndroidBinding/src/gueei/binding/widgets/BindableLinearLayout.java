@@ -242,6 +242,8 @@ public class BindableLinearLayout extends LinearLayout implements IBindableView<
 			int pos = currentPositionList.indexOf(item);			
 			observableItemsLayoutID.removeParent(item);
 			currentPositionList.remove(item);
+			if( pos > -1 && pos < this.getChildCount())
+				this.removeViewAt(pos);			
 			this.removeViewAt(pos);	
 		}
 	}	

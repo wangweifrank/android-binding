@@ -400,7 +400,8 @@ public class BindableTableLayout extends TableLayout implements IBindableView<Bi
 			observableChildSpan.removeParent(row);
 			observableCollectionRowChildren.removeParent(row);
 			currentPositionList.remove(row);
-			this.removeViewAt(pos);	
+			if( pos > -1 && pos < this.getChildCount())
+				this.removeViewAt(pos);	
 		}
 	}
 

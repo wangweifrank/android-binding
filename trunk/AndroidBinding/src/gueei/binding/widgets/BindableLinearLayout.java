@@ -132,6 +132,7 @@ public class BindableLinearLayout extends LinearLayout implements IBindableView<
 				}
 				break;
 			case Reset:
+				list = null;
 				newList(list);
 				break;
 			case Move:

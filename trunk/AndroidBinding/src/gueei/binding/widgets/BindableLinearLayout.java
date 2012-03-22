@@ -108,7 +108,7 @@ public class BindableLinearLayout extends LinearLayout implements IBindableView<
 	}
 
 	private void listChanged(CollectionChangedEventArg e, ObservableCollection<Object> list) {
-		if( e == null || list == null)
+		if( e == null)
 			return;
 		
 		int pos=-1;
@@ -140,6 +140,9 @@ public class BindableLinearLayout extends LinearLayout implements IBindableView<
 			default:
 				throw new IllegalArgumentException("unknown action " + e.getAction().toString());
 		}
+		
+		if( list == null)
+			return;	
 		
 		currentList = new WeakList<Object>();
 		for( pos=0; pos < list.size(); pos ++ ) {

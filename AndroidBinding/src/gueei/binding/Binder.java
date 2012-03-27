@@ -149,19 +149,10 @@ public class Binder {
 		return inflatedView.rootView;
 	}
 	
-	private static void attachProcessedViewsToRootView(View rootView, ArrayList<View> processedViews){
-		//rootView.setTag(R.id.tag_processedViews, processedViews);
-	}
-	
-	@SuppressWarnings("unchecked")
-	@Deprecated
-	public static ArrayList<View> getProcessedViewsFromRootView(View rootView){
-		//Object objCollection = rootView.getTag(R.id.tag_processedViews);
-		//if (objCollection instanceof ArrayList<?>) return (ArrayList<View>)objCollection;
-		return null;
-	}
-	
 	public static void init(Application application){
+		// Prevent duplicate initialization
+		if (mApplication!=null) return;
+		
 		AttributeBinder.getInstance().registerProvider(new TabHostProvider());
 		AttributeBinder.getInstance().registerProvider(new SeekBarProvider());
 		AttributeBinder.getInstance().registerProvider(new RatingBarProvider());

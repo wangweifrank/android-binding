@@ -38,7 +38,8 @@ public class AttributeBinder {
 	}
 
 	public void registerProvider(BindingProvider provider) {
-		providers.add(provider);
+		if (!providers.contains(provider))
+			providers.add(provider);
 	}
 
 	public void bindView(Context context, View view, Object model) {

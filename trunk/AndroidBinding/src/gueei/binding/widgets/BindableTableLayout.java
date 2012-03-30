@@ -137,6 +137,8 @@ public class BindableTableLayout extends TableLayout implements IBindableView<Bi
 			case Replace:
 				removeRows(e.getOldItems());	
 				pos = e.getNewStartingIndex();
+				if( pos < 0)
+					pos=0;				
 				for(Object item : e.getNewItems()) {
 					insertRow(pos, item);
 					pos++;

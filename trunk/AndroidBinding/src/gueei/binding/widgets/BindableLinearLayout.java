@@ -126,6 +126,8 @@ public class BindableLinearLayout extends LinearLayout implements IBindableView<
 			case Replace:
 				removeItems(e.getOldItems());	
 				pos = e.getNewStartingIndex();
+				if( pos < 0)
+					pos=0;
 				for(Object item : e.getNewItems()) {
 					insertItem(pos, item);
 					pos++;
@@ -244,7 +246,6 @@ public class BindableLinearLayout extends LinearLayout implements IBindableView<
 			currentPositionList.remove(item);
 			if( pos > -1 && pos < this.getChildCount())
 				this.removeViewAt(pos);			
-			this.removeViewAt(pos);	
 		}
 	}	
 

@@ -54,13 +54,15 @@ public class ArrayListObservable<T>
 	 * @param newArray
 	 */
 	public void setArray(T[] newArray){
-		CollectionChangedEventArg e = new CollectionChangedEventArg(Action.Replace, Arrays.asList(newArray), (List<?>)mArray);
+		@SuppressWarnings("unchecked")
+		Object [] oldItems = mArray.toArray();		
+		CollectionChangedEventArg e = new CollectionChangedEventArg(Action.Replace, Arrays.asList(newArray),  Arrays.asList(oldItems));
 		mArray.clear();
 		int size = newArray.length;
 		for (int i=0; i<size; i++){
 			mArray.add(newArray[i]);
 		}
-		this.notifyCollectionChanged(e);
+		this.notifyCollectionChanged(e);		
 	}
 	
 
@@ -79,9 +81,9 @@ public class ArrayListObservable<T>
 	}
 
 	public boolean addAll(Collection<? extends T> arg0) {
-		@SuppressWarnings("unchecked")
 		boolean result = mArray.addAll(arg0);
 		if (result){
+			@SuppressWarnings("unchecked")
 			CollectionChangedEventArg e = new CollectionChangedEventArg(Action.Add, Arrays.asList(arg0), mArray.size()-arg0.size()-1);
 			this.notifyCollectionChanged(e);
 		}
@@ -93,12 +95,11 @@ public class ArrayListObservable<T>
 	 * 
 	 * @param arg0
 	 */
-	public void setAll(Collection<? extends T> arg0) {
-		@SuppressWarnings("unchecked")
-		List<?> oldList = Arrays.asList(mArray);
+	public void setAll(Collection<? extends T> arg0) {		
+		Object [] oldItems = mArray.toArray();
 		mArray.clear();
-		mArray.addAll(arg0);
-		CollectionChangedEventArg e = new CollectionChangedEventArg(Action.Replace, oldList, Arrays.asList(arg0));
+		mArray.addAll(arg0);				
+		CollectionChangedEventArg e = new CollectionChangedEventArg(Action.Replace, mArray, Arrays.asList(oldItems));
 		this.notifyCollectionChanged(e);		
 	}	
 
@@ -115,7 +116,8 @@ public class ArrayListObservable<T>
 	}
 
 	public boolean removeAll(Collection<?> arg0) {
-		CollectionChangedEventArg e = new CollectionChangedEventArg(Action.Remove, (List<?>)arg0);
+		@SuppressWarnings("unchecked")
+		CollectionChangedEventArg e = new CollectionChangedEventArg(Action.Remove, mArray);
 		boolean result = mArray.removeAll(arg0);
 		if (result){
 			this.notifyCollectionChanged(e);

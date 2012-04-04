@@ -3,6 +3,7 @@ package gueei.binding.collections;
 import gueei.binding.CollectionChangedEventArg;
 import gueei.binding.CollectionChangedEventArg.Action;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -81,7 +82,7 @@ public class HashMapObservable<K, V> extends ObservableCollection<V>
 
 	public void putAll(Map<? extends K, ? extends V> arg0) {
 		mMap.putAll(arg0);
-		CollectionChangedEventArg e = new CollectionChangedEventArg(Action.Add,arg0);
+		CollectionChangedEventArg e = new CollectionChangedEventArg(Action.Add,Arrays.asList(arg0.keySet().toArray()));
 		this.notifyCollectionChanged(e);
 	}
 

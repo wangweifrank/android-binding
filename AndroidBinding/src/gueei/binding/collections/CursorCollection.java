@@ -1,5 +1,7 @@
 package gueei.binding.collections;
 
+import gueei.binding.CollectionChangedEventArg;
+import gueei.binding.CollectionChangedEventArg.Action;
 import gueei.binding.cursor.CursorField;
 import gueei.binding.cursor.IRowModel;
 import gueei.binding.cursor.IRowModelFactory;
@@ -7,6 +9,7 @@ import gueei.binding.cursor.RowModelFactory;
 import gueei.binding.utility.CacheHashMap;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.WeakHashMap;
 import android.database.Cursor;
 import android.database.DataSetObserver;
@@ -186,7 +189,8 @@ public class CursorCollection<T extends IRowModel> extends ObservableCollection<
 		@Override
 		public void onChanged() {
 			reInitCacheCursorRowCount();
-			notifyCollectionChanged(null);
+			CollectionChangedEventArg e = new CollectionChangedEventArg(Action.Reset, (List<?>)null);
+			notifyCollectionChanged(e);
 		}
 	};
 

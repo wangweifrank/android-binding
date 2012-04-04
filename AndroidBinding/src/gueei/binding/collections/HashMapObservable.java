@@ -5,6 +5,7 @@ import gueei.binding.CollectionChangedEventArg.Action;
 
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -42,7 +43,7 @@ public class HashMapObservable<K, V> extends ObservableCollection<V>
 	}
 
 	public void clear() {
-		CollectionChangedEventArg e = new CollectionChangedEventArg(Action.Reset,mMap);
+		CollectionChangedEventArg e = new CollectionChangedEventArg(Action.Reset, (List<V>) null);
 		mMap.clear();
 		this.notifyCollectionChanged(e);
 	}

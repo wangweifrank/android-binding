@@ -145,7 +145,6 @@ public class BindableTableLayout extends TableLayout implements IBindableView<Bi
 				}
 				break;
 			case Reset:
-				rows = null;
 				newRowList(rows);
 				break;
 			case Move:

@@ -5,7 +5,7 @@ import android.view.View;
 import android.widget.AbsSpinner;
 
 
-public class AbsSpinnerViewProvider extends BindingProvider {
+public class AbsSpinnerViewProvider extends ViewBindingProvider {
 
 	@Override
 	public <Tv extends View>ViewAttribute<Tv, ?> createAttributeForView(View view, String attributeId) {

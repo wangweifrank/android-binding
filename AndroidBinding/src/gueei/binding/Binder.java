@@ -57,7 +57,7 @@ public class Binder {
 		}
 		
 		if (viewAttribute==null)
-			viewAttribute = AttributeBinder.getInstance().createAttributeForView(view, attributeId);
+			viewAttribute = ViewAttributeBinder.getInstance().createAttributeForView(view, attributeId);
 		
 		if (viewAttribute == null) 
 			throw new AttributeNotDefinedException
@@ -113,7 +113,7 @@ public class Binder {
 		InflateResult result = inflateView(context, layoutId, null, false);
 		context.setContentView(result.rootView);
 		for(View v: result.processedViews){
-			AttributeBinder.getInstance().bindView(context, v, model);
+			ViewAttributeBinder.getInstance().bindView(context, v, model);
 		}
 	}
 	
@@ -144,7 +144,7 @@ public class Binder {
 	 */
 	public static View bindView(Context context, InflateResult inflatedView, Object model){
 		for(View v: inflatedView.processedViews){
-			AttributeBinder.getInstance().bindView(context, v, model);
+			ViewAttributeBinder.getInstance().bindView(context, v, model);
 		}
 		return inflatedView.rootView;
 	}
@@ -162,19 +162,19 @@ public class Binder {
 	}
 	
 	public static void init(Application application){
-		AttributeBinder.getInstance().registerProvider(new TabHostProvider());
-		AttributeBinder.getInstance().registerProvider(new SeekBarProvider());
-		AttributeBinder.getInstance().registerProvider(new RatingBarProvider());
-		AttributeBinder.getInstance().registerProvider(new ProgressBarProvider());
-		AttributeBinder.getInstance().registerProvider(new ViewAnimatorProvider());
-		AttributeBinder.getInstance().registerProvider(new CompoundButtonProvider());
-		AttributeBinder.getInstance().registerProvider(new ImageViewProvider());
-		AttributeBinder.getInstance().registerProvider(new ExpandableListViewProvider());
-		AttributeBinder.getInstance().registerProvider(new AbsSpinnerViewProvider());
-		AttributeBinder.getInstance().registerProvider(new ListViewProvider());
-		AttributeBinder.getInstance().registerProvider(new AdapterViewProvider());
-		AttributeBinder.getInstance().registerProvider(new TextViewProvider());
-		AttributeBinder.getInstance().registerProvider(new ViewProvider());
+		ViewAttributeBinder.getInstance().registerProvider(new TabHostProvider());
+		ViewAttributeBinder.getInstance().registerProvider(new SeekBarProvider());
+		ViewAttributeBinder.getInstance().registerProvider(new RatingBarProvider());
+		ViewAttributeBinder.getInstance().registerProvider(new ProgressBarProvider());
+		ViewAttributeBinder.getInstance().registerProvider(new ViewAnimatorProvider());
+		ViewAttributeBinder.getInstance().registerProvider(new CompoundButtonProvider());
+		ViewAttributeBinder.getInstance().registerProvider(new ImageViewProvider());
+		ViewAttributeBinder.getInstance().registerProvider(new ExpandableListViewProvider());
+		ViewAttributeBinder.getInstance().registerProvider(new AbsSpinnerViewProvider());
+		ViewAttributeBinder.getInstance().registerProvider(new ListViewProvider());
+		ViewAttributeBinder.getInstance().registerProvider(new AdapterViewProvider());
+		ViewAttributeBinder.getInstance().registerProvider(new TextViewProvider());
+		ViewAttributeBinder.getInstance().registerProvider(new ViewProvider());
 		mApplication = application;
 	}
 

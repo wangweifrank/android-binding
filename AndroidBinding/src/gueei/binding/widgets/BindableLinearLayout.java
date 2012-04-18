@@ -5,7 +5,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
-import gueei.binding.AttributeBinder;
+import gueei.binding.ViewAttributeBinder;
 import gueei.binding.Binder;
 import gueei.binding.BindingSyntaxResolver;
 import gueei.binding.CollectionChangedEventArg;
@@ -285,7 +285,7 @@ public class BindableLinearLayout extends LinearLayout implements IBindableView<
 		} else {		
 			Binder.InflateResult result = Binder.inflateView(getContext(), layoutId, this, false);
 			for(View view: result.processedViews){
-				AttributeBinder.getInstance().bindView(getContext(), view, item);
+				ViewAttributeBinder.getInstance().bindView(getContext(), view, item);
 			}
 			child = result.rootView;
 		}

@@ -7,7 +7,7 @@ import android.view.View;
 import android.widget.ViewAnimator;
 
 
-public class ViewAnimatorProvider extends BindingProvider {
+public class ViewAnimatorProvider extends ViewBindingProvider {
 
 	@SuppressWarnings("unchecked")
 	@Override

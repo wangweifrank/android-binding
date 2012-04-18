@@ -7,7 +7,7 @@ import android.view.View;
 import android.widget.CompoundButton;
 
 
-public class CompoundButtonProvider extends BindingProvider {
+public class CompoundButtonProvider extends ViewBindingProvider {
 
 	@SuppressWarnings("unchecked")
 	@Override

@@ -1,7 +1,7 @@
 package gueei.binding.collections;
 
 import java.util.Hashtable;
-import gueei.binding.AttributeBinder;
+import gueei.binding.ViewAttributeBinder;
 import gueei.binding.Binder;
 import gueei.binding.BindingSyntaxResolver;
 import gueei.binding.CollectionChangedEventArg;
@@ -115,7 +115,7 @@ public class CollectionAdapter extends BaseAdapter implements CollectionObserver
 				Object model = mCollection.getItem(position);
 				mapper.startCreateMapping(mReflector, model);
 				for (View view : result.processedViews) {
-					AttributeBinder.getInstance().bindView(mContext, view, mapper);
+					ViewAttributeBinder.getInstance().bindView(mContext, view, mapper);
 				}
 				mapper.endCreateMapping();
 				returnView = result.rootView;

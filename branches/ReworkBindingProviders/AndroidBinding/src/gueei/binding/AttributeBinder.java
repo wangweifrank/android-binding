@@ -1,6 +1,6 @@
 package gueei.binding;
 
-import gueei.binding.bindingProviders.BindingProvider;
+import gueei.binding.bindingProviders.IBindingProvider;
 import gueei.binding.exception.AttributeNotDefinedException;
 
 import java.util.ArrayList;
@@ -9,35 +9,22 @@ import java.util.Map.Entry;
 import android.content.Context;
 import android.view.View;
 
-public class AttributeBinder {
-	private static AttributeBinder _attributeFactory;
-	private ArrayList<BindingProvider> providers = new ArrayList<BindingProvider>(10);
+public abstract class AttributeBinder<T> {
+	
+	protected abstract IReferenceObservableProvider<T> getReferenceObservableProvider();
+	
+	ArrayList<IBindingProvider<T>> providers = new ArrayList<IBindingProvider<T>>(10);
 
-	private AttributeBinder() {
-	}
-
-	/**
-	 * Ensure it is Singleton
-	 * 
-	 * @return
-	 */
-	public static AttributeBinder getInstance() {
-		if (_attributeFactory == null)
-			_attributeFactory = new AttributeBinder();
-		return _attributeFactory;
-	}
-
-	public ViewAttribute<?, ?> createAttributeForView(View view,
-			String attributeId) {
-		for (BindingProvider p : providers) {
-			ViewAttribute<?, ?> a = p.createAttributeForView(view, attributeId);
+	public Attribute<T, ?> createAttribute(T host, String attributeId) {
+		for (IBindingProvider<T> p : providers) {
+			Attribute<T, ?> a = p.createAttribute(host, attributeId);
 			if (a != null)
 				return a;
 		}
 		return null;
 	}
 
-	public void registerProvider(BindingProvider provider) {
+	public void registerProvider(IBindingProvider<T> provider) {
 		if (!providers.contains(provider))
 			providers.add(provider);
 	}
@@ -59,50 +46,35 @@ public class AttributeBinder {
 		}
 	}
 
-	protected final boolean bindAttributeWithObservable(Context context, 
-			View view, String viewAttributeName, String statement, Object model) {
-		IObservable<?> property;
-		
-		// Set the reference context to the current binding view
-		refViewAttributeProvider.viewContext = view;
-		
-		property = BindingSyntaxResolver
-				.constructObservableFromStatement(context, statement, model, refViewAttributeProvider);
-		if (property != null) {
-			try {
-				ViewAttribute<?, ?> attr = Binder.getAttributeForView(view,
-						viewAttributeName);
-				BindingType result = attr.BindTo(context, property);
-				if (result.equals(BindingType.NoBinding)) {
-					BindingLog.warning("Binding Provider", statement
-							+ " cannot setup bind with attribute");
-				}
-				return true;
-			} catch (AttributeNotDefinedException e) {
-				e.printStackTrace();
+	protected final boolean bindAttributeWithObservable(Context context,
+			T host, String viewAttributeName, String statement, Object model) {
+				IObservable<?> property;
+				
+				// Set the reference context to the current binding view
+				getReferenceObservableProvider().setHostContext(host);
+				
+				property = BindingSyntaxResolver
+						.constructObservableFromStatement(context, statement, model, getReferenceObservableProvider());
+				if (property != null) {
+					try {
+						ViewAttribute<?, ?> attr = Binder.getAttributeForView(host,
+								viewAttributeName);
+						BindingType result = attr.BindTo(context, property);
+						if (result.equals(BindingType.NoBinding)) {
+							BindingLog.warning("Binding Provider", statement
+									+ " cannot setup bind with attribute");
+						}
+						return true;
+					} catch (AttributeNotDefinedException e) {
+						e.printStackTrace();
+						return false;
+					}
+				} 
 				return false;
 			}
-		} 
-		return false;
+
+	public AttributeBinder() {
+		super();
 	}
-	
-	private RefViewAttributeProvider refViewAttributeProvider = 
-			new RefViewAttributeProvider();
-	
-	private static class RefViewAttributeProvider implements IReferenceObservableProvider{
-		public View viewContext;
-		
-		public IObservable<?> getReferenceObservable(int referenceId,
-				String field) {
-			if (viewContext==null) return null;
-			
-			View reference = viewContext.getRootView().findViewById(referenceId);
-			if (reference==null) return null;
-			try {
-				return Binder.getAttributeForView(reference, field);
-			} catch (AttributeNotDefinedException e) {
-				return null;
-			}
-		} 
-	}
+
 }

@@ -1,6 +1,6 @@
 package gueei.binding.cursor;
 
-import gueei.binding.AttributeBinder;
+import gueei.binding.ViewAttributeBinder;
 import gueei.binding.Binder;
 import gueei.binding.BindingLog;
 
@@ -145,7 +145,7 @@ public class CursorObservableAdapter<T extends CursorRowModel> extends BaseAdapt
 			View returnView = result.rootView;
 			T row = constructRow(mContext);
 			for(View view: result.processedViews){
-				AttributeBinder.getInstance().bindView(mContext, view, row);
+				ViewAttributeBinder.getInstance().bindView(mContext, view, row);
 			}
 			this.putAttachedObservableCollection(returnView, row);
 			this.putAttachedViewTypeId(returnView, layoutId);

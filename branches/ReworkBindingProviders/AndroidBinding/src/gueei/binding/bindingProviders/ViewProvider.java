@@ -20,7 +20,7 @@ import gueei.binding.viewAttributes.view.VisibilityViewAttribute;
 import android.view.View;
 
 
-public class ViewProvider extends BindingProvider {
+public class ViewProvider extends ViewBindingProvider {
 
 	@Override
 	public ViewAttribute<View, ?> createAttributeForView(View view, String attributeId) {

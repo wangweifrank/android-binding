@@ -7,7 +7,7 @@ import android.view.View;
 import android.widget.ProgressBar;
 
 
-public class ProgressBarProvider extends BindingProvider {
+public class ProgressBarProvider extends ViewBindingProvider {
 	@SuppressWarnings("unchecked")
 	@Override
 	public <Tv extends View> ViewAttribute<Tv, ?> createAttributeForView(View view, String attributeId) {

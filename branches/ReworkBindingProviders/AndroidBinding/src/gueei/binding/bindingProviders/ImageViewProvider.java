@@ -6,7 +6,7 @@ import android.view.View;
 import android.widget.ImageView;
 
 
-public class ImageViewProvider extends BindingProvider {
+public class ImageViewProvider extends ViewBindingProvider {
 
 	@SuppressWarnings("unchecked")
 	@Override

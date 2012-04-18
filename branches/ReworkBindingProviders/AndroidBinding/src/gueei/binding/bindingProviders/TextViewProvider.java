@@ -15,7 +15,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 
-public class TextViewProvider extends BindingProvider {
+public class TextViewProvider extends ViewBindingProvider {
 
 	@SuppressWarnings("unchecked")
 	@Override

@@ -5,7 +5,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
-import gueei.binding.AttributeBinder;
+import gueei.binding.ViewAttributeBinder;
 import gueei.binding.Binder;
 import gueei.binding.BindingSyntaxResolver;
 import gueei.binding.CollectionChangedEventArg;
@@ -319,7 +319,7 @@ public class BindableTableLayout extends TableLayout implements IBindableView<Bi
 						} else {		
 							Binder.InflateResult result = Binder.inflateView(getContext(), layoutId, tableRow, false);
 							for(View view: result.processedViews){
-								AttributeBinder.getInstance().bindView(getContext(), view, childItem);
+								ViewAttributeBinder.getInstance().bindView(getContext(), view, childItem);
 							}
 							child = result.rootView;						
 						}						

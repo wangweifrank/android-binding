@@ -6,7 +6,7 @@ import android.view.View;
 import android.widget.ExpandableListView;
 
 
-public class ExpandableListViewProvider extends BindingProvider {
+public class ExpandableListViewProvider extends ViewBindingProvider {
 
 	@SuppressWarnings({ "unchecked" })
 	@Override

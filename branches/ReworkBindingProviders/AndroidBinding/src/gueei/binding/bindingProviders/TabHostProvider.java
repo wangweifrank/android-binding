@@ -6,7 +6,7 @@ import android.view.View;
 import android.widget.TabHost;
 
 
-public class TabHostProvider extends BindingProvider {
+public class TabHostProvider extends ViewBindingProvider {
 
 	@SuppressWarnings("unchecked")
 	@Override

@@ -1,6 +1,6 @@
 package gueei.binding.app;
 
-import gueei.binding.AttributeBinder;
+import gueei.binding.ViewAttributeBinder;
 import gueei.binding.Binder;
 import gueei.binding.Binder.InflateResult;
 import android.app.Dialog;
@@ -14,7 +14,7 @@ public class BindingWidget {
 		InflateResult result = Binder.inflateView(context, layoutId, null, false);
 		dialog.setContentView(result.rootView);
 		for(View v: result.processedViews){
-			AttributeBinder.getInstance().bindView(context, v, contentViewModel);
+			ViewAttributeBinder.getInstance().bindView(context, v, contentViewModel);
 		}			
         return dialog;                 
 	}

@@ -7,7 +7,7 @@ import android.widget.AdapterView;
 import android.widget.ExpandableListView;
 
 
-public class AdapterViewProvider extends BindingProvider {
+public class AdapterViewProvider extends ViewBindingProvider {
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override

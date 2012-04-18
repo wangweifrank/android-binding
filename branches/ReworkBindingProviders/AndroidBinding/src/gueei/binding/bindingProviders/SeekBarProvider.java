@@ -6,7 +6,7 @@ import android.view.View;
 import android.widget.SeekBar;
 
 
-public class SeekBarProvider extends BindingProvider {
+public class SeekBarProvider extends ViewBindingProvider {
 	@SuppressWarnings("unchecked")
 	@Override
 	public <Tv extends View> ViewAttribute<Tv, ?> createAttributeForView(View view, String attributeId) {

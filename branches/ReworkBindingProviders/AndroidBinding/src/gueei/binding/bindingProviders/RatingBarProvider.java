@@ -7,7 +7,7 @@ import android.view.View;
 import android.widget.RatingBar;
 
 
-public class RatingBarProvider extends BindingProvider {
+public class RatingBarProvider extends ViewBindingProvider {
 	@SuppressWarnings("unchecked")
 	@Override
 	public <Tv extends View> ViewAttribute<Tv, ?> createAttributeForView(View view, String attributeId) {

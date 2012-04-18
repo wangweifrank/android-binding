@@ -10,7 +10,7 @@ import android.view.View;
 import android.widget.ListView;
 
 
-public class ListViewProvider extends BindingProvider {
+public class ListViewProvider extends ViewBindingProvider {
 
 	@SuppressWarnings({ "unchecked" })
 	@Override

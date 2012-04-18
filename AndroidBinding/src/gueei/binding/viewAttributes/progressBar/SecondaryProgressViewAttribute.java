@@ -1,6 +1,7 @@
 package gueei.binding.viewAttributes.progressBar;
 
 import gueei.binding.ViewAttribute;
+import android.util.FloatMath;
 import android.widget.ProgressBar;
 
 
@@ -17,7 +18,7 @@ public class SecondaryProgressViewAttribute extends ViewAttribute<ProgressBar, F
 	protected void doSetAttributeValue(Object newValue) {
 		if (newValue == null) return;
 		if (newValue instanceof Float){
-			getView().setSecondaryProgress((int)Math.ceil((Float)newValue * PROGRESS_MAX));
+			getView().setSecondaryProgress((int)FloatMath.ceil((Float)newValue * PROGRESS_MAX));
 		}
 	}
 

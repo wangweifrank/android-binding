@@ -3,6 +3,7 @@ package gueei.binding.viewAttributes.progressBar;
 import gueei.binding.Binder;
 import gueei.binding.ViewAttribute;
 import gueei.binding.listeners.OnSeekBarChangeListenerMulticast;
+import android.util.FloatMath;
 import android.widget.ProgressBar;
 import android.widget.SeekBar;
 
@@ -30,7 +31,7 @@ public class ProgressViewAttribute extends ViewAttribute<ProgressBar, Float>
 	protected void doSetAttributeValue(Object newValue) {
 		if (newValue == null) return;
 		if (newValue instanceof Float){
-			getView().setProgress((int)Math.ceil((Float)newValue * PROGRESS_MAX));
+			getView().setProgress((int)FloatMath.ceil((Float)newValue * PROGRESS_MAX));
 		}
 	}
 

@@ -5,5 +5,9 @@
     <string name="app_name">MarkupDemoV30</string>
     <string name="title_source">Source Code</string>
     <string name="title_actionbar">Action Bar</string>
-
+	<string-array name="action_list">
+        <item>Mercury</item>
+        <item>Venus</item>
+        <item>Earth</item>
+    </string-array>
 </resources>

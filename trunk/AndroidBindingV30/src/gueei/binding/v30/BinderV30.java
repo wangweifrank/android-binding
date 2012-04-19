@@ -6,6 +6,7 @@ import gueei.binding.BindingLog;
 import gueei.binding.BindingMap;
 import gueei.binding.v30.bindingProviders.ViewPagerViewProviderV30;
 import gueei.binding.v30.bindingProviders.ViewProviderV30;
+import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
 import android.view.LayoutInflater;

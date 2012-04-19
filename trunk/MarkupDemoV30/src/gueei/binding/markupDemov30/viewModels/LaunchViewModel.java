@@ -29,11 +29,6 @@ public class LaunchViewModel {
 	public final Command CategorySelected = new Command(){
 		@Override
 		public void Invoke(View view, Object... args) {
-			if (args.length==0) return;
-			int index = Integer.parseInt(args[0].toString());
-			if (index<Categories.size()){
-				SelectedCategory.set(Categories.get(index));
-			}
 		}
 	};
 	
@@ -45,6 +40,9 @@ public class LaunchViewModel {
 		source.Entries.add(new DemoEntry("Source Code of Launch View Model", LaunchCodeViewModel.class,  R.layout.code_view));
 		
 		Categories.add(source);
+		
+		DemoCategory layout = new DemoCategory(mContext, "Layouts");
+		Categories.add(layout);
 		
 		EventAggregator.getInstance(context)
 			.subscribe("ShowDemo", new EventSubscriber(){

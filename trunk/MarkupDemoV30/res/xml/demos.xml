@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<demos>
+    <category name="Source Code">
+        <entry name="Markup of Launch" vm="LaunchMarkupViewModel" layout="code_view"/>
+        <entry name="Source Code of Launch View Model" vm="LaunchCodeViewModel" layout="code_view"/>
+    </category>
+    <category name="Layouts">
+        <entry name="&lt;i&gt;Bindable&lt;/i&gt;FrameLayout" vm="BindableFrameLayout" layout="bindableframelayout"/>
+        <entry name="&lt;i&gt;Bindable&lt;/i&gt;LinearLayout" vm="BindableLinearLayout" layout="bindablelinearlayout"/>
+        <entry name="&lt;i&gt;Bindable&lt;/i&gt;TableLayout" vm="BindableTableLayout" layout="bindabletablelayout"/>
+    </category>
+    <category name="App">
+        <entry name="ActionBar" vm="ActionBar" layout="actionbar"/>
+    </category>
+</demos>

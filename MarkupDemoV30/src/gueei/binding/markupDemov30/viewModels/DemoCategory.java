@@ -3,6 +3,7 @@ package gueei.binding.markupDemov30.viewModels;
 import gueei.binding.Command;
 import gueei.binding.collections.ArrayListObservable;
 import gueei.binding.labs.EventAggregator;
+import gueei.binding.observables.IntegerObservable;
 import gueei.binding.observables.StringObservable;
 import android.content.Context;
 import android.os.Bundle;
@@ -15,6 +16,9 @@ public class DemoCategory {
 	public final ArrayListObservable<DemoEntry> Entries = 
 			new ArrayListObservable<DemoEntry>(DemoEntry.class);
 
+	public final IntegerObservable SelectedDemoPosition = 
+			new IntegerObservable(-1);
+	
 	private Context mContext;
 	
 	public DemoCategory(Context context, String name){
@@ -35,4 +39,9 @@ public class DemoCategory {
 			}
 		}
 	};
+	
+	public void showFirstDemo(){
+		SelectedDemoPosition.set(0);
+		ShowDemo.Invoke(null, Entries.get(0));
+	}
 }

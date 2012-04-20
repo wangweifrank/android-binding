@@ -24,6 +24,6 @@
     android:gravity="bottom"
     android:textAppearance="?android:attr/textAppearanceMedium"
     android:background="?android:attr/activatedBackgroundIndicator"
-    binding:text="Name"
+    binding:text="HTML(Name)"
     >
 </TextView>

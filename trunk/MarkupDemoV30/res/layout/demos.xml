@@ -20,6 +20,7 @@
     		android:choiceMode="singleChoice"
     		binding:itemSource="Entries"
     		binding:itemTemplate="@layout/demos_list_item"
+    		binding:checkedItemPosition="SelectedDemoPosition"
     		binding:onItemClicked="ARG(ShowDemo, =id/demo_listview.clickedItem)"
     		/>
 </LinearLayout>

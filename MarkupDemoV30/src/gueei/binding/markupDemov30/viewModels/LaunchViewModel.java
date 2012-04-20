@@ -8,11 +8,14 @@ import gueei.binding.labs.EventSubscriber;
 import gueei.binding.markupDemov30.R;
 import gueei.binding.observables.IntegerObservable;
 import android.content.Context;
+import android.content.res.XmlResourceParser;
 import android.os.Bundle;
 import android.view.View;
 
 public class LaunchViewModel {
 	private Context mContext;
+	
+	public final ActionBar ActionBarViewModel;
 	
 	public final Observable<DemoCategory> SelectedCategory =
 			new Observable<DemoCategory>(DemoCategory.class);
@@ -29,21 +32,20 @@ public class LaunchViewModel {
 	public final Command CategorySelected = new Command(){
 		@Override
 		public void Invoke(View view, Object... args) {
+			SelectedCategory.get().showFirstDemo();
 		}
 	};
 	
 	public LaunchViewModel(Context context){
 		mContext = context;
-		
-		DemoCategory source = new DemoCategory(mContext, "Source Code");
-		source.Entries.add(new DemoEntry("Markup of Launch", LaunchMarkupViewModel.class, R.layout.code_view));
-		source.Entries.add(new DemoEntry("Source Code of Launch View Model", LaunchCodeViewModel.class,  R.layout.code_view));
-		
-		Categories.add(source);
-		
+
+		parseDemos();
+		ActionBarViewModel = new ActionBar();
+		// Event Aggregator is a global event registered to the specified context
+		// It is supposed to be an in-app mini intent broadcaster
 		DemoCategory layout = new DemoCategory(mContext, "Layouts");
 		Categories.add(layout);
-		
+
 		EventAggregator.getInstance(context)
 			.subscribe("ShowDemo", new EventSubscriber(){
 				@Override
@@ -66,5 +68,49 @@ public class LaunchViewModel {
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	private void parseDemos(){
+		DemoCategory current = null;
+		XmlResourceParser parser = mContext.getResources().getXml(R.xml.demos);
+		try {
+			int eventType = parser.getEventType();
+			while(eventType != XmlResourceParser.END_DOCUMENT){
+				switch(eventType){
+				case XmlResourceParser.START_TAG:
+						if (parser.getName().equals("category") && current == null){
+							current = new DemoCategory(mContext, parser.getAttributeValue(null, "name"));
+						}
+						if (parser.getName().equals("entry")){
+							if (current==null)
+								throw new Exception();
+							current.Entries.add(new DemoEntry(
+									parser.getAttributeValue(null, "name"),
+									resolveVM(parser.getAttributeValue(null, "vm")),
+									resolveLayout(parser.getAttributeValue(null, "layout"))));
+						}
+					break;
+				case XmlResourceParser.END_TAG:
+						if (parser.getName().equals("category")){
+							if (current==null)
+								throw new Exception();
+							Categories.add(current);
+							current = null;
+						}
+					break;
+				}
+				eventType = parser.next();
+			}
+		}catch(Exception e){}
+	}
+	
+	private int resolveLayout(String name) throws Exception{
+		Class<?> layoutClass = R.layout.class;
+		return layoutClass.getField(name).getInt(null);
+	}
+	
+	private Class<?> resolveVM(String name) throws Exception{
+		String pkgName = "gueei.binding.markupDemov30.viewModels.";
+		return Class.forName(pkgName + name);
 	}
 }

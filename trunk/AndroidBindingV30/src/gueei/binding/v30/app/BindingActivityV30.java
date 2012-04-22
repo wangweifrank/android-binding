@@ -5,6 +5,7 @@ import java.util.Collection;
 
 import org.xmlpull.v1.XmlPullParserException;
 
+import gueei.binding.Binder;
 import gueei.binding.Binder.InflateResult;
 import gueei.binding.BindingSyntaxResolver;
 import gueei.binding.DependentObservable;
@@ -47,7 +48,11 @@ public class BindingActivityV30 extends BindingActivity {
 		if (optionsMenu_source==null || optionsMenu_id==null)
 			return;
 		if (!(optionsMenu_id.get() instanceof Integer)) return;
-		this.setAndBindOptionsMenu((Integer)optionsMenu_id.get(), optionsMenu_source);
+		if (optionsMenu_source instanceof IObservable){
+			this.setAndBindOptionsMenu((Integer)optionsMenu_id.get(), ((IObservable<?>)optionsMenu_source).get());
+		}
+		else
+			this.setAndBindOptionsMenu((Integer)optionsMenu_id.get(), optionsMenu_source);
 	}
 	
 	/**
@@ -63,12 +68,11 @@ public class BindingActivityV30 extends BindingActivity {
 				if (eventType == XmlResourceParser.START_TAG){
 					if (parser.getName().equals("actionBar")){
 						// Bind Action Bar
-						break;
 					}
 					if (parser.getName().equals("optionsMenu")){
 						// Bind Options Menu
-						String source = parser.getAttributeValue(null, "dataSource");
-						String id = parser.getAttributeValue(null, "menu");
+						String source = parser.getAttributeValue(Binder.BINDING_NAMESPACE, "dataSource");
+						String id = parser.getAttributeValue(Binder.BINDING_NAMESPACE, "menu");
 
 						optionsMenu_source = 
 								BindingSyntaxResolver.constructObservableFromStatement(this, source, model);
@@ -79,15 +83,12 @@ public class BindingActivityV30 extends BindingActivity {
 						optionsMenu_id.subscribe(optionsMenuSourceObserver);
 						
 						rebindOptionsMenu();
-						break;
 					}
 					if (parser.getName().equals("rootView")){
 						// Bind Root View
 						String layout = parser.getAttributeValue(null, "layout");
 						
 						this.setAndBindRootView(Utility.resolveLayoutResource(layout, this), model);
-						
-						break;
 					}
 				}
 				eventType = parser.next();

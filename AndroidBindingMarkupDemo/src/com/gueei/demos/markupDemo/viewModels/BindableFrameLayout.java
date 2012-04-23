@@ -17,17 +17,12 @@ public class BindableFrameLayout {
 			if( LayoutId.get() == null || LayoutId.get() == 0) {
 				LayoutId.set(R.layout.bindableframelayout_frame1);
 			} else {
-				switch( LayoutId.get() ) {
-					case R.layout.bindableframelayout_frame1:
-						LayoutId.set(R.layout.bindableframelayout_frame2);
-						break;
-					case R.layout.bindableframelayout_frame2:
-						LayoutId.set(R.layout.bindableframelayout_frame3);
-						break;
-					default:
-						LayoutId.set(null);
-						break;				
-				}
+				if (LayoutId.get() == R.layout.bindableframelayout_frame1)
+					LayoutId.set(R.layout.bindableframelayout_frame2);
+				else if (LayoutId.get() == R.layout.bindableframelayout_frame2)
+					LayoutId.set(R.layout.bindableframelayout_frame3);
+				else
+					LayoutId.set(null);
 			}
 		}
 	};

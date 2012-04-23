@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<activity xmlns:binding="http://www.gueei.com/android-binding/">
+	<optionsItem>
+		<option id="@android:id/home" action="FirstClick"/>
+	</optionsItem>
+	<actionbar
+		binding:displayHomeAsUp="ActionBarViewModel.ShowHomeAsUp"
+		binding:displayShowTitle="ActionBarViewModel.ShowTitle"
+		binding:displayShowHome="ActionBarViewModel.ShowHome"
+		binding:navigationMode="1"
+		binding:listNavigationAdapter="ADAPTER({source=Categories, template=@layout/listnavi_item})"
+		binding:listNavigationOnItemSelected="CategorySelected"
+		binding:listNavigationSelectedItem="SelectedCategory"
+		>
+	</actionbar>
+	<rootView layout="@layout/main"></rootView>
+	<optionsMenu
+	    binding:dataSource="ActionBarViewModel"
+	    binding:menu="@menu/optionsmenu"/>
+</activity>

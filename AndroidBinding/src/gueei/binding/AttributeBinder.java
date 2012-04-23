@@ -13,7 +13,7 @@ public class AttributeBinder {
 	private static AttributeBinder _attributeFactory;
 	private ArrayList<BindingProvider> providers = new ArrayList<BindingProvider>(10);
 
-	private AttributeBinder() {
+	protected AttributeBinder() {
 	}
 
 	/**

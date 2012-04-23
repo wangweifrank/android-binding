@@ -1,7 +1,11 @@
 package gueei.binding.menu;
 
+import java.util.Collection;
+
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.os.Bundle;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.Menu;
@@ -9,6 +13,8 @@ import android.view.MenuItem;
 import android.widget.AdapterView;
 import gueei.binding.Command;
 import gueei.binding.IObservable;
+import gueei.binding.Observer;
+import gueei.binding.labs.EventAggregator;
 
 /**
  * Mock menu item act as bridging bindable attributes
@@ -23,11 +29,7 @@ public class MenuItemBridge extends AbsMenuBridge{
 	private Command onClickCommand;
 	
 	private IObservable<?> title, visible, enabled, checked, icon;
-	
-	public MenuItemBridge(int id){
-		super(id);
-	}
-	
+		
 	public void onCreateOptionItem(Menu menu){
 		
 	}
@@ -38,9 +40,8 @@ public class MenuItemBridge extends AbsMenuBridge{
 		if (title!=null){
 			Object titleObj = title.get();
 			if(titleObj!=null){
-				if (titleObj instanceof CharSequence) item.setTitle((CharSequence)titleObj);
-				else
-					item.setTitle(titleObj.toString());
+				// Title don't allow HTML Formatting
+				item.setTitle(titleObj.toString());
 			}else{
 				item.setTitle("");
 			}
@@ -67,34 +68,33 @@ public class MenuItemBridge extends AbsMenuBridge{
 		}
 	}
 	
-	public static AbsMenuBridge create(int id, AttributeSet attributes,
-			Activity activity, Object model) {
-		MenuItemBridge bridge = new MenuItemBridge(id);
-		IObservable<?> temp = getObservableFromAttribute(activity, attributes, "onClick", model);
+	public MenuItemBridge(int id, AttributeSet attributes,
+			Activity activity, Object model, boolean subscribe) {
+		super(id);
+		IObservable<?> temp = getObservableFromStatement(activity, attributes, "onClick", model, subscribe);
 		if ((temp!=null)&&(temp.get() instanceof Command)){
-			bridge.onClickCommand = (Command)temp.get();
+			onClickCommand = (Command)temp.get();
 		}
-		temp = getObservableFromAttribute(activity, attributes, "title", model);
+		temp = getObservableFromStatement(activity, attributes, "title", model, subscribe);
 		if ((temp!=null)){
-			bridge.title = temp;
+			title = temp;
 		}
-		temp = getObservableFromAttribute(activity, attributes, "visible", model);
+		temp = getObservableFromStatement(activity, attributes, "visible", model, subscribe);
 		if ((temp!=null)){
-			bridge.visible = temp;
+			visible = temp;
 		}
-		temp = getObservableFromAttribute(activity, attributes, "enabled", model);
+		temp = getObservableFromStatement(activity, attributes, "enabled", model, subscribe);
 		if ((temp!=null)){
-			bridge.enabled = temp;
+			enabled = temp;
 		}
-		temp = getObservableFromAttribute(activity, attributes, "checked", model);
+		temp = getObservableFromStatement(activity, attributes, "checked", model, subscribe);
 		if ((temp!=null)){
-			bridge.checked = temp;
+			checked = temp;
 		}
-		temp = getObservableFromAttribute(activity, attributes, "icon", model);
+		temp = getObservableFromStatement(activity, attributes, "icon", model, subscribe);
 		if ((temp!=null)){
-			bridge.icon = temp;
+			icon = temp;
 		}
-		return bridge;
 	}
 
 	@SuppressWarnings("unchecked")
@@ -120,4 +120,6 @@ public class MenuItemBridge extends AbsMenuBridge{
 		}
 		return output;
 	}
+	
+	
 }

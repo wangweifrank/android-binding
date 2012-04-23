@@ -1,9 +1,15 @@
 package gueei.binding.menu;
 
+import java.util.Collection;
+
 import gueei.binding.Binder;
 import gueei.binding.BindingSyntaxResolver;
+import gueei.binding.ConstantObservable;
 import gueei.binding.IObservable;
+import gueei.binding.Observer;
+import gueei.binding.labs.EventAggregator;
 import android.app.Activity;
+import android.os.Bundle;
 import android.util.AttributeSet;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -21,9 +27,9 @@ public abstract class AbsMenuBridge {
 		AbsMenuBridge item;
 		
 		if ("item".equals(nodeName)){
-			item = MenuItemBridge.create(id, attrs, activity, model);
+			item = new MenuItemBridge(id, attrs, activity, model, true);
 		}else if ("group".equals(nodeName)){
-			item = MenuGroupBridge.create(id, attrs, activity, model);
+			item = new MenuGroupBridge(id, attrs, activity, model, true);
 		}else{
 			item = null;
 		}
@@ -40,13 +46,35 @@ public abstract class AbsMenuBridge {
 	
 	public abstract void onPrepareOptionItem(Menu menu);
 	
-	protected static IObservable<?> getObservableFromAttribute(Activity activity, AttributeSet attributes, String attrName, Object model){
+	protected IObservable<?> getObservableFromStatement(Activity activity, AttributeSet attributes, String attrName, Object model, boolean subscribe){
 		String attrValue = attributes.getAttributeValue(Binder.BINDING_NAMESPACE, attrName);
 		if (attrValue!=null){
-			return BindingSyntaxResolver.constructObservableFromStatement(activity, attrValue, model);
+			IObservable<?> obs = BindingSyntaxResolver.constructObservableFromStatement(activity, attrValue, model);
+			if (subscribe && !(obs instanceof ConstantObservable)){
+				if (observer==null)
+					observer = new OptionsItemObserver(activity);
+				obs.subscribe(observer);
+			}
+				
+			return obs;
 		}
 		return null;
 	}
 
 	public abstract boolean onOptionsItemSelected(MenuItem item);
+	
+	private OptionsItemObserver observer;
+	private class OptionsItemObserver implements Observer{
+		private Activity mActivity;
+		
+		public OptionsItemObserver(Activity activity){
+			mActivity = activity;
+		}
+		
+		@Override
+		public void onPropertyChanged(IObservable<?> prop,
+				Collection<Object> initiators) {
+			EventAggregator.getInstance(mActivity).publish("invalidateOptionsMenu()", prop, new Bundle());
+		}
+	};
 }

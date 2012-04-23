@@ -18,7 +18,7 @@ public class BindingSyntaxResolver {
 	private static final String DEFAULT_CONVERTER_PACKAGE = "gueei.binding.converters.";
 	
 	private static final Pattern converterPattern = 
-			Pattern.compile("^([$a-zA-Z0-9._]+)\\((.+(\\s*?,\\s*.+)*)\\)", Pattern.DOTALL);
+			Pattern.compile("^([$a-zA-Z0-9._]+)\\((.+(\\s*?,\\s*.+)*)?\\)", Pattern.DOTALL);
 	private static final Pattern dynamicObjectPattern = Pattern.compile("^\\{(.+)\\}$");
 	private static final Pattern stringPattern = Pattern.compile("^'(([^']|\\\\')*)'$");
 	private static final Pattern numberPattern = Pattern.compile("^(\\+|\\-)?[0-9]*(\\.[0-9]+)?$");
@@ -71,7 +71,7 @@ public class BindingSyntaxResolver {
 			final Context context, String statement, Object model,
 			final IReferenceObservableProvider refProvider){
 		Matcher m = converterPattern.matcher(statement);
-		if ((!m.matches()) || (m.groupCount()<3))
+		if (!m.matches())
 			return null;
 		
 		String converterName = m.group(1);
@@ -123,6 +123,7 @@ public class BindingSyntaxResolver {
 	}
 	
 	public static String[] splitArguments(String group){
+		if (group==null) return new String[0];
 		ArrayList<String> arguments = new ArrayList<String>();
 		int bracketCount = 0;
 		int curlyBraceCount = 0;

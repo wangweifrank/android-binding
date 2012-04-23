@@ -2,6 +2,7 @@ package gueei.binding.bindingProviders;
 
 import gueei.binding.ViewAttribute;
 import gueei.binding.viewAttributes.view.AnimationViewAttribute;
+import gueei.binding.viewAttributes.view.AssignViewAttribute;
 import gueei.binding.viewAttributes.view.BackgroundColorViewAttribute;
 import gueei.binding.viewAttributes.view.BackgroundViewAttribute;
 import gueei.binding.viewAttributes.view.ContextMenuViewAttribute;
@@ -56,6 +57,8 @@ public class ViewProvider extends BindingProvider {
 			return new Layout_WidthViewAttribute(view);
 		}else if (attributeId.equals("onBind")){
 			return new OnBindViewAttribute(view);
+		}else if (attributeId.equals("assign")){
+			return new AssignViewAttribute(view);
 		}
 		return null;
 	}

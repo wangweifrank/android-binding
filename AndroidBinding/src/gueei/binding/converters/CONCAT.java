@@ -22,6 +22,6 @@ public class CONCAT extends Converter<CharSequence> {
 			else
 				result.append(args[i].toString());
 		}
-		return result;
+		return result.toString();
 	}
 }

@@ -8,10 +8,6 @@ import android.view.MenuItem;
 
 public class MenuGroupBridge extends AbsMenuBridge {
 
-	protected MenuGroupBridge(int id) {
-		super(id);
-	}
-
 	@Override
 	public void onCreateOptionItem(Menu menu) {
 	}
@@ -25,17 +21,15 @@ public class MenuGroupBridge extends AbsMenuBridge {
 	private IObservable<Boolean> mVisible;
 	
 	@SuppressWarnings("unchecked")
-	public static AbsMenuBridge create(int id, AttributeSet attributes,
-			Activity activity, Object model) {
-		MenuGroupBridge bridge = new MenuGroupBridge(id);
-		
+	public MenuGroupBridge(int id, AttributeSet attributes,
+			Activity activity, Object model, boolean subscribe) {
+		super(id);
+
 		// Assume id is created
-		IObservable<?> temp = getObservableFromAttribute(activity, attributes, "visible", model);
+		IObservable<?> temp = getObservableFromStatement(activity, attributes, "visible", model, subscribe);
 		if ((temp!=null)&&(Boolean.class.isAssignableFrom(temp.getType()))){
-			bridge.mVisible = (IObservable<Boolean>)temp;
+			mVisible = (IObservable<Boolean>)temp;
 		}
-		
-		return bridge;
 	}
 
 	@Override

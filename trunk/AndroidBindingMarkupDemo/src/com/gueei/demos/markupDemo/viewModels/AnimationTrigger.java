@@ -13,14 +13,14 @@ public class AnimationTrigger {
 		mActivity = activity;
 	}
 	public final StringObservable Password = new StringObservable("");
+	public final StringObservable RealPassword = new StringObservable("1234");
 	public final BooleanObservable PasswordCorrect = new BooleanObservable(false);
 	public final Command CheckPassword = new Command(){
 		@Override
 		public void Invoke(View view, Object... args) {
-			PasswordCorrect.set(Password.get().equals("1234"));
+			PasswordCorrect.set(Password.get().equals(RealPassword.get()));
 			if (PasswordCorrect.get()){
 				Toast.makeText(mActivity, "Password Accepted!", Toast.LENGTH_SHORT).show();
-				Password.set("");
 			}
 		}
 	};

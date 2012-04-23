@@ -17,7 +17,6 @@
 	    android:inputType="number"
 	    android:textSize="30dip"
 	    android:password="true"
-	    binding:onTextChanged="CheckPassword"
 	    binding:text="Password"
 	    binding:animation="AFTERCOMMAND(@anim/shake, CheckPassword, NOT(PasswordCorrect))"
 	/>

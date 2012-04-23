@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<activity xmlns:binding="http://www.gueei.com/android-binding/">
+	<optionsItem>
+		<option id="@android:id/home" action="FirstClick"/>
+	</optionsItem>
+	<actionbar
+	    binding:title="DemoName"
+		binding:displayHomeAsUp="TRUE()"
+		binding:displayShowTitle="TRUE()"
+		binding:displayShowHome="TRUE()"
+		binding:onHomeClicked="Back"
+		binding:navigationMode="0"
+		>
+	</actionbar>
+	<rootView layout="@layout/showdemo"></rootView>
+</activity>

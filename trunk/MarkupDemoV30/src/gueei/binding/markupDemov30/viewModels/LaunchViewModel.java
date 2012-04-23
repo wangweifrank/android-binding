@@ -1,5 +1,7 @@
 package gueei.binding.markupDemov30.viewModels;
 
+import java.lang.reflect.InvocationTargetException;
+
 import gueei.binding.Command;
 import gueei.binding.Observable;
 import gueei.binding.collections.ArrayListObservable;
@@ -7,13 +9,14 @@ import gueei.binding.labs.EventAggregator;
 import gueei.binding.labs.EventSubscriber;
 import gueei.binding.markupDemov30.R;
 import gueei.binding.observables.IntegerObservable;
+import android.app.Activity;
 import android.content.Context;
 import android.content.res.XmlResourceParser;
 import android.os.Bundle;
 import android.view.View;
 
 public class LaunchViewModel {
-	private Context mContext;
+	private Activity mContext;
 	
 	public final ActionBar ActionBarViewModel;
 	
@@ -36,15 +39,11 @@ public class LaunchViewModel {
 		}
 	};
 	
-	public LaunchViewModel(Context context){
+	public LaunchViewModel(Activity context){
 		mContext = context;
 
 		parseDemos();
 		ActionBarViewModel = new ActionBar();
-		// Event Aggregator is a global event registered to the specified context
-		// It is supposed to be an in-app mini intent broadcaster
-		DemoCategory layout = new DemoCategory(mContext, "Layouts");
-		Categories.add(layout);
 
 		EventAggregator.getInstance(context)
 			.subscribe("ShowDemo", new EventSubscriber(){
@@ -62,7 +61,13 @@ public class LaunchViewModel {
 			CurrentViewModel.set(vm);
 			CurrentLayout.set(layout);
 		} catch (InstantiationException e) {
-			e.printStackTrace();
+			try {
+				Object vm = Class.forName(demoClassName).getConstructor(Activity.class).newInstance(mContext);
+				CurrentViewModel.set(vm);
+				CurrentLayout.set(layout);
+			} catch (Exception e1) {
+				e1.printStackTrace();
+			}
 		} catch (IllegalAccessException e) {
 			e.printStackTrace();
 		} catch (ClassNotFoundException e) {
@@ -101,16 +106,26 @@ public class LaunchViewModel {
 				}
 				eventType = parser.next();
 			}
-		}catch(Exception e){}
+		}catch(Exception e){
+			e.printStackTrace();
+		}
 	}
 	
 	private int resolveLayout(String name) throws Exception{
-		Class<?> layoutClass = R.layout.class;
-		return layoutClass.getField(name).getInt(null);
+		if (name.startsWith(".")){
+			Class<?> layoutClass = com.gueei.demos.markupDemo.R.layout.class;
+			return layoutClass.getField(name.substring(1)).getInt(null);
+		}
+		else{
+			Class<?> layoutClass = R.layout.class;
+			return layoutClass.getField(name).getInt(null);
+		}
 	}
 	
 	private Class<?> resolveVM(String name) throws Exception{
 		String pkgName = "gueei.binding.markupDemov30.viewModels.";
+		if (name.startsWith("."))
+			pkgName = "com.gueei.demos.markupDemo.viewModels";
 		return Class.forName(pkgName + name);
 	}
 }

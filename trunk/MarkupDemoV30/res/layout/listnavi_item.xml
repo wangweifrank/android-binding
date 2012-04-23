@@ -6,5 +6,5 @@
     android:layout_width="fill_parent"
     android:layout_height="?android:attr/listPreferredItemHeight"
     android:ellipsize="marquee"
-    binding:text="."
+    binding:text="Name"
     />

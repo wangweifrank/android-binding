@@ -7,7 +7,7 @@ import gueei.binding.observables.BooleanObservable;
 
 public class ActionBar {
 	public final BooleanObservable ShowHomeAsUp =
-			new BooleanObservable(true);
+			new BooleanObservable(false);
 	
 	public final Command ToggleShowHomeAsUp = new Command(){
 		@Override

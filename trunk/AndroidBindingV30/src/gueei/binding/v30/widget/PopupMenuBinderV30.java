@@ -45,9 +45,9 @@ public class PopupMenuBinderV30 implements OnMenuItemClickListener {
 							AttributeSet attrs = Xml.asAttributeSet(parser);
 							AbsMenuBridge item = null;
 							if ("item".equals(nodeName)){
-								item = MenuItemBridge.create(id, attrs, activity, viewModel);
+								item = new MenuItemBridge(id, attrs, activity, viewModel, true);
 							}else if ("group".equals(nodeName)){
-								item = MenuGroupBridge.create(id, attrs, activity, viewModel);
+								item = new MenuGroupBridge(id, attrs, activity, viewModel, true);
 							}
 							if (item!=null){
 								items.put(id, item);

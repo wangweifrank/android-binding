@@ -1,23 +1,26 @@
 package gueei.binding.v30.app;
 
+import gueei.binding.Binder;
+import gueei.binding.Binder.InflateResult;
+import gueei.binding.BindingSyntaxResolver;
+import gueei.binding.IObservable;
+import gueei.binding.Observer;
+import gueei.binding.Utility;
+import gueei.binding.app.BindingActivity;
+import gueei.binding.labs.EventAggregator;
+import gueei.binding.labs.EventSubscriber;
+import gueei.binding.menu.OptionsMenuBinder;
+import gueei.binding.v30.ActivityBinder;
+import gueei.binding.v30.BinderV30;
+import gueei.binding.v30.actionbar.BindableActionBar;
+
 import java.io.IOException;
 import java.util.Collection;
 
 import org.xmlpull.v1.XmlPullParserException;
 
-import gueei.binding.Binder;
-import gueei.binding.Binder.InflateResult;
-import gueei.binding.BindingSyntaxResolver;
-import gueei.binding.DependentObservable;
-import gueei.binding.IObservable;
-import gueei.binding.Observer;
-import gueei.binding.Utility;
-import gueei.binding.app.BindingActivity;
-import gueei.binding.menu.OptionsMenuBinder;
-import gueei.binding.v30.BinderV30;
-import gueei.binding.v30.actionbar.ActionBarBinder;
-import gueei.binding.viewAttributes.templates.Layout;
 import android.content.res.XmlResourceParser;
+import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -32,9 +35,8 @@ import android.view.View;
  *
  */
 public class BindingActivityV30 extends BindingActivity {
-
-	// TODO: Need to rewrite options menu binder
 	private OptionsMenuBinder mMenuBinder;
+	private BindableActionBar mBindableActionBar;
 	
 	private IObservable<?> optionsMenu_source, optionsMenu_id;
 	private Observer optionsMenuSourceObserver = new Observer(){
@@ -44,6 +46,17 @@ public class BindingActivityV30 extends BindingActivity {
 		}
 	};
 	
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		EventAggregator.getInstance(this).subscribe("invalidateOptionsMenu()", new EventSubscriber(){
+			public void onEventTriggered(String eventName, Object publisher,
+					Bundle data) {
+				BindingActivityV30.this.invalidateOptionsMenu();
+			}
+		});
+	}
+
 	private void rebindOptionsMenu(){
 		if (optionsMenu_source==null || optionsMenu_id==null)
 			return;
@@ -61,14 +74,13 @@ public class BindingActivityV30 extends BindingActivity {
 	 * @param model Root View Model
 	 */
 	protected void bind(int xmlId, Object model){
+		bindActionBar(xmlId, model);
+		
 		XmlResourceParser parser = getResources().getXml(xmlId);
 		try{
 			int eventType= parser.getEventType();
 			while(eventType != XmlResourceParser.END_DOCUMENT){
 				if (eventType == XmlResourceParser.START_TAG){
-					if (parser.getName().equals("actionBar")){
-						// Bind Action Bar
-					}
 					if (parser.getName().equals("optionsMenu")){
 						// Bind Options Menu
 						String source = parser.getAttributeValue(Binder.BINDING_NAMESPACE, "dataSource");
@@ -87,7 +99,6 @@ public class BindingActivityV30 extends BindingActivity {
 					if (parser.getName().equals("rootView")){
 						// Bind Root View
 						String layout = parser.getAttributeValue(null, "layout");
-						
 						this.setAndBindRootView(Utility.resolveLayoutResource(layout, this), model);
 					}
 				}
@@ -131,10 +142,19 @@ public class BindingActivityV30 extends BindingActivity {
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
+		if (item.getItemId() == android.R.id.home){
+			EventAggregator.getInstance(this).publish("Clicked(android.R.id.home)", this, null);
+			return true;
+		}
 		return super.onOptionsItemSelected(item);
 	}
 
 	protected void bindActionBar(int xmlId, Object model){
-		ActionBarBinder.BindActionBar(this, xmlId, model);
+		mBindableActionBar = ActivityBinder.inflateActionBar(this, xmlId);
+        ActivityBinder.BindActionBar(this, mBindableActionBar, model);
+	}
+	
+	public BindableActionBar getBindableActionBar(){
+		return mBindableActionBar;
 	}
 }

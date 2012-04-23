@@ -19,6 +19,10 @@ public class BindableActionBar extends View implements IBindableView<BindableAct
 		super(context);
 		mActivity = context;
 	}
+	
+	public Activity getActivity(){
+		return mActivity;
+	}
 
 	public ViewAttribute<? extends View, ?> createViewAttribute(
 			String attributeId) {

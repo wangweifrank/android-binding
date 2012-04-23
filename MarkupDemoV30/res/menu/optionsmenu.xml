@@ -2,16 +2,20 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
 	xmlns:binding="http://www.gueei.com/android-binding/"
 >
-	<item android:id="@+id/button1"
-		android:title="ToggleShowHomeAsUp"
+	<item android:id="@+id/button4"
+		binding:title="CONCAT('ShowHomeAsUp: ',ShowHomeAsUp)"
 		binding:onClick="ToggleShowHomeAsUp"
+		binding:visible="OR(ShowHome, ShowTitle)"
+		android:showAsAction="always"
 	/>
 	<item android:id="@+id/button2"
-		android:title="ToggleShowHome"
+		binding:title="CONCAT('ShowHome: ',ShowHome)"
+		android:showAsAction="ifRoom"
 		binding:onClick="ToggleShowHome"
 	/>
 	<item android:id="@+id/button3"
-		android:title="ToggleShowTitle"
+		binding:title="CONCAT('ShowTitle: ',ShowTitle)"
+		android:showAsAction="ifRoom"
 		binding:onClick="ToggleShowTitle"
 	/>
 </menu>

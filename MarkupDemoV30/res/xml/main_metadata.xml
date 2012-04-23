@@ -8,16 +8,10 @@
 		binding:displayShowTitle="ActionBarViewModel.ShowTitle"
 		binding:displayShowHome="ActionBarViewModel.ShowHome"
 		binding:navigationMode="1"
-		binding:listNavigationAdapter="ADAPTER({source=Categories, template=@layout/simple_spinner_dropdown_item})"
+		binding:listNavigationAdapter="ADAPTER({source=Categories, template=@layout/listnavi_item})"
 		binding:listNavigationOnItemSelected="CategorySelected"
 		binding:listNavigationSelectedItem="SelectedCategory"
 		>
-		<tabs>
-			<tab onSelected="ARG(CategorySelected, 0)" text="'Source Code'"></tab>
-			<tab onSelected="ARG(CategorySelected, 1)" text="'Bikes'"></tab>
-			<tab onSelected="ARG(CategorySelected, 2)" text="'Androids'"></tab>
-			<tab onSelected="ARG(CategorySelected, 3)" text="'Pastries'"></tab>
-		</tabs>
 	</actionbar>
 	<rootView layout="@layout/main"></rootView>
 	<optionsMenu

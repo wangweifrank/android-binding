@@ -3,7 +3,6 @@ package gueei.binding.menu;
 import gueei.binding.Binder;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Hashtable;
 
 import org.xmlpull.v1.XmlPullParserException;

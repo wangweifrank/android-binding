@@ -1,15 +1,15 @@
 package gueei.binding.menu;
 
-import java.util.Collection;
-
 import gueei.binding.Binder;
 import gueei.binding.BindingSyntaxResolver;
 import gueei.binding.ConstantObservable;
 import gueei.binding.IObservable;
 import gueei.binding.Observer;
-import gueei.binding.labs.EventAggregator;
+
+import java.util.Collection;
+
 import android.app.Activity;
-import android.os.Bundle;
+import android.content.Context;
 import android.util.AttributeSet;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -23,13 +23,13 @@ public abstract class AbsMenuBridge {
 	
 	// Factory method
 	public static AbsMenuBridge create
-		(String nodeName, int id, AttributeSet attrs, Activity activity, Object model){
+		(String nodeName, int id, AttributeSet attrs, Context context, Object model){
 		AbsMenuBridge item;
 		
 		if ("item".equals(nodeName)){
-			item = new MenuItemBridge(id, attrs, activity, model, true);
+			item = new MenuItemBridge(id, attrs, context, model);
 		}else if ("group".equals(nodeName)){
-			item = new MenuGroupBridge(id, attrs, activity, model, true);
+			item = new MenuGroupBridge(id, attrs, context, model);
 		}else{
 			item = null;
 		}
@@ -45,14 +45,22 @@ public abstract class AbsMenuBridge {
 	public abstract void onCreateOptionItem(Menu menu);
 	
 	public abstract void onPrepareOptionItem(Menu menu);
+
+	protected IObservable<?> getObservableFromStatement
+		(Context context, AttributeSet attributes, 
+				String attrName, Object model){
+		return getObservableFromStatement(context, attributes, attrName, model, null);
+	}
 	
-	protected IObservable<?> getObservableFromStatement(Activity activity, AttributeSet attributes, String attrName, Object model, boolean subscribe){
+	protected IObservable<?> getObservableFromStatement
+		(Context context, AttributeSet attributes, 
+				String attrName, Object model, IMenuItemChangedCallback callback){
 		String attrValue = attributes.getAttributeValue(Binder.BINDING_NAMESPACE, attrName);
 		if (attrValue!=null){
-			IObservable<?> obs = BindingSyntaxResolver.constructObservableFromStatement(activity, attrValue, model);
-			if (subscribe && !(obs instanceof ConstantObservable)){
+			IObservable<?> obs = BindingSyntaxResolver.constructObservableFromStatement(context, attrValue, model);
+			if (callback!=null && !(obs instanceof ConstantObservable) && obs!=null){
 				if (observer==null)
-					observer = new OptionsItemObserver(activity);
+					observer = new OptionsItemObserver(callback);
 				obs.subscribe(observer);
 			}
 				
@@ -65,16 +73,19 @@ public abstract class AbsMenuBridge {
 	
 	private OptionsItemObserver observer;
 	private class OptionsItemObserver implements Observer{
-		private Activity mActivity;
+		private IMenuItemChangedCallback mCallback;
 		
-		public OptionsItemObserver(Activity activity){
-			mActivity = activity;
+		public OptionsItemObserver(IMenuItemChangedCallback callback){
+			mCallback = callback;
 		}
 		
 		@Override
 		public void onPropertyChanged(IObservable<?> prop,
 				Collection<Object> initiators) {
-			EventAggregator.getInstance(mActivity).publish("invalidateOptionsMenu()", prop, new Bundle());
+			if (initiators.contains(AbsMenuBridge.this)) return;
+			
+			initiators.add(AbsMenuBridge.this);
+			mCallback.onItemChanged(prop, AbsMenuBridge.this);
 		}
 	};
 }

@@ -14,7 +14,7 @@ public class CheckedItemPositionsViewAttribute extends ViewAttribute<ListView, S
 	implements OnItemClickListener{
 
 	public CheckedItemPositionsViewAttribute(ListView view) {
-		super(SparseBooleanArray.class, view, "checkedItemPosition");
+		super(SparseBooleanArray.class, view, "checkedItemPositions");
 		Binder.getMulticastListenerForView(view, OnItemClickListenerMulticast.class)
 			.register(this);
 	}
@@ -26,8 +26,11 @@ public class CheckedItemPositionsViewAttribute extends ViewAttribute<ListView, S
 
 	@Override
 	protected void doSetAttributeValue(Object newValue) {
-		if (!(newValue instanceof SparseBooleanArray)) return;
-		if (getView().getChoiceMode() != ListView.CHOICE_MODE_MULTIPLE) return;
+		if (!(newValue instanceof SparseBooleanArray)){
+			return;
+		}
+
+		if (getView().getChoiceMode() != ListView.CHOICE_MODE_MULTIPLE) return; 
 		
 		SparseBooleanArray arr = (SparseBooleanArray)newValue;
 		int len = arr.size();

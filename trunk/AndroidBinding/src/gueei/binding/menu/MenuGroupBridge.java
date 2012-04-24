@@ -1,7 +1,7 @@
 package gueei.binding.menu;
 
 import gueei.binding.IObservable;
-import android.app.Activity;
+import android.content.Context;
 import android.util.AttributeSet;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -20,13 +20,18 @@ public class MenuGroupBridge extends AbsMenuBridge {
 
 	private IObservable<Boolean> mVisible;
 	
+	public MenuGroupBridge(int id, AttributeSet attributes,
+			Context context, Object model){
+		this(id, attributes, context, model, null);
+	}
+	
 	@SuppressWarnings("unchecked")
 	public MenuGroupBridge(int id, AttributeSet attributes,
-			Activity activity, Object model, boolean subscribe) {
+			Context context, Object model, IMenuItemChangedCallback callback) {
 		super(id);
 
 		// Assume id is created
-		IObservable<?> temp = getObservableFromStatement(activity, attributes, "visible", model, subscribe);
+		IObservable<?> temp = getObservableFromStatement(context, attributes, "visible", model, callback);
 		if ((temp!=null)&&(Boolean.class.isAssignableFrom(temp.getType()))){
 			mVisible = (IObservable<Boolean>)temp;
 		}

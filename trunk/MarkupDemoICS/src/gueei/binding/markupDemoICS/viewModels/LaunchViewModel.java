@@ -120,7 +120,7 @@ public class LaunchViewModel {
 	}
 	
 	private String resolveVM(String name) throws Exception{
-		String pkgName = "gueei.binding.markupDemov30.viewModels.";
+		String pkgName = "gueei.binding.markupDemoICS.viewModels.";
 		if (name.startsWith("."))
 			pkgName = "com.gueei.demos.markupDemo.viewModels";
 		return pkgName + name;

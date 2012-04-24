@@ -93,9 +93,9 @@ public class ContextMenuBinder implements View.OnCreateContextMenuListener, OnMe
 							AttributeSet attrs = Xml.asAttributeSet(parser);
 							AbsMenuBridge item = null;
 							if ("item".equals(nodeName)){
-								item = new MenuItemBridge(id, attrs, activity, mViewModel, false);
+								item = new MenuItemBridge(id, attrs, activity, mViewModel);
 							}else if ("group".equals(nodeName)){
-								item = new MenuGroupBridge(id, attrs, activity, mViewModel, false);
+								item = new MenuGroupBridge(id, attrs, activity, mViewModel);
 							}
 							if (item!=null){
 								items.put(id, item);

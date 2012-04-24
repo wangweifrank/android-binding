@@ -4,6 +4,7 @@ import gueei.binding.AttributeBinder;
 import gueei.binding.Binder;
 import gueei.binding.BindingLog;
 import gueei.binding.BindingMap;
+import gueei.binding.v30.bindingProviders.ListViewProviderV30;
 import gueei.binding.v30.bindingProviders.ViewPagerViewProviderV30;
 import gueei.binding.v30.bindingProviders.ViewProviderV30;
 import android.app.Activity;
@@ -29,6 +30,7 @@ public class BinderV30 extends gueei.binding.Binder {
 	
 	public static void init(Application application){
 		// Put v30 providers first
+		AttributeBinder.getInstance().registerProvider(new ListViewProviderV30());
 		AttributeBinder.getInstance().registerProvider(new ViewProviderV30());
 		if( hasCompatibilityLibrarySupport ) {
 			AttributeBinder.getInstance().registerProvider(new ViewPagerViewProviderV30());

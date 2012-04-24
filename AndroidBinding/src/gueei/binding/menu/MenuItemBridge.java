@@ -1,20 +1,13 @@
 package gueei.binding.menu;
 
-import java.util.Collection;
-
-import android.app.Activity;
-import android.content.Intent;
+import gueei.binding.Command;
+import gueei.binding.IObservable;
+import android.content.Context;
 import android.graphics.drawable.Drawable;
-import android.os.Bundle;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.AdapterView;
-import gueei.binding.Command;
-import gueei.binding.IObservable;
-import gueei.binding.Observer;
-import gueei.binding.labs.EventAggregator;
 
 /**
  * Mock menu item act as bridging bindable attributes
@@ -69,29 +62,34 @@ public class MenuItemBridge extends AbsMenuBridge{
 	}
 	
 	public MenuItemBridge(int id, AttributeSet attributes,
-			Activity activity, Object model, boolean subscribe) {
+			Context context, Object model){
+		this(id, attributes, context, model, null);
+	}
+	
+	public MenuItemBridge(int id, AttributeSet attributes,
+			Context context, Object model, IMenuItemChangedCallback callback) {
 		super(id);
-		IObservable<?> temp = getObservableFromStatement(activity, attributes, "onClick", model, subscribe);
+		IObservable<?> temp = getObservableFromStatement(context, attributes, "onClick", model, callback);
 		if ((temp!=null)&&(temp.get() instanceof Command)){
 			onClickCommand = (Command)temp.get();
 		}
-		temp = getObservableFromStatement(activity, attributes, "title", model, subscribe);
+		temp = getObservableFromStatement(context, attributes, "title", model, callback);
 		if ((temp!=null)){
 			title = temp;
 		}
-		temp = getObservableFromStatement(activity, attributes, "visible", model, subscribe);
+		temp = getObservableFromStatement(context, attributes, "visible", model, callback);
 		if ((temp!=null)){
 			visible = temp;
 		}
-		temp = getObservableFromStatement(activity, attributes, "enabled", model, subscribe);
+		temp = getObservableFromStatement(context, attributes, "enabled", model, callback);
 		if ((temp!=null)){
 			enabled = temp;
 		}
-		temp = getObservableFromStatement(activity, attributes, "checked", model, subscribe);
+		temp = getObservableFromStatement(context, attributes, "checked", model, callback);
 		if ((temp!=null)){
 			checked = temp;
 		}
-		temp = getObservableFromStatement(activity, attributes, "icon", model, subscribe);
+		temp = getObservableFromStatement(context, attributes, "icon", model, callback);
 		if ((temp!=null)){
 			icon = temp;
 		}
@@ -116,7 +114,6 @@ public class MenuItemBridge extends AbsMenuBridge{
 		if (checked!=null){
 			if (Boolean.class.isAssignableFrom(checked.getType()))
 				((IObservable<Boolean>)checked).set(!item.isChecked());
-			Log.d("Binder", "Checked: "+ item.isChecked() + " " + checked.get());
 		}
 		return output;
 	}

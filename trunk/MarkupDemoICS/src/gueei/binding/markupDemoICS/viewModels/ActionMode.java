@@ -18,7 +18,8 @@ public class ActionMode {
 	public final Command StartActionMode = new Command(){
 		@Override
 		public void Invoke(View view, Object... args) {
-			ActionModeBinder.startActionMode(mActivity, ActionModeMenuId.get(), ActionMode.this);
+			ActionModeBinder binder = 
+					ActionModeBinder.startActionMode(mActivity, ActionModeMenuId.get(), ActionMode.this, "FJDSFJSDKL");
 		}
 	};
 	

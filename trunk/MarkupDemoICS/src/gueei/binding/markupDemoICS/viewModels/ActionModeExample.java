@@ -5,7 +5,6 @@ import gueei.binding.DependentObservable;
 import gueei.binding.Observable;
 import gueei.binding.collections.ArrayListObservable;
 import gueei.binding.observables.IntegerObservable;
-import gueei.binding.v30.widget.ActionModeBinder;
 
 import java.util.ArrayList;
 
@@ -22,13 +21,6 @@ public class ActionModeExample {
 		Locations.setArray(DATA);
 	}
 	
-	public final Command StartActionMode = new Command(){
-		@Override
-		public void Invoke(View view, Object... args) {
-			ActionModeBinder.startActionMode(mActivity, ActionModeMenuId.get(), ActionModeExample.this);
-		}
-	};
-	
 	public final IntegerObservable ActionModeMenuId =
 			new IntegerObservable(0);
 
@@ -41,10 +33,9 @@ public class ActionModeExample {
 			new DependentObservable<Integer>(Integer.class, CheckedItemPositions){
 				@Override
 				public Integer calculateValue(Object... args) throws Exception {
-					SparseBooleanArray arr = CheckedItemPositions.get();
 					int count = 0;
-					for(int i=0; i<arr.size(); i++){
-						if (arr.valueAt(i)) count++;
+					for(int i=0; i<CheckedItemPositions.get().size(); i++){
+						if (CheckedItemPositions.get().valueAt(i)) count++;
 					}
 					return count;
 				}
@@ -55,9 +46,8 @@ public class ActionModeExample {
 				@Override
 				public void Invoke(View view, Object... args) {
 					ArrayList<String> removeItems = new ArrayList<String>();
-					SparseBooleanArray arr = CheckedItemPositions.get();
-					for(int i=0; i<arr.size(); i++){
-						removeItems.add(Locations.get(arr.keyAt(i)));
+					for(int i=0; i<CheckedItemPositions.get().size(); i++){
+						removeItems.add(Locations.get(CheckedItemPositions.get().keyAt(i)));
 					}
 					Locations.removeAll(removeItems);
 					CheckedItemPositions.set(null);

@@ -1,5 +1,6 @@
 package gueei.binding.collections;
 
+import java.util.Collection;
 import java.util.Hashtable;
 import gueei.binding.AttributeBinder;
 import gueei.binding.Binder;
@@ -152,15 +153,6 @@ public class CollectionAdapter extends BaseAdapter implements CollectionObserver
 		Binder.getViewTag(convertView).put(ObservableMapper.class, mapper);
 	}
 
-	public void onCollectionChanged(IObservableCollection<?> collection, CollectionChangedEventArg args) {
-		mHandler.post(new Runnable() {
-
-			public void run() {
-				notifyDataSetChanged();
-			}
-		});
-	}
-
 	public Filter getFilter() {
 		return mFilter;
 	}
@@ -278,5 +270,16 @@ public class CollectionAdapter extends BaseAdapter implements CollectionObserver
 		IObservable<?> obs = BindingSyntaxResolver.constructObservableFromStatement(mContext, mEnableItemStatement, mCollection.getItem(position));
 		// Even if the obs is null, or it's value is null, it is enabled by default 
 		return obs == null || !Boolean.FALSE.equals(obs.get());
+	}
+
+	@Override
+	public void onCollectionChanged(IObservableCollection<?> collection,
+			CollectionChangedEventArg args, Collection<Object> initiators) {
+		mHandler.post(new Runnable() {
+
+			public void run() {
+				notifyDataSetChanged();
+			}
+		});
 	}
 }

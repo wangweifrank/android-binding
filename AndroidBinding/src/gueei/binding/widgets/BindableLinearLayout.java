@@ -76,10 +76,11 @@ public class BindableLinearLayout extends LinearLayout implements IBindableView<
 
 		currentList = null;	
 		collectionObserver = new CollectionObserver() {			
-			@SuppressWarnings("unchecked")
 			@Override
-			public void onCollectionChanged(IObservableCollection<?> collection, CollectionChangedEventArg args) {
-				listChanged(args, (ObservableCollection<Object>)collection);
+			public void onCollectionChanged(
+					IObservableCollection<?> collection,
+					CollectionChangedEventArg args,
+					Collection<Object> initiators) {
 			}
 		};
 		

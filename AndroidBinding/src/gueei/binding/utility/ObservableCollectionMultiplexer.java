@@ -2,6 +2,7 @@ package gueei.binding.utility;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
@@ -41,10 +42,14 @@ public class ObservableCollectionMultiplexer<T> {
 		
 		CollectionObserver observer = new CollectionObserver() {			
 			@Override
-			public void onCollectionChanged(IObservableCollection<?> collection, CollectionChangedEventArg args) {	
+			public void onCollectionChanged(
+					IObservableCollection<?> collection, CollectionChangedEventArg args, Collection<Object> initiators) {	
+				if (initiators.contains(this)) return;
 				T parent = getParentFromObserver(this);
-				if( parent != null && childChangedObserver != null )
-					childChangedObserver.onPropertyChanged(collection,Arrays.asList(new Object[]{parent,args}));
+				if( parent != null && childChangedObserver != null ){
+					initiators.add(parent);
+					childChangedObserver.onPropertyChanged(collection,initiators);
+				}
 			}
 		};
 		

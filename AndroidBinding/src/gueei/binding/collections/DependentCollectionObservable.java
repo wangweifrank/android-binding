@@ -1,6 +1,7 @@
 package gueei.binding.collections;
 
 import java.util.ArrayList;
+import java.util.Collection;
 
 import gueei.binding.BindingLog;
 import gueei.binding.CollectionChangedEventArg;
@@ -19,7 +20,9 @@ public abstract class DependentCollectionObservable<T> extends Observable<T> imp
 			o.subscribe((CollectionObserver)this);
 		}
 		this.mDependents = dependents;
-		this.onCollectionChanged(new ArrayListObservable<Object>(null), null);
+		ArrayList<Object> initiators = new ArrayList<Object>();
+		initiators.add(this);
+		this.onCollectionChanged(new ArrayListObservable<Object>(null), null, initiators);
 	}
 	
 	// This is provided in case the constructor can't be used. 
@@ -36,16 +39,18 @@ public abstract class DependentCollectionObservable<T> extends Observable<T> imp
 			mDependents[i+len] = dependents[i];
 			dependents[i].subscribe((CollectionObserver)this);
 		}
-		this.onCollectionChanged(new ArrayListObservable<Object>(null), null);
+		ArrayList<Object> initiators = new ArrayList<Object>();
+		initiators.add(this);
+		this.onCollectionChanged(new ArrayListObservable<Object>(null), null, initiators);
 	}
 	
 	public abstract T calculateValue(CollectionChangedEventArg e, Object... args) throws Exception;
 
 	@Override
-	public final void onCollectionChanged(IObservableCollection<?> collection, CollectionChangedEventArg args) {
+	public final void onCollectionChanged
+		(IObservableCollection<?> collection, CollectionChangedEventArg args, Collection<Object> initiators) {
 		dirty = true;
 		changedArgs = args;		
-		ArrayList<Object> initiators = new ArrayList<Object>();
 		initiators.add(collection);
 		this.notifyChanged(initiators);		
 	}

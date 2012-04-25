@@ -119,7 +119,8 @@ public class CollectionPagerAdapter extends PagerAdapter
 	@Override
 	public void finishUpdate(View arg0) { }
 	
-	public void onCollectionChanged(IObservableCollection<?> collection, CollectionChangedEventArg args) {
+	public void onCollectionChanged(
+			IObservableCollection<?> collection, CollectionChangedEventArg args, Collection<Object> initiators) {
 		mHandler.post(new Runnable(){
 			public void run(){				
 				notifyDataSetChanged();

@@ -1,18 +1,17 @@
 package gueei.binding.v30.viewAttributes.absListView;
 
-import java.util.Collection;
-
 import gueei.binding.Binder;
 import gueei.binding.BindingLog;
 import gueei.binding.DynamicObject;
 import gueei.binding.IObservable;
 import gueei.binding.Observer;
 import gueei.binding.ViewAttribute;
-import gueei.binding.exception.AttributeNotDefinedException;
 import gueei.binding.v30.listeners.MultiChoiceModeListenerMulticast;
 import gueei.binding.v30.widget.ActionModeBinder;
+
+import java.util.Collection;
+
 import android.content.Context;
-import android.util.SparseBooleanArray;
 import android.view.ActionMode;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -23,6 +22,7 @@ public class MultiChoiceMode extends ViewAttribute<AbsListView, DynamicObject>
 
 	private int mMenuId;
 	private Object mModel;
+	private IObservable<?> mTitle;
 	ListViewMultiChoiceActionModeBinder binder;
 	
 	public MultiChoiceMode(AbsListView view) {
@@ -35,7 +35,8 @@ public class MultiChoiceMode extends ViewAttribute<AbsListView, DynamicObject>
 			DynamicObject obj = (DynamicObject)newValue;
 			mMenuId = (Integer)obj.getObservableByName("menu").get();
 			mModel = obj.getObservableByName("model").get();
-			binder = new ListViewMultiChoiceActionModeBinder(getView().getContext(), mMenuId, mModel);
+			mTitle = obj.getObservableByName("title");
+			
 			Binder.getMulticastListenerForView(getView(), MultiChoiceModeListenerMulticast.class)
 				.register(this);
 			Binder.getAttributeForView(getView(), "modalCheckedItemPositions")
@@ -54,10 +55,7 @@ public class MultiChoiceMode extends ViewAttribute<AbsListView, DynamicObject>
 	private Observer checkedItemPositionsWatcher = new Observer(){
 		public void onPropertyChanged(IObservable<?> prop,
 				Collection<Object> initiators) {
-			SparseBooleanArray arr = ((SparseBooleanArray)prop.get());
-			for(int i=0; i<arr.size(); i++){
-				if (arr.valueAt(i)) return;
-			}
+			if (getView().getCheckedItemCount() >0 ) return;
 			
 			if (binder!=null && binder.getActionMode()!=null){
 				binder.getActionMode().finish();
@@ -68,8 +66,8 @@ public class MultiChoiceMode extends ViewAttribute<AbsListView, DynamicObject>
 	private class ListViewMultiChoiceActionModeBinder extends ActionModeBinder
 		implements AbsListView.MultiChoiceModeListener{
 		protected ListViewMultiChoiceActionModeBinder(Context context,
-				int menuResId, Object model) {
-			super(context, menuResId, model);
+				int menuResId, Object model, IObservable<?> title) {
+			super(context, menuResId, model, title);
 		}
 
 		public void onItemCheckedStateChanged(ActionMode mode, int position,
@@ -84,6 +82,7 @@ public class MultiChoiceMode extends ViewAttribute<AbsListView, DynamicObject>
 	}
 
 	public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+		binder = new ListViewMultiChoiceActionModeBinder(getView().getContext(), mMenuId, mModel, mTitle);
 		if (binder!=null)
 			return binder.onCreateActionMode(mode, menu);
 		return false;

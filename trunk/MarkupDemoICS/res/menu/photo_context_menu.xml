@@ -7,7 +7,7 @@
         binding:title="CONCAT('Next Item Visible? ', ItemVisible)"
         android:showAsAction="always|withText" />
     <item android:id="@+id/share2"
-        android:title="toggle"
+        android:title="This item depends on ItemVisible"
         binding:visible="ItemVisible"
         android:showAsAction="always|withText" />
 </menu>

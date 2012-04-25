@@ -1,13 +1,17 @@
 package gueei.binding.v30.widget;
 
 import gueei.binding.Binder;
+import gueei.binding.ConstantObservable;
 import gueei.binding.IObservable;
+import gueei.binding.Observer;
+import gueei.binding.Utility;
 import gueei.binding.menu.AbsMenuBridge;
 import gueei.binding.menu.IMenuItemChangedCallback;
 import gueei.binding.menu.MenuGroupBridge;
 import gueei.binding.menu.MenuItemBridge;
 
 import java.io.IOException;
+import java.util.Collection;
 import java.util.Hashtable;
 
 import org.xmlpull.v1.XmlPullParserException;
@@ -28,19 +32,30 @@ public class ActionModeBinder implements ActionMode.Callback, IMenuItemChangedCa
 	private final Context mContext;
 	private final int mMenuResId;
 	private final Object mModel;
+	private IObservable<?> mTitleObservable; 
 	private ActionMode mActionMode;
 	private boolean invalidated = false;
 	
-	protected ActionModeBinder(Context context, int menuResId, Object model){
+	protected ActionModeBinder(Context context, int menuResId, Object model, IObservable<?> title){
 		mContext = context;
 		mMenuResId = menuResId;
 		mModel = model;
+		mTitleObservable = title;
+		if (title!=null)
+			title.subscribe(titleObserver);
+	}
+
+	public static ActionModeBinder startActionMode
+		(Activity activity, int menuResId, Object model, CharSequence title){
+		ActionModeBinder binder =  new ActionModeBinder(activity, menuResId, model, 
+				new ConstantObservable<CharSequence>(CharSequence.class, title));
+		activity.startActionMode(binder);
+		return binder;
 	}
 	
-	public static ActionModeBinder startActionMode(Activity activity, int menuResId, Object model){
-		ActionModeBinder binder =  new ActionModeBinder(activity, menuResId, model);
-		ActionMode mode = activity.startActionMode(binder);
-		
+	public static ActionModeBinder startActionMode(Activity activity, int menuResId, Object model, IObservable<?> title){
+		ActionModeBinder binder =  new ActionModeBinder(activity, menuResId, model, title);
+		activity.startActionMode(binder);
 		return binder;
 	}
 
@@ -53,6 +68,7 @@ public class ActionModeBinder implements ActionMode.Callback, IMenuItemChangedCa
 	}
 
 	public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+
 		mActionMode = mode;
 		
 		// First inflate the menu - default action
@@ -99,9 +115,14 @@ public class ActionModeBinder implements ActionMode.Callback, IMenuItemChangedCa
 
 	public void onDestroyActionMode(ActionMode mode) {
 		// Dispatch this... 
+		mActionMode = null;
 	}
 
 	public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+		if (titleChanged){
+			titleChanged = false;
+			mode.setTitle(Utility.evalValue(mTitleObservable, CharSequence.class));
+		}
 		if (invalidated){
 			invalidated = false;
 			for(AbsMenuBridge item: items.values()){
@@ -114,10 +135,22 @@ public class ActionModeBinder implements ActionMode.Callback, IMenuItemChangedCa
 
 	public void onItemChanged(IObservable<?> prop, AbsMenuBridge item) {
 		invalidated = true;
-		mActionMode.invalidate();
+		if (mActionMode!=null)
+			mActionMode.invalidate();
 	}
 	
 	public ActionMode getActionMode(){
 		return mActionMode;
 	}
+	
+	private boolean titleChanged = true;
+	private Observer titleObserver = new Observer(){
+		public void onPropertyChanged(IObservable<?> prop,
+				Collection<Object> initiators) {
+			if (mActionMode!=null){
+				titleChanged = true;
+				mActionMode.invalidate();
+			}
+		}
+	};
 }

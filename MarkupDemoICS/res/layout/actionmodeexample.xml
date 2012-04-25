@@ -3,7 +3,12 @@
     xmlns:binding="http://www.gueei.com/android-binding/"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:orientation="horizontal" >
+    android:orientation="vertical" >
+    <TextView 
+		android:layout_height="wrap_content"
+		android:layout_width="fill_parent"        
+        binding:text="HTML(@string/actionmode_example_desc)"
+        />
     <ListView 
 		android:layout_height="fill_parent"
 		android:layout_width="fill_parent"
@@ -11,6 +16,9 @@
         binding:itemSource="Locations"
         binding:itemTemplate="@layout/simple_list_item_multiple_choice"
         binding:modalCheckedItemPositions="CheckedItemPositions"
-        binding:multiChoiceMode="{menu=@menu/actionmodeexample_menu, model=.}"
+        binding:multiChoiceMode="
+        	{menu=@menu/actionmodeexample_menu, 
+        		model=., 
+        		title=FORMAT(@string/actionmode_example_title,CheckedItemCount)}"
     />
 </LinearLayout>

@@ -261,6 +261,8 @@ public final class R {
         public static final int view_demo=0x7f060050;
     }
     public static final class string {
+        public static final int actionmode_example_desc=0x7f0c0005;
+        public static final int actionmode_example_title=0x7f0c0006;
         public static final int app_name=0x7f0c0001;
         public static final int explain=0x7f0c0002;
         public static final int hello=0x7f0c0000;

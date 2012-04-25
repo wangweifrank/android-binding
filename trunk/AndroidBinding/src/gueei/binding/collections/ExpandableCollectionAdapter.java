@@ -1,20 +1,20 @@
 package gueei.binding.collections;
 
+import gueei.binding.CollectionChangedEventArg;
 import gueei.binding.CollectionObserver;
 import gueei.binding.IObservable;
 import gueei.binding.IObservableCollection;
 import gueei.binding.viewAttributes.templates.Layout;
+
+import java.util.Collection;
 import java.util.WeakHashMap;
+
 import android.content.Context;
 import android.os.Handler;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Adapter;
 import android.widget.BaseExpandableListAdapter;
-import gueei.binding.CollectionChangedEventArg;
-import gueei.binding.CollectionObserver;
-import gueei.binding.IObservableCollection;
 
 
 /**
@@ -121,7 +121,9 @@ public class ExpandableCollectionAdapter extends BaseExpandableListAdapter imple
 		return true;
 	}
 
-	public void onCollectionChanged(IObservableCollection<?> collection, CollectionChangedEventArg args) {
+	@Override
+	public void onCollectionChanged(IObservableCollection<?> collection,
+			CollectionChangedEventArg args, Collection<Object> initiators) {
 		mHandler.post(new Runnable() {
 			public void run() {
 				notifyDataSetChanged();

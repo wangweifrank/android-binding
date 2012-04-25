@@ -84,12 +84,13 @@ public class BindableTableLayout extends TableLayout implements IBindableView<Bi
 			return;
 
 		currentRowList = null;	
-		collectionObserver = new CollectionObserver() {			
-			@SuppressWarnings("unchecked")
+		collectionObserver = new CollectionObserver() {
 			@Override
-			public void onCollectionChanged(IObservableCollection<?> collection, CollectionChangedEventArg args) {
-				rowListChanged(args, (ObservableCollection<Object>)collection);
-			}
+			public void onCollectionChanged(
+					IObservableCollection<?> collection,
+					CollectionChangedEventArg args,
+					Collection<Object> initiators) {
+			}			
 		};
 		
 		rowList.subscribe(collectionObserver);

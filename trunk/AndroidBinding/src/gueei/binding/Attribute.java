@@ -129,6 +129,7 @@ public abstract class Attribute<Th, T> extends Observable<T> {
 			else if (prop==mBindedObservable){
 				mAttribute._setObject(prop.get(), initiators);
 				initiators.add(this);
+				initiators.add(Attribute.this);
 				notifyChanged(initiators);
 			}
 		}

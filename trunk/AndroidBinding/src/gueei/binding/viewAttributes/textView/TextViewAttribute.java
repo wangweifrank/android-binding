@@ -33,7 +33,10 @@ public class TextViewAttribute extends ViewAttribute<TextView, CharSequence> imp
 	private boolean compareCharSequence(CharSequence a, CharSequence b) {
 		boolean result = false;
 		if (a != null) {
-			result = a.equals(b);
+			if (b!=null)
+				result = a.toString().equals(b.toString());
+		}else{
+			if (b==null) result = true;
 		}
 		return result;
 	}
@@ -53,11 +56,7 @@ public class TextViewAttribute extends ViewAttribute<TextView, CharSequence> imp
 				suppressChange = true;
 				mValue = cloneCharSequence(nVal);
 				
-				if (getView() instanceof EditText && suppressSet) {
-					suppressSet = false;
-					return;
-				}				
-				getView().setText(cloneCharSequence(nVal));
+				getView().setTextKeepState(cloneCharSequence(nVal));
 			}
 		}
 	}

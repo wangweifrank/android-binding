@@ -3,7 +3,7 @@
 
 = Release History =
 
-== 0.4(coming soon) ==
+== 0.45 ==
 
  * [Referencing] to other widget's view attribute
  * Refined [CustomView] API. Not compatible to previous versions. 
@@ -65,10 +65,3 @@ issue:
 == 0.11 ==
 
  * initial release
-
-= Planned Updates =
-
-== Future ==
-
- * Helper class to 'parcel' the View Model
- * HeaderItem and FooterItem in AdapterView

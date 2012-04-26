@@ -4,6 +4,6 @@
     xmlns:binding="http://www.gueei.com/android-binding/"
 	android:layout_height="match_parent"
 	android:layout_width="match_parent"
-	binding:dataSource="DemoVm"
-	binding:layoutId="DemoLayout"
+	binding:dataSource="Demo.DemoVm"
+	binding:layoutId="Demo.DemoLayout"
 />

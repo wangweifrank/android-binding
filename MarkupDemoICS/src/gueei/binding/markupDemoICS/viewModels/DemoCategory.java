@@ -50,9 +50,7 @@ public class DemoCategory {
 			mContext.startActivity(intent);
 
 		}else{
-			Bundle bundle = new Bundle();
-			bundle.putString("Clazz", entry.ModelClassName.get());
-			bundle.putInt("Layout", entry.LayoutId.get());
+			Bundle bundle = ViewModelParceler.parcelViewModel(entry);
 			EventAggregator.getInstance(mContext)
 				.publish("ShowDemo", DemoCategory.this, bundle);
 		}

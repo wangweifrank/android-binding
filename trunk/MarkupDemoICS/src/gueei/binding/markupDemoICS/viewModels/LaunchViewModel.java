@@ -7,6 +7,7 @@ import gueei.binding.labs.EventAggregator;
 import gueei.binding.labs.EventSubscriber;
 import gueei.binding.markupDemoICS.R;
 import gueei.binding.observables.IntegerObservable;
+import gueei.binding.serialization.ViewModelParceler;
 import android.app.Activity;
 import android.content.res.XmlResourceParser;
 import android.os.Bundle;
@@ -23,11 +24,7 @@ public class LaunchViewModel {
 	public final ArrayListObservable<DemoCategory> Categories =
 			new ArrayListObservable<DemoCategory>(DemoCategory.class);
 
-	public final Observable<Object> CurrentViewModel = 
-			new Observable<Object>(Object.class);
-	
-	public final IntegerObservable CurrentLayout =
-			new IntegerObservable(0);
+	public final Observable<Object> Demo = new Observable<Object>(Object.class);
 	
 	public final Command CategorySelected = new Command(){
 		@Override
@@ -47,29 +44,15 @@ public class LaunchViewModel {
 				@Override
 				public void onEventTriggered(String eventName,
 						Object publisher, Bundle data) {
-					showDemo(data.getString("Clazz"), data.getInt("Layout", 0));
+					DemoEntry entry = new DemoEntry();
+					ViewModelParceler.restoreViewModel(data, entry);
+					showDemo(entry);
 				}
 			});
 	}
 	
-	private void showDemo(String demoClassName, int layout){
-		try {
-			Object vm = Class.forName(demoClassName).newInstance();
-			CurrentViewModel.set(vm);
-			CurrentLayout.set(layout);
-		} catch (InstantiationException e) {
-			try {
-				Object vm = Class.forName(demoClassName).getConstructor(Activity.class).newInstance(mContext);
-				CurrentViewModel.set(vm);
-				CurrentLayout.set(layout);
-			} catch (Exception e1) {
-				e1.printStackTrace();
-			}
-		} catch (IllegalAccessException e) {
-			e.printStackTrace();
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		}
+	private void showDemo(DemoEntry entry){
+		Demo.set(new ShowDemoViewModel(mContext, entry));
 	}
 	
 	private void parseDemos(){

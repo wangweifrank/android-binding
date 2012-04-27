@@ -44,4 +44,7 @@
     <category name="Animation">
         <entry name="Animation" vm=".AnimationTrigger" layout=".animationtrigger"/>
     </category>
+    <category name="Validation">
+        <entry name="Validation" vm="Validation" layout="validation"/>
+    </category>
 </demos>

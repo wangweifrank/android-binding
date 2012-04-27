@@ -167,8 +167,9 @@ public final class R {
         public static final int tabdemo=0x7f030050;
         public static final int textview=0x7f030051;
         public static final int textviewcustomfont=0x7f030052;
-        public static final int view=0x7f030053;
-        public static final int view_demo=0x7f030054;
+        public static final int validation=0x7f030053;
+        public static final int view=0x7f030054;
+        public static final int view_demo=0x7f030055;
     }
     public static final class menu {
         public static final int actionmodeexample_menu=0x7f0e0000;

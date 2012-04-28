@@ -20,7 +20,8 @@ public class BindingSyntaxResolver {
 	private static final Pattern converterPattern = 
 			Pattern.compile("^([$a-zA-Z0-9._]+)\\((.+(\\s*?,\\s*.+)*)?\\)", Pattern.DOTALL);
 	private static final Pattern dynamicObjectPattern = Pattern.compile("^\\{(.+)\\}$");
-	private static final Pattern stringPattern = Pattern.compile("^'(([^']|\\\\')*)'$");
+	//private static final Pattern stringPattern = Pattern.compile("^'(([^']|\\\\')*)'$");
+	//private static final Pattern doubleQuoteStringPattern = Pattern.compile("^\"(([^']|\\\\\")*)\"$");
 	private static final Pattern numberPattern = Pattern.compile("^(\\+|\\-)?[0-9]*(\\.[0-9]+)?$");
 	private static final Pattern resourcePattern = Pattern.compile("^@(([\\w\\.]+:)?(\\w+)/\\w+)$");
 	private static final Pattern referencePattern = Pattern.compile("^=@?((\\w+:)?(\\w+)/\\w+).(\\w+)$");
@@ -224,9 +225,14 @@ public class BindingSyntaxResolver {
 	}
 	
 	private static IObservable<?> matchString(String fieldName){
-		Matcher m = stringPattern.matcher(fieldName);
-		if (!m.matches()) return null;
-		return new StringObservable(m.group(1).replace("\\'", "'"));
+		//if (!stringPattern.matcher(fieldName).matches() && !doubleQuoteStringPattern.matcher(fieldName).matches()) return null;
+		if ((fieldName.startsWith("'") && fieldName.endsWith("'")) ||
+				(fieldName.startsWith("\"") && fieldName.endsWith("\"")))
+			return new ConstantObservable<String>(String.class, 
+					fieldName.substring(1, fieldName.length()-2)
+						.replace("\'", "'")
+						.replace("\\\"", "\""));
+		return null;
 	}
 	
 	private static IObservable<?> matchInteger(String fieldName){

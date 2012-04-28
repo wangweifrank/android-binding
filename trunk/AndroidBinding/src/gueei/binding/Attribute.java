@@ -70,7 +70,7 @@ public abstract class Attribute<Th, T> extends Observable<T> {
 		// Dirty fix
 		// Since for InnerFieldObservable, it may not know what type of it will be
 		// So, it assumes two way no matter what
-		if (prop instanceof InnerFieldObservable)
+		if (prop instanceof Undetermined)
 			binding = BindingType.TwoWay;
 		else
 			binding = AcceptThisTypeAs(prop.getType());

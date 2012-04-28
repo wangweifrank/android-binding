@@ -19,7 +19,7 @@ import java.util.Collection;
  *
  * @param <T>
  */
-public class InnerFieldObservable<T> implements IObservable<T> {
+public class InnerFieldObservable<T> implements IObservable<T>, Undetermined{
 	private WeakList<Observer> observers = new WeakList<Observer>();
 
 	private String mFieldPath;

@@ -229,7 +229,7 @@ public class BindingSyntaxResolver {
 		if ((fieldName.startsWith("'") && fieldName.endsWith("'")) ||
 				(fieldName.startsWith("\"") && fieldName.endsWith("\"")))
 			return new ConstantObservable<String>(String.class, 
-					fieldName.substring(1, fieldName.length()-2)
+					fieldName.substring(1, fieldName.length()-1)
 						.replace("\'", "'")
 						.replace("\\\"", "\""));
 		return null;

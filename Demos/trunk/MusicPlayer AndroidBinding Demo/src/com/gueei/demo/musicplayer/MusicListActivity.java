@@ -1,12 +1,21 @@
 package com.gueei.demo.musicplayer;
 
+import gueei.binding.Command;
+import gueei.binding.app.BindingActivity;
+import gueei.binding.collections.CursorCollection;
+import gueei.binding.cursor.FloatField;
+import gueei.binding.cursor.IRowModelFactory;
+import gueei.binding.cursor.IdField;
+import gueei.binding.cursor.RowModel;
+import gueei.binding.cursor.StringField;
+import gueei.binding.observables.BooleanObservable;
+import gueei.binding.observables.IntegerObservable;
 import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.database.Cursor;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.IBinder;
@@ -15,18 +24,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
-import com.gueei.android.binding.Binder;
-import com.gueei.android.binding.Command;
-import com.gueei.android.binding.DependentObservable;
-import com.gueei.android.binding.Observable;
-import com.gueei.android.binding.cursor.CursorObservable;
-import com.gueei.android.binding.cursor.CursorRowModel;
-import com.gueei.android.binding.cursor.CursorSource;
-import com.gueei.android.binding.cursor.FloatField;
-import com.gueei.android.binding.cursor.IdField;
-import com.gueei.android.binding.cursor.StringField;
 
-public class MusicListActivity extends Activity {
+public class MusicListActivity extends BindingActivity {
 	private MusicDb mDb;
 	private MusicListViewModel mViewModel;
     /** Called when the activity is first created. */
@@ -36,7 +35,7 @@ public class MusicListActivity extends Activity {
         Log.d("Binder", "OnCreate");
         mDb = new MusicDb(this);
         mViewModel = new MusicListViewModel(this);
-        Binder.setAndBindContentView(this, R.layout.main, mViewModel);
+        this.setAndBindRootView(R.layout.main, mViewModel);
         bindService(new Intent(this, MusicPlayerService.class), 
         		mConnection, Context.BIND_AUTO_CREATE);
     	mDb.open();
@@ -88,25 +87,26 @@ public class MusicListActivity extends Activity {
         	MusicList.setCursor(mDb.fetchAllEntries());
     	}
 
-    	public Observable<Boolean> IsPlaying = new Observable<Boolean>(Boolean.class, false);
-    	public Observable<Boolean> NotScanning = new Observable<Boolean>(Boolean.class, true);
-        public DependentObservable<String> ScanStatus = new DependentObservable<String>(String.class, NotScanning){
-    		@Override
-    		public String calculateValue(Object... args) {
-    			if ((Boolean)args[0])
-    				return "Scan for files";
-    			return "Scanning....";
-    		}
-        };
-        public CursorObservable<MusicRowModel> MusicList = 
-        	new CursorObservable<MusicRowModel>(MusicRowModel.class, 
-        			new CursorRowModel.Factory<MusicRowModel>() {
-						public MusicRowModel createRowModel(Context context) {
-							return new MusicRowModel();
+    	public BooleanObservable IsPlaying = new BooleanObservable(false);
+    	public BooleanObservable NotScanning = new BooleanObservable(true);
+
+    	public IntegerObservable Scanned = new IntegerObservable(0);
+    	
+    	public CursorCollection<MusicRowModel> MusicList = 
+        	new CursorCollection<MusicRowModel>(MusicRowModel.class, 
+        			new IRowModelFactory<MusicRowModel>(){
+						@Override
+						public MusicRowModel createInstance() {
+							return new MusicRowModel(MusicListActivity.this);
 						}
-			});
+        	});
         
-        public class MusicRowModel extends CursorRowModel{
+        public class MusicRowModel extends RowModel{
+        	private final Context mContext;
+        	public MusicRowModel(Context context){
+        		mContext = context;
+        	}
+        	
         	public final IdField Id = new IdField("_id");
         	public final StringField Title = new StringField("title");
         	public final StringField Artist = new StringField("artist");
@@ -114,9 +114,9 @@ public class MusicListActivity extends Activity {
         	
         	public Command Save = new Command(){
         		public void Invoke(View view, Object... args) {
-        			Toast.makeText(getContext(), "Saving " + Title.get(), Toast.LENGTH_SHORT).show();
+        			Toast.makeText(mContext, "Saving " + Title.get(), Toast.LENGTH_SHORT).show();
         			mDb.updateEntry(Id.get(), Title.get(), Rating.get(), Artist.get());
-        			getCursor().requery();
+        			MusicList.getCursor().requery();
         		}
         	};
         	
@@ -183,6 +183,7 @@ public class MusicListActivity extends Activity {
             		long id = musicCursor.getLong(0);
             		if (db.entryExists(id)) continue;
             		count++;
+            		this.publishProgress(count);
             		db.createEntry(id, musicCursor.getString(1), 3, musicCursor.getString(2));
             	}
             	musicCursor.close();
@@ -196,6 +197,16 @@ public class MusicListActivity extends Activity {
     	    	populateMusicList();
     	    	Toast.makeText(mActivity, "Added: " + result + " music", Toast.LENGTH_SHORT).show();
     		}
+
+			@Override
+			protected void onPreExecute() {
+				Scanned.set(0);
+			}
+
+			@Override
+			protected void onProgressUpdate(Integer... values) {
+				Scanned.set(values[0]);
+			}
         }
     }    
 }

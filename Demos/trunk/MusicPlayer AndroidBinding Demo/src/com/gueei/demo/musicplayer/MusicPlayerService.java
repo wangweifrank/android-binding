@@ -12,8 +12,6 @@ import android.os.Binder;
 import android.os.IBinder;
 import android.provider.MediaStore;
 
-import com.gueei.android.binding.Observable;
-
 public class MusicPlayerService extends Service {
 	public class MusicPlayerBinder extends Binder{
 		MusicPlayerService getMusicPlayer(){

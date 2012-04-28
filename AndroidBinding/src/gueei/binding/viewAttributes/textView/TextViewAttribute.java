@@ -53,7 +53,7 @@ public class TextViewAttribute extends ViewAttribute<TextView, CharSequence> imp
 				}
 			}
 			if (!compareCharSequence(nVal, mValue)) {				
-				suppressChange = true;
+				//suppressChange = true;
 				mValue = cloneCharSequence(nVal);
 				
 				getView().setTextKeepState(cloneCharSequence(nVal));

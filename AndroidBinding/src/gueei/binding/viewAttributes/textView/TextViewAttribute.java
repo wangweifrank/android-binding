@@ -12,7 +12,6 @@ import android.widget.TextView;
 public class TextViewAttribute extends ViewAttribute<TextView, CharSequence> implements TextWatcher {
 
 	private CharSequence mValue = null;
-	private boolean suppressSet = false;
 
 	public TextViewAttribute(TextView view, String attributeName) {
 		super(CharSequence.class, view, attributeName);
@@ -53,15 +52,12 @@ public class TextViewAttribute extends ViewAttribute<TextView, CharSequence> imp
 				}
 			}
 			if (!compareCharSequence(nVal, mValue)) {				
-				//suppressChange = true;
 				mValue = cloneCharSequence(nVal);
 				
 				getView().setTextKeepState(cloneCharSequence(nVal));
 			}
 		}
 	}
-
-	private boolean suppressChange = false;
 
 	public void afterTextChanged(Editable arg0) {
 	}
@@ -71,18 +67,11 @@ public class TextViewAttribute extends ViewAttribute<TextView, CharSequence> imp
 
 	public void onTextChanged(CharSequence arg0, int arg1, int arg2, int arg3) {
 		synchronized (this) {
-			//Log.i("BinderV30", "onTextChagnged, mV=" + mValue + "\t arg0=" + arg0);
 			if (compareCharSequence(mValue, arg0))
 				return;
-			if (!suppressChange) {
-				mValue = cloneCharSequence(arg0);
+			mValue = cloneCharSequence(arg0);
 
-				if (getView() instanceof EditText)
-					suppressSet = true;
-				
-				this.notifyChanged();
-			}
-			suppressChange = false;
+			this.notifyChanged();
 		}
 	}
 

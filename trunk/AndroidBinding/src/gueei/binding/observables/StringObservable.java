@@ -18,6 +18,6 @@ public class StringObservable extends Observable<String> {
 	public void _setObject(Object newValue,
 			Collection<Object> initiators) {
 		if (newValue!=null)
-			this.set(newValue.toString());
+			this.set(newValue.toString(), initiators);
 	}
 }

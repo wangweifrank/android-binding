@@ -136,11 +136,11 @@ public class BindingSyntaxResolver {
 		for(int i=0; i<count; i++){
 			if (chars[i]=='\''){
 				if (singleQuoteMode) singleQuoteMode=false;
-				else singleQuoteMode = true;
+				else if (!doubleQuoteMode) singleQuoteMode = true;
 			}
 			if (chars[i]=='"'){
-				if (singleQuoteMode) doubleQuoteMode=false;
-				else doubleQuoteMode = true;
+				if (doubleQuoteMode) doubleQuoteMode=false;
+				else  if (!singleQuoteMode) doubleQuoteMode = true;
 			}
 			if (chars[i]=='(') bracketCount++;
 			if (chars[i]==')') bracketCount--;

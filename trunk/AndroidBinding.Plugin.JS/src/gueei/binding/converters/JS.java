@@ -2,8 +2,11 @@ package gueei.binding.converters;
 
 import gueei.binding.BindingSyntaxResolver;
 import gueei.binding.Converter;
+import gueei.binding.DynamicObject;
 import gueei.binding.IObservable;
+import gueei.binding.IObservableCollection;
 import gueei.binding.Observer;
+import gueei.binding.Undetermined;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -13,7 +16,7 @@ import org.mozilla.javascript.Context;
 import org.mozilla.javascript.Scriptable;
 import org.mozilla.javascript.ScriptableObject;
 
-public class JS extends Converter<Object> {
+public class JS extends Converter<Object> implements Undetermined{
 	private ArrayList<IObservable<?>> observingScriptObjects =
 			new ArrayList<IObservable<?>>();
 	
@@ -24,10 +27,16 @@ public class JS extends Converter<Object> {
 	@Override
 	public Object calculateValue(Object... arg0) throws Exception {
 		if (arg0.length < 2) return null;
+		DynamicObject args;
+		if (arg0.length > 2 && arg0[2] instanceof DynamicObject){
+			args = (DynamicObject)arg0[2];
+		}else{
+			args = new DynamicObject();
+		}
 		for(IObservable<?> obs : observingScriptObjects){
 			obs.unsubscribe(ScriptObjectObserver);
 		}
-		return runScript(arg0[0], arg0[1].toString());
+		return runScript(arg0[0], args, arg0[1].toString());
 	}
 	
 	private Observer ScriptObjectObserver = new Observer(){
@@ -37,14 +46,14 @@ public class JS extends Converter<Object> {
 		}
 	};
 	
-	private Object runScript(Object vm, String script){
+	private Object runScript(Object vm, DynamicObject args, String script){
     	Context cx = Context.enter();
     	cx.setOptimizationLevel(-1);
     	try{
-	    	Scriptable scope = new ObservableScriptable(vm);
+    		ObservableScriptable scope = new ObservableScriptable(vm, args);
 	    	scope.setParentScope(cx.initStandardObjects());
 	    	Object result = cx.evaluateString(scope, script, "<cmd>", 1, null);
-	    	return result;
+	    	return evalResult(result);
     	}catch(Exception e){
     		return e;
     	}finally{
@@ -52,14 +61,27 @@ public class JS extends Converter<Object> {
     	}
     }
 	
+	private static Object evalResult(Object result){
+		if (result==null) return null;
+		if (result instanceof ObservableScriptable)
+			return ((ObservableScriptable)result).getVm();
+		return result;
+	}
+	
 	private class ObservableScriptable extends ScriptableObject{
 		/**
 		 * 
 		 */
 		private static final long serialVersionUID = 8607713699623612453L;
 		private final Object mVm;
-		public ObservableScriptable(Object vm){
+		private final DynamicObject mArgs;
+		public ObservableScriptable(Object vm, DynamicObject args){
 			mVm = vm;
+			mArgs = args;
+		}
+		
+		public Object getVm(){
+			return mVm;
 		}
 		
 		@Override
@@ -68,16 +90,45 @@ public class JS extends Converter<Object> {
 		}
 
 		@Override
-		public Object get(int arg0, Scriptable arg1) {
-			return super.get(arg0, arg1);
+		public Object get(int index, Scriptable arg1) {
+			Object local = super.get(index, arg1);
+			if (!local.equals(NOT_FOUND)) return local;
+			if (mVm instanceof IObservableCollection)
+				return getObject(((IObservableCollection<?>)mVm).getItem(index));
+			
+			return NOT_FOUND;
 		}
 
+		private Object getObject(Object value){
+			if (value==null) return null;
+			
+			if (value instanceof Number || value instanceof String || value instanceof Boolean)
+				return value;
+			
+			return new ObservableScriptable(value, null);
+		}
+		
 		@Override
 		public Object get(String arg0, Scriptable arg1) {
 			if (arg0.equals("$")) return new ConverterStatementScriptable(mVm);
 			
 			Object local = super.get(arg0, arg1);
 			if (!local.equals(NOT_FOUND)) return local;
+
+			if (mArgs!=null){
+				try {
+					IObservable<?> obs = mArgs.getObservableByName(arg0);
+					if (obs!=null){
+						Object value = obs.get();
+						//observingScriptObjects.add(obs);
+						//obs.subscribe(ScriptObjectObserver);
+
+						return getObject(value);
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
 			
 			IObservable<?> obs = 
 					BindingSyntaxResolver.constructObservableFromStatement(getContext(), arg0, mVm);
@@ -87,10 +138,7 @@ public class JS extends Converter<Object> {
 				observingScriptObjects.add(obs);
 				obs.subscribe(ScriptObjectObserver);
 
-				if (value instanceof Number || value instanceof String || value instanceof Boolean)
-					return value;
-				
-				return new ObservableScriptable(value);
+				return getObject(value);
 			}
 			
 			return NOT_FOUND;

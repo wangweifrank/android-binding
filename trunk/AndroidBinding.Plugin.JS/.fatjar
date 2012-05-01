@@ -1,14 +1,14 @@
 #Fat Jar Configuration File
-#Sun Apr 29 01:04:08 CST 2012
+#Sun Apr 29 08:40:52 CST 2012
 onejar.license.required=false
 manifest.classpath=
 manifest.removesigners=false
 onejar.checkbox=false
-jarname=android-binding.plugin.js.1.0.jar
+jarname=android.binding.js.1.0.jar
 manifest.mergeall=false
 manifest.mainclass=
 manifest.file=<createnew>
 jarname.isextern=false
 onejar.expand=
-excludes=<jar|android-binding-0.48.jar>;<jar|android.jar>
+excludes=<jar|android.jar>;<jar|android-binding-0.49.jar>
 includes=

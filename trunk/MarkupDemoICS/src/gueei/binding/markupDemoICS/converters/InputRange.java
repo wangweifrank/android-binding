@@ -26,7 +26,7 @@ public class InputRange extends Converter<CharSequence> {
 		outResult[2] = max;
 		
 		// Allow zero-length string
-		if (value!=null && value.toString().isEmpty()){
+		if (value!=null && value.toString().length() == 0){
 			outResult[0] = "";
 			return true;
 		}

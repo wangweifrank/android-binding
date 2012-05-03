@@ -22,7 +22,6 @@
     <category name="Simple Lists">
         <entry name="ArrayListAsListViewSource" vm=".ArrayListAsListViewSource" layout=".arraylistaslistviewsource"/>
         <entry name="SpinnerWithArraySource" vm=".SpinnerWithArraySource" layout=".spinnerwitharraysource"/>
-        <entry name="DependantSpinnersWithCursorSource" vm=".DependantSpinnersWithCursorSource" layout=".dependantspinnerswithcursorsource"/>
         <entry name="ListViewWithCursorSource" vm=".ListViewWithCursorSource" layout=".listviewwithcursorsource"/>
         <entry name="SingleChoiceList" vm=".SingleChoiceList" layout=".singlechoicelist"/>
         <entry name="MultipleChoiceList" vm=".MultipleChoiceList" layout=".multiplechoicelist"/>

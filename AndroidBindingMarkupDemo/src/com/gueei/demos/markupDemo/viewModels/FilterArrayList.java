@@ -14,6 +14,10 @@ public class FilterArrayList {
 	public final ArrayListObservable<String> ListFiltered =
 			new ArrayListObservable<String>(String.class);
 	
+	public FilterArrayList(){
+		ListFilter.get().filter("");
+	}
+	
 	public final Observable<Filter> ListFilter = new Observable<Filter>(Filter.class, new Filter(){
 		@Override
 		protected FilterResults performFiltering(CharSequence constraint) {

@@ -2,7 +2,7 @@
 <resources>
 
     <string name="hello">Hello World, Launch!</string>
-    <string name="app_name">MarkupDemoICS</string>
+    <string name="app_name">MarkupDemo</string>
     <string name="title_source">Source Code</string>
     <string name="title_actionbar">Action Bar</string>
 	<string-array name="action_list">

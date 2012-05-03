@@ -14,7 +14,9 @@
     		android:cacheColorHint="#00000000"
     		android:choiceMode="singleChoice"
     		binding:itemSource="Entries"
-    		binding:itemTemplate="@layout/demos_list_item"
+    		binding:itemTemplate="INJECT(@android:layout/simple_list_item_1, 
+    			{id=@android:id/text1, attr='text', statement='HTML(Name)'}
+    		)"
     		binding:checkedItemPosition="SelectedDemoPosition"
     		binding:onItemClicked="ARG(ShowDemo, =id/demo_listview.clickedItem)"
     		/>

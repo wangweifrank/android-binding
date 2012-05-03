@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <demos>
+    <category name="HC/ICS features">
+        <entry name="Action Mode" vm="ActionMode" layout="actionmode"/>
+        <entry name="Action Mode In ListView Example" vm="ActionModeExample" layout="actionmodeexample"/>
+    </category>
     <category name="Layouts">
         <entry name="&lt;i&gt;Bindable&lt;/i&gt;FrameLayout" vm=".BindableFrameLayout" layout=".bindableframelayout"/>
         <entry name="&lt;i&gt;Bindable&lt;/i&gt;LinearLayout" vm=".BindableLinearLayout" layout=".bindablelinearlayout"/>

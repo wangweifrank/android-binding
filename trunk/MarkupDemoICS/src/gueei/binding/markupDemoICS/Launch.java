@@ -9,6 +9,6 @@ public class Launch extends BindingActivityV30 {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         LaunchViewModel vm = new LaunchViewModel(this);
-        this.bind(R.xml.main_metadata, vm);
+        this.inflateAndBind(R.xml.main_metadata, vm);
     }
 }

@@ -18,6 +18,8 @@ public class InputRange extends Converter<CharSequence> {
 
 	@Override
 	public boolean ConvertBack(Object value, Object[] outResult) {
+		boolean needChange = false;
+		
 		Integer min = Integer.parseInt(this.mDependents[1].get().toString());
 		Integer max = Integer.parseInt(this.mDependents[2].get().toString());
 		outResult[1] = min;
@@ -39,12 +41,17 @@ public class InputRange extends Converter<CharSequence> {
 
 		if (val>max){
 			val = max;
+			needChange = true;
 		}
 		else if (val<min){
 			val = min;
+			needChange = true;
 		}
 		
 		outResult[0] = val.toString();
+		if (needChange){
+			this.set(val.toString());
+		}
 		
 		return true;
 	}

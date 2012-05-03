@@ -6,6 +6,7 @@ import gueei.binding.DynamicObject;
 import gueei.binding.IObservable;
 import gueei.binding.Observer;
 import gueei.binding.ViewAttribute;
+import gueei.binding.exception.AttributeNotDefinedException;
 import gueei.binding.v30.listeners.MultiChoiceModeListenerMulticast;
 import gueei.binding.v30.widget.ActionModeBinder;
 
@@ -27,6 +28,14 @@ public class MultiChoiceMode extends ViewAttribute<AbsListView, DynamicObject>
 	
 	public MultiChoiceMode(AbsListView view) {
 		super(DynamicObject.class, view, "multiChoiceMode");
+		Binder.getMulticastListenerForView(view, MultiChoiceModeListenerMulticast.class)
+			.register(this);
+		try {
+			Binder.getAttributeForView(view, "modalCheckedItemPositions")
+				.subscribe(checkedItemPositionsWatcher);
+		} catch (AttributeNotDefinedException e) {
+			e.printStackTrace();
+		}
 	}
 
 	@Override
@@ -36,11 +45,6 @@ public class MultiChoiceMode extends ViewAttribute<AbsListView, DynamicObject>
 			mMenuId = (Integer)obj.getObservableByName("menu").get();
 			mModel = obj.getObservableByName("model").get();
 			mTitle = obj.getObservableByName("title");
-			
-			Binder.getMulticastListenerForView(getView(), MultiChoiceModeListenerMulticast.class)
-				.register(this);
-			Binder.getAttributeForView(getView(), "modalCheckedItemPositions")
-				.subscribe(checkedItemPositionsWatcher);
 		} catch (Exception e) {
 			BindingLog.warning("MultiChoiceMode", "Dynamic Object format error; it should be {menu, model}");
 		}

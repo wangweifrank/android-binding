@@ -49,15 +49,7 @@ public class ViewFactory implements Factory {
 	}
 	
 	protected void createBindingMapForView(View view, AttributeSet attrs){
-		BindingMap map = new BindingMap();
-		int count = attrs.getAttributeCount();
-		for(int i=0; i<count; i++){
-			String attrName = attrs.getAttributeName(i);
-			String attrValue = attrs.getAttributeValue(Binder.BINDING_NAMESPACE, attrName);
-			if (attrValue!=null){
-				map.put(attrName, attrValue);
-			}
-		}
+		BindingMap map = Utility.createBindingMap(attrs);
 
 		// Only save those with binding attributes
 		if (!map.isEmpty()){

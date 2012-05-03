@@ -92,7 +92,7 @@ public class CollectionAdapter extends BaseAdapter implements CollectionObserver
 		return mCollection.getItemId(position);
 	}
 
-	private View getView(int position, View convertView, ViewGroup parent, int layoutId) {
+	private View getView(int position, View convertView, ViewGroup parent, Layout layout) {
 		View returnView = convertView;
 		if (position >= mCollection.size())
 			return returnView;
@@ -109,7 +109,9 @@ public class CollectionAdapter extends BaseAdapter implements CollectionObserver
 			}
 
 			if ((convertView == null) || ((mapper = getAttachedMapper(convertView)) == null)) {
-				Binder.InflateResult result = Binder.inflateView(mContext, layoutId, parent, false);
+				Binder.InflateResult result = 
+						Binder.inflateView(mContext, layout.getLayoutId(position), parent, false);
+				layout.onAfterInflate(result);
 				ItemViewEventMark mark = new ItemViewEventMark(parent, position, mCollection.getItemId(position));
 				EventMarkerHelper.mark(result.rootView, mark);
 				mapper = new ObservableMapper();
@@ -138,11 +140,11 @@ public class CollectionAdapter extends BaseAdapter implements CollectionObserver
 
 	@Override
 	public View getDropDownView(int position, View convertView, ViewGroup parent) {
-		return getView(position, convertView, parent, mDropDownLayout.getLayoutId(position));
+		return getView(position, convertView, parent, mDropDownLayout);
 	}
 
 	public View getView(int position, View convertView, ViewGroup parent) {
-		return getView(position, convertView, parent, mLayout.getLayoutId(position));
+		return getView(position, convertView, parent, mLayout);
 	}
 
 	private ObservableMapper getAttachedMapper(View convertView) {

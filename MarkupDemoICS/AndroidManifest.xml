@@ -1,15 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="gueei.binding.markupDemoICS"
-    android:versionCode="2"
-    android:versionName="v0.6pre" >
+    android:versionCode="3"
+    android:versionName="v0.6pre2" >
 
-    <uses-sdk android:minSdkVersion="14" />
+    <uses-sdk android:minSdkVersion="8" android:targetSdkVersion="14"/>
     <uses-permission android:name="android.permission.READ_CONTACTS"/>
 
     <application
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name" android:name="gueei.binding.markupDemoICS.MarkupDemoApplication" android:uiOptions="splitActionBarWhenNarrow">
+        <provider android:authorities="com.gueei.demos"
+				  android:name="com.gueei.demos.markupDemo.contentProvider.mdContentProvider"/>
         <activity
             android:label="@string/app_name"
             android:name=".Launch" >

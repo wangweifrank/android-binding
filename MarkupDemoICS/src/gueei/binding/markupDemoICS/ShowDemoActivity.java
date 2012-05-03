@@ -4,10 +4,8 @@ import gueei.binding.Command;
 import gueei.binding.Observable;
 import gueei.binding.markupDemoICS.viewModels.DemoEntry;
 import gueei.binding.markupDemoICS.viewModels.ShowDemoViewModel;
-import gueei.binding.observables.IntegerObservable;
 import gueei.binding.serialization.ViewModelParceler;
 import gueei.binding.v30.app.BindingActivityV30;
-import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
 
@@ -32,8 +30,8 @@ public class ShowDemoActivity extends BindingActivityV30 {
 	    ViewModelParceler.restoreViewModel(entryBundle, entry);
 	    
 	    Demo.set(new ShowDemoViewModel(this, entry));
-	    
-	    this.bind(R.xml.showdemo_metadata, this);
+
+	    this.inflateAndBind(R.xml.showdemo_metadata, this);
 	}
 
 	

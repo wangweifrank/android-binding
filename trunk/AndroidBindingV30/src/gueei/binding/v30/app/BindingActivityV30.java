@@ -1,26 +1,22 @@
 package gueei.binding.v30.app;
 
+import gueei.binding.AttributeBinder;
 import gueei.binding.Binder;
 import gueei.binding.Binder.InflateResult;
-import gueei.binding.BindingSyntaxResolver;
-import gueei.binding.IObservable;
-import gueei.binding.Observer;
+import gueei.binding.BindingLog;
 import gueei.binding.Utility;
 import gueei.binding.app.BindingActivity;
+import gueei.binding.app.rootView.BindableRootView;
 import gueei.binding.labs.EventAggregator;
 import gueei.binding.labs.EventSubscriber;
-import gueei.binding.menu.OptionsMenuBinder;
-import gueei.binding.v30.ActivityBinder;
+import gueei.binding.menu.BindableOptionsMenu;
 import gueei.binding.v30.BinderV30;
 import gueei.binding.v30.actionbar.BindableActionBar;
-
-import java.io.IOException;
-import java.util.Collection;
-
-import org.xmlpull.v1.XmlPullParserException;
-
 import android.content.res.XmlResourceParser;
+import android.os.Build;
+import android.os.Build.VERSION;
 import android.os.Bundle;
+import android.util.Xml;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -35,17 +31,17 @@ import android.view.View;
  *
  */
 public class BindingActivityV30 extends BindingActivity {
-	private OptionsMenuBinder mMenuBinder;
-	private BindableActionBar mBindableActionBar;
+	protected BindableOptionsMenu mBindableOptionsMenu;
+	protected BindableActionBar mBindableActionBar;
+	protected View mBindableRootView;
 	
-	private IObservable<?> optionsMenu_source, optionsMenu_id;
-	private Observer optionsMenuSourceObserver = new Observer(){
+/*	private Observer optionsMenuSourceObserver = new Observer(){
 		public void onPropertyChanged(IObservable<?> prop,
 				Collection<Object> initiators) {
 			rebindOptionsMenu();
 		}
 	};
-	
+*/	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -57,7 +53,7 @@ public class BindingActivityV30 extends BindingActivity {
 		});
 	}
 
-	private void rebindOptionsMenu(){
+/*	private void rebindOptionsMenu(){
 		if (optionsMenu_source==null || optionsMenu_id==null)
 			return;
 		if (!(optionsMenu_id.get() instanceof Integer)) return;
@@ -67,51 +63,88 @@ public class BindingActivityV30 extends BindingActivity {
 		else
 			this.setAndBindOptionsMenu((Integer)optionsMenu_id.get(), optionsMenu_source);
 	}
-	
-	/**
-	 * Bind this Activity to the provided metadata file. 
-	 * @param xmlId XML Metadata file
-	 * @param model Root View Model
-	 */
-	protected void bind(int xmlId, Object model){
-		bindActionBar(xmlId, model);
-		
+*/	
+	protected boolean inflate(int xmlId){
 		XmlResourceParser parser = getResources().getXml(xmlId);
 		try{
 			int eventType= parser.getEventType();
 			while(eventType != XmlResourceParser.END_DOCUMENT){
 				if (eventType == XmlResourceParser.START_TAG){
-					if (parser.getName().equals("optionsMenu")){
-						// Bind Options Menu
-						String source = parser.getAttributeValue(Binder.BINDING_NAMESPACE, "dataSource");
-						String id = parser.getAttributeValue(Binder.BINDING_NAMESPACE, "menu");
-
-						optionsMenu_source = 
-								BindingSyntaxResolver.constructObservableFromStatement(this, source, model);
-						optionsMenu_id = 
-								BindingSyntaxResolver.constructObservableFromStatement(this, id, model);
-
-						optionsMenu_source.subscribe(optionsMenuSourceObserver);
-						optionsMenu_id.subscribe(optionsMenuSourceObserver);
-						
-						rebindOptionsMenu();
+					String tagName = parser.getName().toLowerCase();
+					if (tagName.equals("optionsmenu")){
+						mBindableOptionsMenu = this.createBindableOptionsMenu();
+						Binder.putBindingMapToView(mBindableOptionsMenu, 
+								Utility.createBindingMap(Xml.asAttributeSet(parser)));
 					}
-					if (parser.getName().equals("rootView")){
-						// Bind Root View
-						String layout = parser.getAttributeValue(null, "layout");
-						this.setAndBindRootView(Utility.resolveLayoutResource(layout, this), model);
+					else if (tagName.equals("rootview")){
+						mBindableRootView = this.createBindableRootView();
+						Binder.putBindingMapToView((View)mBindableRootView, 
+								Utility.createBindingMap(Xml.asAttributeSet(parser)));
+					}else if (tagName.equals("actionbar")){
+						mBindableActionBar = createBindableActionBar();
+						Binder.putBindingMapToView(mBindableActionBar, 
+								Utility.createBindingMap(Xml.asAttributeSet(parser)));
 					}
 				}
 				eventType = parser.next();
 			}
-		}catch(XmlPullParserException e){
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
+		}catch(Exception e){
+			BindingLog.exception("BindingActivityV30", new Exception("Problem with the Activity XML file", e));
+			return false;
+		}
+		return true;
+	}
+
+	/**
+	 * Hook to allow custom action bar
+	 * @return
+	 */
+	protected BindableActionBar createBindableActionBar() {
+		if (VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB || this.getActionBar()==null)
+			return null;
+		return new BindableActionBar(this);
+	}
+	
+	protected View createBindableRootView() {
+		return new BindableRootView(this);
+	}
+
+	protected BindableOptionsMenu createBindableOptionsMenu() {
+		return new BindableOptionsMenu(this);
+	}
+
+	protected void bindActionBar(Object model){
+		if (mBindableActionBar == null) return;
+		AttributeBinder.getInstance().bindView(this, mBindableActionBar, model);
+	}
+
+	protected void bindOptionsMenu(Object model){
+		if (mBindableOptionsMenu == null) return;
+		AttributeBinder.getInstance().bindView(this, mBindableOptionsMenu, model);
+	}
+
+	protected void bindRootView(Object model){
+		if (mBindableRootView == null) return;
+		AttributeBinder.getInstance().bindView(this, (View)mBindableRootView, model);
+	}
+	
+	/**
+	 * Shortcut method to inflate the Activity xml, bind everything and set them up
+	 * @param xmlId
+	 * @param model
+	 */
+	protected void inflateAndBind(int xmlId, Object model){
+		if (inflate(xmlId)){
+			bindOptionsMenu(model);
+			// Options menu must go first or else the create will have problem
+			bindActionBar(model);
+			bindRootView(model);
+			setContentView(mBindableRootView);
 		}
 	}
 	
 	@Override
+	@Deprecated
 	protected View setAndBindRootView(int layoutId, Object... contentViewModel) {
 		if (getRootView()!=null){
 			throw new IllegalStateException("Root view is already created");
@@ -126,18 +159,13 @@ public class BindingActivityV30 extends BindingActivity {
 	}
 	
 	@Override
-	protected void setAndBindOptionsMenu(int menuId, Object menuViewModel) {
-		super.setAndBindOptionsMenu(menuId, menuViewModel);
-	}
-
-	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		return super.onCreateOptionsMenu(menu);
+		return mBindableOptionsMenu.onCreateOptionsMenu(menu);
 	}
 
 	@Override
 	public boolean onPrepareOptionsMenu(Menu menu) {
-		return super.onPrepareOptionsMenu(menu);
+		return mBindableOptionsMenu.onPrepareOptionsMenu(menu);
 	}
 
 	@Override
@@ -146,15 +174,6 @@ public class BindingActivityV30 extends BindingActivity {
 			EventAggregator.getInstance(this).publish("Clicked(android.R.id.home)", this, null);
 			return true;
 		}
-		return super.onOptionsItemSelected(item);
-	}
-
-	protected void bindActionBar(int xmlId, Object model){
-		mBindableActionBar = ActivityBinder.inflateActionBar(this, xmlId);
-        ActivityBinder.BindActionBar(this, mBindableActionBar, model);
-	}
-	
-	public BindableActionBar getBindableActionBar(){
-		return mBindableActionBar;
+		return mBindableOptionsMenu.onOptionsItemSelected(item);
 	}
 }

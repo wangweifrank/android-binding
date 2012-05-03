@@ -10,6 +10,7 @@ import gueei.binding.v30.bindingProviders.ViewProviderV30;
 import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
+import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -59,6 +60,9 @@ public class BinderV30 extends gueei.binding.Binder {
 	 * @return Inflate Result. 
 	 */
 	public static InflateResult inflateView(Context context, int layoutId, ViewGroup parent, boolean attachToRoot){
+		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB)
+			return Binder.inflateView(context, layoutId, parent, attachToRoot);
+		
 		LayoutInflater inflater = LayoutInflater.from(context).cloneInContext(context);
 		ViewFactoryV30 factory = new ViewFactoryV30(inflater);
 		inflater.setFactory2(factory);

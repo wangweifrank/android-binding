@@ -4,8 +4,8 @@ import gueei.binding.Binder;
 import gueei.binding.BindingType;
 import gueei.binding.ViewAttribute;
 import gueei.binding.v30.actionbar.BindableActionBar;
+import android.app.ActionBar;
 import android.app.ActionBar.OnNavigationListener;
-import android.util.Log;
 import android.widget.Adapter;
 import android.widget.SpinnerAdapter;
 
@@ -20,7 +20,8 @@ public class ListNavigationAdapter extends ViewAttribute<BindableActionBar, Spin
 	@Override
 	protected void doSetAttributeValue(Object newValue) {
 		if (newValue instanceof SpinnerAdapter){
-			getHost().getActionBar().setListNavigationCallbacks((SpinnerAdapter)newValue, 
+			ActionBar bar = getHost().getActionBar();
+			bar.setListNavigationCallbacks((SpinnerAdapter)newValue, 
 					new NavigationListener());
 			mAdapter = (SpinnerAdapter)newValue;
 		}

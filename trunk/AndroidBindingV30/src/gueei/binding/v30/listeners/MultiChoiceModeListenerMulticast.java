@@ -6,6 +6,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AbsListView;
+import android.widget.AbsListView.MultiChoiceModeListener;
 
 public class MultiChoiceModeListenerMulticast extends ViewMulticastListener<AbsListView.MultiChoiceModeListener> 
 	implements AbsListView.MultiChoiceModeListener {
@@ -48,4 +49,11 @@ public class MultiChoiceModeListenerMulticast extends ViewMulticastListener<AbsL
 			l.onItemCheckedStateChanged(mode, position, id, checked);
 		}
 	}
+
+	@Override
+	public void register(MultiChoiceModeListener listener) {
+		super.register(listener);
+	}
+	
+	
 }

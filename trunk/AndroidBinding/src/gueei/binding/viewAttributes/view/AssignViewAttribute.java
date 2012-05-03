@@ -38,7 +38,10 @@ public class AssignViewAttribute extends ViewAttribute<View, DynamicObject> {
 					prop._setObject(val.get(), initiators);
 				}
 			});
-			prop._setObject(val.get(), new ArrayList<Object>());
+			ArrayList<Object> initiators = new ArrayList<Object>();
+			initiators.add(this);
+			initiators.add(value);
+			prop._setObject(val.get(), initiators);
 		}catch(Exception e){}
 	}
 

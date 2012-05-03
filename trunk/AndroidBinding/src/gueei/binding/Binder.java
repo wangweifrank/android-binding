@@ -98,6 +98,9 @@ public class Binder {
 	}
 	
 	public static BindingMap getBindingMapForView(View view){
+		if (!getViewTag(view).containsKey(BindingMap.class)){
+			putBindingMapToView(view, new BindingMap());
+		}
 		return getViewTag(view).get(BindingMap.class);
 	}
 	

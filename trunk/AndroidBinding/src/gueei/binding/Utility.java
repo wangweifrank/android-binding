@@ -3,8 +3,22 @@ package gueei.binding;
 import java.lang.reflect.Field;
 
 import android.content.Context;
+import android.util.AttributeSet;
 
 public class Utility {
+	public static BindingMap createBindingMap(AttributeSet attrs){
+		BindingMap map = new BindingMap();
+		int count = attrs.getAttributeCount();
+		for(int i=0; i<count; i++){
+			String attrName = attrs.getAttributeName(i);
+			String attrValue = attrs.getAttributeValue(Binder.BINDING_NAMESPACE, attrName);
+			if (attrValue!=null){
+				map.put(attrName, attrValue);
+			}
+		}
+		return map;
+	}
+
 	public static Object getFieldForModel(String fieldName, Object model){
 		try{
 			if (model instanceof IPropertyContainer){

@@ -40,6 +40,7 @@ public class DynamicObject extends Observable<DynamicObject> implements IPropert
 	@Override
 	public void onPropertyChanged(IObservable<?> prop,
 			Collection<Object> initiators) {
+		initiators.add(this);
 		this.notifyChanged(initiators);
 	}
 }

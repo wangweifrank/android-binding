@@ -1,7 +1,6 @@
 package gueei.binding;
 
 import gueei.binding.observables.IntegerObservable;
-import gueei.binding.observables.StringObservable;
 import gueei.binding.viewAttributes.templates.Layout;
 import gueei.binding.viewAttributes.templates.SingleTemplateLayout;
 
@@ -256,13 +255,12 @@ public class BindingSyntaxResolver {
 		
 		if ("layout".equals(typeName))
 			return new ConstantObservable<Layout>(Layout.class, new SingleTemplateLayout(id));
+		if("id".equals(typeName))
+			return new ConstantObservable<Integer>(Integer.class, id);
 		
 		TypedValue outValue = new TypedValue();
 		context.getResources().getValue(id, outValue, true);
 
-		// No idea why id will return TYPE_INT_BOOLEAN instead of TYPE_INT. 
-		if ("id".equals(typeName))
-			return new ConstantObservable<Integer>(Integer.class, outValue.data);
 		if (typeName.startsWith("drawable")||typeName.startsWith("anim")||typeName.startsWith("menu")||typeName.startsWith("raw"))
 			return new ConstantObservable<Integer>(Integer.class, id);
 		

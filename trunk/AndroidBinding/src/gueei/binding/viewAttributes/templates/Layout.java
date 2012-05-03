@@ -1,5 +1,7 @@
 package gueei.binding.viewAttributes.templates;
 
+import gueei.binding.Binder.InflateResult;
+
 public abstract class Layout {
 	private int mDefaultId = -1;
 	
@@ -20,4 +22,10 @@ public abstract class Layout {
 	public abstract int getLayoutId(int pos);
 	
 	public abstract int getTemplateCount();
+	
+	/**
+	 * Provide a hook for injecting additional binding attributes to the view
+	 * @param root
+	 */
+	public void onAfterInflate(InflateResult result){}
 }

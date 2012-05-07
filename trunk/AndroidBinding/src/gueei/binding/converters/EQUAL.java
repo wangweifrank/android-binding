@@ -4,10 +4,16 @@ import gueei.binding.Converter;
 import gueei.binding.IObservable;
 
 /**
- * TwoWayDependentObservable to perform Equal operation. 
- * Accepts two arguments only and return the Equals operation on A to B
- * @author andy
- *
+ * Converter to perform EQUAL operation. <br/>
+ * It accepts 2 arguments, and perform Object.equals() on them <br/>
+ * Note if both arguments are null, it returns true
+ * 
+ * @usage arg1 arg2
+ * 
+ * @arg arg1 Object
+ * @arg arg2 Object
+ * 
+ * @return boolean
  */
 public class EQUAL extends Converter<Boolean> {
 

@@ -3,6 +3,15 @@ package gueei.binding.converters;
 import gueei.binding.Converter;
 import gueei.binding.IObservable;
 
+/**
+ * Constant converter that always returns null
+ * @usage
+ * 
+ * @return null
+ * 
+ * @author andy
+ *
+ */
 public class NULL extends Converter<Object> {
 
 	public NULL(IObservable<?>[] dependents) {

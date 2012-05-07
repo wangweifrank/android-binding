@@ -6,7 +6,21 @@ import gueei.binding.Converter;
 import gueei.binding.IObservable;
 
 /**
- * Command with custom arguments
+ * Passing extra arguments to command.
+ * Since command's invoke is invoke(View, args), by using this, it will shift the original args to right, 
+ * so that the extra arguments supplied will always be the first few arguments when command is invoked. <br/>
+ * For example, if you bind onChecked="Fire", your Fire command will receive (View, boolean) 
+ * (the same as http://developer.android.com/reference/android/widget/CompoundButton.OnCheckedChangeListener.html) <br/>
+ * But if you bind onChecked="ARG(Fire, 1, 2)", you will receive (View, integer, integer, boolean) in the invoke <br/>
+ * You can supply any number of extra arguments
+ * 
+ * @usage command arg ...
+ * 
+ * @arg command gueei.binding.Command
+ * @arg arg Object
+ * 
+ * @return command gueei.binding.Command
+ * 
  * @author andytsui
  *
  */

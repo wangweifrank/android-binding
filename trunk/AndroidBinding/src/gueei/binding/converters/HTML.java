@@ -4,11 +4,14 @@ import gueei.binding.IObservable;
 import android.text.Html;
 import android.text.Spanned;
 
-
 /**
- * Styles, Convert HTML Charsequence into Styled Spanned. 
- * Takes only one argument
- * If input is already a span, it will be ignored
+ * Concat, Styles and Convert HTML Charsequences into Styled Spanned. 
+ * 
+ * @usage str str ...
+ * 
+ * @arg str String If supplied Object, it will call Object.toString()
+ * 
+ * @return android.text.Spanned formatted with HTML tags in string
  */
 public class HTML extends CONCAT {
 	public HTML(IObservable<?>[] dependents) {

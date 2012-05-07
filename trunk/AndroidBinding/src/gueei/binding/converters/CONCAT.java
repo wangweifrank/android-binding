@@ -4,7 +4,17 @@ import gueei.binding.Converter;
 import gueei.binding.IObservable;
 import android.text.SpannableStringBuilder;
 
-
+/**
+ * CONCAT the given strings to one string
+ * 
+ * @usage str str ...
+ * 
+ * @arg str String
+ * 
+ * @return String
+ * @author andy
+ *
+ */
 public class CONCAT extends Converter<CharSequence> {
 
 	public CONCAT(IObservable<?>[] dependents) {

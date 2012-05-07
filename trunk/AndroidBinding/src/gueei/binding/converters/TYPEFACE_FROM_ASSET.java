@@ -4,6 +4,14 @@ import android.graphics.Typeface;
 import gueei.binding.Converter;
 import gueei.binding.IObservable;
 
+/**
+ * Get type face from asset folder
+ *  
+ * @usage type_name
+ * @arg type_name String Name of the typeface
+ * 
+ * @return android.graphics.Typeface
+ */
 public class TYPEFACE_FROM_ASSET extends Converter<Typeface> {
 
 	public TYPEFACE_FROM_ASSET(IObservable<?>[] dependents) {

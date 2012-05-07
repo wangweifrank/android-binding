@@ -7,9 +7,15 @@ import gueei.binding.viewAttributes.templates.Layout;
 import android.widget.Adapter;
 
 /**
- * SECTION
- * @author andy
- *
+ * Returns a Single Item Adapter (SingletonAdapter) for the given object. <br/>
+ * This is most useful as declaring header/footer templates for list views, or as divider to divide list in sections
+ * 
+ * @usage object layout
+ * @arg object Object 
+ * @arg layout gueei.binding.viewAttributes.templates.Layout
+ * 
+ * @return Adapter
+ * 
  */
 public class SECTION extends Converter<Adapter> {
 	public SECTION(IObservable<?>[] dependents) {

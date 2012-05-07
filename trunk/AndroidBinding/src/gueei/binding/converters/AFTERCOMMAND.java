@@ -6,6 +6,20 @@ import gueei.binding.Converter;
 import gueei.binding.IObservable;
 import gueei.binding.viewAttributes.view.AnimationTrigger;
 
+/**
+ * Trigger the provided animation after the command is executed. 
+ * This is NOT compatible with the newer Property-based animation
+ * 
+ * @usage animationId command condition
+ * 
+ * @arg animationId integer, specify by "@anim/animation"
+ * @arg command gueei.binding.Command
+ * @arg @optional condition boolean
+ * 
+ * @return gueei.binding.viewAttributes.view.AnimationTrigger
+ * @author andy
+ *
+ */
 public class AFTERCOMMAND extends Converter<AnimationTrigger> implements CommandListener {
 	AnimationTrigger mTrigger = new AnimationTrigger();
 	Command mCommand;

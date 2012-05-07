@@ -3,10 +3,16 @@ package gueei.binding.converters;
 import gueei.binding.Converter;
 import gueei.binding.IObservable;
 
-/* IF takes three arguments, 
- * Argument1: Test condition, must be Boolean
- * Argument2: Output if the condition is true
- * Argument3: Output when condition is false
+/**
+ * Test the condition, if the condition is true, return arg_if_true, or else return arg_if_false
+ * 
+ * @usage condition arg_if_true arg_if_false
+ * 
+ * @arg condition boolean
+ * @arg arg_if_true Object
+ * @arg arg_if_false Object
+ * 
+ * @return boolean
  */
 
 public class IF extends Converter<Object> {
@@ -19,7 +25,7 @@ public class IF extends Converter<Object> {
 	public Object calculateValue(Object... args) throws Exception {
 		if (args.length<3) return null;		
 		if (args[0] == null) return null;		
-		if ((Boolean)args[0]){
+		if (Boolean.TRUE.equals(args[0])){
 			return args[1];
 		}else{
 			return args[2];

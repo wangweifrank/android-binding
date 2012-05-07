@@ -4,9 +4,15 @@ import gueei.binding.Converter;
 import gueei.binding.IObservable;
 
 /**
- * TwoWayDependentObservable to perform NOT operation. Only accepts one argument and boolean for two-way conversion
- * @author andy
- *
+ * Converter to perform logical NOT operation.
+ * It allows 1 argument only, and it should be in type boolean
+ * 
+ * @usage arg
+ * 
+ * @arg arg boolean
+ * 
+ * @return boolean
+ *  
  */
 public class NOT extends Converter<Boolean> {
 

@@ -8,9 +8,12 @@ import gueei.binding.collections.CombinedAdapter;
 import android.widget.Adapter;
 
 /**
- * STITCH adapters to supply to list view
- * @author andy
- *
+ * STITCH multiple adapters to one adapter for used in List Views. <br/>
+ * 
+ * @usage adapter adapter ...
+ * @arg adapter android.widget.Adapter
+ *  
+ * @return android.widget.Adapter
  */
 public class STITCH extends Converter<Adapter>{
 	public STITCH(IObservable<?>[] dependents) {

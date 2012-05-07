@@ -4,6 +4,21 @@ import gueei.binding.Converter;
 import gueei.binding.IObservable;
 import gueei.binding.viewAttributes.templates.Layout;
 
+/**
+ * Alternate Layout Template.  <br/>
+ * You can supply more than one templates to it, and it will output them alternatively, according to position <br/>
+ * For example, if you provide 3 templates to it, binding:itemTemplate="ALT(A,B,C)" then <br/>
+ * the 1,4,7... item in ListView will have A template, and 2,5,8 will have B etc.
+ * 
+ * @usage layout layout ...
+ *  
+ * @arg layout gueei.binding.viewAttributes.templates.Layout Note layout can be supplied in @package:layout/id format
+ * 
+ * @return gueei.binding.viewAttributes.templates.Layout
+ * 
+ * @author andy
+ *
+ */
 public class ALT_TEMPLATE extends Converter<Layout> {
 	public ALT_TEMPLATE(IObservable<?>[] dependents) {
 		super(Layout.class, dependents);

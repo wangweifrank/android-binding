@@ -3,15 +3,17 @@ package gueei.binding.converters;
 import gueei.binding.Converter;
 import gueei.binding.IObservable;
 
-/* IF takes three arguments, 
- * Argument1: Object - if is null the fallback object will be returned
- * Argument2: fallback object
- * Argument3: Default object
+
+/**
+ * Do test on condition, if it is null, return arg_if_null, else arg_if_not
  * 
- * or
- * 
- * Argument1: Object - if is not null use this as binding
- * Argument2: fallback object
+ * @usage condition arg_if_null arg_if_not
+ *
+ * @arg condition boolean
+ * @arg arg_if_null Object
+ * @arg arg_if_not Object
+ *
+ * @return Object
  */
 
 public class IF_NULL extends Converter<Object> {

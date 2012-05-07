@@ -3,6 +3,16 @@ package gueei.binding.converters;
 import gueei.binding.Converter;
 import gueei.binding.IObservable;
 
+/**
+ * Test if the argument is null <br/>
+ * 
+ * @usage arg
+ * 
+ * @arg arg Object
+
+ * @return boolean
+ */
+
 public class ISNULL extends Converter<Boolean> {
 
 	public ISNULL(IObservable<?>[] dependents) {

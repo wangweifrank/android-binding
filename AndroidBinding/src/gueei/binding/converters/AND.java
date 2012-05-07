@@ -4,9 +4,14 @@ import gueei.binding.Converter;
 import gueei.binding.IObservable;
 
 /**
- * TwoWayDependentObservable to perform OR operation. 
- * @author andy
- *
+ * Converter to perform logical AND operation.
+ * It allows 1 or more arguments, if any argument is false, then it will be false
+ * 
+ * @usage arg arg ...
+ * 
+ * @arg arg boolean
+ * 
+ * @return boolean
  */
 public class AND extends Converter<Boolean> {
 

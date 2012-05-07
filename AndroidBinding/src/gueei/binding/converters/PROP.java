@@ -3,8 +3,19 @@ package gueei.binding.converters;
 import gueei.binding.BindingSyntaxResolver;
 import gueei.binding.Converter;
 import gueei.binding.IObservable;
+import gueei.binding.Undetermined;
 
-public class PROP extends Converter<Object> {
+/**
+ * Dynamically evaluate the statement for the given view_model
+ * 
+ * @usage view_model statement
+ * 
+ * @arg view_model Object the Context to evaluate the statement
+ * @arg statement String
+ * 
+ * @return Object
+ */
+public class PROP extends Converter<Object> implements Undetermined {
 
 	public PROP(IObservable<?>[] dependents) {
 		super(Object.class, dependents);

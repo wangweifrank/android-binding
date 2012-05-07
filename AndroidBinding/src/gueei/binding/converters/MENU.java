@@ -4,6 +4,19 @@ import gueei.binding.Converter;
 import gueei.binding.IObservable;
 import gueei.binding.menu.ContextMenuBinder;
 
+/**
+ * Use exclusively for contextMenu attribute
+ * 
+ * @usage menu_xml_id model
+ * 
+ * @arg menu_xml integer XML id of the context menu, e.g. @menu/context_menu
+ * @arg model Object View model to bind to the menu, most probably it will be just "."
+ * 
+ * @return gueei.binding.menu.ContextMenuBinder
+ * 
+ * @author andy
+ *
+ */
 public class MENU extends Converter<ContextMenuBinder>{
 
 	public MENU(IObservable<?>[] dependents) {

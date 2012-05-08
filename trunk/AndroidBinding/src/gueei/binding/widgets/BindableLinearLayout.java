@@ -8,6 +8,8 @@ import java.util.List;
 import gueei.binding.AttributeBinder;
 import gueei.binding.Binder;
 import gueei.binding.BindingSyntaxResolver;
+import gueei.binding.BindingSyntaxResolver.SyntaxResolveException;
+import gueei.binding.BindingLog;
 import gueei.binding.CollectionChangedEventArg;
 import gueei.binding.CollectionObserver;
 import gueei.binding.ConstantObservable;
@@ -19,6 +21,7 @@ import gueei.binding.ViewAttribute;
 import gueei.binding.collections.ObservableCollection;
 import gueei.binding.utility.ObservableMultiplexer;
 import gueei.binding.utility.WeakList;
+import gueei.binding.viewAttributes.templates.Layout;
 import gueei.binding.viewAttributes.templates.LayoutItem;
 import gueei.binding.Observer;
 import android.content.Context;
@@ -28,10 +31,24 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
+/**
+ * BindableLinearLayout have three attributes
+ * 
+ * 
+ *
+ */
 public class BindableLinearLayout extends LinearLayout implements IBindableView<BindableLinearLayout> {
 	private WeakList<Object> currentList = null;
-	private CollectionObserver collectionObserver = null;
+	private CollectionObserver collectionObserver = new CollectionObserver() {
+		@Override
+		public void onCollectionChanged(
+				IObservableCollection<?> collection,
+				CollectionChangedEventArg args,
+				Collection<Object> initiators) {
+			listChanged(args, collection);
+		}
+	};
+
 	
 	private ObservableCollection<Object> itemList = null;
 	private LayoutItem layout = null;
@@ -46,7 +63,7 @@ public class BindableLinearLayout extends LinearLayout implements IBindableView<
 			int pos = currentList.indexOf(parent);						
 			ArrayList<Object> list = new ArrayList<Object>();
 			list.add(parent);
-			removeItems(list);						
+			removeItems(list);
 			insertItem(pos, parent);	 
 		}
 	});
@@ -68,27 +85,18 @@ public class BindableLinearLayout extends LinearLayout implements IBindableView<
 		if( itemList != null && collectionObserver != null)
 			itemList.unsubscribe(collectionObserver);
 		
-		collectionObserver = null;
 		itemList = newList;
 		
 		if(newList==null)
 			return;
 
 		currentList = null;	
-		collectionObserver = new CollectionObserver() {			
-			@Override
-			public void onCollectionChanged(
-					IObservableCollection<?> collection,
-					CollectionChangedEventArg args,
-					Collection<Object> initiators) {
-			}
-		};
 		
 		itemList.subscribe(collectionObserver);
 		newList(newList);
 	}	
 	
-	private void newList(ObservableCollection<Object> list) {
+	private void newList(IObservableCollection<?> list) {
 		this.removeAllViews();	
 		
 		observableItemsLayoutID.clear();
@@ -108,7 +116,7 @@ public class BindableLinearLayout extends LinearLayout implements IBindableView<
 		}
 	}
 
-	private void listChanged(CollectionChangedEventArg e, ObservableCollection<Object> list) {
+	private void listChanged(CollectionChangedEventArg e, IObservableCollection<?> collection) {
 		if( e == null)
 			return;
 		
@@ -135,21 +143,21 @@ public class BindableLinearLayout extends LinearLayout implements IBindableView<
 				}
 				break;
 			case Reset:
-				newList(list);
+				newList(collection);
 				break;
 			case Move:
 				// currently the observable array list doesn't create this action
-				throw new IllegalArgumentException("move not implemented");				
+				throw new IllegalArgumentException("move not implemented");
 			default:
 				throw new IllegalArgumentException("unknown action " + e.getAction().toString());
 		}
 		
-		if( list == null)
+		if( collection == null)
 			return;	
 		
 		currentList = new WeakList<Object>();
-		for( pos=0; pos < list.size(); pos ++ ) {
-			Object item = list.getItem(pos);
+		for( pos=0; pos < collection.size(); pos ++ ) {
+			Object item = collection.getItem(pos);
 			currentList.add(item);
 		}		
 	}	
@@ -161,6 +169,7 @@ public class BindableLinearLayout extends LinearLayout implements IBindableView<
 				protected void doSetAttributeValue(Object newValue) {
 					if( !(newValue instanceof ObservableCollection<?> ))
 						return;
+
 					if( layout != null )
 						createItemSourceList((ObservableCollection<Object>)newValue);
 				}
@@ -170,7 +179,7 @@ public class BindableLinearLayout extends LinearLayout implements IBindableView<
 					return itemList;
 				}				
 	};	
-					
+
 	private ViewAttribute<BindableLinearLayout, Object> ItemLayoutAttribute =
 			new ViewAttribute<BindableLinearLayout, Object>(Object.class, BindableLinearLayout.this, "ItemLayout"){
 				@Override
@@ -178,9 +187,16 @@ public class BindableLinearLayout extends LinearLayout implements IBindableView<
 					layout = null;
 					if( newValue instanceof LayoutItem ) {
 						layout = (LayoutItem) newValue;
-						if( itemList != null )
-							createItemSourceList(itemList);
+					}else if (newValue instanceof Layout){
+						layout = new LayoutItem(((Layout)newValue).getDefaultLayoutId());
+					}else if (newValue instanceof Integer){
+						layout = new LayoutItem((Integer)newValue);
+					}else{
+						layout = new LayoutItem(newValue.toString());
 					}
+					
+					if( itemList != null )
+						createItemSourceList(itemList);
 				}
 
 				@Override
@@ -261,7 +277,13 @@ public class BindableLinearLayout extends LinearLayout implements IBindableView<
 			if (ifo.createNodes(item)) {
 				observable = ifo;										
 			} else {			
-				Object rawField = BindingSyntaxResolver.getFieldForModel(layout.getLayoutName(), item);
+				Object rawField;
+				try {
+					rawField = BindingSyntaxResolver.getFieldForModel(layout.getLayoutName(), item);
+				} catch (SyntaxResolveException e) {
+					BindingLog.exception("BindableLinearLayout.insertItem()", e);
+					return;
+				}
 				if (rawField instanceof IObservable<?>)
 					observable = (IObservable<?>)rawField;
 				else if (rawField!=null)

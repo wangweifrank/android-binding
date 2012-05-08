@@ -33,4 +33,6 @@ public interface IObservable<T> {
 	public abstract void _setObject(Object newValue, Collection<Object> initiators);
 	
 	public abstract T get();
+	
+	public abstract boolean isNull();
 }

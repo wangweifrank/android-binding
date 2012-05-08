@@ -1,5 +1,6 @@
 package gueei.binding;
 
+import gueei.binding.BindingSyntaxResolver.SyntaxResolveException;
 import gueei.binding.utility.WeakList;
 
 import java.util.ArrayList;
@@ -70,11 +71,21 @@ public class InnerFieldObservable<T> implements IObservable<T>, Undetermined{
 			fieldName = mFieldPath.substring(0, dot).trim();
 		}
 		
-		Object field = BindingSyntaxResolver.getFieldForModel(fieldName, viewModel);
-		if (field==null) return false;
+		Object field;
+		try {
+			field = BindingSyntaxResolver.getFieldForModel(fieldName, viewModel);
+		} catch (SyntaxResolveException e) {
+			BindingLog.exception("InnerFieldObservable.createNodes()", e);
+			return false;
+		}
 		
 		if (field instanceof IObservable){
 			mObservable = (IObservable)field;
+		}else if(field==null){
+			BindingLog.warning
+				("InnerFieldObservable.createNodes()", 
+						String.format("fieldname '%s' not found", fieldName));
+			return false;
 		}else{
 			mObservable = new ConstantObservable(field.getClass(), field);
 		}
@@ -183,5 +194,10 @@ public class InnerFieldObservable<T> implements IObservable<T>, Undetermined{
 			return mObservable.get();
 		}
 		return null;
+	}
+
+	@Override
+	public boolean isNull() {
+		return get()==null;
 	}
 }

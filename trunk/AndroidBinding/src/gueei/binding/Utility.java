@@ -1,5 +1,7 @@
 package gueei.binding;
 
+import gueei.binding.BindingSyntaxResolver.SyntaxResolveException;
+
 import java.lang.reflect.Field;
 
 import android.content.Context;
@@ -32,7 +34,12 @@ public class Utility {
 	}
 	
 	public static IObservable<?> getObservableForModel(Context context, String fieldName, Object model){
-		return BindingSyntaxResolver.constructObservableFromStatement(context, fieldName, model);
+		try {
+			return BindingSyntaxResolver.constructObservableFromStatement(context, fieldName, model);
+		} catch (SyntaxResolveException e) {
+			BindingLog.exception("Utiltiy.getObservableForModel()", e);
+			return null;
+		}
 	}
 
 	public static Command getCommandForModel(String fieldName, Object model){

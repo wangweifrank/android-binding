@@ -1,5 +1,6 @@
 package gueei.binding;
 
+import gueei.binding.BindingSyntaxResolver.SyntaxResolveException;
 import gueei.binding.bindingProviders.BindingProvider;
 import gueei.binding.exception.AttributeNotDefinedException;
 
@@ -66,8 +67,13 @@ public class AttributeBinder {
 		// Set the reference context to the current binding view
 		refViewAttributeProvider.viewContext = view;
 		
-		property = BindingSyntaxResolver
-				.constructObservableFromStatement(context, statement, model, refViewAttributeProvider);
+		try {
+			property = BindingSyntaxResolver
+					.constructObservableFromStatement(context, statement, model, refViewAttributeProvider);
+		} catch (SyntaxResolveException e1) {
+			BindingLog.exception("AttributeBinder.bindAttributeWithObservable()", e1);
+			return false;
+		}
 		if (property != null) {
 			try {
 				ViewAttribute<?, ?> attr = Binder.getAttributeForView(view,
@@ -79,7 +85,7 @@ public class AttributeBinder {
 				}
 				return true;
 			} catch (AttributeNotDefinedException e) {
-				e.printStackTrace();
+				BindingLog.exception("AttributeBinder.bindAttributeWithObservable()", e);
 				return false;
 			}
 		} 

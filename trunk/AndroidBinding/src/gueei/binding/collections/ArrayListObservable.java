@@ -271,4 +271,9 @@ public class ArrayListObservable<T>
 
 	public void setVisibleChildrenCount(Object setter, int total) {
 	}
+
+	@Override
+	public boolean isNull() {
+		return false;
+	}
 }

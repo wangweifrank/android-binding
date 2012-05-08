@@ -260,4 +260,9 @@ public class CursorCollection<T extends IRowModel> extends ObservableCollection<
 	public void setVisibleChildrenCount(Object setter, int total) {
 		mCacheManager.hintCacheSize(setter, total);
 	}
+
+	@Override
+	public boolean isNull() {
+		return false;
+	}
 }

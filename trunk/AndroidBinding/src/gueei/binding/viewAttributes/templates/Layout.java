@@ -27,5 +27,5 @@ public abstract class Layout {
 	 * Provide a hook for injecting additional binding attributes to the view
 	 * @param root
 	 */
-	public void onAfterInflate(InflateResult result){}
+	public void onAfterInflate(InflateResult result, int pos){}
 }

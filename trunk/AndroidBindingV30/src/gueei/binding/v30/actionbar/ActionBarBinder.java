@@ -1,6 +1,7 @@
 package gueei.binding.v30.actionbar;
 
 import gueei.binding.BindingSyntaxResolver;
+import gueei.binding.BindingSyntaxResolver.SyntaxResolveException;
 
 import java.io.IOException;
 
@@ -10,6 +11,7 @@ import android.app.ActionBar;
 import android.app.Activity;
 import android.content.res.XmlResourceParser;
 
+@Deprecated
 public class ActionBarBinder {
 	public static void BindActionBar(Activity activity, int xmlId, Object model){
 		XmlResourceParser parser = activity.getResources().getXml(xmlId);
@@ -63,16 +65,20 @@ public class ActionBarBinder {
 
 	private static void bindActionBarTab(Activity activity, ActionBar bar, XmlResourceParser parser, Object model) {
 		ActionBar.Tab tab = bar.newTab();
-		new OnSelectedAttribute(tab)
-			.BindTo(activity, 
-				BindingSyntaxResolver.constructObservableFromStatement(
-						activity, parser.getAttributeValue(null, "onSelected"), model));
+		try {
+			new OnSelectedAttribute(tab)
+				.BindTo(activity, 
+					BindingSyntaxResolver.constructObservableFromStatement(
+							activity, parser.getAttributeValue(null, "onSelected"), model));
 		
-		new TextTabAttribute(tab)
-			.BindTo(
-				activity, 
-				BindingSyntaxResolver.constructObservableFromStatement
-					(activity, parser.getAttributeValue(null, "text"), model));
+			new TextTabAttribute(tab)
+				.BindTo(
+					activity, 
+					BindingSyntaxResolver.constructObservableFromStatement
+						(activity, parser.getAttributeValue(null, "text"), model));
 		bar.addTab(tab);
+		} catch (SyntaxResolveException e) {
+			e.printStackTrace();
+		}
 	}
 }

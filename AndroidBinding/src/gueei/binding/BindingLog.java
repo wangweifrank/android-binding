@@ -1,5 +1,6 @@
 package gueei.binding;
 
+import gueei.binding.BindingSyntaxResolver.SyntaxResolveException;
 import android.util.Log;
 
 public class BindingLog {
@@ -9,8 +10,14 @@ public class BindingLog {
 		Log.w(tag, occuredAt + " : " + message);
 	}
 	
-	public static void exception(String occuredAt, Exception e){
-		Log.e(tag, occuredAt + " : " + e.getMessage(), e);
+	public static void exception(String occuredAt, Throwable e){
+		if (e instanceof SyntaxResolveException){
+			Log.e(tag, occuredAt + " : " + e.getMessage());
+			if (e.getCause()!=null)
+				exception(occuredAt, e.getCause());
+		}
+		else 
+			Log.e(tag, occuredAt + " : " + e.getMessage(), e);
 	}
 	
 	public static void debug(String occuredAt, String message){

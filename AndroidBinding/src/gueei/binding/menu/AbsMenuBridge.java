@@ -2,6 +2,8 @@ package gueei.binding.menu;
 
 import gueei.binding.Binder;
 import gueei.binding.BindingSyntaxResolver;
+import gueei.binding.BindingSyntaxResolver.SyntaxResolveException;
+import gueei.binding.BindingLog;
 import gueei.binding.ConstantObservable;
 import gueei.binding.IObservable;
 import gueei.binding.Observer;
@@ -57,7 +59,13 @@ public abstract class AbsMenuBridge {
 				String attrName, Object model, IMenuItemChangedCallback callback){
 		String attrValue = attributes.getAttributeValue(Binder.BINDING_NAMESPACE, attrName);
 		if (attrValue!=null){
-			IObservable<?> obs = BindingSyntaxResolver.constructObservableFromStatement(context, attrValue, model);
+			IObservable<?> obs;
+			try {
+				obs = BindingSyntaxResolver.constructObservableFromStatement(context, attrValue, model);
+			} catch (SyntaxResolveException e) {
+				BindingLog.exception("AbsMenuBridge.getObservableFromStatement", e);
+				return null;
+			}
 			if (callback!=null && !(obs instanceof ConstantObservable) && obs!=null){
 				if (observer==null)
 					observer = new OptionsItemObserver(callback);

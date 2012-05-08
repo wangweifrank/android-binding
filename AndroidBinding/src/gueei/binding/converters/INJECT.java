@@ -68,8 +68,8 @@ public class INJECT extends Converter<Layout> {
 		private final InjectParams[] mParams;
 		
 		@Override
-		public void onAfterInflate(InflateResult result) {
-			super.onAfterInflate(result);
+		public void onAfterInflate(InflateResult result, int position) {
+			super.onAfterInflate(result, position);
 			AttributeInjector.inject(mParams, result);
 		}
 

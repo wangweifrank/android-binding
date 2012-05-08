@@ -106,4 +106,9 @@ public class Observable<T> implements IObservable<T> {
 	public Observer[] getAllObservers() {
 		return observers.toItemArray(new Observer[0]);
 	}
+
+	@Override
+	public boolean isNull() {
+		return get()==null;
+	}
 }

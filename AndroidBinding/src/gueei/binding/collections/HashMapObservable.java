@@ -96,4 +96,9 @@ public class HashMapObservable<K, V> extends ObservableCollection<V>
 	public Collection<V> values() {
 		return mMap.values();
 	}
+
+	@Override
+	public boolean isNull() {
+		return false;
+	}
 }

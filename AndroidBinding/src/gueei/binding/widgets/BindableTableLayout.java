@@ -8,6 +8,8 @@ import java.util.List;
 import gueei.binding.AttributeBinder;
 import gueei.binding.Binder;
 import gueei.binding.BindingSyntaxResolver;
+import gueei.binding.BindingSyntaxResolver.SyntaxResolveException;
+import gueei.binding.BindingLog;
 import gueei.binding.CollectionChangedEventArg;
 import gueei.binding.CollectionObserver;
 import gueei.binding.ConstantObservable;
@@ -254,7 +256,12 @@ public class BindableTableLayout extends TableLayout implements IBindableView<Bi
 		if (ifo.createNodes(row)) {
 			childDataSource = ifo;	
 		} else {			
-			Object rawField = BindingSyntaxResolver.getFieldForModel(rowChild.getChildDataSource(), row);
+			Object rawField = null;
+			try {
+				rawField = BindingSyntaxResolver.getFieldForModel(rowChild.getChildDataSource(), row);
+			} catch (SyntaxResolveException e) {
+				BindingLog.exception("BindableTableLayout.insertRow", e);
+			}
 			if (rawField instanceof IObservable<?>)
 				childDataSource = (IObservable<?>)rawField;
 		}				
@@ -293,7 +300,12 @@ public class BindableTableLayout extends TableLayout implements IBindableView<Bi
 						if (ifo.createNodes(childItem)) {
 							observable = ifo;
 						} else {			
-							Object rawField = BindingSyntaxResolver.getFieldForModel(rowChild.getLayoutName(), childItem);
+							Object rawField = null;
+							try {
+								rawField = BindingSyntaxResolver.getFieldForModel(rowChild.getLayoutName(), childItem);
+							} catch (SyntaxResolveException e) {
+								BindingLog.exception("BindableTableLayout.createRow", e);
+							}
 							if (rawField instanceof IObservable<?>)
 								observable = (IObservable<?>)rawField;
 							else if (rawField!=null)
@@ -335,7 +347,12 @@ public class BindableTableLayout extends TableLayout implements IBindableView<Bi
 						if (ifo.createNodes(childItem)) {
 							observable = ifo;
 						} else {			
-							Object rawField = BindingSyntaxResolver.getFieldForModel(rowChild.getColspanName(), childItem);
+							Object rawField = null;
+							try {
+								rawField = BindingSyntaxResolver.getFieldForModel(rowChild.getColspanName(), childItem);
+							} catch (SyntaxResolveException e) {
+								BindingLog.exception("BindableTableLayout.createRow", e);
+							}
 							if (rawField instanceof IObservable<?>)
 								observable = (IObservable<?>)rawField;
 							else if (rawField!=null)

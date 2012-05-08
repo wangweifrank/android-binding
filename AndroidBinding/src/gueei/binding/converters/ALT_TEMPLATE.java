@@ -1,5 +1,6 @@
 package gueei.binding.converters;
 
+import gueei.binding.Binder.InflateResult;
 import gueei.binding.Converter;
 import gueei.binding.IObservable;
 import gueei.binding.viewAttributes.templates.Layout;
@@ -26,18 +27,24 @@ public class ALT_TEMPLATE extends Converter<Layout> {
 
 	@Override
 	public Layout calculateValue(Object... args) throws Exception {
-		int[] ids = new int[args.length];
+		Layout[] ids = new Layout[args.length];
 		for (int i=0; i<args.length; i++){
-			ids[i] = ((Layout)args[i]).getDefaultLayoutId();
+			ids[i] = ((Layout)args[i]);
 		}
 		return new Alt_Layout(ids);
 	}
 	
 	private static class Alt_Layout extends Layout{
-		private int[] mLayouts;
+		private Layout[] mLayouts;
 		
-		public Alt_Layout(int[] layouts) {
-			super(layouts[0]);
+		@Override
+		public void onAfterInflate(InflateResult result, int pos) {
+			int idx = pos % mLayouts.length;
+			mLayouts[idx].onAfterInflate(result, pos);
+		}
+
+		public Alt_Layout(Layout[] layouts) {
+			super(layouts[0].getDefaultLayoutId());
 			mLayouts = layouts;
 		}
 
@@ -49,7 +56,7 @@ public class ALT_TEMPLATE extends Converter<Layout> {
 		@Override
 		public int getLayoutId(int pos) {
 			int idx = pos % mLayouts.length;
-			return mLayouts[idx];
+			return mLayouts[idx].getDefaultLayoutId();
 		}
 
 		@Override

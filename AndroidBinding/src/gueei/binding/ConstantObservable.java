@@ -47,4 +47,9 @@ public class ConstantObservable<T> implements IObservable<T> {
 	public T get() {
 		return mValue;
 	}
+
+	@Override
+	public boolean isNull() {
+		return get()==null;
+	}
 }

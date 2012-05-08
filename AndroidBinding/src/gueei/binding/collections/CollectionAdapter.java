@@ -5,6 +5,8 @@ import java.util.Hashtable;
 import gueei.binding.AttributeBinder;
 import gueei.binding.Binder;
 import gueei.binding.BindingSyntaxResolver;
+import gueei.binding.BindingSyntaxResolver.SyntaxResolveException;
+import gueei.binding.BindingLog;
 import gueei.binding.CollectionChangedEventArg;
 import gueei.binding.CollectionObserver;
 import gueei.binding.IObservable;
@@ -111,7 +113,7 @@ public class CollectionAdapter extends BaseAdapter implements CollectionObserver
 			if ((convertView == null) || ((mapper = getAttachedMapper(convertView)) == null)) {
 				Binder.InflateResult result = 
 						Binder.inflateView(mContext, layout.getLayoutId(position), parent, false);
-				layout.onAfterInflate(result);
+				layout.onAfterInflate(result, position);
 				ItemViewEventMark mark = new ItemViewEventMark(parent, position, mCollection.getItemId(position));
 				EventMarkerHelper.mark(result.rootView, mark);
 				mapper = new ObservableMapper();
@@ -269,7 +271,13 @@ public class CollectionAdapter extends BaseAdapter implements CollectionObserver
 	public boolean isEnabled(int position) {
 		if (mEnableItemStatement == null)
 			return true;
-		IObservable<?> obs = BindingSyntaxResolver.constructObservableFromStatement(mContext, mEnableItemStatement, mCollection.getItem(position));
+		IObservable<?> obs;
+		try {
+			obs = BindingSyntaxResolver.constructObservableFromStatement(mContext, mEnableItemStatement, mCollection.getItem(position));
+		} catch (SyntaxResolveException e) {
+			BindingLog.exception("CollectionAdapter.isEnabled", e);
+			return false;
+		}
 		// Even if the obs is null, or it's value is null, it is enabled by default 
 		return obs == null || !Boolean.FALSE.equals(obs.get());
 	}
@@ -277,11 +285,6 @@ public class CollectionAdapter extends BaseAdapter implements CollectionObserver
 	@Override
 	public void onCollectionChanged(IObservableCollection<?> collection,
 			CollectionChangedEventArg args, Collection<Object> initiators) {
-		mHandler.post(new Runnable() {
-
-			public void run() {
 				notifyDataSetChanged();
-			}
-		});
 	}
 }

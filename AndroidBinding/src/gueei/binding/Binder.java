@@ -61,7 +61,8 @@ public class Binder {
 		
 		if (viewAttribute == null) 
 			throw new AttributeNotDefinedException
-				("The view does not have attribute (id: " + attributeId + ") defined.");
+				(String.format("The view of type '%s' does not have attribute '%s' defined. ", 
+						view.getClass().getSimpleName(), attributeId));
 		
 		collection.putAttribute(attributeId, viewAttribute);
 		return viewAttribute;

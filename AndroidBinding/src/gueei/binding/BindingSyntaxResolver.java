@@ -13,14 +13,42 @@ import java.util.regex.Pattern;
 import android.content.Context;
 import android.util.TypedValue;
 
+/**
+ * Updates: 8/5/2012 - Reworked exception handling
+ * @author andy
+ *
+ */
 public class BindingSyntaxResolver {
+	public static class SyntaxResolveException extends Exception{
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = -5339580312141946507L;
+
+		public SyntaxResolveException() {
+			super();
+		}
+
+		public SyntaxResolveException(String detailMessage,
+				Throwable throwable) {
+			super(detailMessage, throwable);
+		}
+
+		public SyntaxResolveException(String detailMessage) {
+			super(detailMessage);
+		}
+
+		public SyntaxResolveException(Throwable throwable) {
+			super(throwable);
+		}		
+	}
+	
 	private static final String DEFAULT_CONVERTER_PACKAGE = "gueei.binding.converters.";
 	
 	private static final Pattern converterPattern = 
 			Pattern.compile("^([$a-zA-Z0-9._]+)\\((.+(\\s*?,\\s*.+)*)?\\)", Pattern.DOTALL);
 	private static final Pattern dynamicObjectPattern = Pattern.compile("^\\{(.+)\\}$");
-	//private static final Pattern stringPattern = Pattern.compile("^'(([^']|\\\\')*)'$");
-	//private static final Pattern doubleQuoteStringPattern = Pattern.compile("^\"(([^']|\\\\\")*)\"$");
+
 	private static final Pattern numberPattern = Pattern.compile("^(\\+|\\-)?[0-9]*(\\.[0-9]+)?$");
 	private static final Pattern resourcePattern = Pattern.compile("^@(([\\w\\.]+:)?(\\w+)/\\w+)$");
 	private static final Pattern referencePattern = Pattern.compile("^=@?((\\w+:)?(\\w+)/\\w+).(\\w+)$");
@@ -29,7 +57,7 @@ public class BindingSyntaxResolver {
 			final Context context,
 			final String bindingStatement, 
 			final Object model,
-			final IReferenceObservableProvider refProvider){
+			final IReferenceObservableProvider refProvider)	throws SyntaxResolveException{
 		if(bindingStatement == null)return null;
 		if (model==null) return null;
 		
@@ -43,13 +71,18 @@ public class BindingSyntaxResolver {
 		if (result!=null) return result;
 		result = getDynamicObjectFromStatement(context, statement, model, refProvider);
 		if (result!=null) return result;
-		return getObservableForModel(context, statement, model);
+		result = getObservableForModel(context, statement, model);
+		if (result==null){
+			throw new SyntaxResolveException
+				(String.format("Error when resolving statement '%s'", statement));
+		}
+		return result;
 	}
 	
 	public static IObservable<?> constructObservableFromStatement(
 			final Context context,
 			final String bindingStatement, 
-			final Object model){
+			final Object model) throws SyntaxResolveException{
 		return constructObservableFromStatement(context, bindingStatement, model, null);
 	}
 
@@ -69,7 +102,7 @@ public class BindingSyntaxResolver {
 	
 	private static Converter<?> getConverterFromStatement(
 			final Context context, String statement, Object model,
-			final IReferenceObservableProvider refProvider){
+			final IReferenceObservableProvider refProvider) throws SyntaxResolveException{
 		Matcher m = converterPattern.matcher(statement);
 		if (!m.matches())
 			return null;
@@ -92,16 +125,26 @@ public class BindingSyntaxResolver {
 			Converter<?> converter = (Converter<?>)constructor.newInstance((Object)(obs));
 			converter.setContext(context);
 			return converter;
-		} catch (Exception e){
-			e.printStackTrace();
-			//BindingLog.warning("BindingSyntaxResolver", e.getMessage());
-			return null;
+		} catch (SyntaxResolveException e){
+			throw new SyntaxResolveException
+				(String.format("Some argument(s) in the converter statement ('%s') has problem", statement), e);
+		} catch (NoSuchMethodException e) {
+			throw new SyntaxResolveException(
+					String.format(
+							"Converter '%s' must define the constructor Converter(IObservable<?>...)", converterName),
+					e);
+		} catch (ClassNotFoundException e) {
+			throw new SyntaxResolveException
+				(String.format("Converter '%s' not found", converterName), e);
+		} catch (Exception e) {
+			throw new SyntaxResolveException
+				(String.format("Error when resolving statement '%s'", statement), e);
 		}
 	}
 
 	private static IObservable<?> getDynamicObjectFromStatement
 		(final Context context, final String statement, final Object model,
-		final IReferenceObservableProvider refProvider) {
+				final IReferenceObservableProvider refProvider) throws SyntaxResolveException {
 		Matcher m = dynamicObjectPattern.matcher(statement);
 		if (!m.matches()) return null;
 		
@@ -180,11 +223,12 @@ public class BindingSyntaxResolver {
 	 * 4. Observable
 	 * 6. Constant from field
 	 * 7. No more fall back
+	 * @throws SyntaxResolveException 
 	 */
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	private static IObservable<?> getObservableForModel(
 			Context context, 
-			String fieldName, Object model){
+			String fieldName, Object model) throws SyntaxResolveException{
 		IObservable<?> result = matchString(fieldName);
 		if (result!=null) return result;
 		result = matchInteger(fieldName);
@@ -224,7 +268,6 @@ public class BindingSyntaxResolver {
 	}
 	
 	private static IObservable<?> matchString(String fieldName){
-		//if (!stringPattern.matcher(fieldName).matches() && !doubleQuoteStringPattern.matcher(fieldName).matches()) return null;
 		if ((fieldName.startsWith("'") && fieldName.endsWith("'")) ||
 				(fieldName.startsWith("\"") && fieldName.endsWith("\"")))
 			return new ConstantObservable<String>(String.class, 
@@ -246,13 +289,17 @@ public class BindingSyntaxResolver {
 		return new IntegerObservable(value);
 	}
 	
-	private static IObservable<?> matchResource(Context context, String fieldName){
+	private static IObservable<?> matchResource(Context context, String fieldName)
+			throws SyntaxResolveException{
 		Matcher m = resourcePattern.matcher(fieldName);
 		if ((!m.matches())||(m.groupCount()<2)) return null;
 		String typeName = m.group(3);
 
 		int id = Utility.resolveResourceId(fieldName, context, typeName);
-		
+		if (id<=0){
+			throw new SyntaxResolveException
+				(String.format("Resource '%s' not found. Maybe typo? ", fieldName)); 
+		}
 		if ("layout".equals(typeName))
 			return new ConstantObservable<Layout>(Layout.class, new SingleTemplateLayout(id));
 		if("id".equals(typeName))
@@ -286,16 +333,27 @@ public class BindingSyntaxResolver {
 	 * @param fieldName
 	 * @param model
 	 * @return field object
+	 * @throws SyntaxResolveException 
 	 */
-	public static Object getFieldForModel(String fieldName, Object model){
+	public static Object getFieldForModel(String fieldName, Object model) 
+			throws SyntaxResolveException{
 		try{
 			if (model instanceof IPropertyContainer){
 				return ((IPropertyContainer)model).getValueByName(fieldName);
 			}
 			Field field = model.getClass().getField(fieldName);
 			return field.get(model);
-		}catch(Exception e){
+		}catch(SyntaxResolveException e){
 			return null;
-		}
+		} catch (IllegalAccessException e) {
+			throw new SyntaxResolveException
+				(String.format("Error with accessing the field '%s' in the Object '%s'. " +
+						"Maybe it is not public accessible. ", 
+						fieldName, model.toString()), e);
+		} catch (NoSuchFieldException e) {
+			return null;
+		} catch (Exception e) {
+			return null;
+		} 
 	}
 }

@@ -5,7 +5,9 @@ import java.util.HashMap;
 
 import gueei.binding.AttributeBinder;
 import gueei.binding.Binder;
+import gueei.binding.BindingLog;
 import gueei.binding.BindingSyntaxResolver;
+import gueei.binding.BindingSyntaxResolver.SyntaxResolveException;
 import gueei.binding.CollectionChangedEventArg;
 import gueei.binding.CollectionObserver;
 import gueei.binding.ConstantObservable;
@@ -145,7 +147,12 @@ public class CollectionPagerAdapter extends PagerAdapter
 			if (ifo.createNodes(item)) {
 				observable = ifo;										
 			} else {			
-				Object rawField = BindingSyntaxResolver.getFieldForModel(mLayout.getLayoutName(), item);
+				Object rawField = null;
+				try {
+					rawField = BindingSyntaxResolver.getFieldForModel(mLayout.getLayoutName(), item);
+				} catch (SyntaxResolveException e) {
+					BindingLog.exception("CollectionPagerAdapter.getLayoutId", e);
+				}
 				if (rawField instanceof IObservable<?>)
 					observable = (IObservable<?>)rawField;
 				else if (rawField!=null)

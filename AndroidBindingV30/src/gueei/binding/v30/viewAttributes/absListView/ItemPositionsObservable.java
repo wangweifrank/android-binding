@@ -83,4 +83,8 @@ public class ItemPositionsObservable extends
 	public boolean get(int key, boolean valueIfKeyNotFound){
 		return arr.get(key, valueIfKeyNotFound);
 	}
+
+	public boolean isNull() {
+		return false;
+	}
 }

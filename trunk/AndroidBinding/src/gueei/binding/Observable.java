@@ -6,6 +6,13 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 public class Observable<T> implements IObservable<T> {
+	@Override
+	public String toString() {
+		if (!isNull())
+			return mValue.toString();
+		return "null";
+	}
+
 	private WeakList<Observer> observers = new WeakList<Observer>();
 	private T mValue;
 	private final Class<T> mType;

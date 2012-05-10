@@ -20,7 +20,7 @@ Compiled Demo app is immediately available in Android Market. Search "Markup Dem
 
 = Source code =
 
-The complete source code of this demo application is available in [http://code.google.com/p/android-binding/downloads/list project download section].
+The complete source code of this demo application is available in [http://code.google.com/p/android-binding/source/browse/#svn%2Ftrunk%253Fstate%253Dclosed Source code trunk].
 
 = Final Words =
 

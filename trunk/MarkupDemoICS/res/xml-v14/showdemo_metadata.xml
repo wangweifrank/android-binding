@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <activity xmlns:binding="http://www.gueei.com/android-binding/">
-	<optionsItem>
-		<option id="@android:id/home" action="FirstClick"/>
-	</optionsItem>
 	<actionbar
 	    binding:title="DemoName"
 		binding:displayHomeAsUp="TRUE()"

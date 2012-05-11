@@ -25,14 +25,14 @@ public class IF_NULL extends Converter<Object> {
 	@Override
 	public Object calculateValue(Object... args) throws Exception {		
 		if( args.length == 2) {
-			if ((Object)args[0] != null){
+			if ((Object)args[0] == null){
 				return args[0];
 			}else{
 				return args[1];
 			}
 		}
 		if( args.length == 3) {
-			if ((Object)args[0] == null){
+			if ((Object)args[0] != null){
 				return args[2];
 			}else{
 				return args[1];

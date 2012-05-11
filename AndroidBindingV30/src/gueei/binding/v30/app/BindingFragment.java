@@ -9,10 +9,11 @@ import android.view.View;
 
 /**
  * Fragment can add custom binding:tag only if it is a sub-class of BindingFragment
- * 
+ * @deprecated stopped development
  * @author andy
  *
  */
+@Deprecated
 public abstract class BindingFragment extends Fragment {
 
 	private BindingMap mBindingMap;

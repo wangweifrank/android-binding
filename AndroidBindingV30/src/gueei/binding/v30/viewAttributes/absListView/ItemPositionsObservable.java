@@ -1,13 +1,13 @@
 package gueei.binding.v30.viewAttributes.absListView;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Map;
-import java.util.Map.Entry;
-
 import gueei.binding.CollectionChangedEventArg;
 import gueei.binding.CollectionChangedEventArg.Action;
 import gueei.binding.collections.ObservableCollection;
+
+import java.util.ArrayList;
+import java.util.Map;
+import java.util.Map.Entry;
+
 import android.util.SparseBooleanArray;
 
 public class ItemPositionsObservable extends
@@ -49,7 +49,7 @@ public class ItemPositionsObservable extends
 	}
 
 	public void replaceAll(SparseBooleanArray newArr, Object initiator){
-		arr = newArr.clone();
+		arr = Helper.cloneSBArray(newArr);
 		ArrayList<Object> initiators = new ArrayList<Object>();
 		initiators.add(initiator);
 		notifyCollectionChanged(new CollectionChangedEventArg(Action.Reset), initiators);

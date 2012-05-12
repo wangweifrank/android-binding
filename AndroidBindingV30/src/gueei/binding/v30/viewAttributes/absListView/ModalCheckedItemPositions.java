@@ -28,7 +28,7 @@ public class ModalCheckedItemPositions extends ViewAttribute<ListView, SparseBoo
 
 	@Override
 	public SparseBooleanArray get() {
-		return (getView().getCheckedItemPositions().clone());
+		return Helper.cloneSBArray((getView().getCheckedItemPositions()));
 	}
 
 	@Override

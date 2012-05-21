@@ -160,12 +160,16 @@ public class BindingActivityV30 extends BindingActivity {
 	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		return mBindableOptionsMenu.onCreateOptionsMenu(menu);
+		if (mBindableOptionsMenu!=null)
+			return mBindableOptionsMenu.onCreateOptionsMenu(menu);
+		return super.onCreateOptionsMenu(menu);
 	}
 
 	@Override
 	public boolean onPrepareOptionsMenu(Menu menu) {
-		return mBindableOptionsMenu.onPrepareOptionsMenu(menu);
+		if (mBindableOptionsMenu!=null)
+			return mBindableOptionsMenu.onPrepareOptionsMenu(menu);
+		return super.onPrepareOptionsMenu(menu);
 	}
 
 	@Override
@@ -174,6 +178,8 @@ public class BindingActivityV30 extends BindingActivity {
 			EventAggregator.getInstance(this).publish("Clicked(android.R.id.home)", this, null);
 			return true;
 		}
-		return mBindableOptionsMenu.onOptionsItemSelected(item);
+		if (mBindableOptionsMenu!=null)
+			return mBindableOptionsMenu.onOptionsItemSelected(item);
+		return super.onOptionsItemSelected(item);
 	}
 }

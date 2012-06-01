@@ -33,9 +33,12 @@ public class AttributeInjector {
 			if (!result.processedViews.contains(target))
 				result.processedViews.add(target);
 			if (target==null) continue;
-			BindingMap map = Binder.getBindingMapForView(target);
-			map.put(params[i].AttrName, params[i].Statement);
+			inject(target, params[i].AttrName, params[i].Statement);
 		}
 	}
 
+	public static void inject(View view, String attrName, String statement){
+		BindingMap map = Binder.getBindingMapForView(view);
+		map.put(attrName, statement);
+	}
 }

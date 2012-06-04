@@ -1,0 +1,5 @@
+#summary Extended Android Binding library that supports ICS+ devices
+
+= Introduction =
+
+AndroidBindingV30 is an extension to original Android Binding library that added supports to 4.0+ features. It provides binding to ActionBar and compatibility v4 package. 

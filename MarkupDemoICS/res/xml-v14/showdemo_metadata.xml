@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <activity xmlns:binding="http://www.gueei.com/android-binding/">
 	<actionbar
-	    binding:title="Demo"
+	    binding:title="Demo.DemoName"
 		binding:displayHomeAsUp="TRUE()"
 		binding:displayShowTitle="TRUE()"
 		binding:displayShowHome="TRUE()"

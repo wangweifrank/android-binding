@@ -85,9 +85,11 @@ public class CodeView extends WebView implements IBindableView<CodeView> {
 		
 		@Override
 		protected void doSetAttributeValue(Object newValue) {
-			mValue = Integer.parseInt(newValue.toString());
-			isDirty = true;
-			invalidate();
+			if (newValue!=null){
+				mValue = Integer.parseInt(newValue.toString());
+				isDirty = true;
+				invalidate();
+			}
 		}
 
 		@Override
@@ -106,9 +108,11 @@ public class CodeView extends WebView implements IBindableView<CodeView> {
 		
 		@Override
 		protected void doSetAttributeValue(Object newValue) {
-			mValue = newValue.toString();
-			isDirty = true;
-			invalidate();
+			if (newValue!=null){
+				mValue = newValue.toString();
+				isDirty = true;
+				invalidate();
+			}
 		}
 
 		@Override

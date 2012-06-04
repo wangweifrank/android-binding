@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <demos>
     <category name="HC/ICS features">
-        <entry name="Action Mode" vm="ActionMode" layout="actionmode"/>
+        <entry name="Action Mode" vm="ActionMode" layout="actionmode">
+            	<raw title="Xml" name="main_metadata"/>
+            	<raw title="Java" name="launchviewmodel_code"/>
+            </entry>
         <entry name="Action Mode In ListView Example" vm="ActionModeExample" layout="actionmodeexample"/>
     </category>
     <category name="Layouts">
@@ -35,7 +38,10 @@
         <entry name="ListViewIndividualItemControl" vm=".ListViewIndividualItemControl" layout=".listviewindividualitemcontrol"/>
     </category>
     <category name="Compound/Nested Lists">
-        <entry name="MasterDetailListView" vm=".MasterDetailListView" layout=".masterdetaillistview"/>
+        <entry name="MasterDetailListView" vm=".MasterDetailListView" layout=".masterdetaillistview">
+            <raw title="Xml" name=".masterdetaillistview"/>
+            <raw title="Java" name=".masterdetaillistview_code"/>
+        </entry>
         <entry name="NestedCursor" vm=".NestedCursor" layout=".nestedcursor"/>
         <entry name="CursorContentUpdate" vm=".CursorContentUpdate" layout=".cursorcontentupdate"/>
         <entry name="MultipleAdapters" vm=".MultipleAdapters" layout=".multipleadapters"/>

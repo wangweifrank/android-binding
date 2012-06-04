@@ -7,6 +7,7 @@
  * Tutorials
   * [http://andytsui.wordpress.com/2011/10/05/tutorial-list-views-in-android-binding-14/ List Views Tutorials]
   * [ModelValidation Model Validation]
+ * [BindingActivityV30 Binding To Activity]
  * [BindingListOfObjects Binding To List of Objects]
   * [BindingToCollection Binding to Collections]
   * [BindingToCursors Binding to Cursor]
@@ -19,7 +20,6 @@
   * [DynamicObject Dynamic Object]
  * [CustomView Custom Bindable View]
  * Experimental Features
-  * [ActivityBinding]
   * [Animation]
   * [PojoViewModel]
  * [RoboGuice Working with Robo Guice]

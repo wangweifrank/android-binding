@@ -24,7 +24,21 @@ The metadata file is required to be placed under res/xml folder, and following i
 
 }}}
 
-`<actionBar>` contains several other attributes, which will be described in other section (TODO).
+`<actionBar>` contains several other attributes, all of them are optional:
+
+{{{
+<actionBar
+		binding:displayHomeAsUp="Boolean"
+		binding:displayShowTitle="Boolean"
+		binding:displayShowHome="Boolean"
+		binding:navigationMode="Integer"
+		binding:listNavigationAdapter="Adapter"
+		binding:listNavigationOnItemSelected="Command"
+		binding:listNavigationSelectedItem="Object"
+		/>
+}}}
+
+Note: currently only list navigation mode is supported, works on tab navigation is in progress. All action bar attributes and usage is experimental and subject to change. 
 
 for `<rootView>` and `<optionsMenu>`, each of them can bind to separate View Models. 
 

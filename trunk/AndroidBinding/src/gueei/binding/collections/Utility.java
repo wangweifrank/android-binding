@@ -1,5 +1,6 @@
 package gueei.binding.collections;
 
+import gueei.binding.IObservable;
 import gueei.binding.IObservableCollection;
 import gueei.binding.cursor.CursorObservable;
 import gueei.binding.cursor.CursorObservableAdapter;
@@ -23,6 +24,18 @@ public class Utility {
 					dropDownLayout,
 					filter, enableItemStatement);
 		}
+		if (collection instanceof IObservable){
+			Class<?> clazz = ((IObservable)collection).getType();
+			if (IObservableCollection.class.isAssignableFrom(clazz)){
+				return new CollectionAdapter(
+						context,
+						(IObservableCollection)(((IObservable)collection).get()),
+						layout,
+						dropDownLayout,
+						filter, enableItemStatement);
+			}
+		}
+		
 		if (collection instanceof CursorObservable){
 			CursorObservable cobs = (CursorObservable)collection;
 			return new CursorObservableAdapter(context, 

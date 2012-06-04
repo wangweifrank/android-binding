@@ -57,6 +57,7 @@ public class LaunchViewModel {
 	
 	private void parseDemos(){
 		DemoCategory current = null;
+		DemoEntry entry = null;
 		XmlResourceParser parser = mContext.getResources().getXml(R.xml.demos);
 		try {
 			int eventType = parser.getEventType();
@@ -69,10 +70,18 @@ public class LaunchViewModel {
 						if (parser.getName().equals("entry")){
 							if (current==null)
 								throw new Exception();
-							current.Entries.add(new DemoEntry(
+							entry = new DemoEntry(
 									parser.getAttributeValue(null, "name"),
 									resolveVM(parser.getAttributeValue(null, "vm")),
-									resolveLayout(parser.getAttributeValue(null, "layout"))));
+									resolveLayout(parser.getAttributeValue(null, "layout")));
+							current.Entries.add(entry);
+						}else if (parser.getName().equals("raw")){
+							if (entry!=null){
+								entry.Raws.add(new RawEntry(
+										parser.getAttributeValue(null, "title"),
+										resolveRaw(parser.getAttributeValue(null, "name"))
+										));
+							}
 						}
 					break;
 				case XmlResourceParser.END_TAG:
@@ -91,6 +100,17 @@ public class LaunchViewModel {
 		}
 	}
 	
+	private int resolveRaw(String name) throws Exception{
+		if (name.startsWith(".")){
+			Class<?> rawClass = com.gueei.demos.markupDemo.R.raw.class;
+			return rawClass.getField(name.substring(1)).getInt(null);
+		}
+		else{
+			Class<?> rawClass = R.raw.class;
+			return rawClass.getField(name).getInt(null);
+		}
+    }
+
 	private int resolveLayout(String name) throws Exception{
 		if (name.startsWith(".")){
 			Class<?> layoutClass = com.gueei.demos.markupDemo.R.layout.class;

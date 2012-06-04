@@ -1,5 +1,6 @@
 package gueei.binding.markupDemoICS.viewModels;
 
+import gueei.binding.collections.ArrayListObservable;
 import gueei.binding.observables.IntegerObservable;
 import gueei.binding.observables.StringObservable;
 
@@ -11,6 +12,9 @@ public class DemoEntry {
 			new IntegerObservable();
 	public final StringObservable ModelClassName = 
 			new StringObservable();
+	
+	public final ArrayListObservable<RawEntry> Raws = 
+			new ArrayListObservable<RawEntry>(RawEntry.class);
 	
 	public DemoEntry(){}
 	

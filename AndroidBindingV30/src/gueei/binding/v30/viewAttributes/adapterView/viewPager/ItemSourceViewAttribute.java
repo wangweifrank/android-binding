@@ -13,7 +13,7 @@ import java.util.Collection;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 
-public class ViewPager_ItemSourceViewAttribute extends ViewAttribute<ViewPager, Object> {
+public class ItemSourceViewAttribute extends ViewAttribute<ViewPager, Object> {
 		
 		LayoutItem template;
 		
@@ -24,7 +24,7 @@ public class ViewPager_ItemSourceViewAttribute extends ViewAttribute<ViewPager, 
 			}
 		};
 		
-		public  ViewPager_ItemSourceViewAttribute 
+		public  ItemSourceViewAttribute 
 			(ViewPager view) {
 			super(Object.class,view, "itemSource");
 			try{
@@ -48,7 +48,8 @@ public class ViewPager_ItemSourceViewAttribute extends ViewAttribute<ViewPager, 
 			createAdapter();
 		}
 
-		private void createAdapter(){
+		@SuppressWarnings("unchecked")
+        private void createAdapter(){
 			if (mValue==null) return;
 
 			try {
@@ -59,11 +60,12 @@ public class ViewPager_ItemSourceViewAttribute extends ViewAttribute<ViewPager, 
 				PagerAdapter pagerAdapter = 
 					gueei.binding.v30.collections.UtilityV30.getSimplePagerAdapter
 						(getView().getContext(), mValue, template);
-				getView().setAdapter(pagerAdapter);
+				
+				((ViewAttribute<ViewPager, PagerAdapter>)Binder.getAttributeForView(getView(), "adapter"))
+					.set(pagerAdapter);
 				
 			} catch (Exception e) {
-				e.printStackTrace();
-				return;
+				BindingLog.exception("ViewPager.ItemSource", e);
 			}
 		}
 		

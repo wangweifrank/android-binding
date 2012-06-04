@@ -52,15 +52,15 @@ public class AttributeBinder {
 		String filterValue = map.get(filterKey);
 		if (null != filterValue) {
 			BindingLog.debug("bindView", "Attribute filter shoud be bind before initialize itemSource. To be sure that filtering will be worked.");
-			bindAttributeWithObservable(context, view, filterKey, filterValue, model);
+			bindAttributeWithModel(context, view, filterKey, filterValue, model);
 		}
 		
 		for(Entry<String, String> entry: map.getMapTable().entrySet()){
-			bindAttributeWithObservable(context, view, entry.getKey(), entry.getValue(), model);
+			bindAttributeWithModel(context, view, entry.getKey(), entry.getValue(), model);
 		}
 	}
 
-	protected final boolean bindAttributeWithObservable(Context context, 
+	public boolean bindAttributeWithModel(Context context, 
 			View view, String viewAttributeName, String statement, Object model) {
 		IObservable<?> property;
 		
@@ -90,6 +90,22 @@ public class AttributeBinder {
 			}
 		} 
 		return false;
+	}
+	
+	public boolean bindAttributeWithObservable(Context context, View view, String viewAttributeName, IObservable<?> obs){
+        try {
+	        ViewAttribute<?,?> attr = Binder.getAttributeForView(view,
+	        		viewAttributeName);
+			BindingType result = attr.BindTo(context, obs);
+			if (result.equals(BindingType.NoBinding)) {
+				BindingLog.warning("Binding Provider", "Observable: " + obs
+						+ ", cannot setup bind with attribute");
+			}
+			return true;
+        } catch (AttributeNotDefinedException e) {
+        	BindingLog.exception("AttributeBinder.bindAttributeWithObservable()", e);
+			return false;
+        }
 	}
 	
 	private RefViewAttributeProvider refViewAttributeProvider = 

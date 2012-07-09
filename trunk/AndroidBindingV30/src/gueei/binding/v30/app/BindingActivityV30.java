@@ -82,8 +82,9 @@ public class BindingActivityV30 extends BindingActivity {
 								Utility.createBindingMap(Xml.asAttributeSet(parser)));
 					}else if (tagName.equals("actionbar")){
 						mBindableActionBar = createBindableActionBar();
-						Binder.putBindingMapToView(mBindableActionBar, 
-								Utility.createBindingMap(Xml.asAttributeSet(parser)));
+						if (mBindableActionBar!=null)
+							Binder.putBindingMapToView(mBindableActionBar, 
+									Utility.createBindingMap(Xml.asAttributeSet(parser)));
 					}
 				}
 				eventType = parser.next();

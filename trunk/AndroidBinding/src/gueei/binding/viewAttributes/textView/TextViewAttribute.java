@@ -3,6 +3,7 @@ package gueei.binding.viewAttributes.textView;
 import gueei.binding.Binder;
 import gueei.binding.BindingType;
 import gueei.binding.ViewAttribute;
+import gueei.binding.exception.AttributeNotDefinedException;
 import gueei.binding.listeners.TextWatcherMulticast;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -12,11 +13,18 @@ import android.widget.TextView;
 public class TextViewAttribute extends ViewAttribute<TextView, CharSequence> implements TextWatcher {
 
 	private CharSequence mValue = null;
+	private ViewAttribute<?,?> attrSpan = null;
 
 	public TextViewAttribute(TextView view, String attributeName) {
 		super(CharSequence.class, view, attributeName);
 		if (view instanceof EditText) {
 			Binder.getMulticastListenerForView(view, TextWatcherMulticast.class).registerWithHighPriority(this);
+		}
+		
+		try {
+			attrSpan = Binder.getAttributeForView(getView(), "span");
+		} catch (AttributeNotDefinedException e) {
+			e.printStackTrace();
 		}
 	}
 
@@ -52,9 +60,15 @@ public class TextViewAttribute extends ViewAttribute<TextView, CharSequence> imp
 				}
 			}
 			if (!compareCharSequence(nVal, mValue)) {				
-				mValue = cloneCharSequence(nVal);
+				mValue = cloneCharSequence(nVal);					
 				
-				getView().setTextKeepState(cloneCharSequence(nVal));
+				if((attrSpan instanceof SpannableTextViewAttribute) && ((SpannableTextViewAttribute)attrSpan).hasValue()) {
+					getView().setTextKeepState(cloneCharSequence(nVal), TextView.BufferType.SPANNABLE);
+					((SpannableTextViewAttribute)attrSpan).update();
+				} else {
+					getView().setTextKeepState(cloneCharSequence(nVal));
+				}			
+				
 			}
 		}
 	}

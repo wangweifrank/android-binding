@@ -31,19 +31,6 @@ public abstract class ViewMulticastListener<T> extends MulticastListener<View, T
 		listeners.add(0, listener);
 	}
 	
-	private boolean mBroadcasting = true;
-	public void nextActionIsNotFromUser(){
-		mBroadcasting = false;
-	}
-	
-	protected boolean isFromUser(){
-		return mBroadcasting;
-	}
-	
-	protected void clearBroadcastState(){
-		mBroadcasting = true;
-	}
-	
 	public static class Factory{
 		public static void RegisterConstructorE(Class<?> type, Constructor<?> constructor){
 			constructors.put(type, constructor);

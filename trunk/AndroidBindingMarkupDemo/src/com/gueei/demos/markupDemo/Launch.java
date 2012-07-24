@@ -25,7 +25,8 @@ public class Launch extends Activity {
 		DemoGroups.add(
 				new DemoGroup("Simple Views", 
 						new Demo("View"), 
-						new Demo("TextView"), 
+						new Demo("TextView"),
+						new Demo("TextViewSpan"),
 						new Demo("TextViewCustomFont"),
 						new Demo("ImageView"),
 						new Demo("ProgressBar"), 

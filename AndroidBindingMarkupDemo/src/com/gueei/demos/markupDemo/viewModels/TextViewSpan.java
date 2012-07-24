@@ -48,7 +48,7 @@ public class TextViewSpan {
 	public final SpanListCreatorCommand OnCreateHighlightSpanList = new SpanListCreatorCommand() {
 
 		@Override
-		public List<Span> onCreateSpanList() {
+		public List<Span> onCreateSpanList(int occurence) {
 
 			ArrayList<Span> list = new ArrayList<Span>();
 			

@@ -28,10 +28,14 @@ public class HIGHLIGHT_SPAN extends Converter<Object> {
 		
 		@Override
 		public void Invoke(View view, Object... args) {
-			Span = onCreateSpan();
+			int occurence = 0;
+			if( args.length > 0 && args[0] instanceof Integer) {
+				occurence = (Integer)args[0];
+			}
+			Span = onCreateSpan(occurence);
 		}
 		
-		public abstract Span onCreateSpan();		
+		public abstract Span onCreateSpan(int occurence);		
 	}
 	
 	public static abstract class SpanListCreatorCommand extends Command {
@@ -39,10 +43,14 @@ public class HIGHLIGHT_SPAN extends Converter<Object> {
 		
 		@Override
 		public void Invoke(View view, Object... args) {
-			SpanList = onCreateSpanList();
+			int occurence = 0;
+			if( args.length > 0 && args[0] instanceof Integer) {
+				occurence = (Integer)args[0];
+			}
+			SpanList = onCreateSpanList(occurence);
 		}
 		
-		public abstract List<Span> onCreateSpanList();		
+		public abstract List<Span> onCreateSpanList(int occurence);		
 	}	
 
 	public HIGHLIGHT_SPAN(IObservable<?>[] dependents) {
@@ -67,6 +75,7 @@ public class HIGHLIGHT_SPAN extends Converter<Object> {
 		
 		ArrayList<Span> result = new ArrayList<Span>();
 			
+		int occurence = 1;
 		int index = hey.indexOf(needle);
 		while (index >=0){
 					
@@ -75,7 +84,7 @@ public class HIGHLIGHT_SPAN extends Converter<Object> {
 				
 			if( args[2] instanceof SpanListCreatorCommand ) {
 				SpanListCreatorCommand cmd = (SpanListCreatorCommand)args[2];
-				cmd.Invoke(null);
+				cmd.Invoke(null, (Object[])new Integer [] { occurence });
 				
 				List<?> list = cmd.SpanList;				
 				if( list != null) {
@@ -92,7 +101,7 @@ public class HIGHLIGHT_SPAN extends Converter<Object> {
 				}
 			} else if( args[2] instanceof SpanCreatorCommand ) {
 				SpanCreatorCommand cmd = (SpanCreatorCommand)args[2];
-				cmd.Invoke(null);
+				cmd.Invoke(null, (Object[])new Integer [] { occurence });
 				
 				Span os = cmd.Span;
 				if(os != null) {
@@ -104,7 +113,8 @@ public class HIGHLIGHT_SPAN extends Converter<Object> {
 				result.add(s);
 			}
 			
-			index = hey.indexOf(needle, index+length);  
+			index = hey.indexOf(needle, index+length); 
+			occurence++;
 		}
 		
 		if(result.size() == 0)

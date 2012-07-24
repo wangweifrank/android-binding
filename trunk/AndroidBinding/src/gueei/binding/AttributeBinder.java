@@ -51,7 +51,7 @@ public class AttributeBinder {
 		String filterKey = "filter";
 		String filterValue = map.get(filterKey);
 		if (null != filterValue) {
-			BindingLog.debug("bindView", "Attribute filter shoud be bind before initialize itemSource. To be sure that filtering will be worked.");
+			BindingLog.debug("bindView", "Attribute filter should be bind before initialize itemSource. To be sure that filtering will be worked.");
 			bindAttributeWithModel(context, view, filterKey, filterValue, model);
 		}
 		

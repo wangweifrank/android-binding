@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<classpath>
-	<classpathentry kind="src" path="src"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/J2SE-1.5"/>
-	<classpathentry kind="lib" path="C:/Program Files (x86)/Android/android-sdk/platforms/android-4/android.jar"/>
-	<classpathentry kind="lib" path="C:/Users/andy/Dropbox/RELEASE/android-binding-0.49.jar"/>
-	<classpathentry kind="lib" path="D:/Documents/workspace/AndroidBinding.Plugin.JS/libs/rhino1_7R2.jar" sourcepath="C:/Users/andy/git/rhino/src/org/mozilla/javascript"/>
-	<classpathentry kind="output" path="bin"/>
-</classpath>

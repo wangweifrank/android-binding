@@ -18,6 +18,13 @@ public class EventAggregator {
 		return instances.get(context);
 	}
 	
+	public static void removeRefs(Context context) {
+		if(context == null)
+			return;		
+		if(instances.containsKey(context))
+			instances.remove(context);
+	}
+	
 	private HashMap<String, ArrayList<EventSubscriber>>
 		EventNameSubscribersMap = new HashMap<String, ArrayList<EventSubscriber>>();
 	

@@ -74,6 +74,11 @@ public class BindableTableLayout extends TableLayout implements IBindableView<Bi
 	private void init() {
 	}
 	
+	@Override
+	protected void onDetachedFromWindow() {
+		newRowList(null);
+		super.onDetachedFromWindow();
+	}
 	
 	private void createItemSourceList(ObservableCollection<Object> newRowList) {		
 		if( rowList != null && collectionObserver != null)
@@ -105,10 +110,13 @@ public class BindableTableLayout extends TableLayout implements IBindableView<Bi
 		observableChildLayoutID.clear();
 		observableChildSpan.clear();
 		observableCollectionRowChildren.clear();		
-				
+						
+		if( rows == null) {
+			currentRowList= null;
+			return;
+		}
+		
 		currentRowList = new WeakList<Object>();
-		if( rows == null)
-			return;	
 				
 		for( int pos=0; pos < rows.size(); pos ++ ) {
 			Object item = rows.getItem(pos);

@@ -1,5 +1,6 @@
 package gueei.binding;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -7,18 +8,20 @@ import android.content.Context;
 
 public abstract class Attribute<Th, T> extends Observable<T> {
 	
-	protected Th mHost;
+	protected WeakReference<Th> mHostRef;
 	protected String attributeName;
 	private boolean readonly = false;
 	
 	public Attribute(Class<T> type, Th host, String attributeName) {
 		super(type);
-		this.mHost = host;
+		this.mHostRef = new WeakReference<Th>(host);
 		this.attributeName = attributeName;
 	}
 	
 	public Th getHost(){
-		return mHost;
+		if(mHostRef == null)
+			return null;
+		return mHostRef.get();
 	}
 	/*
 	@SuppressWarnings("unchecked")

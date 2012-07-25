@@ -1,5 +1,7 @@
 package gueei.binding.v30.app;
 
+import java.lang.ref.WeakReference;
+
 import gueei.binding.AttributeBinder;
 import gueei.binding.Binder;
 import gueei.binding.Binder.InflateResult;
@@ -31,9 +33,9 @@ import android.view.View;
  *
  */
 public class BindingActivityV30 extends BindingActivity {
-	protected BindableOptionsMenu mBindableOptionsMenu;
-	protected BindableActionBar mBindableActionBar;
-	protected View mBindableRootView;
+	protected WeakReference<BindableOptionsMenu> mBindableOptionsMenuRef;
+	protected WeakReference<BindableActionBar> mBindableActionBarRef;
+	protected WeakReference<View> mBindableRootViewRef;
 	
 /*	private Observer optionsMenuSourceObserver = new Observer(){
 		public void onPropertyChanged(IObservable<?> prop,
@@ -52,8 +54,16 @@ public class BindingActivityV30 extends BindingActivity {
 			}
 		});
 	}
+	
 
-/*	private void rebindOptionsMenu(){
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+		EventAggregator.removeRefs(this);		
+	}
+
+
+	/*	private void rebindOptionsMenu(){
 		if (optionsMenu_source==null || optionsMenu_id==null)
 			return;
 		if (!(optionsMenu_id.get() instanceof Integer)) return;
@@ -72,19 +82,22 @@ public class BindingActivityV30 extends BindingActivity {
 				if (eventType == XmlResourceParser.START_TAG){
 					String tagName = parser.getName().toLowerCase();
 					if (tagName.equals("optionsmenu")){
-						mBindableOptionsMenu = this.createBindableOptionsMenu();
-						Binder.putBindingMapToView(mBindableOptionsMenu, 
-								Utility.createBindingMap(Xml.asAttributeSet(parser)));
+						mBindableOptionsMenuRef = new WeakReference<BindableOptionsMenu>(createBindableOptionsMenu());
+						if(mBindableOptionsMenuRef != null && mBindableOptionsMenuRef.get() != null )
+							Binder.putBindingMapToView(mBindableOptionsMenuRef.get(), 
+									Utility.createBindingMap(Xml.asAttributeSet(parser)));
 					}
 					else if (tagName.equals("rootview")){
-						mBindableRootView = this.createBindableRootView();
-						Binder.putBindingMapToView((View)mBindableRootView, 
+						mBindableRootViewRef = new WeakReference<View>(createBindableRootView());
+						Binder.putBindingMapToView((View)mBindableRootViewRef.get(), 
 								Utility.createBindingMap(Xml.asAttributeSet(parser)));
 					}else if (tagName.equals("actionbar")){
-						mBindableActionBar = createBindableActionBar();
-						if (mBindableActionBar!=null)
-							Binder.putBindingMapToView(mBindableActionBar, 
+						BindableActionBar bar = createBindableActionBar();
+						if( bar != null ) {
+							mBindableActionBarRef = new WeakReference<BindableActionBar>(bar);							
+							Binder.putBindingMapToView(bar, 
 									Utility.createBindingMap(Xml.asAttributeSet(parser)));
+						}
 					}
 				}
 				eventType = parser.next();
@@ -115,18 +128,18 @@ public class BindingActivityV30 extends BindingActivity {
 	}
 
 	protected void bindActionBar(Object model){
-		if (mBindableActionBar == null) return;
-		AttributeBinder.getInstance().bindView(this, mBindableActionBar, model);
+		if (mBindableActionBarRef == null && mBindableActionBarRef.get() != null) return;
+		AttributeBinder.getInstance().bindView(this, mBindableActionBarRef.get(), model);
 	}
 
 	protected void bindOptionsMenu(Object model){
-		if (mBindableOptionsMenu == null) return;
-		AttributeBinder.getInstance().bindView(this, mBindableOptionsMenu, model);
+		if (mBindableOptionsMenuRef == null && mBindableOptionsMenuRef.get() != null ) return;
+		AttributeBinder.getInstance().bindView(this, mBindableOptionsMenuRef.get(), model);
 	}
 
 	protected void bindRootView(Object model){
-		if (mBindableRootView == null) return;
-		AttributeBinder.getInstance().bindView(this, (View)mBindableRootView, model);
+		if (mBindableRootViewRef == null || mBindableRootViewRef.get() == null ) return;
+		AttributeBinder.getInstance().bindView(this, (View)mBindableRootViewRef.get(), model);
 	}
 	
 	/**
@@ -140,7 +153,8 @@ public class BindingActivityV30 extends BindingActivity {
 			// Options menu must go first or else the create will have problem
 			bindActionBar(model);
 			bindRootView(model);
-			setContentView(mBindableRootView);
+			if(mBindableRootViewRef != null && mBindableRootViewRef.get() != null)
+				setContentView(mBindableRootViewRef.get());
 		}
 	}
 	
@@ -161,15 +175,15 @@ public class BindingActivityV30 extends BindingActivity {
 	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		if (mBindableOptionsMenu!=null)
-			return mBindableOptionsMenu.onCreateOptionsMenu(menu);
+		if (mBindableOptionsMenuRef!=null && mBindableOptionsMenuRef.get() != null)
+			return mBindableOptionsMenuRef.get().onCreateOptionsMenu(menu);
 		return super.onCreateOptionsMenu(menu);
 	}
 
 	@Override
 	public boolean onPrepareOptionsMenu(Menu menu) {
-		if (mBindableOptionsMenu!=null)
-			return mBindableOptionsMenu.onPrepareOptionsMenu(menu);
+		if (mBindableOptionsMenuRef!=null && mBindableOptionsMenuRef.get() != null)
+			return mBindableOptionsMenuRef.get().onPrepareOptionsMenu(menu);
 		return super.onPrepareOptionsMenu(menu);
 	}
 
@@ -179,8 +193,8 @@ public class BindingActivityV30 extends BindingActivity {
 			EventAggregator.getInstance(this).publish("Clicked(android.R.id.home)", this, null);
 			return true;
 		}
-		if (mBindableOptionsMenu!=null)
-			return mBindableOptionsMenu.onOptionsItemSelected(item);
+		if (mBindableOptionsMenuRef!=null && mBindableOptionsMenuRef.get() != null)
+			return mBindableOptionsMenuRef.get().onOptionsItemSelected(item);
 		return super.onOptionsItemSelected(item);
 	}
 }

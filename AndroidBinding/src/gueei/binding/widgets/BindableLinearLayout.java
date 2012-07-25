@@ -81,6 +81,14 @@ public class BindableLinearLayout extends LinearLayout implements IBindableView<
 	private void init() {
 	}
 	
+	
+	
+	@Override
+	protected void onDetachedFromWindow() {
+		newList(null);
+		super.onDetachedFromWindow();
+	}
+
 	private void createItemSourceList(ObservableCollection<Object> newList) {		
 		if( itemList != null && collectionObserver != null)
 			itemList.unsubscribe(collectionObserver);
@@ -100,10 +108,13 @@ public class BindableLinearLayout extends LinearLayout implements IBindableView<
 		this.removeAllViews();	
 		
 		observableItemsLayoutID.clear();
-				
+						
+		if( list == null) {
+			currentList = null;
+			return;
+		}
+		
 		currentList = new WeakList<Object>();
-		if( list == null)
-			return;	
 		
 		for( int pos=0; pos < list.size(); pos ++ ) {
 			Object item = list.getItem(pos);

@@ -1,5 +1,7 @@
 package gueei.binding.app;
 
+import java.lang.ref.WeakReference;
+
 import gueei.binding.Binder;
 import gueei.binding.Binder.InflateResult;
 import gueei.binding.menu.OptionsMenuBinder;
@@ -13,7 +15,7 @@ public class BindingActivity extends Activity {
 
 	OptionsMenuBinder menuBinder;
 	Object mMenuViewModel;
-	private View mRootView;
+	private WeakReference<View> mRootViewRef;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -21,16 +23,16 @@ public class BindingActivity extends Activity {
 	}
 	
 	protected View setAndBindRootView(int layoutId, Object... contentViewModel){
-		if (mRootView!=null){
+		if (mRootViewRef!=null && mRootViewRef.get() !=null){
 			throw new IllegalStateException("Root view is already created");
 		}
 		InflateResult result = Binder.inflateView(this, layoutId, null, false);
-		mRootView = result.rootView;
+		mRootViewRef = new WeakReference<View>(result.rootView);
 		for(int i=0; i<contentViewModel.length; i++){
 			Binder.bindView(this, result, contentViewModel[i]);
 		}
-		setContentView(mRootView);
-		return mRootView;
+		setContentView(mRootViewRef.get());
+		return mRootViewRef.get();
 	}
 	
 	protected void setAndBindOptionsMenu(int menuId, Object menuViewModel){
@@ -64,11 +66,13 @@ public class BindingActivity extends Activity {
 	}
 
 	public View getRootView() {
-		return mRootView;
+		if(mRootViewRef == null)
+			return null;
+		return mRootViewRef.get();
 	}
 
 	public void setRootView(View rootView) {
-		mRootView = rootView;
+		mRootViewRef = new WeakReference<View>(rootView);
 	}
 
 }

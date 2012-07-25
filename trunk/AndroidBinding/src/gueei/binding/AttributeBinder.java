@@ -4,6 +4,7 @@ import gueei.binding.BindingSyntaxResolver.SyntaxResolveException;
 import gueei.binding.bindingProviders.BindingProvider;
 import gueei.binding.exception.AttributeNotDefinedException;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Map.Entry;
 
@@ -65,7 +66,7 @@ public class AttributeBinder {
 		IObservable<?> property;
 		
 		// Set the reference context to the current binding view
-		refViewAttributeProvider.viewContext = view;
+		refViewAttributeProvider.viewContextRef = new WeakReference<View>(view);
 		
 		try {
 			property = BindingSyntaxResolver
@@ -112,13 +113,13 @@ public class AttributeBinder {
 			new RefViewAttributeProvider();
 	
 	private static class RefViewAttributeProvider implements IReferenceObservableProvider{
-		public View viewContext;
+		public WeakReference<View> viewContextRef;
 		
 		public IObservable<?> getReferenceObservable(int referenceId,
 				String field) {
-			if (viewContext==null) return null;
+			if (viewContextRef==null || viewContextRef.get()==null) return null;
 			
-			View reference = viewContext.getRootView().findViewById(referenceId);
+			View reference = viewContextRef.get().getRootView().findViewById(referenceId);
 			if (reference==null) return null;
 			try {
 				return Binder.getAttributeForView(reference, field);

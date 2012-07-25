@@ -1,5 +1,7 @@
 package gueei.binding.v30.actionbar;
 
+import java.lang.ref.WeakReference;
+
 import gueei.binding.BindingLog;
 import gueei.binding.IBindableView;
 import gueei.binding.ViewAttribute;
@@ -9,19 +11,23 @@ import android.view.View;
 
 public class BindableActionBar extends View implements IBindableView<BindableActionBar>{
 
-	Activity mActivity;
+	WeakReference<Activity> mActivityRef;
 	
 	public ActionBar getActionBar(){
-		return mActivity.getActionBar();
+		if(mActivityRef==null || mActivityRef.get() == null)
+			return null;
+		return mActivityRef.get().getActionBar();
 	}
 	
 	public BindableActionBar(Activity context) {
 		super(context);
-		mActivity = context;
+		mActivityRef = new WeakReference<Activity>(context);
 	}
 	
 	public Activity getActivity(){
-		return mActivity;
+		if(mActivityRef==null || mActivityRef.get() == null)
+			return null;
+		return mActivityRef.get();
 	}
 
 	public ViewAttribute<? extends View, ?> createViewAttribute(

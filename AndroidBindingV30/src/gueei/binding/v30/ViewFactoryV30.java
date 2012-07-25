@@ -1,5 +1,7 @@
 package gueei.binding.v30;
 
+import java.lang.ref.WeakReference;
+
 import gueei.binding.Binder;
 import gueei.binding.BindingMap;
 import gueei.binding.ViewFactory;
@@ -16,13 +18,13 @@ import android.view.ViewParent;
 
 public class ViewFactoryV30 extends ViewFactory implements LayoutInflater.Factory2 {
 
-	private Activity activity;
+	private WeakReference<Activity> activityRef;
 	
 	public ViewFactoryV30(LayoutInflater inflater) {
 		super(inflater);
 		Context context = inflater.getContext();
 		if (context instanceof Activity){
-			activity = (Activity)context;
+			activityRef = new WeakReference<Activity>((Activity)context);
 		}
 	}
 
@@ -38,12 +40,12 @@ public class ViewFactoryV30 extends ViewFactory implements LayoutInflater.Factor
 		if (name.equals("fragment")){
 			// Context of this inflater is not Activity,
 			// Cannot create fragment
-			if (activity==null){
+			if (activityRef==null || activityRef.get() == null){
 				return null;
 			}
 
-			Fragment fragment = Fragment.instantiate(activity, 
-					attrs.getAttributeValue(null, "class"), activity.getIntent().getExtras());
+			Fragment fragment = Fragment.instantiate(activityRef.get(), 
+					attrs.getAttributeValue(null, "class"), activityRef.get().getIntent().getExtras());
 			if (!(fragment instanceof BindingFragment)){
 				return null;
 			}
@@ -60,7 +62,7 @@ public class ViewFactoryV30 extends ViewFactory implements LayoutInflater.Factor
 			
 			((BindingFragment)fragment).setBindingMap(map);
 			
-			activity.getFragmentManager()
+			activityRef.get().getFragmentManager()
 				.beginTransaction()
 				.add(0, fragment)
 				.addToBackStack(null)

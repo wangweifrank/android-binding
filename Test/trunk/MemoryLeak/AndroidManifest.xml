@@ -27,7 +27,14 @@
  		
 		<activity
             android:name=".ChildActivityNoBinding"
-            android:label="Child No Binding" /> 		
+            android:label="Child No Binding" />
+		
+		
+		<activity
+            android:name=".ChildActivityBindableFramelayout"
+            android:label="Child Bindable Framelayout" />
+            
+				
     </application>
 
 </manifest>

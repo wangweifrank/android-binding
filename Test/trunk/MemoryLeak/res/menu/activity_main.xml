@@ -13,4 +13,10 @@
         android:orderInCategory="100"
         android:showAsAction="always"
         binding:onClick="OnClickNoBinding" />
+    
+    <item android:id="@+id/item3"
+        android:title="Child Bindable Framelayout"
+        android:orderInCategory="100"
+        android:showAsAction="always"
+        binding:onClick="OnClickBindableFramelayout" />    
 </menu>

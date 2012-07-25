@@ -1,0 +1,22 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:binding="http://www.gueei.com/android-binding/"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+    
+	<Button 
+    	android:layout_width="80dip"
+	    android:layout_height="wrap_content"
+	    android:text="Toggle"
+	    binding:onClick="OnToggle"
+	/>    
+
+	<binding.BindableFrameLayout
+		android:layout_width="match_parent"
+   		android:layout_height="match_parent"
+   		binding:layoutId="LayoutId"
+   		binding:dataSource="DataSource"
+    />
+
+</LinearLayout>

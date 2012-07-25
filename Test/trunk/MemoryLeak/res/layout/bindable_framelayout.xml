@@ -1,0 +1,59 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:binding="http://www.gueei.com/android-binding/"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:layout_margin="20dp"
+    binding:background="Color">
+    
+    <LinearLayout
+    	android:layout_width="match_parent"
+    	android:layout_height="0dp"
+    	android:layout_weight="1"
+    	android:orientation="horizontal" >
+    	    	
+		<binding.BindableFrameLayout
+			android:layout_width="0dp"
+			android:layout_weight="1"
+	    	android:layout_height="match_parent"
+	    	binding:layoutId="Child1.LayoutId"
+	    	binding:dataSource="Child1"
+ 	    />
+		
+		<binding.BindableFrameLayout
+			android:layout_width="0dp"
+			android:layout_weight="1"
+	    	android:layout_height="match_parent"
+	    	binding:layoutId="Child2.LayoutId"
+	    	binding:dataSource="Child2"
+ 	    />
+        
+    </LinearLayout>
+    
+    <LinearLayout
+    	android:layout_width="match_parent"
+    	android:layout_height="0dp"
+    	android:layout_weight="1"
+    	android:orientation="horizontal" >
+		    	    	
+		<binding.BindableFrameLayout
+			android:layout_width="0dp"
+			android:layout_weight="1"
+	    	android:layout_height="match_parent"
+	    	binding:layoutId="Child2.LayoutId"
+	    	binding:dataSource="Child3"
+ 	    />
+		
+		<binding.BindableFrameLayout
+			android:layout_width="0dp"
+			android:layout_weight="1"
+	    	android:layout_height="match_parent"
+	    	binding:layoutId="Child4.LayoutId"
+	    	binding:dataSource="Child4"
+ 	    />        
+    	    	
+    </LinearLayout>
+
+
+</LinearLayout>

@@ -16,38 +16,15 @@ public class MainActivity extends BindingActivityV30 {
         super.onCreate(savedInstanceState);
         setAndBindRootView(R.layout.activity_main,this);
         setAndBindOptionsMenu(R.menu.activity_main, this);
-        showRAM();
+        Tools.showRAM();
     }
         
-    private void showRAM() {    	
-    	long max = Runtime.getRuntime().maxMemory();
-    	long heapSize = Runtime.getRuntime().totalMemory();
-    	long freeSize = Runtime.getRuntime().freeMemory();
-    	long allocSize = heapSize - freeSize;
-    	
-    	
-    	StringBuilder sb = new StringBuilder();
-    	
-    	sb.append("max: ");
-    	sb.append(max / 1024L);
-    	sb.append("kb ");
-    	sb.append("heap: ");
-    	sb.append(heapSize / 1024L);
-    	sb.append("kb ");
-    	sb.append("alloc: ");
-    	sb.append(allocSize / 1024L);
-    	sb.append("kb ");
-    	sb.append("free: ");
-    	sb.append(freeSize / 1024L);
-    	sb.append("kb ");
-    	
-		Log.v("showRAM", sb.toString());
-	}
+
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
-		showRAM();
+		Tools.showRAM();
 	}
 
 	public final Command OnClickWithBinding = new Command() {
@@ -67,5 +44,16 @@ public class MainActivity extends BindingActivityV30 {
  			startActivityForResult(intent, 2000);
  		}
  	};
+ 	
+    public final Command OnClickBindableFramelayout = new Command() {
+ 		
+ 		@Override
+ 		public void Invoke(View arg0, Object... arg1) {
+ 			Intent intent = new Intent(getApplicationContext(), ChildActivityBindableFramelayout.class);
+ 			startActivityForResult(intent, 3000);
+ 		}
+ 	}; 	
+ 	
+ 	
     
 }

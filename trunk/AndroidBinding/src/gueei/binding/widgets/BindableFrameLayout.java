@@ -14,7 +14,6 @@ import android.widget.FrameLayout;
 public class BindableFrameLayout extends FrameLayout implements IBindableView<BindableFrameLayout>{
 	
 	private int LayoutId = 0;
-	private InflateResult inflateResult = null;
 	private Object dataSource = null;
 	private boolean updateEnabled = true;		
 
@@ -29,6 +28,13 @@ public class BindableFrameLayout extends FrameLayout implements IBindableView<Bi
 
 	public BindableFrameLayout(Context context) {
 		super(context);
+	}
+	
+	@Override
+	protected void onDetachedFromWindow() {
+		LayoutId = 0;
+		dataSource = null;
+		super.onDetachedFromWindow();
 	}
 
 	private ViewAttribute<?, Object> LayoutIdViewAttribute =
@@ -142,7 +148,7 @@ public class BindableFrameLayout extends FrameLayout implements IBindableView<Bi
 		return null;
 	}
 
-	protected void setDatasource(Object... newValue) {
+	protected void setDatasource(Object newValue) {
 		dataSource = newValue;
 		rebind();
 		refreshDrawableState();
@@ -162,7 +168,7 @@ public class BindableFrameLayout extends FrameLayout implements IBindableView<Bi
 	protected void rebind(){
 		BindableFrameLayout.this.removeAllViews();
 		if (LayoutId<=0) return;
-		inflateResult= Binder.inflateView(BindableFrameLayout.this.getContext(), LayoutId, BindableFrameLayout.this, false);							
+		InflateResult inflateResult= Binder.inflateView(BindableFrameLayout.this.getContext(), LayoutId, BindableFrameLayout.this, false);							
 		BindableFrameLayout.this.addView(inflateResult.rootView);
 		if (dataSource==null){
 			Binder.bindView(BindableFrameLayout.this.getContext(), inflateResult, null);

@@ -80,16 +80,14 @@ public class BindableLinearLayout extends LinearLayout implements IBindableView<
 	
 	private void init() {
 	}
-	
-	
-	/*
+		
 	@Override
 	protected void onDetachedFromWindow() {
-		newList(null);
+		observableItemsLayoutID.clear();
+		currentList = null;
 		super.onDetachedFromWindow();
 	}
-	*/
-
+	
 	private void createItemSourceList(ObservableCollection<Object> newList) {		
 		if( itemList != null && collectionObserver != null)
 			itemList.unsubscribe(collectionObserver);

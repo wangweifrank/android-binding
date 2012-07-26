@@ -7,7 +7,6 @@ import gueei.binding.Observer;
 import gueei.binding.utility.WeakList;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 
 
@@ -65,6 +64,10 @@ public abstract class ObservableCollection<T> implements IObservableCollection<T
 	public void unsubscribe(CollectionObserver c) {
 		mCollectionObservers.remove(c);
 	}
+	
+	public void clear() {
+		mCollectionObservers.clear();
+	}
 
 	public void notifyCollectionChanged(CollectionChangedEventArg args){
 		ArrayList<Object> initiators = new ArrayList<Object>();
@@ -73,6 +76,7 @@ public abstract class ObservableCollection<T> implements IObservableCollection<T
 	}
 	
 	public void notifyCollectionChanged(CollectionChangedEventArg args, Collection<Object> initiators) {
+		if(initiators==null) return;
 		initiators.add(this);
 		for(Object c: mCollectionObservers.toArray()){
 			if (initiators.contains(c)) continue;

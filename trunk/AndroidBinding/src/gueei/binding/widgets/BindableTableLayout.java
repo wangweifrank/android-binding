@@ -74,11 +74,13 @@ public class BindableTableLayout extends TableLayout implements IBindableView<Bi
 	private void init() {
 	}
 	
+	/*	
 	@Override
 	protected void onDetachedFromWindow() {
 		newRowList(null);
 		super.onDetachedFromWindow();
 	}
+	*/
 	
 	private void createItemSourceList(ObservableCollection<Object> newRowList) {		
 		if( rowList != null && collectionObserver != null)

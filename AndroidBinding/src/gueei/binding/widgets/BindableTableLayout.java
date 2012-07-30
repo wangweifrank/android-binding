@@ -46,10 +46,18 @@ public class BindableTableLayout extends TableLayout implements IBindableView<Bi
 	private Observer observer = new Observer() {
 		@Override
 		public void onPropertyChanged(IObservable<?> prop, Collection<Object> initiators) {
-			if( initiators == null || initiators.size() < 1 || currentRowList == null)
+			if( initiators == null || currentRowList == null)
 				return;
-			Object parent = initiators.toArray()[0];
-			int pos = currentRowList.indexOf(parent);						
+			int pos = -1;
+			
+			for(Object i : initiators) {
+				pos = currentRowList.indexOf(i);
+				if( pos > 0)
+					break;
+			}
+			if( pos < 0)
+				return;
+			Object parent = currentRowList.get(pos);
 			ArrayList<Object> list = new ArrayList<Object>();
 			list.add(parent);
 			removeRows(list);						
@@ -100,11 +108,13 @@ public class BindableTableLayout extends TableLayout implements IBindableView<Bi
 
 		currentRowList = null;	
 		collectionObserver = new CollectionObserver() {
+			@SuppressWarnings("unchecked")
 			@Override
 			public void onCollectionChanged(
 					IObservableCollection<?> collection,
 					CollectionChangedEventArg args,
 					Collection<Object> initiators) {
+				rowListChanged(args, (ObservableCollection<Object>)collection);
 			}			
 		};
 		
@@ -135,7 +145,52 @@ public class BindableTableLayout extends TableLayout implements IBindableView<Bi
 			Object item = rows.getItem(pos);
 			currentRowList.add(item);
 		}			
-	}		
+	}	
+	
+	private void rowListChanged(CollectionChangedEventArg e, ObservableCollection<Object> rows) {
+		if( e == null)
+			return;
+		
+		int pos=-1;
+		switch( e.getAction()) {
+			case Add:
+				pos = e.getNewStartingIndex();
+				for(Object row : e.getNewItems()) {
+					insertRow(pos, row);
+					pos++;
+				}
+				break;
+			case Remove:
+				removeRows(e.getOldItems());	
+				break;
+			case Replace:
+				removeRows(e.getOldItems());	
+				pos = e.getNewStartingIndex();
+				if( pos < 0)
+					pos=0;				
+				for(Object item : e.getNewItems()) {
+					insertRow(pos, item);
+					pos++;
+				}
+				break;
+			case Reset:
+				newRowList(rows);
+				break;
+			case Move:
+				// currently the observable array list doesn't create this action
+				throw new IllegalArgumentException("move not implemented");				
+			default:
+				throw new IllegalArgumentException("unknown action " + e.getAction().toString());
+		}
+		
+		if( rows == null)
+			return;	
+		
+		for( pos=0; pos < rows.size(); pos ++ ) {
+			Object item = rows.getItem(pos);
+			currentRowList.add(item);
+		}					
+	}	
 
 	private ViewAttribute<BindableTableLayout, Object> ItemSourceAttribute = 
 			new ViewAttribute<BindableTableLayout, Object>(Object.class, BindableTableLayout.this, "ItemSource") {		

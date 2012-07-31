@@ -117,13 +117,6 @@ public class SpannableTextViewAttribute extends ViewAttribute<TextView, Object> 
 			//getView().setMovementMethod(LinkMovementMethod.getInstance());  
 		}
 		*/		
-		
-		int x = 123;
-		x++;
-		x++;
-		x++;
-		x++;
-		x++;
 	}
 	
 	private boolean safeSetSpan(Spannable sText, Span s, int length) {

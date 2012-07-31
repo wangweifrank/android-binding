@@ -84,8 +84,11 @@ public class BindableTableLayout extends TableLayout implements IBindableView<Bi
 	
 	@Override
 	protected void onDetachedFromWindow() {
-		if(rowList != null)
+		if(rowList != null) {
+			rowList.unsubscribe(collectionObserver);
+			collectionObserver = null;
 			rowList.clear();
+		}
 		
 		rowList = null;
 		observableChildLayoutID.clear();

@@ -87,7 +87,6 @@ public class BindableTableLayout extends TableLayout implements IBindableView<Bi
 		if(rowList != null) {
 			rowList.unsubscribe(collectionObserver);
 			collectionObserver = null;
-			rowList.clear();
 		}
 		
 		rowList = null;

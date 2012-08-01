@@ -5,11 +5,14 @@ import java.lang.ref.WeakReference;
 import gueei.binding.Binder;
 import gueei.binding.Binder.InflateResult;
 import gueei.binding.menu.OptionsMenuBinder;
+import android.R;
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
 
 public class BindingActivity extends Activity {
 
@@ -21,6 +24,37 @@ public class BindingActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 	}
+	
+	@Override
+    protected void onDestroy() {
+		super.onDestroy();
+    }
+	
+	// idea from : http://stackoverflow.com/questions/1147172/what-android-tools-and-methods-work-best-to-find-memory-resource-leaks
+	
+	protected void unbindDrawables() {
+		if(mRootViewRef != null && mRootViewRef.get() != null)
+			unbindDrawables(mRootViewRef.get());   		
+	}
+
+    private void unbindDrawables(View view) {
+        if (view.getBackground() != null) {
+        	view.getBackground().setCallback(null);
+        }
+        
+        if (view instanceof ViewGroup) {
+            for (int i = 0; i < ((ViewGroup) view).getChildCount(); i++) {
+            	unbindDrawables(((ViewGroup) view).getChildAt(i));
+            }            
+        	try {
+        		if(!(view instanceof AdapterView<?>)) {
+        			((ViewGroup) view).removeAllViews();
+        		}
+        	} catch(Exception e) {
+        		
+        	}
+        }
+    }	
 	
 	protected View setAndBindRootView(int layoutId, Object... contentViewModel){
 		if (mRootViewRef!=null && mRootViewRef.get() !=null){

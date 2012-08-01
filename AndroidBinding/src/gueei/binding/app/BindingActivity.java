@@ -4,6 +4,7 @@ import java.lang.ref.WeakReference;
 
 import gueei.binding.Binder;
 import gueei.binding.Binder.InflateResult;
+import gueei.binding.converters.ADAPTER;
 import gueei.binding.menu.OptionsMenuBinder;
 import android.R;
 import android.app.Activity;
@@ -37,6 +38,7 @@ public class BindingActivity extends Activity {
 			unbindDrawables(mRootViewRef.get());   		
 	}
 
+	// overwrite this if needed!
     private void unbindDrawables(View view) {
         if (view.getBackground() != null) {
         	view.getBackground().setCallback(null);
@@ -47,7 +49,10 @@ public class BindingActivity extends Activity {
             	unbindDrawables(((ViewGroup) view).getChildAt(i));
             }            
         	try {
-        		if(!(view instanceof AdapterView<?>)) {
+        		if((view instanceof AdapterView<?>)) {
+        			AdapterView<?> adapterView = (AdapterView<?>)view;
+        			adapterView.setAdapter(null);        			
+        		} else {
         			((ViewGroup) view).removeAllViews();
         		}
         	} catch(Exception e) {

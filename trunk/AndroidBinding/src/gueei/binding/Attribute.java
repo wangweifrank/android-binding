@@ -54,7 +54,7 @@ public abstract class Attribute<Th, T> extends Observable<T> {
 
 	@Override
 	public void _setObject(final Object newValue, Collection<Object> initiators){
-		if (readonly) return;
+		if (readonly|| getHost() == null) return;
 		doSetAttributeValue(newValue);
 		initiators.add(this);
 	}

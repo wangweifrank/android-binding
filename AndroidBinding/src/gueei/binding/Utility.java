@@ -6,6 +6,9 @@ import java.lang.reflect.Field;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
 
 public class Utility {
 	public static BindingMap createBindingMap(AttributeSet attrs){
@@ -92,5 +95,28 @@ public class Utility {
 		if (val==null) return null;
 		if (expectedType.isAssignableFrom(val.getClass())) return expectedType.cast(val);
 		return null;
+	}
+	
+	public static void unbindDrawables(View view) {
+		if( view == null ) return;
+        if (view.getBackground() != null) {
+        	view.getBackground().setCallback(null);
+        }
+        
+        if (view instanceof ViewGroup) {
+            for (int i = 0; i < ((ViewGroup) view).getChildCount(); i++) {
+            	unbindDrawables(((ViewGroup) view).getChildAt(i));
+            }            
+        	try {
+        		if((view instanceof AdapterView<?>)) {
+        			AdapterView<?> adapterView = (AdapterView<?>)view;
+        			adapterView.setAdapter(null);        			
+        		} else {
+        			((ViewGroup) view).removeAllViews();
+        		}
+        	} catch(Exception e) {
+        		
+        	}
+        }
 	}
 }

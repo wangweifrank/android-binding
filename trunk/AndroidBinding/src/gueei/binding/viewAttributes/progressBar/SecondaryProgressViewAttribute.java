@@ -15,6 +15,7 @@ public class SecondaryProgressViewAttribute extends ViewAttribute<ProgressBar, F
 
 	@Override
 	protected void doSetAttributeValue(Object newValue) {
+		if(getView()==null) return;
 		if (newValue == null) return;
 		if (newValue instanceof Float){
 			getView().setSecondaryProgress((int)Math.ceil((Float)newValue * PROGRESS_MAX));
@@ -23,6 +24,7 @@ public class SecondaryProgressViewAttribute extends ViewAttribute<ProgressBar, F
 
 	@Override
 	public Float get() {
+		if(getView()==null) return null;
 		return (float)getView().getSecondaryProgress() / (float)PROGRESS_MAX;
 	}
 }

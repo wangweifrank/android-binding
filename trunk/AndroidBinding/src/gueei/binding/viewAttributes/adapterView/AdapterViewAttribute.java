@@ -14,6 +14,7 @@ public class AdapterViewAttribute<T extends Adapter> extends ViewAttribute<Adapt
 	@SuppressWarnings("unchecked")
 	@Override
 	protected void doSetAttributeValue(Object newValue) {
+		if(getView()==null) return;
 		if (newValue instanceof Adapter){
 			getView().setAdapter((T)newValue);
 			if (newValue instanceof LazyLoadAdapter){
@@ -25,6 +26,7 @@ public class AdapterViewAttribute<T extends Adapter> extends ViewAttribute<Adapt
 
 	@Override
 	public Adapter get() {
+		if(getView()==null) return null;
 		return getView().getAdapter();
 	}
 }

@@ -28,6 +28,7 @@ public class ProgressViewAttribute extends ViewAttribute<ProgressBar, Float>
 
 	@Override
 	protected void doSetAttributeValue(Object newValue) {
+		if(getView()==null) return;
 		if (newValue == null) return;
 		if (newValue instanceof Float){
 			getView().setProgress((int)Math.ceil((Float)newValue * PROGRESS_MAX));
@@ -36,6 +37,7 @@ public class ProgressViewAttribute extends ViewAttribute<ProgressBar, Float>
 
 	@Override
 	public Float get() {
+		if(getView()==null) return null;
 		return (float)getView().getProgress() / (float)PROGRESS_MAX;
 	}
 

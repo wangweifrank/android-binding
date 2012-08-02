@@ -33,6 +33,7 @@ public class SpannableTextViewAttribute extends ViewAttribute<TextView, Object> 
 
 	@Override
 	protected void doSetAttributeValue(Object newValue) {
+		if(getView()==null) return;
 		updateInternal(newValue);
 	}
 

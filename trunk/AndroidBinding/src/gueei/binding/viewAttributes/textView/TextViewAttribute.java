@@ -30,6 +30,7 @@ public class TextViewAttribute extends ViewAttribute<TextView, CharSequence> imp
 
 	@Override
 	public CharSequence get() {
+		if(getView()==null) return null;
 		return cloneCharSequence(getView().getText());
 	}
 
@@ -50,6 +51,7 @@ public class TextViewAttribute extends ViewAttribute<TextView, CharSequence> imp
 
 	@Override
 	protected void doSetAttributeValue(Object newValue) {
+		if(getView()==null) return;
 		synchronized (this) {
 			CharSequence nVal = "";
 			if (null != newValue) {

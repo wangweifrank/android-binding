@@ -19,6 +19,7 @@ public class AnimationViewAttribute extends ViewAttribute<View, AnimationTrigger
 	
 	@Override
 	protected void doSetAttributeValue(Object newValue) {
+		if(getView()==null) return;
 		if (mValue!=null)
 			mValue.removeTriggerListener(this);
 		if (newValue instanceof DynamicObject){

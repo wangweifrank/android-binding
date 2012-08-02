@@ -55,6 +55,7 @@ public class ExpandableListView_ItemSourceViewAttribute
 	@Override
 	protected void doSetAttributeValue(Object newValue) {
 		mValue = newValue;
+		if(getView()==null) return;
 		createAdapter();
 	}
 

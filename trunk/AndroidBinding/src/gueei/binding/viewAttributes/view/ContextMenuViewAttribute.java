@@ -14,6 +14,7 @@ public class ContextMenuViewAttribute extends ViewAttribute<View, ContextMenuBin
 
 	@Override
 	protected void doSetAttributeValue(Object newValue) {
+		if(getView()==null) return;
 		 if (newValue instanceof ContextMenuBinder){
 			 mValue = (ContextMenuBinder)newValue;
 			 getView().setOnCreateContextMenuListener(mValue);

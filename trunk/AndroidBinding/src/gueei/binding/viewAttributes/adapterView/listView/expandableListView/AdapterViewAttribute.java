@@ -13,6 +13,7 @@ public class AdapterViewAttribute extends ViewAttribute<ExpandableListView, Expa
 
 	@Override
 	protected void doSetAttributeValue(Object newValue) {
+		if(getView()==null) return;
 		if (newValue instanceof ExpandableListAdapter){
 			getView().setAdapter((ExpandableListAdapter)newValue);
 			if (newValue instanceof LazyLoadAdapter){
@@ -24,6 +25,7 @@ public class AdapterViewAttribute extends ViewAttribute<ExpandableListView, Expa
 
 	@Override
 	public ExpandableListAdapter get() {
+		if(getView()==null) return null;
 		return (ExpandableListAdapter)getView().getAdapter();
 	}
 }

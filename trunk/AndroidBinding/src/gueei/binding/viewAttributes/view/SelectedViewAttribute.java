@@ -12,6 +12,7 @@ public class SelectedViewAttribute extends ViewAttribute<View, Boolean> {
 
 	@Override
 	protected void doSetAttributeValue(Object newValue) {
+		if(getView()==null) return;
 		if (Boolean.TRUE.equals(newValue)){
 			getView().setSelected(true);
 		}else{
@@ -21,6 +22,7 @@ public class SelectedViewAttribute extends ViewAttribute<View, Boolean> {
 
 	@Override
 	public Boolean get() {
+		if(getView()==null) return null;
 		return getView().isSelected();
 	}
 

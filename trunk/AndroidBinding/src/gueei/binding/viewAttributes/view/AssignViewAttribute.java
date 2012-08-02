@@ -24,6 +24,7 @@ public class AssignViewAttribute extends ViewAttribute<View, DynamicObject> {
 
 	@Override
 	protected void doSetAttributeValue(Object newValue) {
+		if(getView()==null) return;
 		if (newValue==null || !(newValue instanceof DynamicObject)){
 			return;
 		}

@@ -37,6 +37,7 @@ public class CheckedItemPositionViewAttribute extends ViewAttribute<ListView, In
 
 	@Override
 	protected void doSetAttributeValue(Object newValue) {
+		if(getView()==null) return;
 		if (!(newValue instanceof Integer)) return;
 		if (getView().getChoiceMode() != ListView.CHOICE_MODE_SINGLE) return;
 		getView().setItemChecked((Integer)newValue, true);

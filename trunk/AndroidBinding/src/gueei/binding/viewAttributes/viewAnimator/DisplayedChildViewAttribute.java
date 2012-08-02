@@ -13,6 +13,7 @@ public class DisplayedChildViewAttribute extends ViewAttribute<ViewAnimator, Int
 
 	@Override
 	protected void doSetAttributeValue(Object newValue) {
+		if(getView()==null) return;
 		int totalView = getView().getChildCount();
 		if (newValue == null){
 			return;
@@ -27,6 +28,7 @@ public class DisplayedChildViewAttribute extends ViewAttribute<ViewAnimator, Int
 
 	@Override
 	public Integer get() {
+		if(getView()==null) return null;
 		return getView().getDisplayedChild();
 	}
 }

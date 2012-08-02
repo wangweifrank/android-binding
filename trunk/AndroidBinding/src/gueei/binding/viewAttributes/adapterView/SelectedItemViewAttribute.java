@@ -21,6 +21,7 @@ public class SelectedItemViewAttribute extends ViewAttribute<AdapterView<?>, Obj
 
 	@Override
 	public Object get() {
+		if(getView()==null) return null;
 		return getView().getSelectedItem();
 	}
 

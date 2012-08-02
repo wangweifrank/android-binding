@@ -2,7 +2,6 @@ package gueei.binding.viewAttributes.view;
 
 import gueei.binding.BindingType;
 import gueei.binding.ViewAttribute;
-import android.graphics.drawable.Drawable;
 import android.view.View;
 
 
@@ -14,6 +13,7 @@ public class BackgroundColorViewAttribute extends ViewAttribute<View, Integer> {
 
 	@Override
 	protected void doSetAttributeValue(Object newValue) {
+		if(getView()==null) return;
 		if (newValue==null){
 			getView().setBackgroundColor(0);
 			return;

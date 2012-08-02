@@ -68,6 +68,7 @@ public class ItemCountViewAttribute extends ViewAttribute<AdapterView<?>, Intege
 
 	@Override
 	public Integer get() {
+		if(getView()==null) return null;
 		return getView().getCount();
 	}
 

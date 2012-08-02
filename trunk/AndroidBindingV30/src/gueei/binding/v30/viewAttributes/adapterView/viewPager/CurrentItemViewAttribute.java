@@ -17,6 +17,7 @@ public class CurrentItemViewAttribute extends ViewAttribute<ViewPager, Integer> 
 		
 		@Override
 		protected void doSetAttributeValue(Object newValue) {
+			if(getView()==null) return;
 			if (newValue instanceof Integer){
 				getView().setCurrentItem((Integer)newValue);
 				return;
@@ -25,6 +26,7 @@ public class CurrentItemViewAttribute extends ViewAttribute<ViewPager, Integer> 
 
 		@Override
 		public Integer get() {
+			if(getView()==null) return null;
 			return getView().getCurrentItem();
 		}
 

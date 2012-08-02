@@ -16,6 +16,7 @@ public class AdapterViewAttribute extends ViewAttribute<ViewPager, PagerAdapter>
 		
 		@Override
 		protected void doSetAttributeValue(Object newValue) {
+			if(getView()==null) return;
 			if (newValue instanceof PagerAdapter){
 				getView().setAdapter((PagerAdapter)newValue);
 				return;
@@ -29,6 +30,7 @@ public class AdapterViewAttribute extends ViewAttribute<ViewPager, PagerAdapter>
 
 		@Override
 		public PagerAdapter get() {
+			if(getView()==null) return null;
 			return getView().getAdapter();
 		}
 		

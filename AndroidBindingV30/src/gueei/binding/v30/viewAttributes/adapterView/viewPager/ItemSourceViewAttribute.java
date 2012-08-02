@@ -44,6 +44,7 @@ public class ItemSourceViewAttribute extends ViewAttribute<ViewPager, Object> {
 		
 		@Override
 		protected void doSetAttributeValue(Object newValue) {
+			if(getView()==null) return;
 			mValue = newValue;
 			createAdapter();
 		}

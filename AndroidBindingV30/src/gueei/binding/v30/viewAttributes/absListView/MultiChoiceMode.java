@@ -39,7 +39,7 @@ public class MultiChoiceMode extends ViewAttribute<AbsListView, DynamicObject>
 	}
 
 	@Override
-	protected void doSetAttributeValue(Object newValue) {
+	protected void doSetAttributeValue(Object newValue) {		
 		try {
 			DynamicObject obj = (DynamicObject)newValue;
 			mMenuId = (Integer)obj.getObservableByName("menu").get();
@@ -52,7 +52,6 @@ public class MultiChoiceMode extends ViewAttribute<AbsListView, DynamicObject>
 
 	@Override
 	public DynamicObject get() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

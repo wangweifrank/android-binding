@@ -16,6 +16,7 @@ public class ItemLayoutTemplateViewAttribute extends ViewAttribute<View, LayoutI
 	
 	@Override
 	protected void doSetAttributeValue(Object newValue) {
+		if(getView()==null) return;
 		if (newValue instanceof LayoutItem){
 			template = (LayoutItem)newValue;
 			return;

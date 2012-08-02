@@ -14,6 +14,7 @@ public class ChildViewsViewAttribute extends ViewAttribute<ViewAnimator, View[]>
 
 	@Override
 	protected void doSetAttributeValue(Object newValue) {
+		if(getView()==null) return;
 		if (newValue == null){
 			getView().removeAllViews();
 			return;
@@ -29,6 +30,7 @@ public class ChildViewsViewAttribute extends ViewAttribute<ViewAnimator, View[]>
 
 	@Override
 	public View[] get() {
+		if(getView()==null) return null;
 		int count = getView().getChildCount();
 		View[] result = new View[count];
 		for(int i=0; i<count; i++)

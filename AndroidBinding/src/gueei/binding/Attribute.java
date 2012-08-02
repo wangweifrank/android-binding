@@ -34,7 +34,7 @@ public abstract class Attribute<Th, T> extends Observable<T> {
 	
 	@Override
 	protected void doSetValue(final T newValue, Collection<Object> initiators) {
-		if (readonly || getHost() == null) return;
+		if (readonly) return;
 		doSetAttributeValue(newValue);
 		/*
 		uiHandler.post(new Runnable(){
@@ -54,7 +54,7 @@ public abstract class Attribute<Th, T> extends Observable<T> {
 
 	@Override
 	public void _setObject(final Object newValue, Collection<Object> initiators){
-		if (readonly|| getHost() == null) return;
+		if (readonly) return;
 		doSetAttributeValue(newValue);
 		initiators.add(this);
 	}

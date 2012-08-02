@@ -15,6 +15,7 @@ public class SelectedPositionViewAttribute extends ViewAttribute<AdapterView<?>,
 
 	@Override
 	protected void doSetAttributeValue(Object newValue) {
+		if(getView()==null) return;
 		if (!(newValue instanceof Integer)) return;
 		
 		getView().setSelection((Integer)newValue);

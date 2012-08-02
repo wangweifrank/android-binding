@@ -15,6 +15,7 @@ public class VisibilityViewAttribute extends ViewAttribute<View, Integer> {
 
 	@Override
 	protected void doSetAttributeValue(Object newValue) {
+		if(getView()==null) return;
 		if (newValue==null){
 			getView().setVisibility(View.GONE);
 			return;
@@ -34,6 +35,7 @@ public class VisibilityViewAttribute extends ViewAttribute<View, Integer> {
 
 	@Override
 	public Integer get() {
+		if(getView()==null) return null;
 		return getView().getVisibility();
 	}
 

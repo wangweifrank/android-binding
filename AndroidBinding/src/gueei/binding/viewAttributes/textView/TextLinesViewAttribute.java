@@ -26,6 +26,7 @@ public class TextLinesViewAttribute extends ViewAttribute<TextView, Integer> {
 
 	@Override
 	protected void doSetAttributeValue(Object newValue) {
+		if(getView()==null) return;
 		if (newValue==null){
 			getView().setMaxLines(1);
 			return;

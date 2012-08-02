@@ -14,6 +14,7 @@ public class Layout_HeightViewAttribute extends ViewAttribute<View, Integer> {
 
 	@Override
 	protected void doSetAttributeValue(Object newValue) {
+		if(getView()==null) return;
 		LayoutParams param = getView().getLayoutParams();
 		if (param==null) return;
 		
@@ -42,6 +43,7 @@ public class Layout_HeightViewAttribute extends ViewAttribute<View, Integer> {
 
 	@Override
 	public Integer get() {
+		if(getView()==null) return null;
 		LayoutParams param = getView().getLayoutParams();
 		if (param==null) return 0;
 		return param.height; 

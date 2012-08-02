@@ -24,6 +24,7 @@ public class GenericViewAttribute<Tv extends View, T> extends ViewAttribute<Tv, 
 	@SuppressWarnings("unchecked")
 	@Override
 	public T get() {
+		if(getView()==null) return null;
 		T value;
 		try {
 			value = (T)this.getter.invoke(getView());
@@ -35,6 +36,7 @@ public class GenericViewAttribute<Tv extends View, T> extends ViewAttribute<Tv, 
 
 	@Override
 	protected void doSetAttributeValue(Object newValue) {
+		if(getView()==null) return;
 		try{
 			this.setter.invoke(getView(), newValue);
 		}catch(Exception e){

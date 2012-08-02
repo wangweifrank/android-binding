@@ -14,6 +14,7 @@ public class FilterConstraintViewAttribute extends ViewAttribute<ListView, CharS
 
 	@Override
 	protected void doSetAttributeValue(Object newValue) {
+		if(getView()==null) return;
 		if (newValue instanceof CharSequence){
 			try {
 				@SuppressWarnings("unchecked")

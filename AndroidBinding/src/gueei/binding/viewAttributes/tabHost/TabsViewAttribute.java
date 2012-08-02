@@ -21,6 +21,7 @@ public class TabsViewAttribute extends ViewAttribute<TabHost, ArrayListObservabl
 	@SuppressWarnings("unchecked")
 	@Override
 	protected void doSetAttributeValue(Object newValue) {
+		if(getView()==null) return;
 		if (!(newValue instanceof ArrayListObservable)) return;
 		
 		// Type is not Tab

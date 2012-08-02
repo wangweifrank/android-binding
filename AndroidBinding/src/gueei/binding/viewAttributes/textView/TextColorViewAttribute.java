@@ -14,6 +14,7 @@ public class TextColorViewAttribute extends ViewAttribute<TextView, Integer> {
 
 	@Override
 	protected void doSetAttributeValue(Object newValue) {
+		if(getView()==null) return;
 		if (newValue==null){
 			getView().setTextColor(Color.RED);
 			return;

@@ -19,6 +19,7 @@ public class RatingViewAttribute extends ViewAttribute<RatingBar, Float>
 
 	@Override
 	protected void doSetAttributeValue(Object newValue) {
+		if(getView()==null) return;
 		if (newValue == null){
 			getView().setRating(0);
 			return;
@@ -31,6 +32,7 @@ public class RatingViewAttribute extends ViewAttribute<RatingBar, Float>
 
 	@Override
 	public Float get() {
+		if(getView()==null) return null;
 		return getView().getRating();
 	}
 

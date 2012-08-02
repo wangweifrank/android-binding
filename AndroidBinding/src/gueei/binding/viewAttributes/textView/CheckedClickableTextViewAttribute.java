@@ -21,6 +21,7 @@ public class CheckedClickableTextViewAttribute extends ViewAttribute<CheckedText
 
 	@Override
 	protected void doSetAttributeValue(Object newValue) {
+		if(getView()==null) return;
 		boolean changeTo = getView().isChecked();
 		if (newValue==null){
 			changeTo = false;
@@ -39,6 +40,7 @@ public class CheckedClickableTextViewAttribute extends ViewAttribute<CheckedText
 
 	@Override
 	public Boolean get() {
+		if(getView()==null) return null;
 		return getView().isChecked();
 	}
 

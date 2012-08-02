@@ -21,7 +21,7 @@ public abstract class ViewEventAttribute<T extends View> extends ViewAttribute<T
 	private Command mCommand;
 	
 	@Override
-	protected void doSetAttributeValue(Object newValue) {
+	protected void doSetAttributeValue(Object newValue) {		
 		if (newValue instanceof Command){
 			mCommand = (Command)newValue;
 		}

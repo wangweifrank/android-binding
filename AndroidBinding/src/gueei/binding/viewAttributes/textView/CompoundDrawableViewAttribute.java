@@ -16,6 +16,7 @@ public class CompoundDrawableViewAttribute extends ViewAttribute<TextView, Objec
 	
 	@Override
 	protected void doSetAttributeValue(Object newValue) {
+		if(getView()==null) return;
 		if (newValue instanceof Integer){
 			int value = (Integer)newValue;
 			if( value != 0 )

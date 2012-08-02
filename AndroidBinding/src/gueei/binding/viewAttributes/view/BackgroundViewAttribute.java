@@ -14,6 +14,7 @@ public class BackgroundViewAttribute extends ViewAttribute<View, Object> {
 
 	@Override
 	protected void doSetAttributeValue(Object newValue) {
+		if(getView()==null) return;
 		if (newValue==null){
 			getView().setBackgroundDrawable(null);
 			return;

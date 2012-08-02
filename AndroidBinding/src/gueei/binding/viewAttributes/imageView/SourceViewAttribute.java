@@ -16,6 +16,7 @@ public class SourceViewAttribute extends ViewAttribute<ImageView, Object> {
 
 	@Override
 	protected void doSetAttributeValue(Object newValue) {
+		if(getView()==null) return;
 		if (newValue==null){
 			getView().setImageDrawable(null);
 			return;

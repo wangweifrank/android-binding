@@ -21,11 +21,13 @@ public class CheckedItemPositionsViewAttribute extends ViewAttribute<ListView, S
 
 	@Override
 	public SparseBooleanArray get() {
+		if(getView()==null) return null;
 		return getView().getCheckedItemPositions();
 	}
 
 	@Override
 	protected void doSetAttributeValue(Object newValue) {
+		if(getView()==null) return;
 		if (!(newValue instanceof SparseBooleanArray)){
 			return;
 		}

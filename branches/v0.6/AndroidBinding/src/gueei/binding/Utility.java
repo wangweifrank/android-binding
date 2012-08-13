@@ -96,27 +96,4 @@ public class Utility {
 		if (expectedType.isAssignableFrom(val.getClass())) return expectedType.cast(val);
 		return null;
 	}
-	
-	public static void unbindDrawables(View view) {
-		if( view == null ) return;
-        if (view.getBackground() != null) {
-        	view.getBackground().setCallback(null);
-        }
-        
-        if (view instanceof ViewGroup) {
-            for (int i = 0; i < ((ViewGroup) view).getChildCount(); i++) {
-            	unbindDrawables(((ViewGroup) view).getChildAt(i));
-            }            
-        	try {
-        		if((view instanceof AdapterView<?>)) {
-        			AdapterView<?> adapterView = (AdapterView<?>)view;
-        			adapterView.setAdapter(null);        			
-        		} else {
-        			((ViewGroup) view).removeAllViews();
-        		}
-        	} catch(Exception e) {
-        		
-        	}
-        }
-	}
 }

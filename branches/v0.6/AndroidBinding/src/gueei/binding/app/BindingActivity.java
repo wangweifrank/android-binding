@@ -33,15 +33,39 @@ public class BindingActivity extends Activity {
     }
 	
 	// idea from : http://stackoverflow.com/questions/1147172/what-android-tools-and-methods-work-best-to-find-memory-resource-leaks
-	
-	protected void unbindDrawables() {
+	/**
+	 * Original Name: unbindDrawables. Change to this to avoid "bind" since binding is different meaning for A-B
+	 */
+	protected void releaseDrawables() {
 		if(mRootViewRef != null && mRootViewRef.get() != null)
-			unbindDrawables(mRootViewRef.get());   		
+			releaseDrawables(mRootViewRef.get());   		
 	}
 
-	// overwrite this if needed!
-    private void unbindDrawables(View view) {
-    	Utility.unbindDrawables(view);
+	/**
+	 * Utility method to help release drawables from Activity once activity is onDestroy
+	 * see more at: http://www.alonsoruibal.com/bitmap-size-exceeds-vm-budget/
+	 * @param view
+	 */
+    protected void releaseDrawables(View view) {
+    	if( view == null ) return;
+        if (view.getBackground() != null) {
+        	view.getBackground().setCallback(null);
+        }
+        
+        if (view instanceof ViewGroup) {
+            for (int i = 0; i < ((ViewGroup) view).getChildCount(); i++) {
+            	releaseDrawables(((ViewGroup) view).getChildAt(i));
+            }            
+        	try {
+        		if((view instanceof AdapterView<?>)) {
+        			AdapterView<?> adapterView = (AdapterView<?>)view;
+        			adapterView.setAdapter(null);        			
+        		} else {
+        			((ViewGroup) view).removeAllViews();
+        		}
+        	} catch(Exception e) {
+        	}
+        }
     }	
 	
 	protected View setAndBindRootView(int layoutId, Object... contentViewModel){

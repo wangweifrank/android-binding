@@ -2,6 +2,7 @@ package gueei.binding.converters;
 
 import gueei.binding.Converter;
 import gueei.binding.IObservable;
+import gueei.binding.Undetermined;
 
 /**
  * Test the condition, if the condition is true, return arg_if_true, or else return arg_if_false
@@ -15,7 +16,7 @@ import gueei.binding.IObservable;
  * @return boolean
  */
 
-public class IF extends Converter<Object> {
+public class IF extends Converter<Object> implements Undetermined {
 
 	public IF(IObservable<?>[] dependents) {
 		super(Object.class, dependents);

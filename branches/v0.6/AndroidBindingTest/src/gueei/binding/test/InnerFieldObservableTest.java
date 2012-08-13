@@ -1,6 +1,7 @@
 package gueei.binding.test;
 
 import gueei.binding.BindingSyntaxResolver;
+import gueei.binding.BindingSyntaxResolver.SyntaxResolveException;
 import gueei.binding.IObservable;
 import gueei.binding.InnerFieldObservable;
 import gueei.binding.Observable;
@@ -94,7 +95,7 @@ public class InnerFieldObservableTest extends AndroidTestCase {
 		assertEquals("hello", ifo.get());
 	}
 	
-	public void testSyntaxResolver(){
+	public void testSyntaxResolver() throws SyntaxResolveException{
 		IObservable obs = BindingSyntaxResolver
 				.constructObservableFromStatement(
 						getContext(), "TestObservable.TESTB.TESTC.STRINGC", this);

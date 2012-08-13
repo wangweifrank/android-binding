@@ -2,6 +2,7 @@ package gueei.binding.converters;
 
 import gueei.binding.Converter;
 import gueei.binding.IObservable;
+import gueei.binding.Undetermined;
 
 
 /**
@@ -16,7 +17,7 @@ import gueei.binding.IObservable;
  * @return Object
  */
 
-public class IF_NULL extends Converter<Object> {
+public class IF_NULL extends Converter<Object> implements Undetermined{
 
 	public IF_NULL(IObservable<?>[] dependents) {
 		super(Object.class, dependents);

@@ -14,6 +14,8 @@ import gueei.binding.observables.SpanObservable.Span;
 import android.text.Spannable;
 import android.widget.TextView;
 
+//TODO: egandro
+@Deprecated
 public class SpannableTextViewAttribute extends ViewAttribute<TextView, Object> {
 	
 	Object oldValue = null;

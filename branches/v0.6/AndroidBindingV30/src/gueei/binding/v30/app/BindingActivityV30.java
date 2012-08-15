@@ -128,12 +128,12 @@ public class BindingActivityV30 extends BindingActivity {
 	}
 
 	protected void bindActionBar(Object model){
-		if (mBindableActionBarRef == null && mBindableActionBarRef.get() != null) return;
+		if (mBindableActionBarRef == null || mBindableActionBarRef.get() != null) return;
 		AttributeBinder.getInstance().bindView(this, mBindableActionBarRef.get(), model);
 	}
 
 	protected void bindOptionsMenu(Object model){
-		if (mBindableOptionsMenuRef == null && mBindableOptionsMenuRef.get() != null ) return;
+		if (mBindableOptionsMenuRef == null || mBindableOptionsMenuRef.get() != null ) return;
 		AttributeBinder.getInstance().bindView(this, mBindableOptionsMenuRef.get(), model);
 	}
 

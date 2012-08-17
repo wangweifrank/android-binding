@@ -85,6 +85,9 @@ public class Observable<T> implements IObservable<T> {
 			if (value==null) return;
 			this.set(value, initiators);
 		}catch(ClassCastException e){
+			BindingLog.warning("Observable._setObject", 
+					String.format("Failed to assign value: '%s' to observable of type: '%s', type mismatch", 
+							newValue, this.getType()));
 			return;
 		}
 	}

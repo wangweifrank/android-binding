@@ -119,6 +119,6 @@ public class Observable<T> implements IObservable<T> {
 
 	@Override
 	public boolean isNull() {
-		return get()==null;
+		return mValue==null;
 	}
 }

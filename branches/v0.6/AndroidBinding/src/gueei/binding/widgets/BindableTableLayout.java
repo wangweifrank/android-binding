@@ -295,7 +295,8 @@ public class BindableTableLayout extends TableLayout implements IBindableView<Bi
 		}				
 		
 		TableRow trow = createRow(childDataSource, pos, row);
-				 											
+				 			
+		currentRowList.add(pos, row);
 		this.addView(trow,pos);		
 	}
 
@@ -443,6 +444,7 @@ public class BindableTableLayout extends TableLayout implements IBindableView<Bi
 		
 		for(Object row : deleteList){
 			int pos = currentPositionList.indexOf(row);
+			currentRowList.remove(row);
 			observableChildLayoutID.removeParent(row);
 			observableChildSpan.removeParent(row);
 			observableCollectionRowChildren.removeParent(row);

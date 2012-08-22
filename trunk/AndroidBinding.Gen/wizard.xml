@@ -1,34 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="android-binding" default="jar" basedir=".">
-    <property name="src.dir" value="src"/>
-    <property name="classes.dir" value="classes"/>
-    <property name="resources.dir" value="src/gueei/binding/gen/resources"/>
+<project name="android-binding" default="wizard" basedir=".">
     <property name="resource.dir" value="res"/>
-    
-    
-    <target name="clean" description="Delete all generated files">
-        <delete dir="${classes.dir}" failonerror="false"/>
-        <delete file="${ant.project.name}.jar"/>
-    </target>
-
-    <target name="compile" description="Compiles the Task">
-        <mkdir dir="${classes.dir}"/>
-        <javac srcdir="${src.dir}" destdir="${classes.dir}"/>
-    </target>
-
-    <target name="jar" description="JARs the Task" depends="compile">
-        <jar destfile="${ant.project.name}.jar" basedir="${classes.dir}">
-            <fileset dir="${resources.dir}"/>
-        </jar>
-    </target>
-    
-    <target name="test" depends="jar">
-        <taskdef name="read-manifest"
-            classname="gueei.binding.gen.ReadFromManifestTask" classpath="${ant.project.name}.jar"/>
-        <read-manifest dir="."
-            setpackagename="package.name"
-            setsourcefoldername="package.dir"/>
-    </target>
+    <property name="classpath" value="android-binding.ant.jar"/>
     
     <target name="wizard">
         <taskdef name="mc-task" 
@@ -43,15 +16,14 @@
         </mc-task>
     </target>
     
-    <target name="new-activity" description="Use the Task" depends="jar">
+    <target name="new-activity" description="Use the Task">
         <taskdef name="read-manifest"
-            classname="gueei.binding.gen.ReadFromManifestTask" classpath="${ant.project.name}.jar"/>
+            classname="gueei.binding.gen.ReadFromManifestTask" classpath="${classpath}"/>
         <read-manifest dir="."
             setpackagename="package.name"
             setsourcefoldername="package.dir"/>
-        
-        <taskdef name="template" classname="gueei.binding.gen.WriteTemplateTask" classpath="${ant.project.name}.jar"/>
-        <taskdef name="register-activity" classname="gueei.binding.gen.RegisterActivityTask" classpath="${ant.project.name}.jar"/>
+    	<taskdef name="template" classname="gueei.binding.gen.WriteTemplateTask" classpath="${classpath}"/>
+        <taskdef name="register-activity" classname="gueei.binding.gen.RegisterActivityTask" classpath="${classpath}"/>
         <input message="Input the new Activity's name" addproperty="activityname"/>
         <!-- Create Activity File -->
         <template input="BindingActivityV30.template" dir="${package.dir}" output="${activityname}.java">
@@ -82,9 +54,14 @@
             message="Generation completed. Refresh your project to see the new files. "/>
     </target>
     
-    <target name="create_application_class" depends="jar">
-    	<taskdef name="register" classname="gueei.binding.gen.RegisterApplicationTask" classpath="${ant.project.name}.jar"/>
-    	<taskdef name="template" classname="gueei.binding.gen.WriteTemplateTask" classpath="${ant.project.name}.jar"/>
+    <target name="create_application_class">
+        <taskdef name="read-manifest"
+            classname="gueei.binding.gen.ReadFromManifestTask" classpath="${classpath}"/>
+        <read-manifest dir="."
+            setpackagename="package.name"
+            setsourcefoldername="package.dir"/>
+    	<taskdef name="register" classname="gueei.binding.gen.RegisterApplicationTask" classpath="${classpath}"/>
+    	<taskdef name="template" classname="gueei.binding.gen.WriteTemplateTask" classpath="${classpath}"/>
     	<input message="Input the Application Class' name" addproperty="appname"/>
     	<register dir="." appclassname="${appname}"/>
     	<template input="application.template" dir="${package.dir}" output="${appname}.java">

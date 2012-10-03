@@ -170,11 +170,12 @@ public final class R {
         public static final int tabdemo=0x7f030053;
         public static final int textview=0x7f030054;
         public static final int textviewcustomfont=0x7f030055;
-        public static final int validation=0x7f030056;
-        public static final int view=0x7f030057;
-        public static final int view_demo=0x7f030058;
-        public static final int viewpager=0x7f030059;
-        public static final int vp_pages=0x7f03005a;
+        public static final int textviewspan=0x7f030056;
+        public static final int validation=0x7f030057;
+        public static final int view=0x7f030058;
+        public static final int view_demo=0x7f030059;
+        public static final int viewpager=0x7f03005a;
+        public static final int vp_pages=0x7f03005b;
     }
     public static final class menu {
         public static final int actionmodeexample_menu=0x7f0e0000;
@@ -262,9 +263,11 @@ public final class R {
         public static final int textview_code=0x7f06004b;
         public static final int textviewcustomfont=0x7f06004c;
         public static final int textviewcustomfont_code=0x7f06004d;
-        public static final int view=0x7f06004e;
-        public static final int view_code=0x7f06004f;
-        public static final int view_demo=0x7f060050;
+        public static final int textviewspan=0x7f06004e;
+        public static final int textviewspan_code=0x7f06004f;
+        public static final int view=0x7f060050;
+        public static final int view_code=0x7f060051;
+        public static final int view_demo=0x7f060052;
     }
     public static final class string {
         public static final int actionmode_example_desc=0x7f0c0005;

@@ -6,7 +6,7 @@
 		binding:title="CONCAT('ShowHomeAsUp: ',ShowHomeAsUp)"
 		binding:onClick="ToggleShowHomeAsUp"
 		binding:visible="OR(ShowHome, ShowTitle)"
-		android:showAsAction="always"
+		android:showAsAction="ifRoom"
 	/>
 	<item android:id="@+id/button2"
 		binding:title="CONCAT('ShowHome: ',ShowHome)"

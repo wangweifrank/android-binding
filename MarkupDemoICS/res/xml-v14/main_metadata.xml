@@ -8,6 +8,9 @@
 		binding:listNavigationAdapter="ADAPTER({source=Categories, template=@layout/listnavi_item})"
 		binding:listNavigationOnItemSelected="CategorySelected"
 		binding:listNavigationSelectedItem="SelectedCategory"
+		binding:tabNavigationAdapter="ADAPTER({source=Categories, template=@layout/listnavi_item})"
+		binding:tabNavigationOnItemSelected="CategorySelected"
+		binding:tabNavigationSelectedItem="SelectedCategory"
 		>
 	</actionBar>
 	<rootView

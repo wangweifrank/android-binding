@@ -1,12 +1,13 @@
 package ${package_name};
 
-import gueei.binding.v30.BinderV30;
+import gueei.binding.Binder;
+import gueei.binding.v30.DefaultKernelV30;
 import android.app.Application;
 
 public class ${app_name} extends Application {
 	@Override
     public void onCreate() {
 	    super.onCreate();
-	    BinderV30.init(this);
+	    Binder.init(this, new DefaultKernelV30);
     }
 }

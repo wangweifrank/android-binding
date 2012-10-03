@@ -21,9 +21,7 @@ public class OnTextChangedViewEvent extends ViewEventAttribute<EditText> impleme
 	}
 
 	public void onTextChanged(CharSequence s, int start, int before, int count) {
-		if(mHostRef == null)
-			return;
-		this.invokeCommand(mHostRef.get(), s, start, before, count);
+		this.invokeCommand(getView(), s, start, before, count);
 	}
 
 	@Override

@@ -12,7 +12,6 @@ import gueei.binding.app.rootView.BindableRootView;
 import gueei.binding.labs.EventAggregator;
 import gueei.binding.labs.EventSubscriber;
 import gueei.binding.menu.BindableOptionsMenu;
-import gueei.binding.v30.BinderV30;
 import gueei.binding.v30.actionbar.BindableActionBar;
 import android.content.res.XmlResourceParser;
 import android.os.Build;
@@ -128,12 +127,12 @@ public class BindingActivityV30 extends BindingActivity {
 	}
 
 	protected void bindActionBar(Object model){
-		if (mBindableActionBarRef == null || mBindableActionBarRef.get() != null) return;
+		if (mBindableActionBarRef == null || mBindableActionBarRef.get() == null) return;
 		AttributeBinder.getInstance().bindView(this, mBindableActionBarRef.get(), model);
 	}
 
 	protected void bindOptionsMenu(Object model){
-		if (mBindableOptionsMenuRef == null || mBindableOptionsMenuRef.get() != null ) return;
+		if (mBindableOptionsMenuRef == null || mBindableOptionsMenuRef.get() == null ) return;
 		AttributeBinder.getInstance().bindView(this, mBindableOptionsMenuRef.get(), model);
 	}
 
@@ -164,10 +163,10 @@ public class BindingActivityV30 extends BindingActivity {
 		if (getRootView()!=null){
 			throw new IllegalStateException("Root view is already created");
 		}
-		InflateResult result = BinderV30.inflateView(this, layoutId, null, false);
+		InflateResult result = Binder.inflateView(this, layoutId, null, false);
 		setRootView(result.rootView);
 		for(int i=0; i<contentViewModel.length; i++){
-			BinderV30.bindView(this, result, contentViewModel[i]);
+			Binder.bindView(this, result, contentViewModel[i]);
 		}
 		setContentView(getRootView());
 		return getRootView();

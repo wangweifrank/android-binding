@@ -4,22 +4,32 @@
     android:versionCode="7"
     android:versionName="v0.6pre3.2" >
 
-    <uses-sdk android:minSdkVersion="8" android:targetSdkVersion="14"/>
-    <uses-permission android:name="android.permission.READ_CONTACTS"/>
+    <uses-sdk
+        android:minSdkVersion="8"
+        android:targetSdkVersion="14" />
+
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
 
     <application
+        android:name="gueei.binding.markupDemoICS.MarkupDemoApplication"
         android:icon="@drawable/ic_launcher"
-        android:label="@string/app_name" android:name="gueei.binding.markupDemoICS.MarkupDemoApplication" android:uiOptions="splitActionBarWhenNarrow">
+        android:label="@string/app_name"
+        android:uiOptions="splitActionBarWhenNarrow" >
         <activity
-            android:label="@string/app_name"
-            android:name=".Launch" >
-            <intent-filter >
+            android:name=".Launch"
+            android:label="@string/app_name" >
+            <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="gueei.binding.markupDemoICS.ShowDemoActivity"></activity>
+        <activity android:name="gueei.binding.markupDemoICS.ShowDemoActivity" >
+        </activity>
+
+        <provider
+            android:name="com.gueei.demos.markupDemo.contentProvider.mdContentProvider"
+            android:authorities="com.gueei.demos" />
     </application>
 
 </manifest>

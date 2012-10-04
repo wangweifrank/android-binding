@@ -1,14 +1,11 @@
 package gueei.binding;
 
-import gueei.binding.BindingSyntaxResolver.SyntaxResolveException;
+import gueei.binding.ISyntaxResolver.SyntaxResolveException;
 
 import java.lang.reflect.Field;
 
 import android.content.Context;
 import android.util.AttributeSet;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.AdapterView;
 
 public class Utility {
 	public static BindingMap createBindingMap(AttributeSet attrs){
@@ -38,7 +35,7 @@ public class Utility {
 	
 	public static IObservable<?> getObservableForModel(Context context, String fieldName, Object model){
 		try {
-			return BindingSyntaxResolver.constructObservableFromStatement(context, fieldName, model);
+			return Binder.getSyntaxResolver().constructObservableFromStatement(context, fieldName, model);
 		} catch (SyntaxResolveException e) {
 			BindingLog.exception("Utiltiy.getObservableForModel()", e);
 			return null;

@@ -4,7 +4,6 @@ import gueei.binding.Command;
 import gueei.binding.app.BindingActivity;
 import gueei.binding.observables.BooleanObservable;
 import gueei.binding.observables.IntegerObservable;
-import gueei.binding.v30.app.BindingActivityV30;
 import android.os.Bundle;
 import android.view.View;
 

@@ -1,5 +1,16 @@
-package gueei.binding;
+package gueei.binding.kernel;
 
+import gueei.binding.ConstantObservable;
+import gueei.binding.Converter;
+import gueei.binding.DynamicObject;
+import gueei.binding.IObservable;
+import gueei.binding.IPropertyContainer;
+import gueei.binding.IReferenceObservableProvider;
+import gueei.binding.ISyntaxResolver;
+import gueei.binding.InnerFieldObservable;
+import gueei.binding.Observable;
+import gueei.binding.Utility;
+import gueei.binding.ISyntaxResolver.SyntaxResolveException;
 import gueei.binding.observables.IntegerObservable;
 import gueei.binding.viewAttributes.templates.Layout;
 import gueei.binding.viewAttributes.templates.SingleTemplateLayout;
@@ -18,31 +29,7 @@ import android.util.TypedValue;
  * @author andy
  *
  */
-public class BindingSyntaxResolver {
-	public static class SyntaxResolveException extends Exception{
-		/**
-		 * 
-		 */
-		private static final long serialVersionUID = -5339580312141946507L;
-
-		public SyntaxResolveException() {
-			super();
-		}
-
-		public SyntaxResolveException(String detailMessage,
-				Throwable throwable) {
-			super(detailMessage, throwable);
-		}
-
-		public SyntaxResolveException(String detailMessage) {
-			super(detailMessage);
-		}
-
-		public SyntaxResolveException(Throwable throwable) {
-			super(throwable);
-		}		
-	}
-	
+public class DefaultSyntaxResolver implements ISyntaxResolver {
 	private static final String DEFAULT_CONVERTER_PACKAGE = "gueei.binding.converters.";
 	
 	private static final Pattern converterPattern = 
@@ -53,7 +40,10 @@ public class BindingSyntaxResolver {
 	private static final Pattern resourcePattern = Pattern.compile("^@(([\\w\\.]+:)?(\\w+)/\\w+)$");
 	private static final Pattern referencePattern = Pattern.compile("^=@?((\\w+:)?(\\w+)/\\w+).(\\w+)$");
 	
-	public static IObservable<?> constructObservableFromStatement(
+	/* (non-Javadoc)
+     * @see gueei.binding.ISyntaxResolver#constructObservableFromStatement(android.content.Context, java.lang.String, java.lang.Object, gueei.binding.IReferenceObservableProvider)
+     */
+	public IObservable<?> constructObservableFromStatement(
 			final Context context,
 			final String bindingStatement, 
 			final Object model,
@@ -79,14 +69,17 @@ public class BindingSyntaxResolver {
 		return result;
 	}
 	
-	public static IObservable<?> constructObservableFromStatement(
+	/* (non-Javadoc)
+     * @see gueei.binding.ISyntaxResolver#constructObservableFromStatement(android.content.Context, java.lang.String, java.lang.Object)
+     */
+	public IObservable<?> constructObservableFromStatement(
 			final Context context,
 			final String bindingStatement, 
 			final Object model) throws SyntaxResolveException{
 		return constructObservableFromStatement(context, bindingStatement, model, null);
 	}
 
-	private static IObservable<?> getReferenceObservable(
+	private IObservable<?> getReferenceObservable(
 			final Context context, String statement, 
 			IReferenceObservableProvider refProvider){
 		if (!statement.startsWith("=")) return null;
@@ -100,7 +93,7 @@ public class BindingSyntaxResolver {
 		return refProvider.getReferenceObservable(id, m.group(4));
 	}
 	
-	private static Converter<?> getConverterFromStatement(
+	private Converter<?> getConverterFromStatement(
 			final Context context, String statement, Object model,
 			final IReferenceObservableProvider refProvider) throws SyntaxResolveException{
 		Matcher m = converterPattern.matcher(statement);
@@ -142,7 +135,7 @@ public class BindingSyntaxResolver {
 		}
 	}
 
-	private static IObservable<?> getDynamicObjectFromStatement
+	private IObservable<?> getDynamicObjectFromStatement
 		(final Context context, final String statement, final Object model,
 				final IReferenceObservableProvider refProvider) throws SyntaxResolveException {
 		Matcher m = dynamicObjectPattern.matcher(statement);
@@ -165,7 +158,7 @@ public class BindingSyntaxResolver {
 		return dynamic;
 	}
 	
-	public static String[] splitArguments(String group){
+	private String[] splitArguments(String group){
 		if (group==null) return new String[0];
 		ArrayList<String> arguments = new ArrayList<String>();
 		int bracketCount = 0;
@@ -226,7 +219,7 @@ public class BindingSyntaxResolver {
 	 * @throws SyntaxResolveException 
 	 */
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	private static IObservable<?> getObservableForModel(
+	private IObservable<?> getObservableForModel(
 			Context context, 
 			String fieldName, Object model) throws SyntaxResolveException{
 		IObservable<?> result = matchString(fieldName);
@@ -267,7 +260,7 @@ public class BindingSyntaxResolver {
 		return null; // new ConstantObservable<String>(String.class, fieldName);
 	}
 	
-	private static IObservable<?> matchString(String fieldName){
+	private IObservable<?> matchString(String fieldName){
 		if ((fieldName.startsWith("'") && fieldName.endsWith("'")) ||
 				(fieldName.startsWith("\"") && fieldName.endsWith("\"")))
 			return new ConstantObservable<String>(String.class, 
@@ -277,7 +270,7 @@ public class BindingSyntaxResolver {
 		return null;
 	}
 	
-	private static IObservable<?> matchInteger(String fieldName){
+	private IObservable<?> matchInteger(String fieldName){
 		Matcher m = numberPattern.matcher(fieldName);
 		if (!m.matches()) return null;
 		Integer value;
@@ -289,7 +282,7 @@ public class BindingSyntaxResolver {
 		return new IntegerObservable(value);
 	}
 	
-	private static IObservable<?> matchResource(Context context, String fieldName)
+	private IObservable<?> matchResource(Context context, String fieldName)
 			throws SyntaxResolveException{
 		Matcher m = resourcePattern.matcher(fieldName);
 		if ((!m.matches())||(m.groupCount()<2)) return null;
@@ -335,7 +328,8 @@ public class BindingSyntaxResolver {
 	 * @return field object
 	 * @throws SyntaxResolveException 
 	 */
-	public static Object getFieldForModel(String fieldName, Object model) 
+	@Override
+    public Object getFieldForModel(String fieldName, Object model) 
 			throws SyntaxResolveException{
 		try{
 			if (model instanceof IPropertyContainer){

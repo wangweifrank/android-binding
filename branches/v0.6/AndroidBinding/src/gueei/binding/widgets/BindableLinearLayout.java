@@ -7,8 +7,6 @@ import java.util.List;
 
 import gueei.binding.AttributeBinder;
 import gueei.binding.Binder;
-import gueei.binding.BindingSyntaxResolver;
-import gueei.binding.BindingSyntaxResolver.SyntaxResolveException;
 import gueei.binding.BindingLog;
 import gueei.binding.CollectionChangedEventArg;
 import gueei.binding.CollectionObserver;
@@ -16,6 +14,7 @@ import gueei.binding.ConstantObservable;
 import gueei.binding.IBindableView;
 import gueei.binding.IObservable;
 import gueei.binding.IObservableCollection;
+import gueei.binding.ISyntaxResolver.SyntaxResolveException;
 import gueei.binding.InnerFieldObservable;
 import gueei.binding.ViewAttribute;
 import gueei.binding.collections.ObservableCollection;
@@ -289,7 +288,7 @@ public class BindableLinearLayout extends LinearLayout implements IBindableView<
 			} else {			
 				Object rawField;
 				try {
-					rawField = BindingSyntaxResolver.getFieldForModel(layout.getLayoutName(), item);
+					rawField = Binder.getSyntaxResolver().getFieldForModel(layout.getLayoutName(), item);
 				} catch (SyntaxResolveException e) {
 					BindingLog.exception("BindableLinearLayout.insertItem()", e);
 					return;

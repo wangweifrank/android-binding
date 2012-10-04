@@ -18,6 +18,7 @@ public interface IKernel {
 	 * @throws AttributeNotDefinedException
 	 */
 	public ViewAttribute<?, ?> getAttributeForView(View view, String attributeId) throws AttributeNotDefinedException;
+	
 	/**
 	 * Get the associated View Tag of a view, if view tag is not existed or the
 	 * existing tag is not view tag, a new viewTag will be created and return.
@@ -51,4 +52,5 @@ public interface IKernel {
 	public void init(Application application);
 	
 	public AttributeBinder getAttributeBinder();
+	public ISyntaxResolver getSyntaxResolver();
 }

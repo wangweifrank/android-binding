@@ -1,6 +1,6 @@
 package gueei.binding.converters;
 
-import gueei.binding.BindingSyntaxResolver;
+import gueei.binding.Binder;
 import gueei.binding.Converter;
 import gueei.binding.IObservable;
 import gueei.binding.Undetermined;
@@ -26,7 +26,7 @@ public class PROP extends Converter<Object> implements Undetermined {
 		if (args.length<2) return null;
 		if (args[0] == null) return null;
 		IObservable<?> childObs = 
-				BindingSyntaxResolver
+				Binder.getSyntaxResolver()
 					.constructObservableFromStatement(this.getContext(), args[1].toString(), args[0]);
 		if (childObs!=null)
 			return childObs.get();

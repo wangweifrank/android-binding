@@ -1,7 +1,7 @@
 package gueei.binding.test;
 
-import gueei.binding.BindingSyntaxResolver;
-import gueei.binding.BindingSyntaxResolver.SyntaxResolveException;
+import gueei.binding.Binder;
+import gueei.binding.ISyntaxResolver.SyntaxResolveException;
 import gueei.binding.IObservable;
 import gueei.binding.InnerFieldObservable;
 import gueei.binding.Observable;
@@ -11,7 +11,6 @@ import gueei.binding.observables.StringObservable;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import junit.framework.Assert;
 
 import android.test.AndroidTestCase;
 
@@ -74,18 +73,6 @@ public class InnerFieldObservableTest extends AndroidTestCase {
 		assertEquals("test", ifo.get());
 	}
 		
-	public void testInnerField_Notification_OA_OB_OC(){
-		InnerFieldObservable<String> ifo = new InnerFieldObservable("TestObservable.TESTB.STRINGB");
-		ifo.createNodes(this);
-		ifo.subscribe(new Observer(){
-			@Override
-			public void onPropertyChanged(IObservable<?> prop,
-					Collection<Object> initiators) {
-				
-			}
-		});
-	}
-	
 	// Observable A -> Field B -> Observable C
 	public void testInnerField_OA_FB_OC(){
 		InnerFieldObservable<?> ifo = new InnerFieldObservable("TestObservable.FIELDB.STRINGB");
@@ -96,7 +83,7 @@ public class InnerFieldObservableTest extends AndroidTestCase {
 	}
 	
 	public void testSyntaxResolver() throws SyntaxResolveException{
-		IObservable obs = BindingSyntaxResolver
+		IObservable obs = Binder.getSyntaxResolver()
 				.constructObservableFromStatement(
 						getContext(), "TestObservable.TESTB.TESTC.STRINGC", this);
 		assertNotNull(obs);

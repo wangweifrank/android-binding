@@ -1,16 +1,14 @@
 package gueei.binding.menu;
 
 import gueei.binding.Binder;
-import gueei.binding.BindingSyntaxResolver;
-import gueei.binding.BindingSyntaxResolver.SyntaxResolveException;
 import gueei.binding.BindingLog;
 import gueei.binding.ConstantObservable;
 import gueei.binding.IObservable;
+import gueei.binding.ISyntaxResolver.SyntaxResolveException;
 import gueei.binding.Observer;
 
 import java.util.Collection;
 
-import android.app.Activity;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.Menu;
@@ -61,7 +59,7 @@ public abstract class AbsMenuBridge {
 		if (attrValue!=null){
 			IObservable<?> obs;
 			try {
-				obs = BindingSyntaxResolver.constructObservableFromStatement(context, attrValue, model);
+				obs = Binder.getSyntaxResolver().constructObservableFromStatement(context, attrValue, model);
 			} catch (SyntaxResolveException e) {
 				BindingLog.exception("AbsMenuBridge.getObservableFromStatement", e);
 				return null;

@@ -1,21 +1,21 @@
 package gueei.binding.collections;
 
-import java.util.Collection;
-import java.util.Hashtable;
 import gueei.binding.AttributeBinder;
 import gueei.binding.Binder;
-import gueei.binding.BindingSyntaxResolver;
-import gueei.binding.BindingSyntaxResolver.SyntaxResolveException;
 import gueei.binding.BindingLog;
 import gueei.binding.CollectionChangedEventArg;
 import gueei.binding.CollectionObserver;
 import gueei.binding.IObservable;
 import gueei.binding.IObservableCollection;
+import gueei.binding.ISyntaxResolver.SyntaxResolveException;
 import gueei.binding.utility.CachedModelReflector;
 import gueei.binding.utility.EventMarkerHelper;
 import gueei.binding.utility.IModelReflector;
 import gueei.binding.viewAttributes.adapterView.listView.ItemViewEventMark;
 import gueei.binding.viewAttributes.templates.Layout;
+
+import java.util.Collection;
+
 import android.content.Context;
 import android.os.Handler;
 import android.view.View;
@@ -273,7 +273,7 @@ public class CollectionAdapter extends BaseAdapter implements CollectionObserver
 			return true;
 		IObservable<?> obs;
 		try {
-			obs = BindingSyntaxResolver.constructObservableFromStatement(mContext, mEnableItemStatement, mCollection.getItem(position));
+			obs = Binder.getSyntaxResolver().constructObservableFromStatement(mContext, mEnableItemStatement, mCollection.getItem(position));
 		} catch (SyntaxResolveException e) {
 			BindingLog.exception("CollectionAdapter.isEnabled", e);
 			return false;

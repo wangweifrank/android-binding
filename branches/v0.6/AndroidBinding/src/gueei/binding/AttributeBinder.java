@@ -1,6 +1,6 @@
 package gueei.binding;
 
-import gueei.binding.BindingSyntaxResolver.SyntaxResolveException;
+import gueei.binding.ISyntaxResolver.SyntaxResolveException;
 import gueei.binding.bindingProviders.BindingProvider;
 import gueei.binding.exception.AttributeNotDefinedException;
 
@@ -69,7 +69,7 @@ public class AttributeBinder {
 		refViewAttributeProvider.viewContextRef = new WeakReference<View>(view);
 		
 		try {
-			property = BindingSyntaxResolver
+			property = Binder.getSyntaxResolver()
 					.constructObservableFromStatement(context, statement, model, refViewAttributeProvider);
 		} catch (SyntaxResolveException e1) {
 			BindingLog.exception("AttributeBinder.bindAttributeWithObservable()", e1);

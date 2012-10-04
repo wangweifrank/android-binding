@@ -1,12 +1,10 @@
 package gueei.binding.v30.bindingProviders;
 
-import android.support.v4.view.ViewPager;
-import android.view.View;
 import gueei.binding.ViewAttribute;
 import gueei.binding.bindingProviders.BindingProvider;
 import gueei.binding.v30.viewAttributes.adapterView.viewPager.AdapterViewAttribute;
-import gueei.binding.v30.viewAttributes.adapterView.viewPager.ItemLayoutTemplateViewAttribute;
-import gueei.binding.v30.viewAttributes.adapterView.viewPager.ItemSourceViewAttribute;
+import android.support.v4.view.ViewPager;
+import android.view.View;
 
 public class ViewPagerViewProviderV30 extends BindingProvider {
 	@SuppressWarnings({ "unchecked"})
@@ -18,11 +16,6 @@ public class ViewPagerViewProviderV30 extends BindingProvider {
 		try {
 			if (attributeId.equals("adapter")){
 				return (ViewAttribute<Tv, ?>)new AdapterViewAttribute((ViewPager)view);
-			}else if (attributeId.equals("itemSource")){
-				return (ViewAttribute<Tv, ?>)
-					new ItemSourceViewAttribute((ViewPager)view);
-			} else if (attributeId.equals("itemLayout")){
-				return (ViewAttribute<Tv, ?>)new ItemLayoutTemplateViewAttribute(view, "itemLayout");
 			}
 		} catch (Exception e) {
 			// Actually it should never reach this statement

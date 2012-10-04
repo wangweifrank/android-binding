@@ -1,6 +1,6 @@
 package gueei.binding;
 
-import gueei.binding.BindingSyntaxResolver.SyntaxResolveException;
+import gueei.binding.ISyntaxResolver.SyntaxResolveException;
 import android.util.Log;
 
 public class BindingLog {

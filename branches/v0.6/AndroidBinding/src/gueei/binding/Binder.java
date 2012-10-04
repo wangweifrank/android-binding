@@ -1,6 +1,7 @@
 package gueei.binding;
 
 import gueei.binding.exception.AttributeNotDefinedException;
+import gueei.binding.kernel.DefaultKernel;
 import gueei.binding.listeners.ViewMulticastListener;
 
 import java.util.ArrayList;
@@ -66,6 +67,10 @@ public class Binder {
 
 	public static <T extends ViewMulticastListener<?>> T getMulticastListenerForView(View view, Class<T> listenerType){
 		return _kernel.getMulticastListenerForView(view, listenerType);
+	}
+	
+	public static ISyntaxResolver getSyntaxResolver(){
+		return _kernel.getSyntaxResolver();
 	}
 	
 	/**

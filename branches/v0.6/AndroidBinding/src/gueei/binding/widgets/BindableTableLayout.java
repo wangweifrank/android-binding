@@ -7,8 +7,6 @@ import java.util.List;
 
 import gueei.binding.AttributeBinder;
 import gueei.binding.Binder;
-import gueei.binding.BindingSyntaxResolver;
-import gueei.binding.BindingSyntaxResolver.SyntaxResolveException;
 import gueei.binding.BindingLog;
 import gueei.binding.CollectionChangedEventArg;
 import gueei.binding.CollectionObserver;
@@ -16,6 +14,7 @@ import gueei.binding.ConstantObservable;
 import gueei.binding.IBindableView;
 import gueei.binding.IObservable;
 import gueei.binding.IObservableCollection;
+import gueei.binding.ISyntaxResolver.SyntaxResolveException;
 import gueei.binding.InnerFieldObservable;
 import gueei.binding.Observer;
 import gueei.binding.ViewAttribute;
@@ -286,7 +285,7 @@ public class BindableTableLayout extends TableLayout implements IBindableView<Bi
 		} else {			
 			Object rawField = null;
 			try {
-				rawField = BindingSyntaxResolver.getFieldForModel(rowChild.getChildDataSource(), row);
+				rawField = Binder.getSyntaxResolver().getFieldForModel(rowChild.getChildDataSource(), row);
 			} catch (SyntaxResolveException e) {
 				BindingLog.exception("BindableTableLayout.insertRow", e);
 			}
@@ -331,7 +330,7 @@ public class BindableTableLayout extends TableLayout implements IBindableView<Bi
 						} else {			
 							Object rawField = null;
 							try {
-								rawField = BindingSyntaxResolver.getFieldForModel(rowChild.getLayoutName(), childItem);
+								rawField = Binder.getSyntaxResolver().getFieldForModel(rowChild.getLayoutName(), childItem);
 							} catch (SyntaxResolveException e) {
 								BindingLog.exception("BindableTableLayout.createRow", e);
 							}
@@ -378,7 +377,7 @@ public class BindableTableLayout extends TableLayout implements IBindableView<Bi
 						} else {			
 							Object rawField = null;
 							try {
-								rawField = BindingSyntaxResolver.getFieldForModel(rowChild.getColspanName(), childItem);
+								rawField = Binder.getSyntaxResolver().getFieldForModel(rowChild.getColspanName(), childItem);
 							} catch (SyntaxResolveException e) {
 								BindingLog.exception("BindableTableLayout.createRow", e);
 							}

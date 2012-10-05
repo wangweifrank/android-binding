@@ -1,16 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <demos>
-    <category name="HC/ICS features">
-        <entry name="Action Mode" vm="ActionMode" layout="actionmode">
-            	<raw title="Xml" name="main_metadata"/>
-            	<raw title="Java" name="launchviewmodel_code"/>
-            </entry>
-        <entry name="Action Mode In ListView Example" vm="ActionModeExample" layout="actionmodeexample"/>
-    </category>
     <category name="Layouts">
+        <entry name="ViewPager" vm="ViewPager" layout="viewpager">
+            <raw title="showdemo.xml" name="showdemo" type="Xml"/>
+            <raw title="showdemo_demo.xml" name="showdemo_demo" type="Xml"/>
+            <raw title="showdemo_xml.xml" name="showdemo_xml" type="Xml"/>
+            <raw title="ViewModel" name="showdemoviewmodel_code" type="Java"/>
+        </entry>
         <entry name="&lt;i&gt;Bindable&lt;/i&gt;FrameLayout" vm=".BindableFrameLayout" layout=".bindableframelayout"/>
         <entry name="&lt;i&gt;Bindable&lt;/i&gt;LinearLayout" vm=".BindableLinearLayout" layout=".bindablelinearlayout"/>
         <entry name="&lt;i&gt;Bindable&lt;/i&gt;TableLayout" vm=".BindableTableLayout" layout=".bindabletablelayout"/>
+    </category>
+    <category name="HC/ICS features">
+        <entry name="Action Mode" vm="ActionMode" layout="actionmode"/>
+        <entry name="Action Mode In ListView Example" vm="ActionModeExample" layout="actionmodeexample"/>
     </category>
     <category name="Simple Views">
         <entry name="View" vm=".View" layout=".view"/>

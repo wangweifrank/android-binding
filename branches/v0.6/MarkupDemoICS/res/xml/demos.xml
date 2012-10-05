@@ -1,7 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <demos>
     <category name="Layouts">
-        <entry name="&lt;i&gt;Bindable&lt;/i&gt;FrameLayout" vm=".BindableFrameLayout" layout=".bindableframelayout"/>
+        <entry name="ViewPager" vm="ViewPager" layout="viewpager">
+            <raw title="showdemo.xml" name="showdemo" type="Xml"/>
+            <raw title="showdemo_demo.xml" name="showdemo_demo" type="Xml"/>
+            <raw title="showdemo_xml.xml" name="showdemo_xml" type="Xml"/>
+            <raw title="ViewModel" name="showdemoviewmodel_code" type="Java"/>
+        </entry>
+        <entry name="&lt;i&gt;Bindable&lt;/i&gt;FrameLayout" vm=".BindableFrameLayout" layout=".bindableframelayout">
+               	<raw title="Xml" name="main_metadata"/>
+            	<raw title="Java" name="launchviewmodel_code"/>
+        </entry>
         <entry name="&lt;i&gt;Bindable&lt;/i&gt;LinearLayout" vm=".BindableLinearLayout" layout=".bindablelinearlayout"/>
         <entry name="&lt;i&gt;Bindable&lt;/i&gt;TableLayout" vm=".BindableTableLayout" layout=".bindabletablelayout"/>
     </category>
@@ -35,9 +44,6 @@
         <entry name="NestedCursor" vm=".NestedCursor" layout=".nestedcursor"/>
         <entry name="CursorContentUpdate" vm=".CursorContentUpdate" layout=".cursorcontentupdate"/>
         <entry name="MultipleAdapters" vm=".MultipleAdapters" layout=".multipleadapters"/>
-    </category>
-    <category name="Plugins">
-        <entry name="Javascript" vm="Javascript" layout="javascript"/>
     </category>
     <category name="Other">
         <entry name="Animation" vm=".AnimationTrigger" layout=".animationtrigger"/>

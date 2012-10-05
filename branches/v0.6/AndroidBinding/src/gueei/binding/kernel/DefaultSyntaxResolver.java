@@ -10,7 +10,7 @@ import gueei.binding.ISyntaxResolver;
 import gueei.binding.InnerFieldObservable;
 import gueei.binding.Observable;
 import gueei.binding.Utility;
-import gueei.binding.ISyntaxResolver.SyntaxResolveException;
+import gueei.binding.observables.FloatObservable;
 import gueei.binding.observables.IntegerObservable;
 import gueei.binding.viewAttributes.templates.Layout;
 import gueei.binding.viewAttributes.templates.SingleTemplateLayout;
@@ -224,7 +224,7 @@ public class DefaultSyntaxResolver implements ISyntaxResolver {
 			String fieldName, Object model) throws SyntaxResolveException{
 		IObservable<?> result = matchString(fieldName);
 		if (result!=null) return result;
-		result = matchInteger(fieldName);
+		result = matchNumber(fieldName);
 		if (result!=null) return result;
 		result = matchResource(context, fieldName);
 		if (result!=null) return result;
@@ -270,16 +270,18 @@ public class DefaultSyntaxResolver implements ISyntaxResolver {
 		return null;
 	}
 	
-	private IObservable<?> matchInteger(String fieldName){
+	private IObservable<?> matchNumber(String fieldName){
 		Matcher m = numberPattern.matcher(fieldName);
 		if (!m.matches()) return null;
-		Integer value;
 		try{
-			value = Integer.parseInt(fieldName);
+			if (fieldName.contains(".")){
+				return new FloatObservable(Float.parseFloat(fieldName));
+			}else{
+				return new IntegerObservable(Integer.parseInt(fieldName));
+			}
 		}catch(Exception e){
 			return null;
 		}
-		return new IntegerObservable(value);
 	}
 	
 	private IObservable<?> matchResource(Context context, String fieldName)
@@ -350,4 +352,15 @@ public class DefaultSyntaxResolver implements ISyntaxResolver {
 			return null;
 		} 
 	}
+
+	@SuppressWarnings("unchecked")
+    @Override
+    public <T> T tryEvaluateValue(Context context, String statement, Object model, T defaultValue) {
+		try{
+			IObservable<?> obs = this.constructObservableFromStatement(context, statement, model);
+			return (T)obs.get();
+		}catch(Exception e){
+			return defaultValue;
+		}
+    }
 }

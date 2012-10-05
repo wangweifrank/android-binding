@@ -30,7 +30,6 @@ public class ShowDemoActivity extends BindingActivityV30 {
 	    ViewModelParceler.restoreViewModel(entryBundle, entry);
 	    
 	    Demo.set(new ShowDemoViewModel(this, entry));
-
 	    this.inflateAndBind(R.xml.showdemo_metadata, this);
 	}
 

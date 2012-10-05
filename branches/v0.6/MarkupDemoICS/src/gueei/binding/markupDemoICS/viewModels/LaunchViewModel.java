@@ -6,7 +6,6 @@ import gueei.binding.collections.ArrayListObservable;
 import gueei.binding.labs.EventAggregator;
 import gueei.binding.labs.EventSubscriber;
 import gueei.binding.markupDemoICS.R;
-import gueei.binding.observables.IntegerObservable;
 import gueei.binding.serialization.ViewModelParceler;
 import android.app.Activity;
 import android.content.res.XmlResourceParser;
@@ -79,7 +78,8 @@ public class LaunchViewModel {
 							if (entry!=null){
 								entry.Raws.add(new RawEntry(
 										parser.getAttributeValue(null, "title"),
-										resolveRaw(parser.getAttributeValue(null, "name"))
+										resolveRaw(parser.getAttributeValue(null, "name")),
+										parser.getAttributeValue(null, "type")
 										));
 							}
 						}

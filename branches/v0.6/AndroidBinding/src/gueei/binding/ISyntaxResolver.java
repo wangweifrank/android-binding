@@ -36,4 +36,6 @@ public interface ISyntaxResolver {
 			super(throwable);
 		}		
 	}
+	
+	public <T> T tryEvaluateValue(Context context, String statement, Object model, T defaultValue);
 }

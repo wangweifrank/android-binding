@@ -63,20 +63,21 @@ public final class R {
         public static final int tab_text_selector=0x7f020012;
     }
     public static final class id {
-        public static final int button1=0x7f0f000c;
-        public static final int button2=0x7f0f000e;
-        public static final int button3=0x7f0f000f;
-        public static final int button4=0x7f0f000d;
+        public static final int button1=0x7f0f000d;
+        public static final int button2=0x7f0f000f;
+        public static final int button3=0x7f0f0010;
+        public static final int button4=0x7f0f000e;
         public static final int chkbox=0x7f0f0004;
         public static final int demo_listview=0x7f0f0003;
-        public static final int icon=0x7f0f0008;
-        public static final int label=0x7f0f0009;
+        public static final int icon=0x7f0f0009;
+        public static final int label=0x7f0f000a;
         public static final int list=0x7f0f0002;
         public static final int lvItems=0x7f0f0000;
         public static final int my_parent_id=0x7f0f0001;
-        public static final int share=0x7f0f000a;
-        public static final int share2=0x7f0f000b;
-        public static final int spinner1=0x7f0f0007;
+        public static final int pager_title_strip=0x7f0f0007;
+        public static final int share=0x7f0f000b;
+        public static final int share2=0x7f0f000c;
+        public static final int spinner1=0x7f0f0008;
         public static final int tableLayout=0x7f0f0005;
         public static final int tvInteger=0x7f0f0006;
     }
@@ -175,7 +176,6 @@ public final class R {
         public static final int view=0x7f030058;
         public static final int view_demo=0x7f030059;
         public static final int viewpager=0x7f03005a;
-        public static final int vp_pages=0x7f03005b;
     }
     public static final class menu {
         public static final int actionmodeexample_menu=0x7f0e0000;
@@ -249,25 +249,29 @@ public final class R {
         public static final int seekbar=0x7f06003d;
         public static final int seekbar_code=0x7f06003e;
         public static final int select_demo=0x7f06003f;
-        public static final int simple_expandable_list_item_1=0x7f060040;
-        public static final int simple_expandable_list_item_2=0x7f060041;
-        public static final int simple_spinner_dropdown_item=0x7f060042;
-        public static final int simple_spinner_item=0x7f060043;
-        public static final int singlechoicelist=0x7f060044;
-        public static final int singlechoicelist_code=0x7f060045;
-        public static final int spinnerwitharraysource=0x7f060046;
-        public static final int spinnerwitharraysource_code=0x7f060047;
-        public static final int switchableitemtemplate=0x7f060048;
-        public static final int switchableitemtemplate_code=0x7f060049;
-        public static final int textview=0x7f06004a;
-        public static final int textview_code=0x7f06004b;
-        public static final int textviewcustomfont=0x7f06004c;
-        public static final int textviewcustomfont_code=0x7f06004d;
-        public static final int textviewspan=0x7f06004e;
-        public static final int textviewspan_code=0x7f06004f;
-        public static final int view=0x7f060050;
-        public static final int view_code=0x7f060051;
-        public static final int view_demo=0x7f060052;
+        public static final int showdemo=0x7f060040;
+        public static final int showdemo_demo=0x7f060041;
+        public static final int showdemo_xml=0x7f060042;
+        public static final int showdemoviewmodel_code=0x7f060043;
+        public static final int simple_expandable_list_item_1=0x7f060044;
+        public static final int simple_expandable_list_item_2=0x7f060045;
+        public static final int simple_spinner_dropdown_item=0x7f060046;
+        public static final int simple_spinner_item=0x7f060047;
+        public static final int singlechoicelist=0x7f060048;
+        public static final int singlechoicelist_code=0x7f060049;
+        public static final int spinnerwitharraysource=0x7f06004a;
+        public static final int spinnerwitharraysource_code=0x7f06004b;
+        public static final int switchableitemtemplate=0x7f06004c;
+        public static final int switchableitemtemplate_code=0x7f06004d;
+        public static final int textview=0x7f06004e;
+        public static final int textview_code=0x7f06004f;
+        public static final int textviewcustomfont=0x7f060050;
+        public static final int textviewcustomfont_code=0x7f060051;
+        public static final int textviewspan=0x7f060052;
+        public static final int textviewspan_code=0x7f060053;
+        public static final int view=0x7f060054;
+        public static final int view_code=0x7f060055;
+        public static final int view_demo=0x7f060056;
     }
     public static final class string {
         public static final int actionmode_example_desc=0x7f0c0005;
@@ -277,6 +281,7 @@ public final class R {
         public static final int hello=0x7f0c0000;
         public static final int title_actionbar=0x7f0c0004;
         public static final int title_source=0x7f0c0003;
+        public static final int viewpager_description=0x7f0c0007;
     }
     public static final class style {
         public static final int ActionBar=0x7f0b0000;

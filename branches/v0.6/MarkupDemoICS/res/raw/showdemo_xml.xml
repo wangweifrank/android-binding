@@ -8,7 +8,6 @@
 		android:layout_height="fill_parent"
 		android:layout_width="fill_parent"
         binding:resourceId="ResId"
-        binding:resourceType="Type"
-        binding:title="Title"
+        binding:resourceType="Title"
     />
 </LinearLayout>

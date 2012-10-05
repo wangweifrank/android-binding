@@ -1,5 +1,6 @@
 package gueei.binding.viewAttributes;
 
+import gueei.binding.BindingType;
 import gueei.binding.ViewAttribute;
 
 import java.lang.reflect.Method;
@@ -24,7 +25,6 @@ public class GenericViewAttribute<Tv extends View, T> extends ViewAttribute<Tv, 
 	@SuppressWarnings("unchecked")
 	@Override
 	public T get() {
-		if(getView()==null) return null;
 		T value;
 		try {
 			value = (T)this.getter.invoke(getView());
@@ -35,8 +35,14 @@ public class GenericViewAttribute<Tv extends View, T> extends ViewAttribute<Tv, 
 	}
 
 	@Override
+    protected BindingType AcceptThisTypeAs(Class<?> type) {
+		return BindingType.TwoWay;
+    }
+
+	@Override
 	protected void doSetAttributeValue(Object newValue) {
-		if(getView()==null) return;
+		if (setter==null) return;
+		
 		try{
 			this.setter.invoke(getView(), newValue);
 		}catch(Exception e){

@@ -7,6 +7,7 @@ import java.io.ByteArrayOutputStream;
 
 import android.content.Context;
 import android.graphics.Canvas;
+import android.os.Handler;
 import android.util.AttributeSet;
 import android.view.View;
 import android.webkit.WebView;
@@ -39,6 +40,8 @@ public class CodeView extends WebView implements IBindableView<CodeView> {
 			return resId;
 		}else if ("resourceType".equals(attributeId)){
 			return resType;
+		}else if ("title".equals(attributeId)){
+			return title;
 		}
 		return null;
 	}
@@ -49,6 +52,9 @@ public class CodeView extends WebView implements IBindableView<CodeView> {
 	private final ResourceTypeViewAttribute resType = 
 			new ResourceTypeViewAttribute(this, "resourceType");
 	
+	private final TitleViewAttribute title = 
+			new TitleViewAttribute(this, "resourceType");
+	
 	
 	@Override
 	protected void onDraw(Canvas canvas) {
@@ -58,18 +64,29 @@ public class CodeView extends WebView implements IBindableView<CodeView> {
 
 	private void renderView(){
 		if (isDirty){
-			ByteArrayOutputStream bos = new ByteArrayOutputStream();
-	        try {
-				XhtmlRendererFactory.getRenderer(resType.get()).highlight("title", 
-						getContext().getResources().openRawResource(resId.get()), 
-						bos, "UTF-8", false);
-		        isDirty = false;
-		        
-		        this.loadData(bos.toString(), "text/html", "UTF-8");
-		        //this.loadUrl("http://www.yahoo.com");
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
+			final ByteArrayOutputStream bos = new ByteArrayOutputStream();
+			final Handler handler = new Handler();
+        	(new Thread(){
+				@Override
+                public void run() {
+			        try {
+						XhtmlRendererFactory.getRenderer(resType.get()).highlight(title.get(), 
+								getContext().getResources().openRawResource(resId.get()), 
+								bos, "UTF-8", false);
+						
+						handler.post(new Runnable(){
+							public void run() {
+						        loadData(bos.toString(), "text/html", "UTF-8");
+							}
+						});
+						
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+                }
+        	}).run();
+        	
+	        isDirty = false;
 		}
 	}
 	
@@ -100,6 +117,29 @@ public class CodeView extends WebView implements IBindableView<CodeView> {
 
 	private class ResourceTypeViewAttribute extends ViewAttribute<CodeView, String>{
 		public ResourceTypeViewAttribute(CodeView view,
+				String attributeName) {
+			super(String.class, view, attributeName);
+		}
+
+		private String mValue = "xml";
+		
+		@Override
+		protected void doSetAttributeValue(Object newValue) {
+			if (newValue!=null){
+				mValue = newValue.toString();
+				isDirty = true;
+				invalidate();
+			}
+		}
+
+		@Override
+		public String get() {
+			return mValue;
+		}
+	}
+	
+	private class TitleViewAttribute extends ViewAttribute<CodeView, String>{
+		public TitleViewAttribute(CodeView view,
 				String attributeName) {
 			super(String.class, view, attributeName);
 		}

@@ -23,6 +23,16 @@ public class DynamicObject extends Observable<DynamicObject> implements IPropert
 	public IObservable<?> getObservableByName(String name) throws Exception {
 		return observables.get(name);
 	}
+	
+	@SuppressWarnings("unchecked")
+    public <T> T tryGetObservableValue(String name, T defaultValue){
+		if (!observableExists(name)) return defaultValue;
+		try{
+			return (T)getObservableByName(name).get();
+		}catch(Exception e){
+			return defaultValue;
+		}
+	}
 
 	public Command getCommandByName(String name) throws Exception {
 		return null;

@@ -49,9 +49,6 @@
         <entry name="CursorContentUpdate" vm=".CursorContentUpdate" layout=".cursorcontentupdate"/>
         <entry name="MultipleAdapters" vm=".MultipleAdapters" layout=".multipleadapters"/>
     </category>
-    <category name="Plugins">
-        <entry name="Javascript" vm="Javascript" layout="javascript"/>
-    </category>
     <category name="Other">
         <entry name="Animation" vm=".AnimationTrigger" layout=".animationtrigger"/>
         <entry name="Validation" vm="Validation" layout="validation"/>

@@ -29,14 +29,14 @@ public class Observable<T> implements IObservable<T> {
 	/* (non-Javadoc)
 	 * @see gueei.binding.IObservable#subscribe(gueei.binding.Observer)
 	 */
-	public final void subscribe(Observer o){
+	public void subscribe(Observer o){
 		observers.add(o);
 	}
 	
 	/* (non-Javadoc)
 	 * @see gueei.binding.IObservable#unsubscribe(gueei.binding.Observer)
 	 */
-	public final void unsubscribe(Observer o){
+	public  void unsubscribe(Observer o){
 		observers.remove(o);
 	}
 	

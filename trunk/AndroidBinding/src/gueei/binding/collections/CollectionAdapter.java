@@ -18,6 +18,7 @@ import java.util.Collection;
 
 import android.content.Context;
 import android.os.Handler;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
@@ -105,11 +106,6 @@ public class CollectionAdapter extends BaseAdapter implements CollectionObserver
 
 			Object item = mCollection.getItem(position);
 
-			if (mHelper != null && !mHelper.isBusy()) {
-				if (item instanceof LazyLoadRowModel)
-					((LazyLoadRowModel) item).display(mCollection, position);
-			}
-
 			if ((convertView == null) || ((mapper = getAttachedMapper(convertView)) == null)) {
 				Binder.InflateResult result = 
 						Binder.inflateView(mContext, layout.getLayoutId(position), parent, false);
@@ -133,6 +129,12 @@ public class CollectionAdapter extends BaseAdapter implements CollectionObserver
 			}
 
 			mapper.changeMapping(mReflector, item);
+			if (mHelper != null && !mHelper.isBusy()) {
+				if (item instanceof LazyLoadRowModel){
+					//((LazyLoadRowModel) item).display(mCollection, position);
+				}
+			}
+
 			return returnView;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -180,6 +182,10 @@ public class CollectionAdapter extends BaseAdapter implements CollectionObserver
 	private int lastTotal = 0;
 
 	public void onVisibleChildrenChanged(int first, int total) {
+		if (total>lastTotal){
+			mCollection.setVisibleChildrenCount(this, total);
+		}
+		
 		int actualCollectionSize = mCollection.size();
 		if (0 == actualCollectionSize) {
 			// nothing to show, nothing to hide, reset last* 
@@ -226,14 +232,16 @@ public class CollectionAdapter extends BaseAdapter implements CollectionObserver
 		for (int i = oldFirstIndex; i < newFirstIndex; ++i) {
 			rawItem = mCollection.getItem(i);
 			if (rawItem instanceof LazyLoadRowModel) {
-				((LazyLoadRowModel) rawItem).hide(mCollection, i);
+				if (!((LazyLoadRowModel) rawItem).isMapped())
+					((LazyLoadRowModel) rawItem).hide(mCollection, i);
 			}
 		}
 
 		for (int i = newLastIndex; i < oldLastIndex; ++i) {
 			rawItem = mCollection.getItem(i);
 			if (rawItem instanceof LazyLoadRowModel) {
-				((LazyLoadRowModel) rawItem).hide(mCollection, i);
+				if (!((LazyLoadRowModel) rawItem).isMapped())
+					((LazyLoadRowModel) rawItem).hide(mCollection, i);
 			}
 		}
 		for (int i = oldLastIndex; i < newLastIndex; ++i) {

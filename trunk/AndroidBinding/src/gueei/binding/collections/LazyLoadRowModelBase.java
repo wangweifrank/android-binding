@@ -1,40 +1,26 @@
-package gueei.binding.cursor;
+package gueei.binding.collections;
 
-import android.util.Log;
 import gueei.binding.IObservableCollection;
 
-/**
- * User: =ra=
- * Date: 11.10.11
- * Time: 21:05
- */
-public class RowModel implements IRowModel {
-	@Override public void onInitialize() {}
-
-	@Override public long getId(int proposedId) {
-		return proposedId;
-	}
-
+public abstract class LazyLoadRowModelBase implements LazyLoadRowModel {
 	private boolean displaying = false;
 	
 	@Override public final void display(IObservableCollection<?> collection, int index) {
 		if (displaying) return;
 		// if (!mapped) return;
 		displaying = true;
-		onDisplay();
+		onDisplay(index);
 	}
 
 	@Override public final void hide(IObservableCollection<?> collection, int index) {
 		if (!displaying) return;
 		displaying = false;
-		onHide();
+		onHide(index);
 	}
 
-	public void onDisplay() {
-	}
+	public abstract void onDisplay(int index);
 
-	public void onHide() {
-	}
+	public abstract void onHide(int index);
 
 	protected boolean mapped = false;
 	

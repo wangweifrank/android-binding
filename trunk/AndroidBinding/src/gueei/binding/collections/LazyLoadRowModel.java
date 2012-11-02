@@ -12,4 +12,7 @@ public interface LazyLoadRowModel {
 	 */
 	public void display(IObservableCollection<?> collection, int index);
 	public void hide(IObservableCollection<?> collection, int index);
+	
+	public void setMapped(boolean mapped);
+	public boolean isMapped();
 }

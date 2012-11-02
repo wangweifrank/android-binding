@@ -143,10 +143,19 @@ public class TreeViewListViewModel {
 		public void Invoke(View view, Object... args) {			
 			Items.get(0).Children.get(1).IsExpanded.set(!Items.get(0).Children.get(1).IsExpanded.get());
 		}
-	};		
+	};	
+	
+	public final Command OnDebugRebuildTree= new Command() {		
+		@Override
+		public void Invoke(View view, Object... args) {			
+			buildDemoData();
+		}
+	};	
+	
+	
 	
 	private void buildDemoData() {		
-		
+		Items.clear();
 		for (int i = 0; i < 3; i++) {
 			TreeNode p1 = new TreeNode();
 			if( i % 2 == 0)
@@ -175,8 +184,6 @@ public class TreeViewListViewModel {
 		Items.get(0).Children.get(1).IsExpanded.set(true);
 		Items.get(2).Children.get(2).IsExpanded.set(true);
 	}
-
-
 
 	protected void swapLayoutsRecursive(ArrayListObservable<TreeNode> items) {	
 		for( TreeNode n: items) {

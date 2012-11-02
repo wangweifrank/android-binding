@@ -49,5 +49,11 @@
         android:title="Expand/Collapse"
         binding:onClick="OnDebugExpandCollapse">
     </item> 	
+    
+		<item
+        android:id="@+id/simple_menu_debug9"
+        android:title="Rebuild Tree"
+        binding:onClick="OnDebugRebuildTree">
+    </item> 
 
 </menu>

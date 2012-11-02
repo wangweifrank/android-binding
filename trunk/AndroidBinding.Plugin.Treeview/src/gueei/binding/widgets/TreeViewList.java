@@ -463,22 +463,23 @@ public class TreeViewList extends ListView {
 			pos=0;
 		
 		SiblingPos sibling;		
-		TreeViewItemWrapper w;
+		TreeViewItemWrapper w=null;
 		
 		for(Object item : e.getNewItems()) {
 			sibling=findSiblingPos(collection, pos);	
-			if(sibling.pos>0 && !sibling.isNew) {
+			if(!sibling.isNew) {
 				insertNode(collection, item, sibling.pos, level);
-			} else if(sibling.pos>0 && sibling.isNew) {
-				w = itemSource.get(sibling.pos-1);
+			} else {
+				if(sibling.pos>0)
+					w = itemSource.get(sibling.pos-1);
 				if( w.isExpanded() != null && w.isExpanded() == true ) {
 					// the node is defined "expanded" by the datasource, set and change the icon
-					if(w.WrapperImage.get() == null || !w.WrapperImage.get().equals(treeStructure.imgExpanded.get()))
+					if(w!=null && (w.WrapperImage.get() == null || !w.WrapperImage.get().equals(treeStructure.imgExpanded.get())))
 						w.WrapperImage.set(treeStructure.imgExpanded.get());
 					insertNode(collection, item, sibling.pos, level);														
 				} else {
 					//the node is defined "collapsed" by the datasource, just setup the icon
-					if(w.WrapperImage.get() == null || !w.WrapperImage.get().equals(treeStructure.imgCollapsed.get()))
+					if(w!=null && (w.WrapperImage.get() == null || !w.WrapperImage.get().equals(treeStructure.imgCollapsed.get())))
 						w.WrapperImage.set(treeStructure.imgCollapsed.get());
 				}
 			}
@@ -534,6 +535,10 @@ public class TreeViewList extends ListView {
 					throw new IndexOutOfBoundsException();
 				}
 			}
+			
+			result.pos = itemSource.size();
+			result.isNew = true;
+			return result;
 		}
 		
 		if(treeStructure != null && treeStructure.root != null && 

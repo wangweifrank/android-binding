@@ -151,6 +151,8 @@ public class BindableFrameLayout extends FrameLayout implements IBindableView<Bi
 	}
 
 	protected void setDatasource(Object newValue) {
+		if(dataSource!=null) 
+			inflateResult = null; // inflate new 
 		dataSource = newValue;
 		rebind();
 		refreshDrawableState();

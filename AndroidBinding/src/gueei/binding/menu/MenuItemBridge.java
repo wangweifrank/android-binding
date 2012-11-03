@@ -94,6 +94,34 @@ public class MenuItemBridge extends AbsMenuBridge{
 			icon = temp;
 		}
 	}
+	
+	public MenuItemBridge(int id, Object model) {
+		super(id);
+		IObservable<?> temp = getObservableByFieldPath(model, "onClick");
+		if ((temp!=null)&&(temp.get() instanceof Command)){
+			onClickCommand = (Command)temp.get();
+		}
+		temp = getObservableByFieldPath(model, "title");
+		if ((temp!=null)){
+			title = temp;
+		}
+		temp = getObservableByFieldPath(model, "visible");
+		if ((temp!=null)){
+			visible = temp;
+		}
+		temp = getObservableByFieldPath(model, "enabled");
+		if ((temp!=null)){
+			enabled = temp;
+		}
+		temp = getObservableByFieldPath(model, "checked");
+		if ((temp!=null)){
+			checked = temp;
+		}
+		temp = getObservableByFieldPath(model, "icon");
+		if ((temp!=null)){
+			icon = temp;
+		}
+	}
 
 	@SuppressWarnings("unchecked")
 	@Override

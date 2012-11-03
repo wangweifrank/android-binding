@@ -95,29 +95,31 @@ public class MenuItemBridge extends AbsMenuBridge{
 		}
 	}
 	
-	public MenuItemBridge(int id, Object model) {
+	public MenuItemBridge(int id, MenuItemViemodel model) {
 		super(id);
-		IObservable<?> temp = getObservableByFieldPath(model, "onClick");
+		if(model == null)
+			return;
+		IObservable<?> temp = model.onClick;
 		if ((temp!=null)&&(temp.get() instanceof Command)){
 			onClickCommand = (Command)temp.get();
 		}
-		temp = getObservableByFieldPath(model, "title");
+		temp = model.title;
 		if ((temp!=null)){
 			title = temp;
 		}
-		temp = getObservableByFieldPath(model, "visible");
+		temp = model.visible;
 		if ((temp!=null)){
 			visible = temp;
 		}
-		temp = getObservableByFieldPath(model, "enabled");
+		temp = model.enabled;
 		if ((temp!=null)){
 			enabled = temp;
 		}
-		temp = getObservableByFieldPath(model, "checked");
+		temp = model.checked;
 		if ((temp!=null)){
 			checked = temp;
 		}
-		temp = getObservableByFieldPath(model, "icon");
+		temp = model.icon;
 		if ((temp!=null)){
 			icon = temp;
 		}

@@ -21,7 +21,7 @@ public class BindingWidgetV30 {
 		return popup;
 	}
 	
-	public static PopupMenu bindPopupMenu(View view, IObservableCollection<MenuItemViemodel> items) {
+	public static PopupMenu createAndBindPopupMenu(View view, IObservableCollection<MenuItemViemodel> items) {
 		PopupMenu popup = new PopupMenu(view.getContext(), view);		
 		
 		PopupMenuBinderV30 menuBinder = new PopupMenuBinderV30();

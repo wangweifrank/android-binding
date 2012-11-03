@@ -1,6 +1,7 @@
 package gueei.binding.v30.widget;
 
 import gueei.binding.Binder;
+import gueei.binding.IObservableCollection;
 import gueei.binding.menu.AbsMenuBridge;
 import gueei.binding.menu.MenuGroupBridge;
 import gueei.binding.menu.MenuItemBridge;
@@ -14,6 +15,7 @@ import android.content.res.XmlResourceParser;
 import android.util.AttributeSet;
 import android.util.Xml;
 import android.app.Activity;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MenuItem.OnMenuItemClickListener;
 import android.view.View;
@@ -23,11 +25,58 @@ public class PopupMenuBinderV30 implements OnMenuItemClickListener {
 	private Hashtable<Integer, AbsMenuBridge> items = 
 			new Hashtable<Integer, AbsMenuBridge>();	
 	
-	public void createPopupMenu(View v, PopupMenu popup, int menuResId, Object viewModel) {
+	public void bindPopupMenu(PopupMenu popup, IObservableCollection<MenuItemViemodel> menuItems) {
+
+		Menu menu = popup.getMenu();
+		Menu subMenu = null;
+		int count=0;
+		int groups=0;
+		
+		for(int i=0; i<menuItems.size(); i++) {
+			MenuItemViemodel vm = menuItems.getItem(i);
+			
+			String title = "";
+			if( vm.title != null && vm.title.get() != null)
+				title = vm.title.get().toString();
+			if( vm.group == null ) {
+				menu.add(Menu.FIRST+groups, Menu.FIRST+count, Menu.NONE, title);
+			} else {
+				subMenu = menu.addSubMenu(Menu.FIRST+groups, Menu.FIRST+count, Menu.NONE, title);
+			}
+			
+			items.put(Menu.FIRST+count, new MenuItemBridge(Menu.FIRST+count, vm));
+			count++;
+			
+			if( vm.group != null) {
+				items.put(Menu.FIRST+count, new MenuGroupBridge(Menu.FIRST+count, vm));
+				
+				for(int k=0; k<vm.group.size(); k++) {
+					MenuItemViemodel vmChild = vm.group.getItem(k);
+					
+					title = "";
+					if( vmChild.title != null && vmChild.title.get() != null)
+						title = vmChild.title.get().toString();
+					subMenu.add(Menu.FIRST+groups, Menu.FIRST+count, Menu.NONE, title);
+					items.put(Menu.FIRST+count, new MenuItemBridge(Menu.FIRST+count, vmChild));
+					count++;
+				}
+				groups++;
+			}
+		}
+
+		for(AbsMenuBridge item: items.values()){
+			item.onCreateOptionItem(popup.getMenu());
+			item.onPrepareOptionItem(popup.getMenu());
+		}
+	
+	}
+	
+	public void createAndBindPopupMenu(View v, PopupMenu popup, int menuResId, Object viewModel) {
 
 		// First inflate the menu - default action
 		Activity activity = (Activity)v.getContext();
-		popup.getMenuInflater().inflate(menuResId, popup.getMenu());
+		if(menuResId>0)
+			popup.getMenuInflater().inflate(menuResId, popup.getMenu());
 		
 		// Now, parse the menu
 		XmlResourceParser parser = activity.getResources().getXml(menuResId);

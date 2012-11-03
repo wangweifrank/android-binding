@@ -2,7 +2,9 @@ package gueei.binding.v30.app;
 
 import gueei.binding.AttributeBinder;
 import gueei.binding.Binder;
+import gueei.binding.IObservableCollection;
 import gueei.binding.Binder.InflateResult;
+import gueei.binding.v30.widget.MenuItemViemodel;
 import gueei.binding.v30.widget.PopupMenuBinderV30;
 import android.app.Dialog;
 import android.content.Context;
@@ -15,7 +17,15 @@ public class BindingWidgetV30 {
 		PopupMenu popup = new PopupMenu(view.getContext(), view);		
 		
 		PopupMenuBinderV30 menuBinder = new PopupMenuBinderV30();
-		menuBinder.createPopupMenu(view, popup, menuId, menuViewModel);
+		menuBinder.createAndBindPopupMenu(view, popup, menuId, menuViewModel);
+		return popup;
+	}
+	
+	public static PopupMenu bindPopupMenu(View view, IObservableCollection<MenuItemViemodel> items) {
+		PopupMenu popup = new PopupMenu(view.getContext(), view);		
+		
+		PopupMenuBinderV30 menuBinder = new PopupMenuBinderV30();
+		menuBinder.bindPopupMenu(popup, items);
 		return popup;
 	}
 

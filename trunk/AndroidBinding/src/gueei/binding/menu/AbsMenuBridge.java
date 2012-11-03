@@ -4,6 +4,7 @@ import gueei.binding.Binder;
 import gueei.binding.BindingLog;
 import gueei.binding.ConstantObservable;
 import gueei.binding.IObservable;
+import gueei.binding.InnerFieldObservable;
 import gueei.binding.ISyntaxResolver.SyntaxResolveException;
 import gueei.binding.Observer;
 
@@ -73,6 +74,32 @@ public abstract class AbsMenuBridge {
 			return obs;
 		}
 		return null;
+	}
+	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public static IObservable<?> getObservableByFieldPath(Object dataSource, String fieldPath) {
+		if(dataSource == null || fieldPath == null || fieldPath.equals(""))
+			return null;
+		
+		IObservable<?> observable = null;	
+		InnerFieldObservable ifo = new InnerFieldObservable(fieldPath);
+		if (ifo.createNodes(dataSource)) {
+			observable = ifo;										
+		} else {			
+			Object rawField;
+			try {
+				rawField =  Binder.getSyntaxResolver().getFieldForModel(fieldPath, dataSource);
+			} catch (SyntaxResolveException e) {
+				BindingLog.exception("AbsMenuBridge.getObservableByFieldPath()", e);
+				return null;
+			}
+			if (rawField instanceof IObservable<?>)
+				observable = (IObservable<?>)rawField;
+			else if (rawField!=null)
+				observable= new ConstantObservable(rawField.getClass(), rawField);
+		}	
+		
+		return observable;
 	}
 
 	public abstract boolean onOptionsItemSelected(MenuItem item);

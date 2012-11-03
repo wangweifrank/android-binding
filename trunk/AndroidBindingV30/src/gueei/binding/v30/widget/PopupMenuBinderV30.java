@@ -5,6 +5,7 @@ import gueei.binding.IObservableCollection;
 import gueei.binding.menu.AbsMenuBridge;
 import gueei.binding.menu.MenuGroupBridge;
 import gueei.binding.menu.MenuItemBridge;
+import gueei.binding.menu.MenuItemViemodel;
 
 import java.io.IOException;
 import java.util.Hashtable;
@@ -29,6 +30,7 @@ public class PopupMenuBinderV30 implements OnMenuItemClickListener {
 
 		Menu menu = popup.getMenu();
 		Menu subMenu = null;
+		MenuItem mi = null;
 		int count=0;
 		int groups=0;
 		
@@ -39,16 +41,14 @@ public class PopupMenuBinderV30 implements OnMenuItemClickListener {
 			if( vm.title != null && vm.title.get() != null)
 				title = vm.title.get().toString();
 			if( vm.group == null ) {
-				menu.add(Menu.FIRST+groups, Menu.FIRST+count, Menu.NONE, title);
+				mi = menu.add(Menu.FIRST+groups, Menu.FIRST+count, Menu.NONE, title);
+				mi.setOnMenuItemClickListener(this);
+				items.put(Menu.FIRST+count, new MenuItemBridge(Menu.FIRST+count, vm));
+				count++;
 			} else {
 				subMenu = menu.addSubMenu(Menu.FIRST+groups, Menu.FIRST+count, Menu.NONE, title);
-			}
-			
-			items.put(Menu.FIRST+count, new MenuItemBridge(Menu.FIRST+count, vm));
-			count++;
-			
-			if( vm.group != null) {
 				items.put(Menu.FIRST+count, new MenuGroupBridge(Menu.FIRST+count, vm));
+				count++;
 				
 				for(int k=0; k<vm.group.size(); k++) {
 					MenuItemViemodel vmChild = vm.group.getItem(k);
@@ -56,7 +56,8 @@ public class PopupMenuBinderV30 implements OnMenuItemClickListener {
 					title = "";
 					if( vmChild.title != null && vmChild.title.get() != null)
 						title = vmChild.title.get().toString();
-					subMenu.add(Menu.FIRST+groups, Menu.FIRST+count, Menu.NONE, title);
+					mi = subMenu.add(Menu.FIRST+groups, Menu.FIRST+count, Menu.NONE, title);
+					mi.setOnMenuItemClickListener(this);
 					items.put(Menu.FIRST+count, new MenuItemBridge(Menu.FIRST+count, vmChild));
 					count++;
 				}

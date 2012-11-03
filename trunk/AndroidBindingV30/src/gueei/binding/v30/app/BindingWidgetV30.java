@@ -4,7 +4,7 @@ import gueei.binding.AttributeBinder;
 import gueei.binding.Binder;
 import gueei.binding.IObservableCollection;
 import gueei.binding.Binder.InflateResult;
-import gueei.binding.v30.widget.MenuItemViemodel;
+import gueei.binding.menu.MenuItemViemodel;
 import gueei.binding.v30.widget.PopupMenuBinderV30;
 import android.app.Dialog;
 import android.content.Context;

@@ -38,11 +38,13 @@ public class MenuGroupBridge extends AbsMenuBridge {
 	}
 	
 	@SuppressWarnings("unchecked")
-	public MenuGroupBridge(int id, Object model) {
+	public MenuGroupBridge(int id, MenuItemViemodel model) {
 		super(id);
+		if(model==null)
+			return;
 
 		// Assume id is created
-		IObservable<?> temp = getObservableByFieldPath(model, "visible");
+		IObservable<?> temp = model.visible;
 		if ((temp!=null)&&(Boolean.class.isAssignableFrom(temp.getType()))){
 			mVisible = (IObservable<Boolean>)temp;
 		}

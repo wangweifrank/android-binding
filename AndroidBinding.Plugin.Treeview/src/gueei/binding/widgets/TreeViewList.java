@@ -46,15 +46,17 @@ public class TreeViewList extends ListView {
 		@Override
 		public void Invoke(View view, Object... args) {		
 			Integer pos = Utility.getClickedListPositon(itemSource, args);
-			if(pos == null || OnTreeNodeClickedRef == null)
+			if(pos == null)
 				return;
 			
-			TreeViewItemWrapper w = itemSource.get(pos);
-			TreeNodeClickEvent e = new TreeNodeClickEvent(pos, w.WrapperNodeDataSource.get());
+			if(OnTreeNodeClickedRef != null) {
+				TreeViewItemWrapper w = itemSource.get(pos);
+				TreeNodeClickEvent e = new TreeNodeClickEvent(pos, w.WrapperNodeDataSource.get());
 						
-			OnTreeNodeClickedRef.Invoke(TreeViewList.this, e);
-			if( e.ignoreExpandCollapse)
-				return;
+				OnTreeNodeClickedRef.Invoke(TreeViewList.this, e);
+				if( e.ignoreExpandCollapse)
+					return;
+			}
 			
 			handleExpandCollapse(pos, true);
 		}

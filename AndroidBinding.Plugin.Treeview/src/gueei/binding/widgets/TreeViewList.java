@@ -135,6 +135,9 @@ public class TreeViewList extends ListView {
 		}
 		itemSource.clear();
 		
+		if(treeStructure == null)
+			return;
+		
 		if(treeStructure.wrapperTemplate!=null)
 			AttributeBinder.getInstance().bindAttributeWithModel(getContext(), this, "itemTemplate", ".", treeStructure.wrapperTemplate.getDefaultLayoutId());
 		if(treeStructure.wrapperTemplateId!=null && treeStructure.wrapperTemplateId.get() instanceof Integer)

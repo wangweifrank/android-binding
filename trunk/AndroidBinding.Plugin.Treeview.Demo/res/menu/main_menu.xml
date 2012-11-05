@@ -41,7 +41,7 @@
 	<item
         android:id="@+id/simple_menu_debug7"
         android:title="Change WrapperTemplate"       
-        binding:onClick="OnDebugChangWrapperTemplate">
+        binding:onClick="OnDebugChangeWrapperTemplate">
     </item> 
     
 	<item

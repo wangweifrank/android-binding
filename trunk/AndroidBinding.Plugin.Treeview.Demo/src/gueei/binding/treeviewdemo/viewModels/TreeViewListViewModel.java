@@ -122,7 +122,7 @@ public class TreeViewListViewModel {
 		}
 	};
 	
-	public final Command OnDebugChangWrapperTemplate= new Command() {		
+	public final Command OnDebugChangeWrapperTemplate= new Command() {		
 		@Override
 		public void Invoke(View view, Object... args) {
 			// TODO;

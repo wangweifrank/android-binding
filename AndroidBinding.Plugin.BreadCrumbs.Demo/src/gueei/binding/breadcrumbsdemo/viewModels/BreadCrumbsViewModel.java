@@ -10,9 +10,9 @@ import gueei.binding.breadcrumbsdemo.R;
 import gueei.binding.collections.ArrayListObservable;
 import gueei.binding.observables.IntegerObservable;
 import gueei.binding.observables.StringObservable;
-import gueei.binding.widgets.BreadCrumbsClickEvent;
-import gueei.binding.widgets.BreadCrumbsLongClickEvent;
-import gueei.binding.widgets.BreadCrumbsSelectedEvent;
+import gueei.binding.widgets.breadcrumbs.BreadCrumbsClickEvent;
+import gueei.binding.widgets.breadcrumbs.BreadCrumbsLongClickEvent;
+import gueei.binding.widgets.breadcrumbs.BreadCrumbsSelectedEvent;
 
 public class BreadCrumbsViewModel {
 		

@@ -1,4 +1,4 @@
-package gueei.binding.widgets;
+package gueei.binding.widgets.treeview;
 
 public class TreeNodeLongClickEvent {
 	public final int rowPosition;

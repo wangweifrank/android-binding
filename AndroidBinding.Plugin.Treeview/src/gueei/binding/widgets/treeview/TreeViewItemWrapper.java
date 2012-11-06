@@ -1,4 +1,4 @@
-package gueei.binding.widgets;
+package gueei.binding.widgets.treeview;
 
 import java.util.Collection;
 
@@ -7,6 +7,7 @@ import gueei.binding.IObservableCollection;
 import gueei.binding.Observer;
 import gueei.binding.observables.IntegerObservable;
 import gueei.binding.observables.ObjectObservable;
+import gueei.binding.widgets.TreeViewList;
 
 public class TreeViewItemWrapper {	
 	public final IntegerObservable WrapperSpace = new IntegerObservable(0);

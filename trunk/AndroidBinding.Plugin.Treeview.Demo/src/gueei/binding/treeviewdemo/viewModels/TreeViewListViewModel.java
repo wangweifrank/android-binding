@@ -10,8 +10,8 @@ import gueei.binding.observables.BooleanObservable;
 import gueei.binding.observables.IntegerObservable;
 import gueei.binding.observables.StringObservable;
 import gueei.binding.treeviewdemo.R;
-import gueei.binding.widgets.TreeNodeClickEvent;
-import gueei.binding.widgets.TreeNodeLongClickEvent;
+import gueei.binding.widgets.treeview.TreeNodeClickEvent;
+import gueei.binding.widgets.treeview.TreeNodeLongClickEvent;
 
 public class TreeViewListViewModel {
 	

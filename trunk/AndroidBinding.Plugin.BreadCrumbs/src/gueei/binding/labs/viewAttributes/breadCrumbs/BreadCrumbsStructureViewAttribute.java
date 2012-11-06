@@ -3,7 +3,7 @@ package gueei.binding.labs.viewAttributes.breadCrumbs;
 import gueei.binding.BindingType;
 import gueei.binding.ViewAttribute;
 import gueei.binding.widgets.BreadCrumbs;
-import gueei.binding.widgets.BreadCrumbsStructure;
+import gueei.binding.widgets.breadcrumbs.BreadCrumbsStructure;
 import android.widget.Adapter;
 
 public class BreadCrumbsStructureViewAttribute extends ViewAttribute<BreadCrumbs, BreadCrumbsStructure> {

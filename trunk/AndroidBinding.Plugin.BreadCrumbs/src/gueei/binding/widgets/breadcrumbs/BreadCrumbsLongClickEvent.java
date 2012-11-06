@@ -1,4 +1,4 @@
-package gueei.binding.widgets;
+package gueei.binding.widgets.breadcrumbs;
 
 public class BreadCrumbsLongClickEvent {
 	public final int rowPosition;

@@ -6,7 +6,7 @@ import gueei.binding.Converter;
 import gueei.binding.DynamicObject;
 import gueei.binding.IObservable;
 import gueei.binding.viewAttributes.templates.Layout;
-import gueei.binding.widgets.BreadCrumbsStructure;
+import gueei.binding.widgets.breadcrumbs.BreadCrumbsStructure;
 
 public class BREADCRUMBS_STRUCTURE extends Converter<BreadCrumbsStructure> {
 	public BREADCRUMBS_STRUCTURE(IObservable<?>[] dependents) {

@@ -234,7 +234,7 @@ public class BreadCrumbs extends HorizontalListView {
 			
 			StringObservable title;
 			if(text==null)
-				title = new StringObservable("binding error: unknown menuitem field, check logcat");
+				title = new StringObservable("binding error: menuText field not found, check logcat");
 			else
 				title = new StringObservable(text.get().toString());						
 			

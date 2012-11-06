@@ -232,10 +232,11 @@ public class BreadCrumbs extends HorizontalListView {
 		for(int i=0; i < children.size(); i++) {
 			IObservable<?> text = getDSText(children.getItem(i));			
 			
+			StringObservable title;
 			if(text==null)
-				continue;
-			
-			StringObservable title = new StringObservable(text.get().toString());
+				title = new StringObservable("binding error: unknown menuitem field, check logcat");
+			else
+				title = new StringObservable(text.get().toString());						
 			
 			if(children.getItem(i).equals(w.WrapperBreadCrumbDataSource.get())){
 				title.set( SELECTED_MENU_ENTRY + title.get());

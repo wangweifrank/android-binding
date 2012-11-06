@@ -1,4 +1,6 @@
-package gueei.binding.widgets;
+package gueei.binding.widgets.breadcrumbs;
+
+import gueei.binding.widgets.BreadCrumbs;
 
 public class BreadCrumbsSelectedEvent {
 	public final int siblingPosition;

@@ -1,4 +1,4 @@
-package gueei.binding.widgets;
+package gueei.binding.widgets.breadcrumbs;
 
 import gueei.binding.Binder;
 import gueei.binding.BindingLog;

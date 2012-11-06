@@ -16,6 +16,12 @@ import gueei.binding.observables.StringObservable;
 import gueei.binding.v30.widget.PopupMenuBinderV30;
 import gueei.binding.viewAttributes.templates.Layout;
 import gueei.binding.viewAttributes.templates.SingleTemplateLayout;
+import gueei.binding.widgets.breadcrumbs.BreadCrumbsClickEvent;
+import gueei.binding.widgets.breadcrumbs.BreadCrumbsItemWrapper;
+import gueei.binding.widgets.breadcrumbs.BreadCrumbsLongClickEvent;
+import gueei.binding.widgets.breadcrumbs.BreadCrumbsSelectedEvent;
+import gueei.binding.widgets.breadcrumbs.BreadCrumbsStructure;
+import gueei.binding.widgets.breadcrumbs.Utility;
 
 import com.devsmart.android.ui.HorizontalListView;
 

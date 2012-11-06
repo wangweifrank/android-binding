@@ -6,7 +6,7 @@ import gueei.binding.Converter;
 import gueei.binding.DynamicObject;
 import gueei.binding.IObservable;
 import gueei.binding.viewAttributes.templates.Layout;
-import gueei.binding.widgets.TreeStructure;
+import gueei.binding.widgets.treeview.TreeStructure;
 
 public class TREE_STRUCTURE extends Converter<TreeStructure> {
 	public TREE_STRUCTURE(IObservable<?>[] dependents) {

@@ -2,8 +2,8 @@ package gueei.binding.labs.viewAttributes.treeView;
 
 import gueei.binding.BindingType;
 import gueei.binding.ViewAttribute;
-import gueei.binding.widgets.TreeStructure;
 import gueei.binding.widgets.TreeViewList;
+import gueei.binding.widgets.treeview.TreeStructure;
 import android.widget.Adapter;
 
 public class TreeStructureViewAttribute extends ViewAttribute<TreeViewList, TreeStructure> {

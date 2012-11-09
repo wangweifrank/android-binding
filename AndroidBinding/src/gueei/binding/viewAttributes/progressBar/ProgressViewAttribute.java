@@ -7,19 +7,15 @@ import android.widget.ProgressBar;
 import android.widget.SeekBar;
 
 /*
- * Accepts Float from 0 - 1, and translate the result to a 1000-based fraction
- * as the progress.
- * i.e. progress of progress bar will become 
+ * Changed in v0.6
+ * Accepts Integer only, works with Max or android:max
  */
-public class ProgressViewAttribute extends ViewAttribute<ProgressBar, Float>
+public class ProgressViewAttribute extends ViewAttribute<ProgressBar, Integer>
 	implements SeekBar.OnSeekBarChangeListener{
 	
-	private static final int PROGRESS_MAX = 10000;
-	
 	public ProgressViewAttribute(ProgressBar view) {
-		super(Float.class, view, "progress");
+		super(Integer.class, view, "progress");
 		getView().setProgress(0);
-		getView().setMax(PROGRESS_MAX);
 		if (view instanceof SeekBar){
 			Binder.getMulticastListenerForView(view, OnSeekBarChangeListenerMulticast.class)
 				.register(this);
@@ -30,15 +26,15 @@ public class ProgressViewAttribute extends ViewAttribute<ProgressBar, Float>
 	protected void doSetAttributeValue(Object newValue) {
 		if(getView()==null) return;
 		if (newValue == null) return;
-		if (newValue instanceof Float){
-			getView().setProgress((int)Math.ceil((Float)newValue * PROGRESS_MAX));
+		if (newValue instanceof Integer){
+			getView().setProgress((Integer)newValue);
 		}
 	}
 
 	@Override
-	public Float get() {
+	public Integer get() {
 		if(getView()==null) return null;
-		return (float)getView().getProgress() / (float)PROGRESS_MAX;
+		return getView().getProgress();
 	}
 
 	public void onProgressChanged(SeekBar seekBar, int progress,

@@ -1,5 +1,6 @@
 package gueei.binding.widgets;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 import gueei.binding.AttributeBinder;
@@ -56,7 +57,7 @@ public class TreeViewList extends ListView {
 			
 			if(OnTreeNodeClickedRef != null) {
 				TreeViewItemWrapper w = itemSource.get(pos);
-				TreeNodeClickEvent e = new TreeNodeClickEvent(pos, w.WrapperNodeDataSource.get());
+				TreeNodeClickEvent e = new TreeNodeClickEvent(pos, w, TreeViewList.this);
 						
 				OnTreeNodeClickedRef.Invoke(TreeViewList.this, e);
 				if( e.ignoreExpandCollapse)
@@ -75,7 +76,7 @@ public class TreeViewList extends ListView {
 				return;
 			
 			TreeViewItemWrapper w = itemSource.get(pos);				
-			TreeNodeLongClickEvent e = new TreeNodeLongClickEvent(pos, w.WrapperNodeDataSource.get());		
+			TreeNodeLongClickEvent e = new TreeNodeLongClickEvent(pos, w, TreeViewList.this);		
 			
 			OnTreeNodeLongClickedRef.Invoke(TreeViewList.this, e);
 		}
@@ -84,6 +85,27 @@ public class TreeViewList extends ListView {
 	public TreeViewList(Context context) {
 		super(context);
 	}	
+
+	public Object[] getPath(TreeViewItemWrapper leaf) {
+		if(leaf==null)
+			return null;
+		
+		ArrayList<Object> pathList = new ArrayList<Object>();
+		
+		TreeViewItemWrapper w = leaf;
+		int level = w.level;
+		
+		int pos = itemSource.indexOf(w);
+		for(int i=pos; i > -1; i--) {
+			w = itemSource.getItem(i);
+			if( w.level < level ) {
+				pathList.add(0, w.WrapperNodeDataSource.get());
+				level = w.level;
+			}
+		}
+		
+		return pathList.toArray();
+	}
 
 	public TreeViewList(Context context, AttributeSet attrs) {
 		super(context, attrs);

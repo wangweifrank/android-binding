@@ -56,7 +56,7 @@ public class CursorContentUpdate {
 	};
 	private final Context mContext;
 
-	public static class GroupsRowModel extends CursorRowModel implements LazyLoadParent {
+	public static class GroupsRowModel extends RowModel implements LazyLoadParent {
 		public StringField  Name          = new StringField("Name");
 		public IdField      Id            = new IdField("_ID");
 		public IntegerField SubItemsCount = new IntegerField("detailsCount");
@@ -78,7 +78,7 @@ public class CursorContentUpdate {
 		}
 	}
 
-	public static class SubItemRowModel extends CursorRowModel {
+	public static class SubItemRowModel extends RowModel {
 		public IdField     Id    = new IdField("_ID");
 		public StringField Name  = new StringField("Name");
 		public LongField   Group = new LongField("MasterID");

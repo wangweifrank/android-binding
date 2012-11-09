@@ -65,7 +65,7 @@ public class FilterCursorList {
 		}
 	});
 
-	public static class FilteredCursorRowModel extends CursorRowModel {
+	public static class FilteredCursorRowModel extends RowModel {
 
 		public IdField      Id            = new IdField("_ID");
 		public StringField  Name          = new StringField("Name");

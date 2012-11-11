@@ -8,6 +8,8 @@ public class TreeStructure {
 	public IObservable<?> childrenObservableName;
 	public IObservable<?> isExpandedObservableName;
 	
+	public IObservable<?> treeNodeEnsureVisible;
+	
 	public Layout template;	
 	public IObservable<?> templateIdObservableName;
 	

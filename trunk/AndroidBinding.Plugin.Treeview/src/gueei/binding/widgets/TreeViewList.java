@@ -39,6 +39,14 @@ public class TreeViewList extends ListView {
 		public void onPropertyChanged(IObservable<?> prop, Collection<Object> initiators) {
 			// TODO: implement this
 		}
+	};
+	
+	private Observer observerEnsureVisible = new Observer() {		
+		@Override
+		public void onPropertyChanged(IObservable<?> prop, Collection<Object> initiators) {
+			if(prop != null && prop.get() != null)
+				ensureVisible(prop.get());
+		}
 	};	
 	
 	private CollectionObserver collectionObserver = new CollectionObserver(){
@@ -119,12 +127,20 @@ public class TreeViewList extends ListView {
 		if( treeStructure != null ) {
 			if( treeStructure.spacerWidth != null )
 				treeStructure.spacerWidth.unsubscribe(observerSpacerWidth);
+			
+			if( treeStructure.treeNodeEnsureVisible != null )
+				treeStructure.treeNodeEnsureVisible.unsubscribe(observerEnsureVisible);	
 		}
 		
 		treeStructure = value;
 		
-		if( treeStructure.spacerWidth != null )
-			treeStructure.spacerWidth.subscribe(observerSpacerWidth);
+		if( treeStructure != null ) {
+			if( treeStructure.spacerWidth != null )
+				treeStructure.spacerWidth.subscribe(observerSpacerWidth);
+			
+			if( treeStructure.treeNodeEnsureVisible != null )
+				treeStructure.treeNodeEnsureVisible.subscribe(observerEnsureVisible);
+		}
 		
 		basicSetup();
 		rebind();
@@ -598,6 +614,20 @@ public class TreeViewList extends ListView {
 		throw new IndexOutOfBoundsException();
 		
 	}
+	
+	private void ensureVisible(Object node) {
+		if(node==null)
+			return;
+				
+		for(int i=0; i<itemSource.size(); i++) {
+			TreeViewItemWrapper w = itemSource.get(i);
+			if(node.equals(w.WrapperNodeDataSource.get())) {
+				Utility.ensureVisible(this, i);
+				return;
+			}
+		}
+	}
+
 
 /*
 	private void dumpTree() {

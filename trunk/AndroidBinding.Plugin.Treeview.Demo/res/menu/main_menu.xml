@@ -50,10 +50,16 @@
         binding:onClick="OnDebugExpandCollapse">
     </item> 	
     
-		<item
+	<item
         android:id="@+id/simple_menu_debug9"
         android:title="Rebuild Tree"
         binding:onClick="OnDebugRebuildTree">
-    </item> 
+    </item>
+    
+	<item
+        android:id="@+id/simple_menu_debug10"
+        android:title="Ensure Visible"
+        binding:onClick="OnDebugEnsureVisible">
+    </item>
 
 </menu>

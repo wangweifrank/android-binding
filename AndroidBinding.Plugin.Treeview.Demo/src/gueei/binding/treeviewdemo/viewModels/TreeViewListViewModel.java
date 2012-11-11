@@ -5,6 +5,7 @@ import java.util.Date;
 import android.app.Activity;
 import android.view.View;
 import gueei.binding.Command;
+import gueei.binding.Observable;
 import gueei.binding.collections.ArrayListObservable;
 import gueei.binding.observables.BooleanObservable;
 import gueei.binding.observables.IntegerObservable;
@@ -16,6 +17,7 @@ import gueei.binding.widgets.treeview.TreeNodeLongClickEvent;
 public class TreeViewListViewModel {
 	
 	public final IntegerObservable WrapperTemplateLayoutId = new IntegerObservable(R.layout.tree_list_item_wrapper);
+	public final Observable<TreeNode> EnsureVisibleItem = new Observable<TreeNode>(TreeNode.class);	
 
 	public static class TreeNode {
 		public final BooleanObservable IsExpanded = new BooleanObservable(false);
@@ -149,10 +151,15 @@ public class TreeViewListViewModel {
 		@Override
 		public void Invoke(View view, Object... args) {			
 			buildDemoData();
-		}
-	};	
+		}		
+	};
 	
-	
+	public final Command OnDebugEnsureVisible= new Command() {		
+		@Override
+		public void Invoke(View view, Object... args) {			
+			EnsureVisibleItem.set(Items.get(2));
+		}		
+	};		
 	
 	private void buildDemoData() {		
 		Items.clear();

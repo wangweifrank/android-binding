@@ -16,6 +16,8 @@
   				children='Children',
   				isExpanded='IsExpanded',
   				templateId='LayoutId',
+  				
+  				ensureVisible=EnsureVisibleItem,
   				  				  				  				
   				wrapperTemplateId=WrapperTemplateLayoutId,
   				

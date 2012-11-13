@@ -1,7 +1,8 @@
 package com.gueei.demos.markupDemo.viewModels;
 
+import gueei.binding.IObservableCollection;
 import gueei.binding.collections.ArrayListObservable;
-import gueei.binding.collections.LazyLoadRowModelBase;
+import gueei.binding.collections.LazyLoadRowModel;
 import gueei.binding.observables.StringObservable;
 
 public class LazyLoadArrayList {
@@ -14,18 +15,18 @@ public class LazyLoadArrayList {
 		}
 	}
 	
-	public class LazyObject extends LazyLoadRowModelBase{
+	public class LazyObject extends LazyLoadRowModel{
 		public final StringObservable Title = new StringObservable("loading...");
 
 		@Override
-		public void onDisplay(int index) {
+        public void onDisplay(IObservableCollection<?> collection, int index) {
 			Title.set(DATA[index]);
-		}
+        }
 
 		@Override
-		public void onHide(int index) {
+        public void onHide(IObservableCollection<?> collection, int index) {
 			Title.set("loading...");
-		}
+        }
 	}
 	
 	private static final String[] DATA = {

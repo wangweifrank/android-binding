@@ -20,9 +20,8 @@ public class CursorContentUpdate {
 
 	public CursorContentUpdate(Activity activity) {
 		mContext = activity;
-		Groups = new TrackedCursorCollection<GroupsRowModel>(GroupsRowModel.class,
-															 new CursorRowModelFactory(GroupsRowModel.class,
-																					   mContext));
+		Groups = new TrackedCursorCollection<GroupsRowModel>(GroupsRowModel.class);
+		
 		Uri trackingUri = Uri.parse("content://com.gueei.demos/masters");
 		Cursor groups = mContext.getContentResolver()
 								.query(trackingUri, new String[]{"_ID", "Name", "detailsCount"}, null, null, null);
@@ -37,7 +36,7 @@ public class CursorContentUpdate {
 			ContentValues values = new ContentValues();
 			values.put("Name", "Child for Group 1");
 			values.put("masterID", "1");
-			Uri uri = mContext.getContentResolver().insert(Uri.parse("content://com.gueei.demos/details"), values);
+			mContext.getContentResolver().insert(Uri.parse("content://com.gueei.demos/details"), values);
 		}
 	};
 	public final Command RemoveSubItem = new Command() {

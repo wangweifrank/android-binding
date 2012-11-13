@@ -3,25 +3,25 @@ package gueei.binding.collections;
 import gueei.binding.CollectionChangedEventArg;
 import gueei.binding.CollectionChangedEventArg.Action;
 import gueei.binding.cursor.CursorField;
-import gueei.binding.cursor.IRowModel;
+import gueei.binding.cursor.ICursorRowModel;
 import gueei.binding.cursor.IRowModelFactory;
-import gueei.binding.cursor.RowModel;
 import gueei.binding.cursor.RowModelFactory;
 import gueei.binding.utility.CacheHashMap;
+
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.WeakHashMap;
+
 import android.database.Cursor;
 import android.database.DataSetObserver;
-import android.util.Log;
 
 /**
  * User: =ra=
  * Date: 08.10.11
  * Time: 11:58
  */
-public class CursorCollection<T extends IRowModel> extends ObservableCollection<T>{
+public class CursorCollection<T extends ICursorRowModel> extends ObservableCollection<T>{
 	//
 	public static interface ICursorCacheManager<ElType> {
 		public void clear(); // remove all items from cache
@@ -205,7 +205,7 @@ public class CursorCollection<T extends IRowModel> extends ObservableCollection<
 	 *
 	 * @param <T>
 	 */
-	public static class DefaultCursorCacheManager<T extends IRowModel> implements ICursorCacheManager<T> {
+	public static class DefaultCursorCacheManager<T extends ICursorRowModel> implements ICursorCacheManager<T> {
 		private CacheHashMap<Integer, T> mCache;
 		
 		private WeakHashMap<Object, Integer> cachingOriginators = 

@@ -2,7 +2,6 @@ package gueei.binding.cursor;
 
 import android.database.Cursor;
 
-@SuppressWarnings({"UnusedDeclaration"})
 public class ShortField extends CursorField<Short> {
 
 	public ShortField(int columnIndex) {

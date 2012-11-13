@@ -2,7 +2,6 @@ package gueei.binding.cursor;
 
 import android.database.Cursor;
 
-@SuppressWarnings({"UnusedDeclaration"})
 public class FloatField extends CursorField<Float> {
 
 	public FloatField(int columnIndex) {

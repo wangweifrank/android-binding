@@ -5,7 +5,6 @@ import gueei.binding.BindingType;
 import gueei.binding.IObservable;
 import gueei.binding.Observer;
 import gueei.binding.ViewAttribute;
-import gueei.binding.cursor.CursorRowTypeMap;
 import gueei.binding.exception.AttributeNotDefinedException;
 import gueei.binding.viewAttributes.templates.Layout;
 
@@ -94,9 +93,6 @@ public class ItemSourceViewAttribute extends ViewAttribute<ListView, Object> {
 
 	@Override
 	protected BindingType AcceptThisTypeAs(Class<?> type) {
-		if (type.isArray()||CursorRowTypeMap.class.isAssignableFrom(type)){
-			return BindingType.OneWay;
-		}
 		return BindingType.OneWay;
 	}
 }

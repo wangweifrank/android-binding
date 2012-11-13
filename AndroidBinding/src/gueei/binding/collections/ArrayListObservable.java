@@ -54,7 +54,6 @@ public class ArrayListObservable<T>
 	 * @param newArray
 	 */
 	public void setArray(T[] newArray){
-		@SuppressWarnings("unchecked")
 		Object [] oldItems = mArray.toArray();		
 		CollectionChangedEventArg e = new CollectionChangedEventArg(Action.Replace, Arrays.asList(newArray),  Arrays.asList(oldItems));
 		mArray.clear();
@@ -116,7 +115,6 @@ public class ArrayListObservable<T>
 	}
 
 	public boolean removeAll(Collection<?> arg0) {
-		@SuppressWarnings("unchecked")
 		CollectionChangedEventArg e = new CollectionChangedEventArg(Action.Remove, mArray);
 		boolean result = mArray.removeAll(arg0);
 		if (result){

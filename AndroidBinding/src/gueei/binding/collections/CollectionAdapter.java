@@ -18,7 +18,6 @@ import java.util.Collection;
 
 import android.content.Context;
 import android.os.Handler;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
@@ -130,7 +129,7 @@ public class CollectionAdapter extends BaseAdapter implements CollectionObserver
 
 			mapper.changeMapping(mReflector, item);
 			if (mHelper != null && !mHelper.isBusy()) {
-				if (item instanceof LazyLoadRowModel){
+				if (item instanceof ILazyLoadRowModel){
 					//((LazyLoadRowModel) item).display(mCollection, position);
 				}
 			}
@@ -167,7 +166,7 @@ public class CollectionAdapter extends BaseAdapter implements CollectionObserver
 	protected LazyLoadRootAdapterHelper mHelper;
 
 	public void setRoot(AbsListView view) {
-		if (LazyLoadRowModel.class.isAssignableFrom(mCollection.getComponentType()))
+		if (ILazyLoadRowModel.class.isAssignableFrom(mCollection.getComponentType()))
 			mHelper = new LazyLoadRootAdapterHelper(view, this, mMode);
 	}
 
@@ -225,29 +224,29 @@ public class CollectionAdapter extends BaseAdapter implements CollectionObserver
 
 		for (int i = newFirstIndex; i < oldFirstIndex; ++i) {
 			rawItem = mCollection.getItem(i);
-			if (rawItem instanceof LazyLoadRowModel) {
-				((LazyLoadRowModel) rawItem).display(mCollection, i);
+			if (rawItem instanceof ILazyLoadRowModel) {
+				((ILazyLoadRowModel) rawItem).display(mCollection, i);
 			}
 		}
 		for (int i = oldFirstIndex; i < newFirstIndex; ++i) {
 			rawItem = mCollection.getItem(i);
-			if (rawItem instanceof LazyLoadRowModel) {
-				if (!((LazyLoadRowModel) rawItem).isMapped())
-					((LazyLoadRowModel) rawItem).hide(mCollection, i);
+			if (rawItem instanceof ILazyLoadRowModel) {
+				if (!((ILazyLoadRowModel) rawItem).isMapped())
+					((ILazyLoadRowModel) rawItem).hide(mCollection, i);
 			}
 		}
 
 		for (int i = newLastIndex; i < oldLastIndex; ++i) {
 			rawItem = mCollection.getItem(i);
-			if (rawItem instanceof LazyLoadRowModel) {
-				if (!((LazyLoadRowModel) rawItem).isMapped())
-					((LazyLoadRowModel) rawItem).hide(mCollection, i);
+			if (rawItem instanceof ILazyLoadRowModel) {
+				if (!((ILazyLoadRowModel) rawItem).isMapped())
+					((ILazyLoadRowModel) rawItem).hide(mCollection, i);
 			}
 		}
 		for (int i = oldLastIndex; i < newLastIndex; ++i) {
 			rawItem = mCollection.getItem(i);
-			if (rawItem instanceof LazyLoadRowModel) {
-				((LazyLoadRowModel) rawItem).display(mCollection, i);
+			if (rawItem instanceof ILazyLoadRowModel) {
+				((ILazyLoadRowModel) rawItem).display(mCollection, i);
 			}
 		}
 

@@ -26,8 +26,8 @@ public class ObservableMapper implements IPropertyContainer {
 	
 	@SuppressWarnings("unchecked")
 	public void changeMapping(IModelReflector reflector, Object model){
-		if (mappingModel!=null && mappingModel instanceof LazyLoadRowModel)
-			((LazyLoadRowModel)mappingModel).setMapped(false);
+		if (mappingModel!=null && mappingModel instanceof ILazyLoadRowModel)
+			((ILazyLoadRowModel)mappingModel).setMapped(false);
 		
 		mappingModel = model;
 		try {
@@ -47,8 +47,8 @@ public class ObservableMapper implements IPropertyContainer {
 			e.printStackTrace();
 		}
 		
-		if (mappingModel!=null && mappingModel instanceof LazyLoadRowModel)
-			((LazyLoadRowModel)mappingModel).setMapped(true);
+		if (mappingModel!=null && mappingModel instanceof ILazyLoadRowModel)
+			((ILazyLoadRowModel)mappingModel).setMapped(true);
 	}
 	
 	private IModelReflector mReflector = null;

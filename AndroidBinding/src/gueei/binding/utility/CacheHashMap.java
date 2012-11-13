@@ -1,6 +1,6 @@
 package gueei.binding.utility;
 
-import gueei.binding.collections.LazyLoadRowModel;
+import gueei.binding.collections.ILazyLoadRowModel;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -15,7 +15,7 @@ import java.util.HashMap;
  * @param <E>
  * @author andy
  */
-public class CacheHashMap<K, V extends LazyLoadRowModel> extends HashMap<K, V> {
+public class CacheHashMap<K, V extends ILazyLoadRowModel> extends HashMap<K, V> {
 	private static final long         serialVersionUID = 1L;
 	
 	private              ArrayList<K> keyList          = new ArrayList<K>();

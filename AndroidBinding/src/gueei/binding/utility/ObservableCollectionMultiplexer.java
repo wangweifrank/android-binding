@@ -1,17 +1,16 @@
 package gueei.binding.utility;
 
+import gueei.binding.CollectionChangedEventArg;
+import gueei.binding.CollectionObserver;
+import gueei.binding.IObservableCollection;
+import gueei.binding.Observer;
+
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map.Entry;
-
-import gueei.binding.CollectionChangedEventArg;
-import gueei.binding.CollectionObserver;
-import gueei.binding.IObservableCollection;
-import gueei.binding.Observer;
 
 public class ObservableCollectionMultiplexer<T> {
 		

@@ -3,7 +3,6 @@ package com.gueei.demos.markupDemo.viewModels;
 import gueei.binding.IObservableCollection;
 import gueei.binding.collections.ArrayListObservable;
 import gueei.binding.collections.LazyLoadRowModel;
-import gueei.binding.collections.LazyLoadRowModelBase;
 import gueei.binding.observables.BooleanObservable;
 import gueei.binding.observables.StringObservable;
 import android.app.Activity;
@@ -64,7 +63,7 @@ public class DynamicLoadingArrayList {
 	public final BooleanObservable HasMore = new BooleanObservable(true);
 	public final BooleanObservable IsLoading = new BooleanObservable(false);
 	
-	public class Item extends LazyLoadRowModelBase{
+	public class Item extends LazyLoadRowModel{
 		public Item(String batch){
 			Batch.set(batch);
 		}
@@ -72,17 +71,17 @@ public class DynamicLoadingArrayList {
 		public final StringObservable Batch = new StringObservable();
 		
 		@Override
-		public void onDisplay(int index) {
+        public void onDisplay(IObservableCollection<?> collection, int index) {
 			this.Title.set(this.Batch.get() + index);
 			// We reach the end of the list, 
 			// try to load more
-			if (index>=DynamicLazyList.size() - 1){
+			if (index>=collection.size() - 1){
 				loadMore();
 			}				
 		}
-		
+
 		@Override
-        public void onHide(int index) {
+        public void onHide(IObservableCollection<?> collection, int index) {
 			this.Title.set("loading...");
         }
 	}

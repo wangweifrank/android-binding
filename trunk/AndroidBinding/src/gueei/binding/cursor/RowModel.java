@@ -1,6 +1,5 @@
 package gueei.binding.cursor;
 
-import android.util.Log;
 import gueei.binding.IObservableCollection;
 
 /**
@@ -8,7 +7,7 @@ import gueei.binding.IObservableCollection;
  * Date: 11.10.11
  * Time: 21:05
  */
-public class RowModel implements IRowModel {
+public class RowModel implements ICursorRowModel {
 	@Override public void onInitialize() {}
 
 	@Override public long getId(int proposedId) {

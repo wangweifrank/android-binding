@@ -13,8 +13,6 @@ import android.widget.TextView;
 public class TextViewAttribute extends ViewAttribute<TextView, CharSequence> implements TextWatcher {
 
 	private CharSequence mValue = null;
-	private ViewAttribute<?,?> attrSpan = null;
-
 	public TextViewAttribute(TextView view, String attributeName) {
 		super(CharSequence.class, view, attributeName);
 		if (view instanceof EditText) {
@@ -22,7 +20,7 @@ public class TextViewAttribute extends ViewAttribute<TextView, CharSequence> imp
 		}
 		
 		try {
-			attrSpan = Binder.getAttributeForView(getView(), "span");
+			Binder.getAttributeForView(getView(), "span");
 		} catch (AttributeNotDefinedException e) {
 			e.printStackTrace();
 		}
@@ -63,14 +61,7 @@ public class TextViewAttribute extends ViewAttribute<TextView, CharSequence> imp
 			}
 			if (!compareCharSequence(nVal, mValue)) {				
 				mValue = cloneCharSequence(nVal);					
-				
-				if((attrSpan instanceof SpannableTextViewAttribute) && ((SpannableTextViewAttribute)attrSpan).hasValue()) {
-					getView().setTextKeepState(cloneCharSequence(nVal), TextView.BufferType.SPANNABLE);
-					((SpannableTextViewAttribute)attrSpan).update();
-				} else {
-					getView().setTextKeepState(cloneCharSequence(nVal));
-				}			
-				
+				getView().setTextKeepState(cloneCharSequence(nVal));
 			}
 		}
 	}

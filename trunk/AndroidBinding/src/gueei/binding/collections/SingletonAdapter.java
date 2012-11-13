@@ -1,7 +1,6 @@
 package gueei.binding.collections;
 
 import gueei.binding.Binder;
-import gueei.binding.Debugger;
 import gueei.binding.IObservable;
 import gueei.binding.Observable;
 import gueei.binding.Observer;
@@ -12,8 +11,6 @@ import java.util.Collection;
 
 import android.content.Context;
 import android.database.DataSetObserver;
-import android.util.Log;
-import android.util.LogPrinter;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Adapter;

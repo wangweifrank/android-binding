@@ -14,7 +14,6 @@ import android.view.View;
  * associated with that tag. In this case, Attribute BinderV30 will stop looking for any 
  * other "parent" to create this attribute. 
  */
-@SuppressWarnings({"UnusedDeclaration"})
 public interface IBindableView<T extends View & IBindableView<T>> {
 	/**
 	 * Each View Attribute should be created once only. 

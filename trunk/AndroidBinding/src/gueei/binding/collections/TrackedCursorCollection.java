@@ -1,6 +1,6 @@
 package gueei.binding.collections;
 
-import gueei.binding.cursor.IRowModel;
+import gueei.binding.cursor.ICursorRowModel;
 import gueei.binding.cursor.IRowModelFactory;
 import java.lang.ref.WeakReference;
 import android.content.Context;
@@ -14,7 +14,7 @@ import android.os.Handler;
  * Date: 08.10.11
  * Time: 12:05
  */
-public class TrackedCursorCollection<T extends IRowModel> extends CursorCollection<T> {
+public class TrackedCursorCollection<T extends ICursorRowModel> extends CursorCollection<T> {
 
 	public TrackedCursorCollection(Class<T> rowModelType, gueei.binding.collections.CursorCollection.ICursorCacheManager<T> cacheManager) {
 		super(rowModelType, cacheManager);

@@ -13,6 +13,7 @@ public interface ILazyLoadRowModel {
 	public void display(IObservableCollection<?> collection, int index);
 	public void hide(IObservableCollection<?> collection, int index);
 	
+	// TODO: This is possible to have unexpected behavior when displaying two lists with same set of collection
 	public void setMapped(boolean mapped);
 	public boolean isMapped();
 }

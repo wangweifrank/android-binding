@@ -3,7 +3,6 @@ package gueei.binding.viewAttributes.textView;
 import gueei.binding.Binder;
 import gueei.binding.BindingType;
 import gueei.binding.ViewAttribute;
-import gueei.binding.exception.AttributeNotDefinedException;
 import gueei.binding.listeners.TextWatcherMulticast;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -17,12 +16,6 @@ public class TextViewAttribute extends ViewAttribute<TextView, CharSequence> imp
 		super(CharSequence.class, view, attributeName);
 		if (view instanceof EditText) {
 			Binder.getMulticastListenerForView(view, TextWatcherMulticast.class).registerWithHighPriority(this);
-		}
-		
-		try {
-			Binder.getAttributeForView(getView(), "span");
-		} catch (AttributeNotDefinedException e) {
-			e.printStackTrace();
 		}
 	}
 

@@ -45,7 +45,15 @@
         android:layout_width="fill_parent"
     	android:layout_height="wrap_content"
     	android:gravity="center"
-    	binding:text="SelectedNodePathText"
-        />   
+    	binding:text="SelectedNodeOldPathText"
+        />
+ 	
+ 	<TextView
+ 	    android:layout_marginTop="50dp"
+        android:layout_width="fill_parent"
+    	android:layout_height="wrap_content"
+    	android:gravity="center"
+    	binding:text="SelectedNodeNewPathText"
+        />   	
     
 </LinearLayout>

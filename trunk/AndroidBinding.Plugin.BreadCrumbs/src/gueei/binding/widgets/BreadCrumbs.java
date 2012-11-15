@@ -1,6 +1,7 @@
 package gueei.binding.widgets;
 
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 import gueei.binding.AttributeBinder;
@@ -133,15 +134,31 @@ public class BreadCrumbs extends HorizontalListView {
 		return this.breadCrumbsStructure;
 	}
 	
-	public Object[] getCurrentPath() {
+	public ArrayList<Object> getCurrentPath() {
+		ArrayList<Object> result = new ArrayList<Object>();
 		if(itemSource.size() == 0)
-			return null;
+			return result;		
 		
-		Object[] result = new Object[itemSource.size()];
+		// the last element data is always zero
+		for(int i=0; i<itemSource.size()-1; i++) {
+			BreadCrumbsItemWrapper w = itemSource.get(i);
+			result.add(w.WrapperBreadCrumbDataSource.get());
+		}
+		
+		return result;
+	}
+	
+
+	public ArrayList<Object> getNodeWrapperPath(BreadCrumbsItemWrapper node) {
+		ArrayList<Object> result = new ArrayList<Object>();
+		if(itemSource.size() == 0)
+			return result;		
 		
 		for(int i=0; i<itemSource.size(); i++) {
 			BreadCrumbsItemWrapper w = itemSource.get(i);
-			result[i] = w.WrapperBreadCrumbDataSource.get();
+			if(w.equals(node))
+				break;
+			result.add(w.WrapperBreadCrumbDataSource.get());
 		}
 		
 		return result;
@@ -271,10 +288,9 @@ public class BreadCrumbs extends HorizontalListView {
 				}				
 			
 				if(OnBreadCrumbSelectedRef != null) {
-					Object newItem = item;
-					Object oldItem = w.WrapperBreadCrumbDataSource.get();
-					
-					BreadCrumbsSelectedEvent e = new BreadCrumbsSelectedEvent(BreadCrumbs.this, siblingPos, newItem, oldItem);								
+					Object breadCrumbNodeOld = w.WrapperBreadCrumbDataSource.get();
+					Object breadCrumbNodeNew = item;
+					BreadCrumbsSelectedEvent e = new BreadCrumbsSelectedEvent(BreadCrumbs.this, siblingPos, breadCrumbNodeOld, breadCrumbNodeNew, w);								
 					OnBreadCrumbSelectedRef.Invoke(BreadCrumbs.this, e);
 					if( e.eventHandled)
 						return;
@@ -565,7 +581,6 @@ public class BreadCrumbs extends HorizontalListView {
 			return -1;
 		return (Integer)value.get();
 	}
-
 
 
 }

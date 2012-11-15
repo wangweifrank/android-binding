@@ -27,7 +27,8 @@ public class BreadCrumbsSelectedEvent {
 	
 	public List<Object>getNewFullPath() {
 		List<Object> result = parent.getNodeWrapperPath(nodeRootNew);
-		result.add(breadCrumbNodeNew);
+		if(breadCrumbNodeNew !=null)
+			result.add(breadCrumbNodeNew);
 		return result;
 	}
 	

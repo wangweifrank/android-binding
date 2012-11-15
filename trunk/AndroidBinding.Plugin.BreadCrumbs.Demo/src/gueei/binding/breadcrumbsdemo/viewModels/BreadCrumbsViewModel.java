@@ -1,6 +1,7 @@
 package gueei.binding.breadcrumbsdemo.viewModels;
 
 import java.util.Date;
+import java.util.List;
 
 import android.app.Activity;
 import android.view.View;
@@ -17,7 +18,8 @@ import gueei.binding.widgets.breadcrumbs.BreadCrumbsSelectedEvent;
 public class BreadCrumbsViewModel {
 		
 	public final StringObservable SelectedNodeText = new StringObservable("select a node");
-	public final StringObservable SelectedNodePathText = new StringObservable("-");
+	public final StringObservable SelectedNodeOldPathText = new StringObservable("-");
+	public final StringObservable SelectedNodeNewPathText = new StringObservable("-");
 	
 	public final IntegerObservable WrapperTemplateLayoutId = new IntegerObservable(R.layout.bread_crumb_item_wrapper);
 	
@@ -85,21 +87,38 @@ public class BreadCrumbsViewModel {
 			else
 				SelectedNodeText.set("none selected");
 			
-			Object [] path = e.getOldPath();
+			List<Object> path = e.getOldFullPath();
 			if(path==null){		
-				SelectedNodePathText.set("no path");
+				SelectedNodeOldPathText.set("no path");				
 			} else {
 				StringBuilder sb = new StringBuilder();
 				
 				sb.append("Path before selection: ");
-				for(int i=0;i<path.length;i++) {
-					BreadCrumbNode n = (BreadCrumbNode)path[i];
+				for(int i=0;i<path.size();i++) {
+					BreadCrumbNode n = (BreadCrumbNode)path.get(i);
 					if(n == null )
 						continue;
 					sb.append(n.Text.get());
 					sb.append(" / ");
 				}
-				SelectedNodePathText.set(sb.toString());
+				SelectedNodeOldPathText.set(sb.toString());
+			}
+			
+			path = e.getNewFullPath();
+			if(path==null){		
+				SelectedNodeNewPathText.set("no path");				
+			} else {
+				StringBuilder sb = new StringBuilder();
+				
+				sb.append("Path after selection: ");
+				for(int i=0;i<path.size();i++) {
+					BreadCrumbNode n = (BreadCrumbNode)path.get(i);
+					if(n == null )
+						continue;
+					sb.append(n.Text.get());
+					sb.append(" / ");
+				}
+				SelectedNodeNewPathText.set(sb.toString());
 			}
 		}
 	};		

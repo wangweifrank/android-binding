@@ -17,80 +17,14 @@
     </target>
 
     <target name="jar" description="JARs the Task" depends="compile">
-        <jar destfile="${ant.project.name}.jar" basedir="${classes.dir}">
+        <jar destfile="android-binding.ant.jar" basedir="${classes.dir}">
             <fileset dir="${resources.dir}"/>
         </jar>
     </target>
     
-    <target name="test" depends="jar">
-        <taskdef name="read-manifest"
-            classname="gueei.binding.gen.ReadFromManifestTask" classpath="${ant.project.name}.jar"/>
-        <read-manifest dir="."
-            setpackagename="package.name"
-            setsourcefoldername="package.dir"/>
+    <target name="archive" description="Zip the jar + Wizard for distribution" depends="jar">
+        <zip destfile="android-binding.gen.zip" 
+            basedir="."
+            includes="android-binding.ant.jar, wizard.xml"/>
     </target>
-    
-    <target name="wizard">
-        <taskdef name="mc-task" 
-            classname="gueei.binding.gen.WizardTask" classpath="${ant.project.name}.jar"/>
-        <mc-task
-		    message="Welcome to Android-Binding Template Generation. 
-		    ${line.separator}What do you need to generate? 
-		    ${line.separator}(Activity/Application)"
-		    default="Activity">
-            <choice name="Activity" task="new-activity"/>
-            <choice name="Application" task="create_application_class"/>
-        </mc-task>
-    </target>
-    
-    <target name="new-activity" description="Use the Task" depends="jar">
-        <taskdef name="read-manifest"
-            classname="gueei.binding.gen.ReadFromManifestTask" classpath="${ant.project.name}.jar"/>
-        <read-manifest dir="."
-            setpackagename="package.name"
-            setsourcefoldername="package.dir"/>
-        
-        <taskdef name="template" classname="gueei.binding.gen.WriteTemplateTask" classpath="${ant.project.name}.jar"/>
-        <taskdef name="register-activity" classname="gueei.binding.gen.RegisterActivityTask" classpath="${ant.project.name}.jar"/>
-        <input message="Input the new Activity's name" addproperty="activityname"/>
-        <!-- Create Activity File -->
-        <template input="BindingActivityV30.template" dir="${package.dir}" output="${activityname}.java">
-            <entry key="package_name" value="${package.name}"/>
-            <entry key="activity_name" value="${activityname}"/>
-            <entry key="metadata_name" value="*${activityname}_metadata"/>
-        </template>
-        
-        <template input="activity.metadata.ics.xml.template" dir="${resource.dir}/xml-v14" output="*${activityname}_metadata.xml">
-            <entry key="rootview_layout" value="*${activityname}_layout"/>
-            <entry key="optionsmenu" value="*${activityname}_optionsmenu"/>
-        </template>
-        
-        <template input="activity.metadata.froyo.xml.template" dir="${resource.dir}/xml" output="*${activityname}_metadata.xml">
-            <entry key="rootview_layout" value="*${activityname}_layout"/>
-            <entry key="optionsmenu" value="*${activityname}_optionsmenu"/>
-        </template>
-        
-        <template input="activity.optionsmenu.template" dir="${resource.dir}/menu" output="*${activityname}_optionsmenu.xml">
-        </template>
-
-        <template input="activity.layout.template" dir="${resource.dir}/layout" output="*${activityname}_layout.xml">
-        </template>
-
-        <register-activity dir="." activityclassname="${activityname}"/>
-        
-        <echo level="info"
-            message="Generation completed. Refresh your project to see the new files. "/>
-    </target>
-    
-    <target name="create_application_class" depends="jar">
-    	<taskdef name="register" classname="gueei.binding.gen.RegisterApplicationTask" classpath="${ant.project.name}.jar"/>
-    	<taskdef name="template" classname="gueei.binding.gen.WriteTemplateTask" classpath="${ant.project.name}.jar"/>
-    	<input message="Input the Application Class' name" addproperty="appname"/>
-    	<register dir="." appclassname="${appname}"/>
-    	<template input="application.template" dir="${package.dir}" output="${appname}.java">
-    	    <entry key="package_name" value="${package.name}"/>
-    	    <entry key="app_name" value="${appname}"/>
-    	</template>
-	</target>
-    
 </project>

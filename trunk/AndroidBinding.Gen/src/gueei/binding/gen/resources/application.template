@@ -8,6 +8,6 @@ public class ${app_name} extends Application {
 	@Override
     public void onCreate() {
 	    super.onCreate();
-	    Binder.init(this, new DefaultKernelV30);
+	    Binder.init(this, new DefaultKernelV30());
     }
 }

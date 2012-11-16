@@ -5,7 +5,7 @@
     
     <target name="wizard">
         <taskdef name="mc-task" 
-            classname="gueei.binding.gen.WizardTask" classpath="${ant.project.name}.jar"/>
+            classname="gueei.binding.gen.WizardTask" classpath="${classpath}"/>
         <mc-task
 		    message="Welcome to Android-Binding Template Generation. 
 		    ${line.separator}What do you need to generate? 

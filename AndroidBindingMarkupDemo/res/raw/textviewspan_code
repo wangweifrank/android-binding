@@ -48,7 +48,7 @@ public class TextViewSpan {
 	public final SpanListCreatorCommand OnCreateHighlightSpanList = new SpanListCreatorCommand() {
 
 		@Override
-		public List<Span> onCreateSpanList() {
+		public List<Span> onCreateSpanList(int occurence) {
 
 			ArrayList<Span> list = new ArrayList<Span>();
 			
@@ -67,9 +67,10 @@ public class TextViewSpan {
 	};
 	
 	public final Command OnChangeSpans = new Command(){
-		public void Invoke(View view, Object... args) {
+		public void Invoke(View view, Object... args) {			
 			SimpleText.set("a SIMPLE text");
-			SimpleSpan.set(new Span(new BackgroundColorSpan(Color.BLUE), 2, 8));
+			SimpleSpan.set(new Span(new BackgroundColorSpan(Color.BLUE), 2, 8));									
+			ListSpan.add(new Span(new BackgroundColorSpan(Color.BLUE), 10, 20));
 			HighLight.set("this is a very new text to show text highlighting in all texts");
 		}
 	};

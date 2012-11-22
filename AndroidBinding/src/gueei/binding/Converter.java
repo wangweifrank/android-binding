@@ -1,5 +1,7 @@
 package gueei.binding;
 
+import java.util.ArrayList;
+
 import android.content.Context;
 
 /**
@@ -24,5 +26,9 @@ public abstract class Converter<T> extends TwoWayDependentObservable<T> {
 	}
 	public Context getContext(){
 		return mContext;
+	}
+	
+	public void notifyChange() {
+		this.onPropertyChanged(null, new ArrayList<Object>());
 	}
 }

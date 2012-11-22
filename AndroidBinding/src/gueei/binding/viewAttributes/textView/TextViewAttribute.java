@@ -5,6 +5,7 @@ import gueei.binding.BindingType;
 import gueei.binding.ViewAttribute;
 import gueei.binding.listeners.TextWatcherMulticast;
 import android.text.Editable;
+import android.text.SpannableString;
 import android.text.TextWatcher;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -37,7 +38,13 @@ public class TextViewAttribute extends ViewAttribute<TextView, CharSequence> imp
 		}else{
 			if (b==null) result = true;
 		}
-		return result;
+		
+		if( result == true && a instanceof SpannableString && b instanceof SpannableString) {
+			// same text - is it the same spanable?
+			return a.equals(b);
+		}		
+		
+		return result;		
 	}
 
 	@Override

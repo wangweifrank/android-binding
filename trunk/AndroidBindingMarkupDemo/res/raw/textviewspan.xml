@@ -16,8 +16,7 @@
 		android:layout_width="fill_parent"
 	    android:layout_height="wrap_content"
 	    android:textSize="40dip"	    
-	    binding:span="SimpleSpan"
-	    binding:text="SimpleText"
+	    binding:text="SPAN(SimpleText, SimpleSpan)"
 	/>
     <TextView
     	android:layout_width="fill_parent"
@@ -28,8 +27,7 @@
 		android:layout_width="fill_parent"
 	    android:layout_height="wrap_content"
 	    android:textSize="40dip"
-	    binding:text="ListText"
-	    binding:span="ListSpan"
+	    binding:text="SPAN(ListText, ListSpan)"
 	/>	
 
     <TextView
@@ -41,8 +39,7 @@
 		android:layout_width="fill_parent"
 	    android:layout_height="wrap_content"
 	    android:textSize="40dip"
-	    binding:text="HighLight"
-	    binding:span="HIGHLIGHT_SPAN(HighLight,TextToHighLight,OnCreateHighlightSpanList)"
+	    binding:text="HIGHLIGHT_SPAN(HighLight,TextToHighLight,OnCreateHighlightSpanList)"
 	/>		
 
 	<Button 

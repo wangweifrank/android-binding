@@ -59,7 +59,7 @@ public class SPAN extends Converter<Object> {
 			public void onCollectionChanged(IObservableCollection<?> collection,
 					CollectionChangedEventArg args, Collection<Object> initiators) {	
 				updateSpanable(null, collection);
-				parent.notifyChange();
+				parent.notifyChanged();
 			}
 		};
 		

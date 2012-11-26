@@ -57,7 +57,7 @@ public class Utility {
 	    int first = listView.getFirstVisiblePosition();
 	    int last = listView.getLastVisiblePosition();
 
-	    if (pos < first) {
+	    if (pos < first || last < 0) {
 	        listView.setSelection(pos);
 	        return;
 	    }

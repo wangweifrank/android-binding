@@ -16,6 +16,11 @@ public class BackgroundViewAttributeV30  extends ViewAttribute<View, Object> {
 	protected void doSetAttributeValue(Object newValue) {
 		if(getView()==null) return;
 		if (newValue==null){
+			if(getView().getBackground() instanceof AnimationDrawable) {
+				AnimationDrawable frameAnimation = (AnimationDrawable)getView().getBackground();
+				if(frameAnimation.isRunning())
+					frameAnimation.stop();
+			}
 			getView().setBackgroundDrawable(null);
 			return;
 		}

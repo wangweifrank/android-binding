@@ -1,4 +1,4 @@
-package gueei.binding.v30.viewAttributes;
+package gueei.binding.v30.viewAttributes.view;
 
 import android.view.View;
 import gueei.binding.Binder;

@@ -14,7 +14,13 @@ public class BackgroundTransitionDurationViewAttribute extends ViewAttribute<Vie
 	@Override
 	protected void doSetAttributeValue(Object newValue) {
 		if(getView()==null) return;
-		if (newValue==null) return;		
+		if (newValue==null){
+			if(getView().getBackground() instanceof TransitionDrawable) {
+				TransitionDrawable td = (TransitionDrawable)getView().getBackground();
+				td.resetTransition();
+			}
+			return;
+		}			
 		if (newValue instanceof Integer){
 			if(getView().getBackground() instanceof TransitionDrawable) {
 				TransitionDrawable td = (TransitionDrawable)getView().getBackground();

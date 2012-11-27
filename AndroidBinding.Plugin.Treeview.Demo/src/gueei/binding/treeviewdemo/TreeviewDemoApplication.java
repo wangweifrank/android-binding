@@ -12,6 +12,8 @@ public class TreeviewDemoApplication extends Application {
 		Thread.setDefaultUncaughtExceptionHandler(new CustomExceptionHandler());
 		Binder.init(this);
 		BinderTreeview.init(this);
+		//gueei.binding.widgets.TreeViewList.setSmoothScrollEnsureVisible(true);
+		gueei.binding.widgets.TreeViewList.setAutocenterEnsureVisible(true);
 	}
 
 }

@@ -4,7 +4,6 @@ import gueei.binding.ViewAttribute;
 import gueei.binding.viewAttributes.view.AnimationViewAttribute;
 import gueei.binding.viewAttributes.view.AssignViewAttribute;
 import gueei.binding.viewAttributes.view.BackgroundColorViewAttribute;
-import gueei.binding.viewAttributes.view.BackgroundTransitionDurationViewAttribute;
 import gueei.binding.viewAttributes.view.BackgroundViewAttribute;
 import gueei.binding.viewAttributes.view.ContextMenuViewAttribute;
 import gueei.binding.viewAttributes.view.EnabledViewAttribute;
@@ -60,8 +59,6 @@ public class ViewProvider extends BindingProvider {
 			return new OnBindViewAttribute(view);
 		}else if (attributeId.equals("assign")){
 			return new AssignViewAttribute(view);
-		}else if (attributeId.equals("backgroundTransitionDuration")){
-			return new BackgroundTransitionDurationViewAttribute(view);
 		}
 		return null;
 	}

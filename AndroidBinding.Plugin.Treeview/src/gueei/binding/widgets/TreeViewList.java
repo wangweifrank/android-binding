@@ -127,26 +127,28 @@ public class TreeViewList extends ListView {
 	}	
 	
 	public void setTreeStructure(TreeStructure value) {
-		if( treeStructure != null ) {
-			if( treeStructure.spacerWidth != null )
-				treeStructure.spacerWidth.unsubscribe(observerSpacerWidth);
+		synchronized (this) {
+			if( treeStructure != null ) {
+				if( treeStructure.spacerWidth != null )
+					treeStructure.spacerWidth.unsubscribe(observerSpacerWidth);
+				
+				if( treeStructure.treeNodeEnsureVisible != null )
+					treeStructure.treeNodeEnsureVisible.unsubscribe(observerEnsureVisible);	
+			}
 			
-			if( treeStructure.treeNodeEnsureVisible != null )
-				treeStructure.treeNodeEnsureVisible.unsubscribe(observerEnsureVisible);	
-		}
-		
-		treeStructure = value;
-		
-		if( treeStructure != null ) {
-			if( treeStructure.spacerWidth != null )
-				treeStructure.spacerWidth.subscribe(observerSpacerWidth);
+			treeStructure = value;
 			
-			if( treeStructure.treeNodeEnsureVisible != null )
-				treeStructure.treeNodeEnsureVisible.subscribe(observerEnsureVisible);
+			if( treeStructure != null ) {
+				if( treeStructure.spacerWidth != null )
+					treeStructure.spacerWidth.subscribe(observerSpacerWidth);
+				
+				if( treeStructure.treeNodeEnsureVisible != null )
+					treeStructure.treeNodeEnsureVisible.subscribe(observerEnsureVisible);
+			}
+			
+			basicSetup();
+			rebind();
 		}
-		
-		basicSetup();
-		rebind();
 	}
 	
 	public TreeStructure getTreeStructure() {

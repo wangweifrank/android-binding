@@ -4,6 +4,7 @@ import gueei.binding.ViewAttribute;
 import gueei.binding.viewAttributes.textView.CheckedClickableTextViewAttribute;
 import gueei.binding.viewAttributes.textView.CheckedTextViewAttribute;
 import gueei.binding.viewAttributes.textView.CompoundDrawableViewAttribute;
+import gueei.binding.viewAttributes.textView.EditTextFiltersViewAttribute;
 import gueei.binding.viewAttributes.textView.OnTextChangedViewEvent;
 import gueei.binding.viewAttributes.textView.TextAppearanceViewAttribute;
 import gueei.binding.viewAttributes.textView.TextColorViewAttribute;
@@ -30,7 +31,13 @@ public class TextViewProvider extends BindingProvider {
 				CheckedClickableTextViewAttribute attr = new CheckedClickableTextViewAttribute((CheckedTextView)view);
 				return (ViewAttribute<Tv, ?>) attr;
 			}				
-		}		
+		}	
+		if (view instanceof EditText) {
+			if (attributeId.equals("filters")){
+				EditTextFiltersViewAttribute attr = new EditTextFiltersViewAttribute((EditText)view);
+				return (ViewAttribute<Tv, ?>) attr;
+			}
+		}
 		if (!(view instanceof TextView)) return null;
 		if (attributeId.equals("text")){
 			TextViewAttribute attr = new TextViewAttribute((TextView)view, "text");

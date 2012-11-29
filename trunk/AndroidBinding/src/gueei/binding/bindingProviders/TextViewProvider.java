@@ -5,6 +5,7 @@ import gueei.binding.viewAttributes.textView.CheckedClickableTextViewAttribute;
 import gueei.binding.viewAttributes.textView.CheckedTextViewAttribute;
 import gueei.binding.viewAttributes.textView.CompoundDrawableViewAttribute;
 import gueei.binding.viewAttributes.textView.OnTextChangedViewEvent;
+import gueei.binding.viewAttributes.textView.TextAppearanceViewAttribute;
 import gueei.binding.viewAttributes.textView.TextColorViewAttribute;
 import gueei.binding.viewAttributes.textView.TextLinesViewAttribute;
 import gueei.binding.viewAttributes.textView.TextViewAttribute;
@@ -45,6 +46,10 @@ public class TextViewProvider extends BindingProvider {
 		}
 		if (attributeId.equals("textColor")){
 			TextColorViewAttribute attr = new TextColorViewAttribute((TextView)view);
+			return (ViewAttribute<Tv, ?>) attr;
+		}
+		if (attributeId.equals("textAppearance")){
+			TextAppearanceViewAttribute attr = new TextAppearanceViewAttribute((TextView)view);
 			return (ViewAttribute<Tv, ?>) attr;
 		}
 		if (attributeId.equals("onTextChanged")){

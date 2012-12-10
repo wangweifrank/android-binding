@@ -21,21 +21,6 @@ public class TreeViewItemWrapper {
 	public TreeViewItemWrapper(TreeViewList parent) {
 		this.parent = parent;
 	}
-
-/*	
-	public String toString() {
-		String s = "l: " + level;
-		s = s + " ";
-		s = s + WrapperNodeDataSource.get().toString();
-		
-		//if(children != null)
-		//	s = s + " wcp " + children;
-		//else
-		//	s = s + " wcp NULL";
-		
-		return s;
-	}
-*/	
 	
 	private IObservable<?> layoutIdObservable=null;
 	private IObservable<Object> isExpandedObservable=null;

@@ -3,25 +3,22 @@ package gueei.binding.labs.viewAttributes.treeView;
 import gueei.binding.BindingType;
 import gueei.binding.ViewAttribute;
 import gueei.binding.widgets.TreeViewList;
-import gueei.binding.widgets.treeview.TreeStructure;
 
-public class TreeStructureViewAttribute extends ViewAttribute<TreeViewList, TreeStructure> {
+public class TreeEnsureVisibleNodeViewAttribute extends ViewAttribute<TreeViewList, Object> {
 			
-		public  TreeStructureViewAttribute 
+		public  TreeEnsureVisibleNodeViewAttribute 
 			(TreeViewList view) {
-			super(TreeStructure.class,view, "treeStructure");
+			super(Object.class,view, "ensureVisibleNode");
 		}
 		
 		@Override
 		protected void doSetAttributeValue(Object newValue) {
 			if(getView()==null) return;
-			if (newValue instanceof TreeStructure){
-				getView().setTreeStructure((TreeStructure)newValue);
-			}
+			getView().setEnsureVisible(newValue);
 		}
 
 		@Override
-		public TreeStructure get() {
+		public Object get() {
 			return null;
 		}
 		

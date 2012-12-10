@@ -10,15 +10,14 @@
         android:layout_height="fill_parent"
         android:scrollbars="vertical"
         android:smoothScrollbar="true"
+        binding:ensureVisibleNode="EnsureVisibleItem"  				  				  	
         binding:treeStructure="TREE_STRUCTURE({
   				root=Items,
   				
   				children='Children',
   				isExpanded='IsExpanded',
   				templateId='LayoutId',
-  				
-  				ensureVisible=EnsureVisibleItem,
-  				  				  				  				
+  							
   				wrapperTemplateId=WrapperTemplateLayoutId,
   				
   				imgExpanded=@drawable/expanded,

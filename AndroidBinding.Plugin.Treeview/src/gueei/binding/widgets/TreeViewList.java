@@ -44,14 +44,6 @@ public class TreeViewList extends ListView {
 		}
 	};
 	
-	private Observer observerEnsureVisible = new Observer() {		
-		@Override
-		public void onPropertyChanged(IObservable<?> prop, Collection<Object> initiators) {
-			if(prop != null && prop.get() != null)
-				ensureVisible(prop.get());
-		}
-	};	
-	
 	private CollectionObserver collectionObserver = new CollectionObserver(){
 		@Override
 		public void onCollectionChanged(IObservableCollection<?> collection, CollectionChangedEventArg args, Collection<Object> initiators) {
@@ -131,9 +123,6 @@ public class TreeViewList extends ListView {
 			if( treeStructure != null ) {
 				if( treeStructure.spacerWidth != null )
 					treeStructure.spacerWidth.unsubscribe(observerSpacerWidth);
-				
-				if( treeStructure.treeNodeEnsureVisible != null )
-					treeStructure.treeNodeEnsureVisible.unsubscribe(observerEnsureVisible);	
 			}
 			
 			treeStructure = value;
@@ -141,18 +130,11 @@ public class TreeViewList extends ListView {
 			if( treeStructure != null ) {
 				if( treeStructure.spacerWidth != null )
 					treeStructure.spacerWidth.subscribe(observerSpacerWidth);
-				
-				if( treeStructure.treeNodeEnsureVisible != null )
-					treeStructure.treeNodeEnsureVisible.subscribe(observerEnsureVisible);
 			}
 			
 			basicSetup();
 			rebind();
 		}
-	}
-	
-	public TreeStructure getTreeStructure() {
-		return this.treeStructure;
 	}
 	
 	public void expandCollapseFromDataSource(TreeViewItemWrapper node) {
@@ -644,6 +626,10 @@ public class TreeViewList extends ListView {
 				return;
 			}
 		}
+	}
+
+	public void setEnsureVisible(Object node) {
+		ensureVisible(node);
 	}
 
 

@@ -28,9 +28,6 @@ public class TREE_STRUCTURE extends Converter<TreeStructure> {
 			config.root = object.getObservableByName("root");
 			config.childrenObservableName = object.getObservableByName("children");
 			config.isExpandedObservableName = object.getObservableByName("isExpanded");
-						
-			if (object.observableExists("ensureVisible"))
-				config.treeNodeEnsureVisible = object.getObservableByName("ensureVisible");
 			
 			if (object.observableExists("template"))
 				config.template = ((Layout)object.getObservableByName("template").get());

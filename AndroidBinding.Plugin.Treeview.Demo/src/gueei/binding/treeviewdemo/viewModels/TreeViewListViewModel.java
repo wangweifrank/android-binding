@@ -143,7 +143,15 @@ public class TreeViewListViewModel {
 	public final Command OnDebugExpandCollapse= new Command() {		
 		@Override
 		public void Invoke(View view, Object... args) {			
-			Items.get(0).Children.get(1).IsExpanded.set(!Items.get(0).Children.get(1).IsExpanded.get());
+			boolean expanded = true;
+			if(Items.size() > 0 && Items.get(0).IsExpanded.get())
+				expanded = false;
+			
+			ArrayListObservable<TreeNode> list = Items;
+			while(list != null && list.size() > 0) {
+				list.get(0).IsExpanded.set(expanded);
+				list = list.get(0).Children;
+			}
 		}
 	};	
 	

@@ -16,6 +16,7 @@ public class TreeViewItemWrapper {
 	public final ObjectObservable WrapperNodeDataSource = new ObjectObservable(null);
 	public IObservableCollection<?> children;
 	public int level = 1;
+	public Boolean expandedState = null;
 	private TreeViewList parent;
 	
 	public TreeViewItemWrapper(TreeViewList parent) {
@@ -73,11 +74,15 @@ public class TreeViewItemWrapper {
 	}
 
 	public void setExpanded(Boolean newValue) {
+		if(newValue != null && newValue)
+			expandedState = true;
+		else
+			expandedState = false;		
 		if(isExpandedObservable==null)
 			return;
 		isExpandedObservable.unsubscribe(observerIsExpanded);
 		isExpandedObservable.set(newValue);
-		isExpandedObservable.subscribe(observerIsExpanded);		
+		isExpandedObservable.subscribe(observerIsExpanded);	
 	}
 	
 	public Boolean isExpanded() {

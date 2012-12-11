@@ -396,12 +396,15 @@ public class TreeViewList extends ListView {
 		if( w == null )
 			return;
 		
-		if( !isDSLeaf(w.WrapperNodeDataSource.get()))
-			return;
-		
 		boolean isExpanded=false;
 		if( w.isExpanded() != null && w.isExpanded() == true )
 			isExpanded = true;
+		
+		if(isExpanded==setNewValue)
+			return;
+		
+		if( !isDSLeaf(w.WrapperNodeDataSource.get()))
+			return;
 		
 		IObservableCollection<?> children = getDSChildren(w.WrapperNodeDataSource.get());
 		if( children != null && children.size() > 0) {

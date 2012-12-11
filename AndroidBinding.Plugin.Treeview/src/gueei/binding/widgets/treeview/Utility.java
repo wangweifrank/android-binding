@@ -46,72 +46,32 @@ public class Utility {
 		
 		return pos;
 	}
-	
-	private static int listPreferredItemHeight = -1;
-	
-	public static void ensureVisibleCenter(ListView listView, int pos) {
-	    if (listView == null)
-	        return;
 
-	    if(pos < 0 || pos >= listView.getCount())
-	        return;
-
-	    int first = listView.getFirstVisiblePosition();
-	    int last = listView.getLastVisiblePosition();	    
-	    
-	    if(listPreferredItemHeight < 0) {
-	    	android.util.TypedValue value = new android.util.TypedValue();
-	    	if(listView.getContext().getTheme().resolveAttribute(android.R.attr.listPreferredItemHeight, value, true)) {
-	    		android.util.DisplayMetrics metrics = listView.getContext().getResources().getDisplayMetrics();
-	    		float ret = value.getDimension(metrics);
-	    		listPreferredItemHeight = ((int)ret) * (-1);
-	    	} else {
-	    		listPreferredItemHeight = 0;
-	    	}	    
-	    }	    
-	    
-	    int y = (listView.getHeight() / 2) + listPreferredItemHeight;
-	    if(y<0)
-	    	y = 0;
-
-	    if(last < 0) {
-	        listView.setSelectionFromTop(pos, y);
-	        return;
-	    }
-	    
-	    if (pos < first) {
-	    	listView.setSelectionFromTop(pos, y);
-	        return;
-	    }
-
-	    if (pos >= last) {
-	        listView.setSelectionFromTop(1 + pos - (last - first), y);
-	    }
-	}
+	// http://stackoverflow.com/questions/1988916/ensure-visible-on-android-listview
 	
 	public static void ensureVisible(ListView listView, int pos) {
-	    if (listView == null)
-	        return;
-
-	    if(pos < 0 || pos >= listView.getCount())
-	        return;
-
-	    int first = listView.getFirstVisiblePosition();
-	    int last = listView.getLastVisiblePosition();
-
-	    if(last < 0) {
-	        listView.setSelection(pos);
-	        return;
-	    }
-	    
-	    if (pos < first || last < 0) {
-	        listView.setSelection(pos);
-	        return;
-	    }
-
-	    if (pos >= last) {
-	        listView.setSelection(1 + pos - (last - first));
-	    }
+		if( listView==null || pos < 0 || pos >= listView.getCount()) 
+			return;
+		
+		int first = listView.getFirstVisiblePosition();
+		int last = listView.getLastVisiblePosition();
+		
+		if(first < 0 || last < 0) {
+			listView.setSelection(pos);
+			return;
+		}
+			
+		// check if we are in range (+/-1)
+		if( pos >= first +1 && pos <= last -1 )
+			return;
+		
+		// try to center
+		int center = last - first;
+		center = center / 2;
+		center = pos - center;
+		if( center < 0 )
+			center = 0;
+		listView.setSelection(center);
 	}
 
 	public static void ensureVisibleSmoothScroll(ListView listView, int pos) {

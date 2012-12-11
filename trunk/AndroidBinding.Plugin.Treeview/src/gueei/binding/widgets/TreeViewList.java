@@ -139,6 +139,10 @@ public class TreeViewList extends ListView {
 	public void expandCollapseFromDataSource(Object newState, TreeViewItemWrapper node) {
 		if(node==null)
 			return;
+		
+		if(node.expandedState != null && node.expandedState.equals(newState))
+			return;
+		
 		for(int i=0; i<itemSource.size(); i++) {
 			TreeViewItemWrapper w = itemSource.get(i);
 			if(w.equals(node)){
@@ -403,11 +407,6 @@ public class TreeViewList extends ListView {
 		Boolean wrapperState = w.isExpanded();
 		if( wrapperState != null && wrapperState == true )
 			newState = true;
-		
-		if(setNewValue == false) {
-			if(w.expandedState != null && w.expandedState == newState)
-				return;
-		}
 		
 		IObservableCollection<?> children = getDSChildren(w.WrapperNodeDataSource.get());
 		if( children != null && children.size() > 0) {

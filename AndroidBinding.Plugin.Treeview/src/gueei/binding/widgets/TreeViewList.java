@@ -136,12 +136,21 @@ public class TreeViewList extends ListView {
 		}
 	}
 	
-	public void expandCollapseFromDataSource(TreeViewItemWrapper node) {
+	public void expandCollapseFromDataSource(Object newState, TreeViewItemWrapper node) {
 		if(node==null)
 			return;
 		for(int i=0; i<itemSource.size(); i++) {
 			TreeViewItemWrapper w = itemSource.get(i);
 			if(w.equals(node)){
+				
+				Boolean currentState = w.isExpanded();
+				if( currentState == null && newState == null)
+					return;
+				if(currentState != null && currentState.equals(newState))
+					return;
+				if(newState != null && newState.equals(currentState))
+					return;
+				
 				handleExpandCollapse(i, false);
 				break;
 			}
@@ -396,15 +405,13 @@ public class TreeViewList extends ListView {
 		if( w == null )
 			return;
 		
-		boolean isExpanded=false;
-		if( w.isExpanded() != null && w.isExpanded() == true )
-			isExpanded = true;
-		
-		if(isExpanded==setNewValue)
-			return;
-		
 		if( !isDSLeaf(w.WrapperNodeDataSource.get()))
 			return;
+		
+		boolean isExpanded=false;
+		Boolean wrapperState = w.isExpanded();
+		if( wrapperState != null && wrapperState == true )
+			isExpanded = true;
 		
 		IObservableCollection<?> children = getDSChildren(w.WrapperNodeDataSource.get());
 		if( children != null && children.size() > 0) {

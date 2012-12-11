@@ -14,7 +14,6 @@ public class TreeviewDemoApplication extends Application {
 		Binder.init(this, new DefaultKernelV30());
 		BinderTreeview.init(this);
 		//gueei.binding.widgets.TreeViewList.setSmoothScrollEnsureVisible(true);
-		gueei.binding.widgets.TreeViewList.setAutocenterEnsureVisible(true);
 	}
 
 }

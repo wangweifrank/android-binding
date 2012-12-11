@@ -38,7 +38,8 @@ public class TreeViewItemWrapper {
 	private Observer observerIsExpanded = new Observer() {		
 		@Override
 		public void onPropertyChanged(IObservable<?> prop, Collection<Object> initiators) {
-			parent.expandCollapseFromDataSource(TreeViewItemWrapper.this);
+			if(prop != null)
+				parent.expandCollapseFromDataSource(prop.get(), TreeViewItemWrapper.this);
 		}
 	};	
 	

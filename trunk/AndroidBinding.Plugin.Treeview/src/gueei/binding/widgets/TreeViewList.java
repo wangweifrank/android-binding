@@ -26,7 +26,6 @@ public class TreeViewList extends ListView {
 	public static final int DEFAULT_SPACER_WIDTH = 40;
 	
 	private static boolean smoothScrollEnsureVisible = false;
-	private static boolean autocenterEnsureVisible = false;
 	
 	private TreeStructure treeStructure;
 	private boolean basicSetupDone;
@@ -151,10 +150,6 @@ public class TreeViewList extends ListView {
 	
 	public static void setSmoothScrollEnsureVisible(boolean value) {
 		smoothScrollEnsureVisible = value;
-	}
-	
-	public static void setAutocenterEnsureVisible(boolean value) {
-		autocenterEnsureVisible = value;
 	}
 	
 	private void basicSetup() {
@@ -619,8 +614,6 @@ public class TreeViewList extends ListView {
 			if(node.equals(w.WrapperNodeDataSource.get())) {
 				if(smoothScrollEnsureVisible)
 					Utility.ensureVisibleSmoothScroll(this, i);
-				else if(autocenterEnsureVisible)
-					Utility.ensureVisibleCenter(this, i);
 				else
 					Utility.ensureVisible(this, i);
 				return;
